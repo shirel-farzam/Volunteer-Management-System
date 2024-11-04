@@ -5,6 +5,7 @@ partial class Program4642
     private static void Main(string[] args)
     {
         welcome4642();
+        welcome7701();
         Console.ReadKey();
     }
 
