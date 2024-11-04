@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace stage0
 {
-    partial class Program7701
+    internal partial class Program
     {
         static partial void welcome7701()
         {
-            Console.WriteLine("I am also here!!");
+            Console.WriteLine("I am also here!");
         }
     }
 }
