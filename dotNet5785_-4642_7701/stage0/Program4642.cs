@@ -12,8 +12,9 @@ partial class Program4642
     static partial void welcome7701();
     private static void welcome4642()
     {
-        Console.WriteLine("Enter your name ");
+        Console.WriteLine("Enter your name try2 ");
         string name = Console.ReadLine();
         Console.WriteLine("{0}, welcome to my first console", name);
+        
     }
 }
