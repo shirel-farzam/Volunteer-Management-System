@@ -1,6 +1,8 @@
 ﻿using System;
 namespace stage0
-{partial class program { 
+{
+    partial class program
+    { 
     private static void Main(string[] args)
     {
         welcome4642();
@@ -8,10 +10,10 @@ namespace stage0
         Console.ReadKey();
     }
 
-        static partial void welcome7701();
+    static partial void welcome7701();
     private static void welcome4642() 
     {
-        Console.WriteLine("Enter your name try2 ");
+        Console.Write("Enter your name : ");
         string name = Console.ReadLine();
         Console.WriteLine("{0}, welcome to my first console", name);
         
