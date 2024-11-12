@@ -4,7 +4,7 @@ using DalApi;
 using System;
 
 
-public class VolunteerlImplementation : IVolunteer
+public class VolunteerImplementation : IVolunteer
 {
 
     public void Create(Volunteer item)
@@ -14,7 +14,7 @@ public class VolunteerlImplementation : IVolunteer
         // בדיקה אם קיים אובייקט עם אותו מזהה
         if (DataSource.Volunteers.Any(v => v.Id == item.Id))
         {
-            throw new Exception($"Volenteer with ID={item.Id} already exists"); ;
+            throw new Exception($"Volunteer with ID={item.Id} already exists"); ;
         }
 
 

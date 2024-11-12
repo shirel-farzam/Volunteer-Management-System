@@ -32,17 +32,6 @@ public record Volunteer
     /// Default constructor for stage 3
     /// </summary>
     public Volunteer() : this(0, "", "", "", default(Distance), default(Role), false) { }
-    public void Create(T item)
-    {
-        int newId = DataSource.Config.GetNextId();
-        if (volunteers.Any(existingVolunteer => existingVolunteer.Id == volunteer.Id && volunteer.Id != 0) // עכשיו אני רוצה להוסיף אותו למאגר רק אם הוא לא נמצא שם כבר זא שאם הוא נמצא ישלח לי חריגה בנוסף אם יש בפנים ערך ברירת מחדל זה רק חריגה אז הוא בודק זאת  
-            // מתבצעת בדיקה על רשימת באמצעות  עוברת על כל האובייקטים ברשימה ובודקת אם לפחות אחד מהם עונה על תנאי מסוים.
-
-            throw new InvalidOperationException($"מתנדב עם תעודת זהות {volunteer.Id} כבר קיים במערכת.");
-
-        volunteers.Add(newVolunteer);// מוסיפה 
-        //??????????????????????return newId; // החזרת המזהה החדש
-    } 
-
+}
 
     
