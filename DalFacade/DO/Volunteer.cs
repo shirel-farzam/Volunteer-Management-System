@@ -1,28 +1,35 @@
 ﻿
-
 namespace DO;
+/// <summary>
+/// Student Entity represents a student with all its props
+/// </summary>
+/// <param name="Id">Personal unique ID of the student (as in national id card)</param>
+/// <param name="Name">Private Name of the student</param>
+/// <param name="RegistrationDate">Registration date of the student into the graduation program</param>
+/// <param name="Alias">student’s alias name (default empty)</param>
+/// <param name="IsActive">whether the student is active in studies (default true)</param>
+/// <param name="BirthDate">student’s birthday (default empty)</param>
 
 public record Volunteer
+(
+
+     int Id,
+     string FullName,
+     string PhoneNumber,
+     string Email,
+     Distance TypeDistance,
+     Role Job,
+     bool Active,
+     string? Password = null,
+     string? FullAddress = null,
+     double? Latitude = null,
+     double? Longitude = null,
+     double? MaxReading = null
+
+)
 {
-
-    public int Id { get; set; }                  // מזהה ייחודי של המתנדב
-    public string FullName { get; set; }         // שם מלא (שם פרטי ושם משפחה)
-    public string PhoneNumber { get; set; }      // מספר טלפון
-    public string Email { get; set; }            // כתובת דוא"ל
-    public string? Password { get; set; }        // סיסמה (אם רלוונטי)
-    public string? FullAddress { get; set; }     // כתובת מלאה
-    public double? Latitude { get; set; }        // קו רוחב
-    public double? Longitude { get; set; }       // קו אורך
-    public Role Job { get; set; }                // תפקיד (מתנדב או מנהל)
-    public bool Active { get; set; }             // האם המשתמש פעיל
-    public double? MaxReading { get; set; }      // מרחק מקסימלי לפעילות
-    public Distance TypeDistance { get; set; }   // סוג המרחק (אווירי, הליכה, נסיעה)
-
-    // פונקציה לעדכון מיקום המתנדב
-    public void UpdateLocation(double latitude, double longitude)
-    {
-        Latitude = latitude;
-        Longitude = longitude;
-    }
+    /// <summary>
+    /// Default constructor for stage 3
+    /// </summary>
+    public Volunteer() : this(0, "", "", "", default(Distance), default(Role), false) { }
 }
-
