@@ -2,9 +2,9 @@
 using DalApi;
 using DO;
 
-public class VolunteerImplementation : IVolunteer
+public class AssignmentImplementation : IAssignment
 {
-    public void Create(Volunteer item)
+    public void Create(IAssignment item)
     {
         throw new NotImplementedException();
     }
@@ -19,17 +19,17 @@ public class VolunteerImplementation : IVolunteer
         throw new NotImplementedException();
     }
 
-    public Volunteer? Read(int id)
+    public IAssignment? Read(int id)
     {
         throw new NotImplementedException();
     }
 
-    public List<Volunteer> ReadAll()
+    public List<IAssignment> ReadAll()
     {
         throw new NotImplementedException();
     }
 
-    public void Update(Volunteer item)
+    public void Update(IAssignment item)
     {
         throw new NotImplementedException();
     }

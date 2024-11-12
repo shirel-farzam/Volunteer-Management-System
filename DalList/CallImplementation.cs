@@ -2,9 +2,10 @@
 using DalApi;
 using DO;
 
-public class VolunteerImplementation : IVolunteer
+
+public class CallImplementation : ICall
 {
-    public void Create(Volunteer item)
+    public void Create(ICall item)
     {
         throw new NotImplementedException();
     }
@@ -19,17 +20,17 @@ public class VolunteerImplementation : IVolunteer
         throw new NotImplementedException();
     }
 
-    public Volunteer? Read(int id)
+    public ICall? Read(int id)
     {
         throw new NotImplementedException();
     }
 
-    public List<Volunteer> ReadAll()
+    public List<ICall> ReadAll()
     {
         throw new NotImplementedException();
     }
 
-    public void Update(Volunteer item)
+    public void Update(ICall item)
     {
         throw new NotImplementedException();
     }
