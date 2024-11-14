@@ -9,8 +9,6 @@ internal static class Config
 
     // הגדרת מזהה רץ לישות מתנדב
     internal const int startVolunteerId = 5000;
-    private static int nextVolunteerId = startVolunteerId;
-    internal static int NextVolunteerId { get => nextVolunteerId++; }
 
     // הגדרת מזהה רץ לישות הקצאה
     internal const int startAssignmentId = 2000;
@@ -21,17 +19,16 @@ internal static class Config
     internal static DateTime Clock { get; set; } = DateTime.Now;
 
     // "זמן סיכון" עבור קריאות מתקרבות לזמן סיום
-    internal static TimeSpan RiskTimeSpan { get; set; } = TimeSpan.FromHours(1);
+    internal static TimeSpan RiskRange { get; set; } = TimeSpan.FromHours(1);
 
     // פונקציה לאיפוס הערכים להתחלתיים
     internal static void Reset()
     {
         nextCallId = startCallId;
-        nextVolunteerId = startVolunteerId;
         nextAssignmentId = startAssignmentId;
 
         // משתני תצורה נוספים לאיפוס
         Clock = DateTime.Now;
-        RiskTimeSpan = TimeSpan.FromHours(1);
+        RiskRange = TimeSpan.FromHours(1);
     }
 }
