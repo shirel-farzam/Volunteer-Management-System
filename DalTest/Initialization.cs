@@ -67,37 +67,38 @@ public static class Initialization
         // מאגר של כתובות עם קווי אורך ורוחב אמיתיים
         var locations = new (string Address, double Latitude, double Longitude)[]
         {
-        ("123 Main St, City", 32.109333, 34.855499),
-        ("456 Elm St, City", 32.105699, 34.851502),
-        ("789 Oak St, City", 32.095485, 34.832389),
-        ("101 Pine St, City", 32.077098, 34.791331),
-        ("202 Maple St, City", 32.054198, 34.774587),
-        ("303 Birch St, City", 32.072294, 34.817534)
+                ("123 Main St, City", 32.109333, 34.855499),
+                ("456 Elm St, City", 32.105699, 34.851502),
+                ("789 Oak St, City", 32.095485, 34.832389),
+                ("101 Pine St, City", 32.077098, 34.791331),
+                ("202 Maple St, City", 32.054198, 34.774587),
+                ("303 Birch St, City", 32.072294, 34.817534)
         };
 
         // מאגר של תיאורי קריאות וסוגים
-        string[] descriptions = { "Electric issue", "Water leakage", "Fire alarm", "Noise complaint", "Gas leak", "Lost item" };
-        CallType[] callTypes = { CallType.Emergency, CallType.Technical, CallType.Service, CallType.General };
+        string[] descriptions = { "Meal delivery", "Food packing", "Kitchen cleanup", "Inventory check", "Donation pickup", "Menu planning" };
+
+        CallType[] callTypes = { CallType.FoodPreparation, CallType.FoodTransport, CallType.InventoryCheck, CallType.KitchenCleanup, CallType.VolunteerSupport, CallType.EmergencyRequest };
 
         foreach (var description in descriptions)
         {
-            // קבלת מזהה ייחודי מתוך הקונפיגורציה
-            int id = s_dalConfig.GetNextCallId();
+            // קבלת מזהה קריאה ייחודי מתוך הקונפיגורציה
+            int id = s_Config.NextCallId;
 
-            // בחירת סוג קריאה וכתובת אקראית
+            // בחירה אקראית של סוג קריאה ומיקום
             CallType type = callTypes[s_rand.Next(callTypes.Length)];
             var location = locations[s_rand.Next(locations.Length)];
 
-            // זמן פתיחת הקריאה רנדומלי, לפני הזמן הנוכחי
-            DateTime timeOpened = s_dalConfig.Clock.AddMinutes(-s_rand.Next(10, 1440)); // עד יום אחורה
+            // הגדרת זמן פתיחה אקראי
+            DateTime timeOpened = s_dalConfig.Clock.AddMinutes(-s_rand.Next(10, 1440));
 
-            // זמן סיום רנדומלי או null
+            // הגדרת זמן סיום מקסימלי (אם קיים)
             DateTime? maxTimeToClose = s_rand.NextDouble() < 0.7
-                ? timeOpened.AddHours(s_rand.Next(1, 24))
+                ? timeOpened.AddHours(s_rand.Next(1, 24)) // עד 24 שעות אחרי פתיחה
                 : (DateTime?)null;
 
-            // יצירת אובייקט Call והוספתו לרשימה
-            s_dalCall!.Create(new Call
+            // יצירת קריאה והוספתה לרשימה
+            s_Call!.Create(new Call
             {
                 Id = id,
                 Type = type,
@@ -110,14 +111,14 @@ public static class Initialization
             });
         }
     }
-    private static void createAssignments()
-    {
-        // משתנה המייצג סיכוי טיפול
-        double chanceOfAssignment = 0.8;
 
-        foreach (var call in s_dalCall!.ReadAll())
+    private static void CreateAssignments()
+    {
+        double chanceOfAssignment = 0.8; // סיכוי להקצאה
+
+        foreach (var call in s_Call!.ReadAll())
         {
-            // מגרילים אם תהיה הקצאה לקריאה זו
+            // הגרלה אם תהיה הקצאה לקריאה זו
             if (s_rand.NextDouble() > chanceOfAssignment) continue;
 
             // מזהה הקצאה מתוך הקונפיגורציה
@@ -126,8 +127,8 @@ public static class Initialization
             // הגרלת מתנדב קיים לפי ת.ז
             int volunteerId;
             do
-                volunteerId = s_rand.Next(MIN_ID, MAX_ID);
-            while (s_dalVolunteer!.Read(volunteerId) == null); // בדיקה שהמתנדב קיים
+                volunteerId = s_rand.Next(700000000, 1000000000); // ת.ז אקראית
+            while (s_Volunteer!.Read(volunteerId) == null); // בדיקה שהמתנדב קיים
 
             // קביעת זמן כניסה לטיפול לאחר זמן פתיחה
             DateTime startTreatment = call.TimeOpened.AddMinutes(s_rand.Next(1, 120)); // עד שעתיים אחרי פתיחה
@@ -144,31 +145,35 @@ public static class Initialization
             }
 
             // סוג סיום טיפול
-            string closeType;
+            TypeEnd typeEndTreat;
+
             if (endTreatment.HasValue)
             {
-                closeType = endTreatment <= call.MaxTimeToClose ? "טופלה" : "ביטול מנהל";
+                if (endTreatment <= call.MaxTimeToClose)
+                {
+                    typeEndTreat = TypeEnd.Treated; // טופלה
+                }
+                else
+                {
+                    typeEndTreat = TypeEnd.ManagerCancel; // ביטול מנהל
+                }
             }
             else
             {
-                closeType = "בטיפול";
+                typeEndTreat = TypeEnd.SelfCancel; // ביטול עצמי אם לא הושלם
             }
 
             // יצירת אובייקט Assignment והוספתו לרשימה
-            s_dalAssignment!.Create(new Assignment
+            s_Assignment!.Create(new Assignment
             {
                 Id = assignmentId,
                 CallId = call.Id,
                 VolunteerId = volunteerId,
-                StartTreatment = startTreatment,
-                EndTreatment = endTreatment,
-                CloseType = closeType
+                TimeStart = startTreatment,
+                TimeEnd = endTreatment,
+                TypeEndTreat = typeEndTreat
             });
         }
     }
-
-
-
-
 
 }

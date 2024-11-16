@@ -19,8 +19,12 @@ public enum CallType
 {
     FoodPreparation,  // הכנת אוכל
     FoodTransport,    // שינוע אוכל
-                      // ניתן להוסיף סוגים נוספים לפי הצורך
+    InventoryCheck,   // בדיקת מלאי
+    KitchenCleanup,   // ניקוי המטבח
+    VolunteerSupport, // תמיכה במתנדבים
+    EmergencyRequest  // בקשה דחופה
 }
+
 public enum TypeEnd
 {
     Treated,          // טופלה
