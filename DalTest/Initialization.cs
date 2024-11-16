@@ -62,5 +62,113 @@ public static class Initialization
         DateTime bdt = start.AddMinutes(s_rand.Next(range));
 
     }
+    private static void createCalls()
+    {
+        // מאגר של כתובות עם קווי אורך ורוחב אמיתיים
+        var locations = new (string Address, double Latitude, double Longitude)[]
+        {
+        ("123 Main St, City", 32.109333, 34.855499),
+        ("456 Elm St, City", 32.105699, 34.851502),
+        ("789 Oak St, City", 32.095485, 34.832389),
+        ("101 Pine St, City", 32.077098, 34.791331),
+        ("202 Maple St, City", 32.054198, 34.774587),
+        ("303 Birch St, City", 32.072294, 34.817534)
+        };
+
+        // מאגר של תיאורי קריאות וסוגים
+        string[] descriptions = { "Electric issue", "Water leakage", "Fire alarm", "Noise complaint", "Gas leak", "Lost item" };
+        CallType[] callTypes = { CallType.Emergency, CallType.Technical, CallType.Service, CallType.General };
+
+        foreach (var description in descriptions)
+        {
+            // קבלת מזהה ייחודי מתוך הקונפיגורציה
+            int id = s_dalConfig.GetNextCallId();
+
+            // בחירת סוג קריאה וכתובת אקראית
+            CallType type = callTypes[s_rand.Next(callTypes.Length)];
+            var location = locations[s_rand.Next(locations.Length)];
+
+            // זמן פתיחת הקריאה רנדומלי, לפני הזמן הנוכחי
+            DateTime timeOpened = s_dalConfig.Clock.AddMinutes(-s_rand.Next(10, 1440)); // עד יום אחורה
+
+            // זמן סיום רנדומלי או null
+            DateTime? maxTimeToClose = s_rand.NextDouble() < 0.7
+                ? timeOpened.AddHours(s_rand.Next(1, 24))
+                : (DateTime?)null;
+
+            // יצירת אובייקט Call והוספתו לרשימה
+            s_dalCall!.Create(new Call
+            {
+                Id = id,
+                Type = type,
+                Description = description,
+                FullAddress = location.Address,
+                Latitude = location.Latitude,
+                Longitude = location.Longitude,
+                TimeOpened = timeOpened,
+                MaxTimeToClose = maxTimeToClose
+            });
+        }
+    }
+    private static void createAssignments()
+    {
+        // משתנה המייצג סיכוי טיפול
+        double chanceOfAssignment = 0.8;
+
+        foreach (var call in s_dalCall!.ReadAll())
+        {
+            // מגרילים אם תהיה הקצאה לקריאה זו
+            if (s_rand.NextDouble() > chanceOfAssignment) continue;
+
+            // מזהה הקצאה מתוך הקונפיגורציה
+            int assignmentId = s_dalConfig.NextAssignmentId();
+
+            // הגרלת מתנדב קיים לפי ת.ז
+            int volunteerId;
+            do
+                volunteerId = s_rand.Next(MIN_ID, MAX_ID);
+            while (s_dalVolunteer!.Read(volunteerId) == null); // בדיקה שהמתנדב קיים
+
+            // קביעת זמן כניסה לטיפול לאחר זמן פתיחה
+            DateTime startTreatment = call.TimeOpened.AddMinutes(s_rand.Next(1, 120)); // עד שעתיים אחרי פתיחה
+
+            // זמן סיום טיפול (עשוי להיות אחרי זמן מקסימלי או null)
+            DateTime? endTreatment = null;
+            if (call.MaxTimeToClose.HasValue)
+            {
+                endTreatment = startTreatment.AddMinutes(s_rand.Next(1, 180)); // עד 3 שעות אחרי התחלה
+                if (endTreatment > call.MaxTimeToClose)
+                {
+                    endTreatment = null; // זמן סיום שלא תואם את הזמן המקסימלי של הקריאה
+                }
+            }
+
+            // סוג סיום טיפול
+            string closeType;
+            if (endTreatment.HasValue)
+            {
+                closeType = endTreatment <= call.MaxTimeToClose ? "טופלה" : "ביטול מנהל";
+            }
+            else
+            {
+                closeType = "בטיפול";
+            }
+
+            // יצירת אובייקט Assignment והוספתו לרשימה
+            s_dalAssignment!.Create(new Assignment
+            {
+                Id = assignmentId,
+                CallId = call.Id,
+                VolunteerId = volunteerId,
+                StartTreatment = startTreatment,
+                EndTreatment = endTreatment,
+                CloseType = closeType
+            });
+        }
+    }
+
+
+
+
 
 }
