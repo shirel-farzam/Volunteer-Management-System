@@ -1,5 +1,5 @@
 ﻿namespace Dal;
-
+using DO;
 internal static class Config
 {
     // הגדרת מזהה רץ לישות קריאה
