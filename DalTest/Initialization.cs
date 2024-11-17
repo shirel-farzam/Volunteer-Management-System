@@ -5,93 +5,104 @@ using DO;
 
 public static class Initialization
 {
-    private static IVolunteer? s_Volunteer; //stage 1
-    private static ICall? s_Call; //stage 1
-    private static IAssignment? s_Assignment; //stage 1
-    private static IConfig? s_dalConfig; //stage 1
-    private static readonly Random s_rand = new();
+    private static IVolunteer? s_Volunteer; //stage 1 - Interface for handling volunteer operations
+    private static ICall? s_Call; //stage 1 - Interface for handling call operations
+    private static IAssignment? s_Assignment; //stage 1 - Interface for handling assignment operations
+    private static IConfig? s_dalConfig; //stage 1 - Interface for configuration data
+    private static readonly Random s_rand = new(); // Random instance for generating random values
+
+    // Method to create volunteer data
     private static void CreateVolunteer()
     {
+        // Array of volunteer names
         string[] VolunteerName = { "Noa Levy", "Omer Cohen", "Rotem Mizrahi",
                            "Yoav Biton", "Maya Peretz", "Daniel Avrahami", "Tamar Malka",
                            "Yael Adi", "Ron Hazan", "Yonatan Green", "Michal Cohen",
                            "Yuval Levy", "Ofir Dayan", "Alon Goldberg", "Shira Sharabi" };
 
+        // Array of phone numbers corresponding to the volunteer names
         string[] PhoneNumber = { "054-1234567", "053-2345678", "054-3456789", "050-4567890",
                          "055-5678901", "054-6789012", "052-7890123", "054-8901234",
                          "054-9012345", "053-0123456", "054-1234568", "050-2345679",
                          "058-3456780", "054-4567891", "055-5678902" };
 
+        // Array of email addresses corresponding to the volunteer names
         string[] Email = { "noa.levy@example.com", "omer.cohen@example.com", "rotem.mizrahi@example.com",
                    "yoav.biton@example.com", "maya.peretz@example.com", "daniel.avrahami@example.com",
                    "tamar.malka@example.com", "yael.adi@example.com", "ron.hazan@example.com",
                    "yonatan.green@example.com", "michal.cohen@example.com", "yuval.levy@example.com",
                    "ofir.dayan@example.com", "alon.goldberg@example.com", "shira.sharabi@example.com" };
 
-        // מערך כתובות
-        /* public static readonly*/
+        // Array of volunteer addresses (strings)
         string[] addresses =
-{
-    "King George St 20, Jerusalem, Israel",
-    "Jaffa St 45, Jerusalem, Israel",
-    "Agripas St 10, Jerusalem, Israel",
-    "HaPalmach St 25, Jerusalem, Israel",
-    "Emek Refaim St 43, Jerusalem, Israel",
-    "Shlomzion HaMalka St 18, Jerusalem, Israel",
-    "Hillel St 7, Jerusalem, Israel",
-    "Derech Hebron 105, Jerusalem, Israel",
-    "Bezalel St 12, Jerusalem, Israel",
-    "HaNeviim St 29, Jerusalem, Israel",
-    "Shivtei Israel St 15, Jerusalem, Israel",
-    "Azza St 50, Jerusalem, Israel",
-    "Yitzhak Kariv St 4, Jerusalem, Israel",
-    "Prophets St 23, Jerusalem, Israel",
-    "Ben Yehuda St 1, Jerusalem, Israel"
- };
-        // מערך קווי האורך
-        double[] Longitudes = new double[]
         {
-        35.3058, 35.3184, 35.3235, 35.3142, 35.3170,
-        35.3198, 35.3107, 35.3124, 35.3135, 35.3089,
-        35.3060, 35.3098, 35.3157, 35.3081, 35.3148
+            "King George St 20, Jerusalem, Israel",
+            "Jaffa St 45, Jerusalem, Israel",
+            "Agripas St 10, Jerusalem, Israel",
+            "HaPalmach St 25, Jerusalem, Israel",
+            "Emek Refaim St 43, Jerusalem, Israel",
+            "Shlomzion HaMalka St 18, Jerusalem, Israel",
+            "Hillel St 7, Jerusalem, Israel",
+            "Derech Hebron 105, Jerusalem, Israel",
+            "Bezalel St 12, Jerusalem, Israel",
+            "HaNeviim St 29, Jerusalem, Israel",
+            "Shivtei Israel St 15, Jerusalem, Israel",
+            "Azza St 50, Jerusalem, Israel",
+            "Yitzhak Kariv St 4, Jerusalem, Israel",
+            "Prophets St 23, Jerusalem, Israel",
+            "Ben Yehuda St 1, Jerusalem, Israel"
         };
 
-        // מערך קווי הרוחב
+        // Array of longitude coordinates
+        double[] Longitudes = new double[]
+        {
+            35.3058, 35.3184, 35.3235, 35.3142, 35.3170,
+            35.3198, 35.3107, 35.3124, 35.3135, 35.3089,
+            35.3060, 35.3098, 35.3157, 35.3081, 35.3148
+        };
+
+        // Array of latitude coordinates
         double[] Latitudes = new double[]
         {
-        31.7554, 31.7612, 31.7630, 31.7489, 31.7513,
-        31.7562, 31.7581, 31.7329, 31.7574, 31.7608,
-        31.7611, 31.7400, 31.7432, 31.7539, 31.7591
+            31.7554, 31.7612, 31.7630, 31.7489, 31.7513,
+            31.7562, 31.7581, 31.7329, 31.7574, 31.7608,
+            31.7611, 31.7400, 31.7432, 31.7539, 31.7591
         };
+
+        // Loop to create volunteer data and add it to the data source
         for (int i = 0; i < VolunteerName.Length; i++)
         {
             int id;
             do
-                id = s_rand.Next(700000000, 1000000000); // ת.ז אקראית עם 9 ספרות
-            while (s_Volunteer!.Read(id) != null); // בדיקת ייחודיות של ת.ז.
+                id = s_rand.Next(700000000, 1000000000); // Generate a random ID with 9 digits
+            while (s_Volunteer!.Read(id) != null); // Check if the ID is unique by verifying that no existing volunteer has the same ID
 
             string name = VolunteerName[i];
             string phone = PhoneNumber[i];
             string email = Email[i];
-            Distance distanceType = Distance.Aerial; // מרחק ברירת מחדל
-            Role role = Role.Volunteer; // ברירת מחדל - מתנדב רגיל
-            bool active = true; // המתנדב פעיל כברירת מחדל
-            double maxReading = s_rand.Next(5, 100); // מרחק מקסימלי אקראי בין 5 ל-100
+            Distance distanceType = Distance.Aerial; // Default distance type
+            Role role = Role.Volunteer; // Default role - regular volunteer
+            bool active = true; // Volunteer is active by default
+            double maxReading = s_rand.Next(5, 100); // Generate a random max reading between 5 and 100
 
+            // Create a new Volunteer object and add it to the data source
             s_Volunteer!.Create(new Volunteer(id, name, phone, email, distanceType, role, active, null, null, null, null, maxReading));
         }
 
-        // הוספת מנהל אחד לפחות
+        // Adding at least one manager
         int managerId;
         do
-            managerId = s_rand.Next(100000000, 1000000000);
-        while (s_Volunteer!.Read(managerId) != null);
+            managerId = s_rand.Next(100000000, 1000000000); // Generate a random ID for the manager
+        while (s_Volunteer!.Read(managerId) != null); // Check if the ID is unique
 
+        // Create a new manager and add to the data source
         s_Volunteer!.Create(new Volunteer(managerId, "Admin Manager", "050-1111111", "admin@example.com", Distance.Aerial, Role.Boss, true, "Password246"));
-
     }
+
+
     private static void CreateCalls()
     {
+        // Array of descriptions for different types of calls
         string[] DescriptionsP = {
     "Family needs a hot meal in the city center.",
     "Patient waiting for a meal arranged near the hospital.",
@@ -114,7 +125,7 @@ public static class Initialization
     "Hot meal requested for the parents of a patient waiting for medical tests.",
     "Family requests a meal immediately for the afternoon hours."
 };
-
+        // Additional descriptions for food preparation assistance calls
         string[] DescriptionsL = {
     "Family locked out of the kitchen after patient left for the hospital.",
     "Patient alone at home, needs assistance with preparing a meal.",
@@ -130,6 +141,7 @@ public static class Initialization
     "Family requests help preparing a meal at night.",
     "Patient in serious condition and requesting help preparing food at home."
 };
+        // Additional descriptions for call types related to meal preparation support
         string[] DescriptionsC = {
     "Patient needs a hot meal after finishing medical treatment at the hospital.",
     "Family needs help preparing meals due to difficulties in the kitchen.",
@@ -151,7 +163,7 @@ public static class Initialization
     "Patient needs a hot meal after an extended hospitalization.",
     "Family requests help preparing meals for a patient during home medical care."
 };
-        // מערך כתובות
+        // arry of addreses
         string[] addresses = new string[]
         {
     "King David St 12, Jerusalem, Israel",
@@ -207,7 +219,7 @@ public static class Initialization
     "Eliyahu Bashan St 8, Jerusalem, Israel"
         };
 
-        // מערך קווי האורך
+        // arry of longitudes
         double[] longitudes = new double[]
         {
     35.2134, 35.2153, 35.2135, 35.2110, 35.2123,
@@ -222,7 +234,7 @@ public static class Initialization
     35.2305, 35.2249, 35.2251, 35.2168, 35.2214
         };
 
-        // מערך קווי הרוחב
+        // arry of latitudes
         double[] latitudes = new double[]
         {
     31.7769, 31.7747, 31.7830, 31.7739, 31.7762,
@@ -236,97 +248,102 @@ public static class Initialization
     31.7796, 31.7748, 31.7794, 31.7759, 31.7816,
     31.7809, 31.7730, 31.7792, 31.7749, 31.7731
         };
-
-
-
-        // יצירת קריאות
+        // create call
         for (int i = 0; i < 50; i++)
         {
-            CallType calltype;  // הכרזה על המשתנה פעם אחת
+            CallType calltype;  // Declare the variable once
             string ndescription;
             int p = 0, T = 0, I = 0;
+
+            // Assign a call type and description based on the value of i
             if (i % 3 == 0)
             {
                 calltype = CallType.FoodPreparation;
                 ndescription = DescriptionsP[p];
-                p++;
+                p++; // Increment the index for FoodPreparation descriptions
             }
             else if (i % 4 == 0)
             {
                 calltype = CallType.FoodTransport;
                 ndescription = DescriptionsP[T];
-                T++;
+                T++; // Increment the index for FoodTransport descriptions
             }
             else
             {
-                calltype = CallType.InventoryCheck;  // ערך אחר אם לא מתקיים אף תנאי
+                calltype = CallType.InventoryCheck;  // Default value if neither condition is met
                 ndescription = DescriptionsP[I];
-                I++;
+                I++; // Increment the index for InventoryCheck descriptions
             }
 
-
-
-          
+            // Set the start time to one day before the current clock time
             DateTime start = s_dalConfig.Clock.AddDays(-1);
 
-            // חישוב מספר הדקות מאז זמן ההתחלה ועד עכשיו
+            // Calculate the total minutes from the start time to the current time
             int totalMinutesInLastDay = (int)(s_dalConfig.Clock - start).TotalMinutes;
 
-            // זמן פתיחה רנדומלי בתוך ה-24 שעות האחרונות
+            // Generate a random start time within the last 24 hours
             DateTime RndomStart = start.AddMinutes(s_rand.Next(0, totalMinutesInLastDay));
 
-            // זמן סיום אופציונלי
+            // Optional end time
             DateTime? RandomEnd = null;
 
-            // אם i מתחלק ב-10
+            // If i is divisible by 10
             if (i % 10 == 0)
             {
-                // זמן סיום רנדומלי בתוך החלון בין RndomStart לזמן הנוכחי
+                // Generate a random end time within the range between RndomStart and the current time
                 int maxRange = (int)(s_dalConfig.Clock - RndomStart).TotalMinutes;
-                if (maxRange > 0) // רק אם יש טווח אפשרי
+                if (maxRange > 0) // Only if there is a possible range
                 {
                     RandomEnd = RndomStart.AddMinutes(s_rand.Next(1, maxRange + 1));
                 }
             }
             else
             {
-                // הסתברות של 50% לכלול זמן סיום
+                // 50% chance of including an end time
                 if (s_rand.Next(2) == 1)
                 {
-                    // זמן סיום יהיה בין דקה אחת ל-24 שעות (1440 דקות) אחרי זמן הפתיחה
+                    // The end time will be between 1 minute and 24 hours (1440 minutes) after the start time
                     int maxDurationMinutes = s_rand.Next(1, 1441);
                     RandomEnd = RndomStart.AddMinutes(maxDurationMinutes);
                 }
             }
 
-
-            // נשאר להתעסק עם הכתובות...
+            // Now handle the addresses...
             s_Call.Create(new Call(0, calltype, ndescription, addresses[i], latitudes[i], longitudes[i], RndomStart, RandomEnd));
         }
-
     }
     private static void createAssignment()
     {
+        // Loop to create 60 assignments
         for (int i = 0; i < 60; i++)
         {
-
+            // Randomly select a volunteer from the list
             int randVolunteer = s_rand.Next(s_Volunteer!.ReadAll().Count);
             Volunteer volunteerToAssig = s_Volunteer.ReadAll()[randVolunteer];
+
+            // Randomly select a call from the list, excluding the last 15 calls
             int randCAll = s_rand.Next(s_Call!.ReadAll().Count - 15);
             Call callToAssig = s_Call.ReadAll()[randCAll];
+
+            // Ensure the selected call has been opened before the current time
             while (callToAssig.TimeOpened > s_dalConfig!.Clock)
             {
                 randCAll = s_rand.Next(s_Call!.ReadAll().Count - 15);
                 callToAssig = s_Call.ReadAll()[randCAll];
             }
+
+            // Declare variables for the finish type and finish time
             TypeEnd? finish = null;
             DateTime? finishTime = null;
+
+            // Check if the call has a max time to close and if it is not expired
             if (callToAssig.MaxTimeToClose != null && callToAssig.MaxTimeToClose >= s_dalConfig?.Clock)
             {
                 finish = TypeEnd.ExpiredCancel;
             }
             else
             {
+                // Randomly determine the finish type
                 int randFinish = s_rand.Next(0, 4);
                 switch (randFinish)
                 {
@@ -336,16 +353,17 @@ public static class Initialization
                         break;
                     case 1: finish = TypeEnd.SelfCancel; break;
                     case 2: finish = TypeEnd.ManagerCancel; break;
-
                 }
             }
+
+            // Create the assignment using the selected volunteer and call details
             s_Assignment?.Create(new Assignment(0, callToAssig.Id, volunteerToAssig.Id, s_dalConfig!.Clock, finishTime, finish));
         }
     }
 
     public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig)
     {
-        // בדיקות ערך עבור הפרמטרים
+        // Null checks for the parameters to ensure that none of them are null
         s_Volunteer = dalVolunteer ?? throw new NullReferenceException("Volunteer DAL object cannot be null!");
         s_Call = dalCall ?? throw new NullReferenceException("Call DAL object cannot be null!");
         s_Assignment = dalAssignment ?? throw new NullReferenceException("Assignment DAL object cannot be null!");
@@ -353,22 +371,24 @@ public static class Initialization
 
         Console.WriteLine("Resetting configuration values and clearing all lists...");
 
-        // איפוס כל הנתונים
+        // Resetting all data and deleting entries in the respective databases
         s_dalConfig.Reset();
         s_Volunteer.DeleteAll();
         s_Call.DeleteAll();
         s_Assignment.DeleteAll();
 
         Console.WriteLine("Initializing volunteers...");
+        // Calling method to initialize volunteers
         CreateVolunteer();
 
         Console.WriteLine("Initializing calls...");
+        // Calling method to initialize calls
         CreateCalls();
 
         Console.WriteLine("Initializing assignments...");
+        // Calling method to initialize assignments
         createAssignment();
 
         Console.WriteLine("Initialization complete.");
     }
-
 }
