@@ -1,14 +1,21 @@
 ﻿
 namespace DO;
 /// <summary>
-/// Student Entity represents a student with all its props
+/// Volunteer Entity represents a volunteer with all its properties.
 /// </summary>
-/// <param name="Id">Personal unique ID of the student (as in national id card)</param>
-/// <param name="Name">Private Name of the student</param>
-/// <param name="RegistrationDate">Registration date of the student into the graduation program</param>
-/// <param name="Alias">student’s alias name (default empty)</param>
-/// <param name="IsActive">whether the student is active in studies (default true)</param>
-/// <param name="BirthDate">student’s birthday (default empty)</param>
+/// <param name="Id">Unique ID of the volunteer</param>
+/// <param name="FullName">Full name of the volunteer</param>
+/// <param name="PhoneNumber">Phone number of the volunteer</param>
+/// <param name="Email">Email address of the volunteer</param>
+/// <param name="TypeDistance">Preferred type of distance calculation (Aerial, Walking, Driving)</param>
+/// <param name="Job">Role of the volunteer (e.g., Volunteer, Boss)</param>
+/// <param name="Active">Indicates whether the volunteer is active</param>
+/// <param name="Password">Password for the volunteer's account (optional)</param>
+/// <param name="FullAddress">Full address of the volunteer (optional)</param>
+/// <param name="Latitude">Latitude of the volunteer's location (optional)</param>
+/// <param name="Longitude">Longitude of the volunteer's location (optional)</param>
+/// <param name="MaxReading">Maximum reading distance for the volunteer (optional)</param>
+
 
 public record Volunteer
 (

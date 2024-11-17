@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\ayele\\.nuget\\packages\\": {}
+    "C:\\Users\\shire\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ayele\\source\\repos\\New folder\\stage0\\stage0.csproj",
+      "projectUniqueName": "C:\\Users\\shire\\source\\repos\\dotNet5785_-4642_7701\\stage0\\stage0.csproj",
       "projectName": "stage0",
-      "projectPath": "C:\\Users\\ayele\\source\\repos\\New folder\\stage0\\stage0.csproj",
-      "packagesPath": "C:\\Users\\ayele\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ayele\\source\\repos\\New folder\\stage0\\obj\\",
+      "projectPath": "C:\\Users\\shire\\source\\repos\\dotNet5785_-4642_7701\\stage0\\stage0.csproj",
+      "packagesPath": "C:\\Users\\shire\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\shire\\source\\repos\\dotNet5785_-4642_7701\\stage0\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ayele\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\shire\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -66,7 +66,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -2,31 +2,31 @@
 using DO;
 public static class Config
 {
-    // הגדרת מזהה רץ לישות קריאה
+    // Define a starting ID for the Call entity
     internal const int startCallId = 1000;
     private static int nextCallId = startCallId;
     public static int NextCallId { get => nextCallId++; }
 
-    // הגדרת מזהה רץ לישות מתנדב
+    // Define a starting ID for the Volunteer entity
     internal const int startVolunteerId = 5000;
 
-    // הגדרת מזהה רץ לישות הקצאה
+    // Define a starting ID for the Assignment entity
     internal const int startAssignmentId = 2000;
     private static int nextAssignmentId = startAssignmentId;
     public static int NextAssignmentId { get => nextAssignmentId++; }
 
-    // משתנים נוספים בהתאם למשתני התצורה של המערכת
+    // Additional variables based on the system configuration
     internal static DateTime Clock { get; set; } = DateTime.Now;
 
-    // "זמן סיכון" עבור קריאות מתקרבות לזמן סיום
+    // "Risk time" for calls approaching their end time
     internal static TimeSpan RiskRange { get; set; } = TimeSpan.FromHours(1);
 
-    // פונקציה לאיפוס הערכים להתחלתיים
+    // Function to reset values to their initial states
     internal static void Reset()
     {
         nextCallId = startCallId;
         nextAssignmentId = startAssignmentId;
-        // משתני תצורה נוספים לאיפוס
+        // Additional configuration variables to reset
         Clock = DateTime.Now;
         RiskRange = TimeSpan.FromHours(1);
     }

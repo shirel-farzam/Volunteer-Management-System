@@ -1,33 +1,33 @@
 ﻿namespace DO;
 
+// Enum definition for user roles
 public enum Role
 {
-    Volunteer,   // מתנדב
-    Boss         // מנהל
+    Volunteer,   // Volunteer
+    Boss         // Manager
 }
 
-// הגדרת Enum עבור סוג המרחק
+// Enum definition for types of distance
 public enum Distance
 {
-    Aerial,      // מרחק אווירי
-    Walking,     // מרחק הליכה
-    Driving      // מרחק נסיעה
+    Aerial,      // Aerial distance
+    Walking,     // Walking distance
+    Driving      // Driving distance
 }
+
+// Enum definition for types of calls
 public enum CallType
 {
-    FoodPreparation,  // הכנת אוכל
-    FoodTransport,    // שינוע אוכל
-    InventoryCheck,   // בדיקת מלאי
+    FoodPreparation,  // Food preparation
+    FoodTransport,    // Food transport
+    InventoryCheck,   // Inventory check
 }
 
+// Enum definition for end types of tasks
 public enum TypeEnd
 {
-    Treated,          // טופלה
-    SelfCancel,       // ביטול עצמי
-    ManagerCancel,    // ביטול מנהל
-    ExpiredCancel     // ביטול פג תוקף
+    Treated,          // Treated
+    SelfCancel,       // Self-cancelled
+    ManagerCancel,    // Manager-cancelled
+    ExpiredCancel     // Expired cancellation
 }
-
-
-    
-     
