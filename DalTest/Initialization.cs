@@ -85,7 +85,7 @@ public static class Initialization
             bool active = true; // Volunteer is active by default
             double maxReading = s_rand.Next(5, 100); // Generate a random max reading between 5 and 100
 
-            // Create a new Volunteer object and add it to the data source
+            //Create a new Volunteer object and add it to the data source
             s_Volunteer!.Create(new Volunteer(id, name, phone, email, distanceType, role, active, null, null, null, null, maxReading));
         }
 
@@ -251,7 +251,8 @@ public static class Initialization
         // create call
         for (int i = 0; i < 50; i++)
         {
-            CallType calltype;  // Declare the variable once
+            // Declare the variable once
+            CallType calltype;
             string ndescription;
             int p = 0, T = 0, I = 0;
 
@@ -260,19 +261,19 @@ public static class Initialization
             {
                 calltype = CallType.FoodPreparation;
                 ndescription = DescriptionsP[p];
-                p++; // Increment the index for FoodPreparation descriptions
+                p++;
             }
             else if (i % 4 == 0)
             {
                 calltype = CallType.FoodTransport;
                 ndescription = DescriptionsP[T];
-                T++; // Increment the index for FoodTransport descriptions
+                T++;
             }
             else
             {
-                calltype = CallType.InventoryCheck;  // Default value if neither condition is met
+                calltype = CallType.InventoryCheck;
                 ndescription = DescriptionsP[I];
-                I++; // Increment the index for InventoryCheck descriptions
+                I++;
             }
 
             // Set the start time to one day before the current clock time
@@ -287,32 +288,37 @@ public static class Initialization
             // Optional end time
             DateTime? RandomEnd = null;
 
-            // If i is divisible by 10
+            // Randomly decide end time logic
             if (i % 10 == 0)
             {
-                // Generate a random end time within the range between RndomStart and the current time
+                // Ensure this call might be expired
                 int maxRange = (int)(s_dalConfig.Clock - RndomStart).TotalMinutes;
-                if (maxRange > 0) // Only if there is a possible range
+                if (maxRange > 0)
                 {
                     RandomEnd = RndomStart.AddMinutes(s_rand.Next(1, maxRange + 1));
                 }
             }
             else
             {
-                // 50% chance of including an end time
+                // Randomly decide to assign an end time
                 if (s_rand.Next(2) == 1)
                 {
-                    // The end time will be between 1 minute and 24 hours (1440 minutes) after the start time
                     int maxDurationMinutes = s_rand.Next(1, 1441);
                     RandomEnd = RndomStart.AddMinutes(maxDurationMinutes);
+
+                    // Make approximately 5 calls expire
+                    if (i < 5)
+                    {
+                        RandomEnd = s_dalConfig.Clock.AddMinutes(-s_rand.Next(1, 60)); // Expired time
+                    }
                 }
             }
 
-            // Now handle the addresses...
+            // Create the call object
             s_Call.Create(new Call(0, calltype, ndescription, addresses[i], latitudes[i], longitudes[i], RndomStart, RandomEnd));
         }
     }
-    private static void createAssignment()
+        private static void createAssignment()
     {
         // Loop to create 60 assignments
         for (int i = 0; i < 60; i++)
