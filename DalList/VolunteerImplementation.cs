@@ -36,8 +36,6 @@ public class VolunteerImplementation : IVolunteer
     public List<Volunteer> ReadAll()
     {
 
-
-
         return new List<Volunteer>(DataSource.Volunteers);
     }
 

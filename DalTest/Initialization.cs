@@ -266,25 +266,7 @@ public static class Initialization
 
 
 
-            //DateTime? maxTimeToClose =
-            //DateTime start = s_dalConfig.Clock.AddDays(-1); // זמן התחלה יהיה לפני 24 שעות מהשעון הנוכחי
-            //int range = (s_dalConfig.Clock - start).Minutes; // חישוב מספר הדקות מאז זמן ההתחלה
-            //DateTime RndomStart = start.AddMinutes(s_rand.Next(range)); // הגרלת זמן פתיחה רנדומלי בתוך ה-24 שעות האחרונות
-            //DateTime? RandomEnd = null;
-            //if (i % 10 == 0)//5 that endtime- pag tokef
-
-            //    RandomEnd = RndomStart.AddMinutes(new Random().Next(, (int)(s_dalConfig.Clock - RndomStart).TotalMinutes));
-            //// כעת, ניצור זמן סיום מקסימלי בהתאם לזמן הפתיחה:
-            //else
-            //{
-            //    // ערך ברירת מחדל, אין זמן סיום
-            //    if (s_rand.Next(2) == 1) // החלטה רנדומלית אם לכלול זמן סיום או לא
-            //    {
-            //        int maxDurationMinutes = s_rand.Next(1, 1441); // הגדרת טווח זמן סיום מקסימלי (עד 1440 דקות = 24 שעות)
-            //        RandomEnd = RndomStart.AddMinutes(maxDurationMinutes); // זמן סיום הוא זמן פתיחה + מספר דקות רנדומלי
-            //    }
-            //}
-            // הגדרת זמן התחלה - 24 שעות אחורה מהשעה הנוכחית
+          
             DateTime start = s_dalConfig.Clock.AddDays(-1);
 
             // חישוב מספר הדקות מאז זמן ההתחלה ועד עכשיו

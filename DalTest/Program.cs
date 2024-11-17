@@ -153,8 +153,8 @@ namespace DalTest
             {
                 Console.WriteLine("\nVolunteer Menu:");
                 Console.WriteLine("1. Add Volunteer");
-                Console.WriteLine("2. Display Volunteer by ID");
-                Console.WriteLine("3. Display All Volunteers");
+                Console.WriteLine("2. Read Volunteer by ID");
+                Console.WriteLine("3. Read All Volunteers");
                 Console.WriteLine("4. Update Volunteer");
                 Console.WriteLine("5. Delete Volunteer");
                 Console.WriteLine("6. Delete All Volunteers");
@@ -178,8 +178,10 @@ namespace DalTest
                         s_dalVolunteer!.Read(tempid); // Method to display volunteer by ID
                         break;
                     case VolunteerMenuOption.ReadAll:
-                        s_dalVolunteer!.ReadAll(); // Method to display all volunteers
+                        foreach (var item in s_dalVolunteer!.ReadAll())
+                            Console.WriteLine(item);
                         break;
+
                     case VolunteerMenuOption.Update:
                         Volunteer volunteer1 = helpVolunteer(); // Get updated volunteer data
                         s_dalVolunteer!.Update(volunteer1); // Update the volunteer information
@@ -201,6 +203,7 @@ namespace DalTest
                 }
             }
         }
+
         public static Volunteer helpVolunteer()
         {
             Console.WriteLine("Enter Volunteer ID:");
@@ -348,9 +351,10 @@ namespace DalTest
                         break;
 
                     case CallMenuOption.ReadAll:
-                        s_dalCall?.ReadAll();
-
-                        break;
+                        {foreach (var item in s_dalCall!.ReadAll())
+                            Console.WriteLine(item);
+                            break;
+                        }
 
                     case CallMenuOption.Update:
                         {
@@ -421,7 +425,6 @@ namespace DalTest
                 MaxTimeToClose: maxTimeToClose
             );
         }
-
         private static void AssignmentMenu()
         {
 
@@ -469,9 +472,11 @@ namespace DalTest
                             break;
 
                         case "3":
-                            s_dalAssignment!.ReadAll();
-                            // Code to display all objects of this type
-                            break;
+                            
+                          {  foreach (var item in s_dalAssignment!.ReadAll())
+                                Console.WriteLine(item);
+                                break;
+                            }
 
                         case "4":
                             Console.WriteLine("Enter the ID of the object to update:");
