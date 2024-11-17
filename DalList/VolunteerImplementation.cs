@@ -3,49 +3,44 @@ using DO;
 using DalApi;
 using System;
 
-
 public class VolunteerImplementation : IVolunteer
 {
-
+    // Create a new Volunteer
     public void Create(Volunteer item)
     {
-
-
-        // בדיקה אם קיים אובייקט עם אותו מזהה
+        // Check if a volunteer with the same ID already exists in the DataSource
         if (DataSource.Volunteers.Any(v => v.Id == item.Id))
         {
-            throw new Exception($"Volunteer with ID={item.Id} already exists"); ;
+            throw new Exception($"Volunteer with ID={item.Id} already exists"); // If exists, throw an exception
         }
 
-
-
-        DataSource.Volunteers.Add(item);
-
-        // return item.Id;
+        DataSource.Volunteers.Add(item); // Add the new volunteer to the DataSource
+        // return item.Id; // (Commented out: ID return value can be added if needed)
     }
 
-
+    // Read a Volunteer by its ID
     public Volunteer? Read(int id)
     {
-        var volunteer1 = DataSource.Volunteers.FirstOrDefault(v => v.Id == id);
+        var volunteer1 = DataSource.Volunteers.FirstOrDefault(v => v.Id == id); // Search for the volunteer by ID
         if (volunteer1 == null)
-            return null;
-        return volunteer1;
+            return null; // If no volunteer is found, return null
+        return volunteer1; // Return the found volunteer
     }
 
+    // Read all Volunteers
     public List<Volunteer> ReadAll()
     {
-
-        return new List<Volunteer>(DataSource.Volunteers);
+        return new List<Volunteer>(DataSource.Volunteers); // Return a new list containing all volunteers in DataSource
     }
 
+    // Update an existing Volunteer
     public void Update(Volunteer item)
     {
-
-
+        // Find the index of the volunteer to update by ID
         var index = DataSource.Volunteers.FindIndex(v => v.Id == item.Id);
-        if (index == -1) throw new Exception($"Volunteer with ID={item.Id} not exists");
+        if (index == -1) throw new Exception($"Volunteer with ID={item.Id} not exists"); // If not found, throw an exception
 
+        // Replace the existing volunteer at the found index with the updated volunteer details
         DataSource.Volunteers[index] = new Volunteer
         {
             Id = item.Id,
@@ -60,20 +55,21 @@ public class VolunteerImplementation : IVolunteer
             Latitude = item.Latitude,
             Longitude = item.Longitude,
             MaxReading = item.MaxReading,
-
         };
     }
 
+    // Delete a Volunteer by its ID
     public void Delete(int id)
     {
-        var volunteer = DataSource.Volunteers.FirstOrDefault(v => v.Id == id);
-        if (volunteer == null) throw new Exception($"Volunteer with ID={id} not exists");
+        var volunteer = DataSource.Volunteers.FirstOrDefault(v => v.Id == id); // Search for the volunteer by ID
+        if (volunteer == null) throw new Exception($"Volunteer with ID={id} not exists"); // If not found, throw an exception
 
-        DataSource.Volunteers.Remove(volunteer);
+        DataSource.Volunteers.Remove(volunteer); // Remove the volunteer from the DataSource
     }
 
+    // Delete all Volunteers
     public void DeleteAll()
     {
-        DataSource.Volunteers.Clear();
+        DataSource.Volunteers.Clear(); // Clear all volunteers from the DataSource
     }
 }
