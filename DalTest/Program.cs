@@ -1,7 +1,6 @@
 ﻿using Dal;
 using DalApi;
 using DO;
-using Microsoft.VisualBasic;
 
 
 namespace DalTest
@@ -207,25 +206,33 @@ namespace DalTest
             Console.WriteLine("Enter Volunteer ID:");
             int id = int.Parse(Console.ReadLine() ?? "0");
 
-            Console.WriteLine("Enter Volunteer Name:");
-            string name = Console.ReadLine() ?? "";
+            Console.WriteLine("Enter Volunteer Full Name:");
+            string fullName = Console.ReadLine() ?? "";
 
             Console.WriteLine("Enter Volunteer Phone Number:");
-            int numberPhone = int.Parse(Console.ReadLine() ?? "0");
+            string phoneNumber = Console.ReadLine() ?? "";
 
             Console.WriteLine("Enter Volunteer Email:");
             string email = Console.ReadLine() ?? "";
 
+            Console.WriteLine("Enter Distance Type (0 = Aerial, 1 = Driving):");
+            Distance typeDistance = (Distance)int.Parse(Console.ReadLine() ?? "0");
+
             Console.WriteLine("Enter Role (0 = Volunteer, 1 = Manager):");
-            Role role = (Role)int.Parse(Console.ReadLine() ?? "0");
+            Role job = (Role)int.Parse(Console.ReadLine() ?? "0");
 
-            Console.WriteLine("Enter Distance Type (0 = Aerial_distance, 1 = Driving_distance):");
-            distance_type distanceType = (distance_type)int.Parse(Console.ReadLine() ?? "0");
+            Console.WriteLine("Is Active? (true/false):");
+            bool active = bool.Parse(Console.ReadLine() ?? "true");
 
-            Console.WriteLine("Enter Full Current Address (or press Enter to skip):");
-            string? fullCurrentAddress = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(fullCurrentAddress))
-                fullCurrentAddress = null;
+            Console.WriteLine("Enter Password (or press Enter to skip):");
+            string? password = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(password))
+                password = null;
+
+            Console.WriteLine("Enter Full Address (or press Enter to skip):");
+            string? fullAddress = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(fullAddress))
+                fullAddress = null;
 
             Console.WriteLine("Enter Latitude (or press Enter to skip):");
             string latitudeInput = Console.ReadLine() ?? "";
@@ -235,16 +242,27 @@ namespace DalTest
             string longitudeInput = Console.ReadLine() ?? "";
             double? longitude = string.IsNullOrWhiteSpace(longitudeInput) ? null : double.Parse(longitudeInput);
 
-            Console.WriteLine("Is Active? (true/false):");
-            bool active = bool.Parse(Console.ReadLine() ?? "true");
+            Console.WriteLine("Enter Max Reading (or press Enter to skip):");
+            string maxReadingInput = Console.ReadLine() ?? "";
+            double? maxReading = string.IsNullOrWhiteSpace(maxReadingInput) ? null : double.Parse(maxReadingInput);
 
-            Console.WriteLine("Enter Distance (or press Enter to skip):");
-            string distanceInput = Console.ReadLine() ?? "";
-            double? distance = string.IsNullOrWhiteSpace(distanceInput) ? null : double.Parse(distanceInput);
-            return new Volunteer(id, name, PhoneNumber, email, role, distanceType, fullCurrentAddress, latitude, longitude, active, distance);
+            // יצירת אובייקט Volunteer לפי הסדר שהוגדר ב-record
+            return new Volunteer(
+                Id: id,
+                FullName: fullName,
+                PhoneNumber: phoneNumber,
+                Email: email,
+                TypeDistance: typeDistance,
+                Job: job,
+                Active: active,
+                Password: password,
+                FullAddress: fullAddress,
+                Latitude: latitude,
+                Longitude: longitude,
+                MaxReading: maxReading
+            );
+        }
 
-
-        } // for things that repeat themselves
         public static void print(IVolunteer? s_dalVolunteer, ICall? s_dalCall, IAssignment? s_dalAssignment, IConfig? s_dalConfig)
         {
 
@@ -317,7 +335,7 @@ namespace DalTest
                 switch (choice)
                 {
                     case CallMenuOption.Create:
-                        Call call1 = helpC();
+                        Call call1 = helpCall();
                         s_dalCall!.Create(call1);
                         Console.WriteLine("50 calls have been created.");
                         break;
@@ -336,7 +354,7 @@ namespace DalTest
 
                     case CallMenuOption.Update:
                         {
-                            Call call2 = helpC();
+                            Call call2 = helpCall();
                             s_dalCall!.Update(call2);
 
                         }
@@ -363,50 +381,47 @@ namespace DalTest
             }
 
         }
-        public static Call helpC() // for things that repeat themselves
+        public static Call helpCall() // for things that repeat themselves
         {
+            Console.Write("Enter Call ID: ");
+            int id = int.Parse(Console.ReadLine() ?? "0");
+
+            Console.Write("Enter Call Type (0 - Type1, 1 - Type2, etc.): ");
+            int callTypeInput = int.Parse(Console.ReadLine() ?? "0");
+            CallType callType = (CallType)callTypeInput;
+
+            Console.Write("Enter Verbal Description: ");
+            string description = Console.ReadLine() ?? "";
+
+            Console.Write("Enter Full Address: ");
+            string fullAddress = Console.ReadLine() ?? "";
+
             Console.Write("Enter Latitude: ");
             double latitude = double.Parse(Console.ReadLine() ?? "0");
 
             Console.Write("Enter Longitude: ");
             double longitude = double.Parse(Console.ReadLine() ?? "0");
 
-            Console.Write("Enter Call Type (0 - Type1, 1 - Type2, etc.): ");
-            int callTypeInput = int.Parse(Console.ReadLine() ?? "0");
-            Calltype callType = (Calltype)callTypeInput;
-
-            Console.Write("Enter ID: ");
-            int id = int.Parse(Console.ReadLine() ?? "0");
-
-            Console.Write("Enter Verbal Description (optional): ");
-            string? verbalDescription = Console.ReadLine();
-
-            Console.Write("Enter Read Address: ");
-            string readAddress = Console.ReadLine() ?? "";
-
             Console.Write("Enter Opening Time (yyyy-MM-dd HH:mm): ");
-            DateTime openingTime = DateTime.Parse(Console.ReadLine() ?? DateTime.Now.ToString());
+            DateTime timeOpened = DateTime.Parse(Console.ReadLine() ?? DateTime.Now.ToString());
 
             Console.Write("Enter Max End Time (yyyy-MM-dd HH:mm) or leave empty if not applicable: ");
-            string? maxEndTimeInput = Console.ReadLine();
-            DateTime? maxEndTime = string.IsNullOrWhiteSpace(maxEndTimeInput) ? null : DateTime.Parse(maxEndTimeInput);
+            string? maxTimeToCloseInput = Console.ReadLine();
+            DateTime? maxTimeToClose = string.IsNullOrWhiteSpace(maxTimeToCloseInput) ? null : DateTime.Parse(maxTimeToCloseInput);
 
-
-            // Create a Call object according to the constructor
-
+            // Create and return the Call object
             return new Call(
+                Id: id,
+                Type: callType,
+                Description: description,
+                FullAddress: fullAddress,
                 Latitude: latitude,
                 Longitude: longitude,
-                Type: callType,
-                Id: id,
-                Description: description,
-                ReadAddress: readAddress,
-                OpeningTime: openingTime,
-                MaxEndTime: maxEndTime
+                TimeOpened: timeOpened,
+                MaxTimeToClose: maxTimeToClose
             );
-
-
         }
+
         private static void AssignmentMenu()
         {
 
@@ -440,7 +455,7 @@ namespace DalTest
                         case "1":
                             Console.WriteLine("Adding a new object");
                             // Code to create a new object and add it to the list
-                            Assignment Assi = helpA();
+                            Assignment Assi = helpAssignment();
                             s_dalAssignment!.Create(Assi);
 
                             break;
@@ -461,7 +476,7 @@ namespace DalTest
                         case "4":
                             Console.WriteLine("Enter the ID of the object to update:");
 
-                            Assignment ToUpdate = helpA();
+                            Assignment ToUpdate = helpAssignment();
                             s_dalAssignment!.Create(ToUpdate);
 
                             // Code to update the object by ID
@@ -492,9 +507,8 @@ namespace DalTest
                 }
             }
 
-            static Assignment helpA()
+            static Assignment helpAssignment()
             {
-
                 Console.Write("Enter Assignment ID (integer): ");
                 int id = int.TryParse(Console.ReadLine(), out int parsedId) ? parsedId : 0;
 
@@ -504,111 +518,106 @@ namespace DalTest
                 Console.Write("Enter Volunteer ID (integer): ");
                 int volunteerId = int.TryParse(Console.ReadLine(), out int parsedVolunteerId) ? parsedVolunteerId : 0;
 
-                Console.Write("Enter the start time of treatment (time_entry_treatment) in format (yyyy-MM-dd HH:mm:ss): ");
-                DateTime timeEntryTreatment;
-                if (!DateTime.TryParse(Console.ReadLine(), out timeEntryTreatment))
+                Console.Write("Enter the start time of treatment (yyyy-MM-dd HH:mm:ss): ");
+                DateTime timeStart;
+                if (!DateTime.TryParse(Console.ReadLine(), out timeStart))
                 {
-                    Console.WriteLine("Invalid date input. Setting time_entry_treatment to default DateTime.");
-                    timeEntryTreatment = default(DateTime);
+                    Console.WriteLine("Invalid date input. Setting StartTime to default (DateTime.MinValue).");
+                    timeStart = DateTime.MinValue;
                 }
 
-                Console.Write("Enter the end time of treatment (time_end_treatment) in format (yyyy-MM-dd HH:mm:ss) or leave empty if not applicable: ");
-                DateTime? timeEndTreatment = null;
-                string? endTreatmentInput = Console.ReadLine();
-                if (!string.IsNullOrEmpty(endTreatmentInput) && DateTime.TryParse(endTreatmentInput, out DateTime parsedEnd))
+                Console.Write("Enter the actual end time of handling (yyyy-MM-dd HH:mm:ss) or leave empty if not applicable: ");
+                DateTime? timeEnd = null;
+                string? timeEndInput = Console.ReadLine();
+                if (!string.IsNullOrEmpty(timeEndInput) && DateTime.TryParse(timeEndInput, out DateTime parsedEndTime))
                 {
-                    timeEndTreatment = parsedEnd;
+                    timeEnd = parsedEndTime;
                 }
 
-                Console.Write("Enter the completion type (EndOfTime) (e.g., Completed, Cancelled) or leave empty for default: ");
-                AssignmentCompletionType? endOfTime = null;
-                string? endOfTimeInput = Console.ReadLine();
-                if (Enum.TryParse(endOfTimeInput, out AssignmentCompletionType parsedCompletionType))
+                Console.Write("Enter the type of treatment conclusion (0 = Completed, 1 = Self-Cancelled, 2 = Admin-Cancelled, 3 = Expired) or leave empty for default: ");
+                TypeEnd? typeEndTreat = null;
+                string? typeEndTreatInput = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(typeEndTreatInput) && Enum.TryParse(typeEndTreatInput, out TypeEnd parsedTypeEnd))
                 {
-                    endOfTime = parsedCompletionType;
+                    typeEndTreat = parsedTypeEnd;
                 }
 
-                // Return a new Assignment object with the provided input
+                // Return a new Assignment object
                 return new Assignment(
-                    time_entry_treatment: timeEntryTreatment,
                     Id: id,
                     CallId: callId,
                     VolunteerId: volunteerId,
-                    time_end_treatment: timeEndTreatment,
-                    EndOfTime: endOfTime
+                    TimeStart: timeStart,
+                    TimeEnd: timeEnd,
+                    TypeEndTreat: typeEndTreat
                 );
             }
-
-
-
-        }
-
-        private static void ConfigMenu()
-        {
-            bool exit = false;
-            while (!exit)
+      }
+            private static void ConfigMenu()
             {
-                Console.WriteLine("\nConfig Menu:");
-                Console.WriteLine("1. Advance System Clock");
-                Console.WriteLine("2. Show System Clock");
-                Console.WriteLine("3. Set Config Variable");
-                Console.WriteLine("4. Show Config Variable");
-                Console.WriteLine("5. Reset Config");
-                Console.WriteLine("0. Exit");
-
-                ConfigMenuOption choice = (ConfigMenuOption)int.Parse(Console.ReadLine() ?? "0");
-
-                switch (choice)
+                bool exit = false;
+                while (!exit)
                 {
-                    case ConfigMenuOption.AdvanceSystemClock:
-                        Console.Write("Enter the number of hours to advance the clock: ");
-                        int hours = int.Parse(Console.ReadLine() ?? "0");
-                        s_dalConfig!.Clock = s_dalConfig.Clock.AddHours(hours);
-                        Console.WriteLine($"System clock advanced by {hours} hours."); break;
+                    Console.WriteLine("\nConfig Menu:");
+                    Console.WriteLine("1. Advance System Clock");
+                    Console.WriteLine("2. Show System Clock");
+                    Console.WriteLine("3. Set Config Variable");
+                    Console.WriteLine("4. Show Config Variable");
+                    Console.WriteLine("5. Reset Config");
+                    Console.WriteLine("0. Exit");
 
-                    case ConfigMenuOption.ShowSystemClock:
-                        Console.WriteLine($"Current System Clock: {s_dalConfig?.Clock}");
-                        break;
+                    ConfigMenuOption choice = (ConfigMenuOption)int.Parse(Console.ReadLine() ?? "0");
 
-                    case ConfigMenuOption.SetConfigVariable:
-                        Console.WriteLine("Choose the variable to set:");
-                        Console.WriteLine("1. Risk Range (in hours)");
+                    switch (choice)
+                    {
+                        case ConfigMenuOption.AdvanceSystemClock:
+                            Console.Write("Enter the number of hours to advance the clock: ");
+                            int hours = int.Parse(Console.ReadLine() ?? "0");
+                            s_dalConfig!.Clock = s_dalConfig.Clock.AddHours(hours);
+                            Console.WriteLine($"System clock advanced by {hours} hours."); break;
 
-                        int option = int.Parse(Console.ReadLine() ?? "0");
+                        case ConfigMenuOption.ShowSystemClock:
+                            Console.WriteLine($"Current System Clock: {s_dalConfig?.Clock}");
+                            break;
 
-                        switch (option)
-                        {
-                            case 1:
-                                Console.Write("Enter the new risk range in hours: ");
-                                double hours1 = double.Parse(Console.ReadLine() ?? "1");
-                                s_dalConfig!.RiskRange = TimeSpan.FromHours(hours1);
-                                Console.WriteLine($"Risk range set to {hours1} hours.");
-                                break;
-                            default:
-                                Console.WriteLine("Invalid option.");
-                                break;
-                        }
-                        break;
+                        case ConfigMenuOption.SetConfigVariable:
+                            Console.WriteLine("Choose the variable to set:");
+                            Console.WriteLine("1. Risk Range (in hours)");
 
-                    case ConfigMenuOption.ShowConfigVariable:
-                        Console.WriteLine($"Current System Clock: {s_dalConfig!.Clock}");
-                        Console.WriteLine($"Risk Range: {s_dalConfig.RiskRange.TotalHours} hours"); break;
+                            int option = int.Parse(Console.ReadLine() ?? "0");
 
-                    case ConfigMenuOption.ResetConfig:
-                        s_dalConfig?.Reset();
-                        Console.WriteLine("Config reset to default.");
-                        break;
+                            switch (option)
+                            {
+                                case 1:
+                                    Console.Write("Enter the new risk range in hours: ");
+                                    double hours1 = double.Parse(Console.ReadLine() ?? "1");
+                                    s_dalConfig!.RiskRange = TimeSpan.FromHours(hours1);
+                                    Console.WriteLine($"Risk range set to {hours1} hours.");
+                                    break;
+                                default:
+                                    Console.WriteLine("Invalid option.");
+                                    break;
+                            }
+                            break;
 
-                    case ConfigMenuOption.Exit:
-                        exit = true;
-                        break;
-                    default:
-                        Console.WriteLine("Invalid choice, try again.");
-                        break;
+                        case ConfigMenuOption.ShowConfigVariable:
+                            Console.WriteLine($"Current System Clock: {s_dalConfig!.Clock}");
+                            Console.WriteLine($"Risk Range: {s_dalConfig.RiskRange.TotalHours} hours"); break;
+
+                        case ConfigMenuOption.ResetConfig:
+                            s_dalConfig?.Reset();
+                            Console.WriteLine("Config reset to default.");
+                            break;
+
+                        case ConfigMenuOption.Exit:
+                            exit = true;
+                            break;
+                        default:
+                            Console.WriteLine("Invalid choice, try again.");
+                            break;
+                    }
                 }
             }
         }
+
     }
-
-}
-
