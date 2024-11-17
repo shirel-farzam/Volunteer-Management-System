@@ -7,13 +7,24 @@ namespace DalTest
 {
     public class Program
     {
-        private static IAssignment? s_dalAssignment = new AssignmentImplementation();
-        private static ICall? s_dalCall = new CallImplementation();
-        private static IVolunteer? s_dalVolunteer = new VolunteerImplementation();
-        private static IConfig? s_dalConfig = new ConfigImplementation();
+        // Creating instances of data access layer (DAL) for handling different entities
 
-        // Enum representing the options available in the Main Menu
-        public enum MainMenuOption
+        // s_dalAssignment is used to interact with the data layer for Assignment objects
+        private static IAssignment? s_dalAssignment = new AssignmentImplementation();
+
+        // s_dalCall is used to interact with the data layer for Call objects
+        private static ICall? s_dalCall = new CallImplementation();
+
+        // s_dalVolunteer is used to interact with the data layer for Volunteer objects
+        private static IVolunteer? s_dalVolunteer = new VolunteerImplementation();
+
+        // s_dalConfig is used to interact with the data layer for Config settings
+        private static IConfig? s_dalConfig = new ConfigImplementation();
+    
+
+
+    // Enum representing the options available in the Main Menu
+    public enum MainMenuOption
         {
             Exit,                  // Exit the program
             VolunteerMenu,         // Go to the Volunteer Menu
@@ -149,107 +160,137 @@ namespace DalTest
         private static void VolunteerMenu()
         {
             bool exit = false;
+
+            // Loop to keep displaying the menu until the user chooses to exit
             while (!exit)
             {
                 Console.WriteLine("\nVolunteer Menu:");
-                Console.WriteLine("1. Add Volunteer");
-                Console.WriteLine("2. Read Volunteer by ID");
-                Console.WriteLine("3. Read All Volunteers");
-                Console.WriteLine("4. Update Volunteer");
-                Console.WriteLine("5. Delete Volunteer");
-                Console.WriteLine("6. Delete All Volunteers");
-                Console.WriteLine("0. Exit");
+                Console.WriteLine("1. Add Volunteer"); // Option to add a new volunteer
+                Console.WriteLine("2. Read Volunteer by ID"); // Option to read a volunteer by their ID
+                Console.WriteLine("3. Read All Volunteers"); // Option to read all volunteers
+                Console.WriteLine("4. Update Volunteer"); // Option to update volunteer details
+                Console.WriteLine("5. Delete Volunteer"); // Option to delete a volunteer by ID
+                Console.WriteLine("6. Delete All Volunteers"); // Option to delete all volunteers
+                Console.WriteLine("0. Exit"); // Option to exit the menu
 
+                // Get the user input for menu selection and convert to enum
                 VolunteerMenuOption choice = (VolunteerMenuOption)int.Parse(Console.ReadLine() ?? "0");
 
+                // Switch statement to handle the different menu options
                 switch (choice)
                 {
                     case VolunteerMenuOption.Create:
                         // Method to add a volunteer
                         // Input data from the user
-
                         Volunteer volunteer = helpVolunteer(); // Helper method to get volunteer data
-                        s_dalVolunteer!.Create(volunteer); // Create the volunteer
-
+                        s_dalVolunteer!.Create(volunteer); // Create the volunteer in the data layer
                         break;
+
                     case VolunteerMenuOption.Read:
+                        // Option to read a volunteer by ID
                         Console.WriteLine("Enter ID you want to read:");
                         int tempid = int.Parse(Console.ReadLine() ?? "0");
-                        s_dalVolunteer!.Read(tempid); // Method to display volunteer by ID
+                        s_dalVolunteer!.Read(tempid); // Display volunteer data by ID
                         break;
+
                     case VolunteerMenuOption.ReadAll:
+                        // Option to read all volunteers
                         foreach (var item in s_dalVolunteer!.ReadAll())
-                            Console.WriteLine(item);
+                            Console.WriteLine(item); // Display all volunteers
                         break;
 
                     case VolunteerMenuOption.Update:
+                        // Option to update volunteer details
                         Volunteer volunteer1 = helpVolunteer(); // Get updated volunteer data
                         s_dalVolunteer!.Update(volunteer1); // Update the volunteer information
                         break;
+
                     case VolunteerMenuOption.Delete:
+                        // Option to delete a volunteer by ID
                         Console.WriteLine("Enter ID you want to delete:");
                         int tempid2 = int.Parse(Console.ReadLine() ?? "0");
-                        s_dalVolunteer!.Delete(tempid2); // Method to delete volunteer by ID
+                        s_dalVolunteer!.Delete(tempid2); // Delete the volunteer by ID
                         break;
+
                     case VolunteerMenuOption.DeleteAll:
-                        s_dalVolunteer!.DeleteAll(); // Method to delete all volunteers
+                        // Option to delete all volunteers
+                        s_dalVolunteer!.DeleteAll(); // Delete all volunteers
                         break;
+
                     case VolunteerMenuOption.Exit:
+                        // Exit the menu
                         exit = true;
                         break;
+
                     default:
+                        // Handle invalid menu choice
                         Console.WriteLine("Invalid choice, try again.");
                         break;
                 }
             }
         }
 
+        //collects volunteer details
+        //from the user and returns
+        //a Volunteer object with the entered information.
         public static Volunteer helpVolunteer()
         {
+            // Prompt user to enter the Volunteer ID
             Console.WriteLine("Enter Volunteer ID:");
             int id = int.Parse(Console.ReadLine() ?? "0");
 
+            // Prompt user to enter the full name of the volunteer
             Console.WriteLine("Enter Volunteer Full Name:");
             string fullName = Console.ReadLine() ?? "";
 
+            // Prompt user to enter the phone number of the volunteer
             Console.WriteLine("Enter Volunteer Phone Number:");
             string phoneNumber = Console.ReadLine() ?? "";
 
+            // Prompt user to enter the email address of the volunteer
             Console.WriteLine("Enter Volunteer Email:");
             string email = Console.ReadLine() ?? "";
 
+            // Prompt user to select the distance type (Aerial or Driving)
             Console.WriteLine("Enter Distance Type (0 = Aerial, 1 = Driving):");
             Distance typeDistance = (Distance)int.Parse(Console.ReadLine() ?? "0");
 
+            // Prompt user to select the role (Volunteer or Manager)
             Console.WriteLine("Enter Role (0 = Volunteer, 1 = Manager):");
             Role job = (Role)int.Parse(Console.ReadLine() ?? "0");
 
+            // Prompt user to input whether the volunteer is active or not
             Console.WriteLine("Is Active? (true/false):");
             bool active = bool.Parse(Console.ReadLine() ?? "true");
 
+            // Prompt user to enter a password (optional)
             Console.WriteLine("Enter Password (or press Enter to skip):");
             string? password = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(password))
                 password = null;
 
+            // Prompt user to enter the full address (optional)
             Console.WriteLine("Enter Full Address (or press Enter to skip):");
             string? fullAddress = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(fullAddress))
                 fullAddress = null;
 
+            // Prompt user to enter latitude (optional)
             Console.WriteLine("Enter Latitude (or press Enter to skip):");
             string latitudeInput = Console.ReadLine() ?? "";
             double? latitude = string.IsNullOrWhiteSpace(latitudeInput) ? null : double.Parse(latitudeInput);
 
+            // Prompt user to enter longitude (optional)
             Console.WriteLine("Enter Longitude (or press Enter to skip):");
             string longitudeInput = Console.ReadLine() ?? "";
             double? longitude = string.IsNullOrWhiteSpace(longitudeInput) ? null : double.Parse(longitudeInput);
 
+            // Prompt user to enter max reading value (optional)
             Console.WriteLine("Enter Max Reading (or press Enter to skip):");
             string maxReadingInput = Console.ReadLine() ?? "";
             double? maxReading = string.IsNullOrWhiteSpace(maxReadingInput) ? null : double.Parse(maxReadingInput);
 
-            // יצירת אובייקט Volunteer לפי הסדר שהוגדר ב-record
+            // Return a new Volunteer object with the provided input data
             return new Volunteer(
                 Id: id,
                 FullName: fullName,
@@ -265,16 +306,16 @@ namespace DalTest
                 MaxReading: maxReading
             );
         }
-
         public static void print(IVolunteer? s_dalVolunteer, ICall? s_dalCall, IAssignment? s_dalAssignment, IConfig? s_dalConfig)
         {
-
+            // Print Volunteer Data
             Console.WriteLine("Volunteer Data:");
             if (s_dalVolunteer != null)
             {
+                // Iterate through the list of volunteers and print each one (assuming ToString() is overridden)
                 foreach (var volunteer in s_dalVolunteer.ReadAll())
                 {
-                    Console.WriteLine(volunteer); // Assuming ToString() is overridden for Volunteer
+                    Console.WriteLine(volunteer);
                 }
             }
             else
@@ -282,12 +323,14 @@ namespace DalTest
                 Console.WriteLine("No Volunteer data available.");
             }
 
+            // Print Call Data
             Console.WriteLine("\nCall Data:");
             if (s_dalCall != null)
             {
+                // Iterate through the list of calls and print each one (assuming ToString() is overridden)
                 foreach (var call in s_dalCall.ReadAll())
                 {
-                    Console.WriteLine(call); // Assuming ToString() is overridden for Call
+                    Console.WriteLine(call);
                 }
             }
             else
@@ -295,12 +338,14 @@ namespace DalTest
                 Console.WriteLine("No Call data available.");
             }
 
+            // Print Assignment Data
             Console.WriteLine("\nAssignment Data:");
             if (s_dalAssignment != null)
             {
+                // Iterate through the list of assignments and print each one (assuming ToString() is overridden)
                 foreach (var assignment in s_dalAssignment.ReadAll())
                 {
-                    Console.WriteLine(assignment); // Assuming ToString() is overridden for Assignment
+                    Console.WriteLine(assignment);
                 }
             }
             else
@@ -308,20 +353,25 @@ namespace DalTest
                 Console.WriteLine("No Assignment data available.");
             }
 
+            // Print Config Data
             Console.WriteLine("\nConfig Data:");
             if (s_dalConfig != null)
             {
+                // Print system clock and any additional configuration data
                 Console.WriteLine($"System Clock: {s_dalConfig.Clock}");
-                // הצגת ערכי תצורה נוספים, אם ישנם
             }
             else
             {
                 Console.WriteLine("No Config data available.");
             }
         }
+
+        // Call menu method that handles the different options for managing calls
         private static void CallMenu() // Choosing where to enter
         {
             bool exit = false;
+
+            // Loop to keep displaying the menu until the user chooses to exit
             while (!exit)
             {
                 Console.WriteLine("\nCall Menu:");
@@ -333,101 +383,110 @@ namespace DalTest
                 Console.WriteLine("6. Delete All Calls");
                 Console.WriteLine("0. Exit");
 
+                // Parse the user's choice from the menu options
                 CallMenuOption choice = (CallMenuOption)int.Parse(Console.ReadLine() ?? "0");
 
+                // Switch statement to handle each menu option
                 switch (choice)
                 {
+                    // Case for creating and auto-generating 50 calls
                     case CallMenuOption.Create:
-                        Call call1 = helpCall();
-                        s_dalCall!.Create(call1);
+                        Call call1 = helpCall(); // Calls the method to gather information for a new call
+                        s_dalCall!.Create(call1); // Creates the new call and adds it to the list
                         Console.WriteLine("50 calls have been created.");
                         break;
 
+                    // Case for reading a single call by its ID
                     case CallMenuOption.Read:
                         Console.Write("Enter Call ID to display: ");
-                        int id = int.Parse(Console.ReadLine() ?? "0");
-                        var call = s_dalCall?.Read(id);
-
+                        int id = int.Parse(Console.ReadLine() ?? "0"); // Parse the call ID
+                        var call = s_dalCall?.Read(id); // Retrieves the call by ID from the data layer
                         break;
 
+                    // Case for reading and displaying all calls
                     case CallMenuOption.ReadAll:
-                        {foreach (var item in s_dalCall!.ReadAll())
-                            Console.WriteLine(item);
+                        {
+                            foreach (var item in s_dalCall!.ReadAll()) // Loops through all the calls and displays them
+                                Console.WriteLine(item);
                             break;
                         }
 
+                    // Case for updating an existing call
                     case CallMenuOption.Update:
                         {
-                            Call call2 = helpCall();
-                            s_dalCall!.Update(call2);
-
+                            Call call2 = helpCall(); // Gather data for the call to be updated
+                            s_dalCall!.Update(call2); // Updates the call in the data layer
                         }
                         break;
 
+                    // Case for deleting a specific call by ID
                     case CallMenuOption.Delete:
                         Console.Write("Enter Call ID to delete: ");
-                        int deleteId = int.Parse(Console.ReadLine() ?? "0");
-                        s_dalCall?.Delete(deleteId);
+                        int deleteId = int.Parse(Console.ReadLine() ?? "0"); // Parse the call ID to delete
+                        s_dalCall?.Delete(deleteId); // Deletes the call from the data layer
                         break;
 
+                    // Case for deleting all calls
                     case CallMenuOption.DeleteAll:
-                        s_dalCall?.DeleteAll();
+                        s_dalCall?.DeleteAll(); // Deletes all calls from the data layer
                         break;
 
+                    // Case for exiting the menu
                     case CallMenuOption.Exit:
-                        exit = true;
+                        exit = true; // Exits the loop
                         break;
 
+                    // Default case to handle invalid menu choices
                     default:
                         Console.WriteLine("Invalid choice, try again.");
                         break;
                 }
             }
-
         }
+
         public static Call helpCall() // for things that repeat themselves
         {
             Console.Write("Enter Call ID: ");
-            int id = int.Parse(Console.ReadLine() ?? "0");
+            int id = int.Parse(Console.ReadLine() ?? "0"); // Get the Call ID from the user
 
             Console.Write("Enter Call Type (0 - Type1, 1 - Type2, etc.): ");
-            int callTypeInput = int.Parse(Console.ReadLine() ?? "0");
-            CallType callType = (CallType)callTypeInput;
+            int callTypeInput = int.Parse(Console.ReadLine() ?? "0"); // Get the Call Type as an integer
+            CallType callType = (CallType)callTypeInput; // Convert the input integer to CallType enum
 
             Console.Write("Enter Verbal Description: ");
-            string description = Console.ReadLine() ?? "";
+            string description = Console.ReadLine() ?? ""; // Get the verbal description of the call
 
             Console.Write("Enter Full Address: ");
-            string fullAddress = Console.ReadLine() ?? "";
+            string fullAddress = Console.ReadLine() ?? ""; // Get the full address of the call
 
             Console.Write("Enter Latitude: ");
-            double latitude = double.Parse(Console.ReadLine() ?? "0");
+            double latitude = double.Parse(Console.ReadLine() ?? "0"); // Get the latitude of the call location
 
             Console.Write("Enter Longitude: ");
-            double longitude = double.Parse(Console.ReadLine() ?? "0");
+            double longitude = double.Parse(Console.ReadLine() ?? "0"); // Get the longitude of the call location
 
             Console.Write("Enter Opening Time (yyyy-MM-dd HH:mm): ");
-            DateTime timeOpened = DateTime.Parse(Console.ReadLine() ?? DateTime.Now.ToString());
+            DateTime timeOpened = DateTime.Parse(Console.ReadLine() ?? DateTime.Now.ToString()); // Get the time when the call was opened
 
             Console.Write("Enter Max End Time (yyyy-MM-dd HH:mm) or leave empty if not applicable: ");
-            string? maxTimeToCloseInput = Console.ReadLine();
-            DateTime? maxTimeToClose = string.IsNullOrWhiteSpace(maxTimeToCloseInput) ? null : DateTime.Parse(maxTimeToCloseInput);
+            string? maxTimeToCloseInput = Console.ReadLine(); // Optionally get the maximum end time for the call
+            DateTime? maxTimeToClose = string.IsNullOrWhiteSpace(maxTimeToCloseInput) ? null : DateTime.Parse(maxTimeToCloseInput); // If provided, parse the max end time
 
             // Create and return the Call object
             return new Call(
-                Id: id,
-                Type: callType,
-                Description: description,
-                FullAddress: fullAddress,
-                Latitude: latitude,
-                Longitude: longitude,
-                TimeOpened: timeOpened,
-                MaxTimeToClose: maxTimeToClose
+                Id: id, // Set the Call ID
+                Type: callType, // Set the Call Type
+                Description: description, // Set the verbal description
+                FullAddress: fullAddress, // Set the full address
+                Latitude: latitude, // Set the latitude
+                Longitude: longitude, // Set the longitude
+                TimeOpened: timeOpened, // Set the time the call was opened
+                MaxTimeToClose: maxTimeToClose // Set the maximum end time if provided, otherwise null
             );
         }
+
         private static void AssignmentMenu()
         {
-
             bool exit = false;
 
             // Loop to keep displaying the menu until the user chooses to exit
@@ -443,7 +502,7 @@ namespace DalTest
                 Console.WriteLine("6. Delete all objects in the list (DeleteAll)");
 
                 Console.Write("Choose an option: ");
-                string? choice = Console.ReadLine();
+                string? choice = Console.ReadLine(); // Get the user's choice from the menu
 
                 try
                 {
@@ -456,51 +515,49 @@ namespace DalTest
                             break;
 
                         case "1":
+                            // Adding a new object
                             Console.WriteLine("Adding a new object");
-                            // Code to create a new object and add it to the list
-                            Assignment Assi = helpAssignment();
-                            s_dalAssignment!.Create(Assi);
+                            Assignment Assi = helpAssignment(); // Get the details for the new Assignment
+                            s_dalAssignment!.Create(Assi); // Add the new Assignment to the list using the DAL
 
                             break;
 
                         case "2":
+                            // Read an object by ID
                             Console.WriteLine("Enter the ID of the object to Read:");
-                            int idToRead = int.Parse(Console.ReadLine() ?? "0");
-                            s_dalAssignment!.Read(idToRead);
-                            // Code to read and display the object by ID
+                            int idToRead = int.Parse(Console.ReadLine() ?? "0"); // Get the ID to read
+                            s_dalAssignment!.Read(idToRead); // Read the object by ID using the DAL
 
                             break;
 
                         case "3":
-                            
-                          {  foreach (var item in s_dalAssignment!.ReadAll())
-                                Console.WriteLine(item);
-                                break;
-                            }
+                            // Read all objects of this type
+                            foreach (var item in s_dalAssignment!.ReadAll()) // Loop through all items in the list
+                                Console.WriteLine(item); // Display each item in the list
+                            break;
 
                         case "4":
+                            // Update an existing object's data
                             Console.WriteLine("Enter the ID of the object to update:");
+                            Assignment ToUpdate = helpAssignment(); // Get the updated details for the Assignment
+                            s_dalAssignment!.Create(ToUpdate); // Update the object using the DAL
 
-                            Assignment ToUpdate = helpAssignment();
-                            s_dalAssignment!.Create(ToUpdate);
-
-                            // Code to update the object by ID
                             break;
 
                         case "5":
+                            // Delete an existing object from the list
                             Console.WriteLine("Enter the ID of the object to delete:");
-                            int idToDelete = int.Parse(Console.ReadLine() ?? "0");
-                            s_dalAssignment!.Delete(idToDelete);
-                            // Code to delete the object by ID
+                            int idToDelete = int.Parse(Console.ReadLine() ?? "0"); // Get the ID to delete
+                            s_dalAssignment!.Delete(idToDelete); // Delete the object by ID using the DAL
                             break;
-
                         case "6":
+                            // Delete all objects from the list
                             Console.WriteLine("Deleting all objects in the list");
-                            // Code to delete all objects of this type
-                            s_dalAssignment!.DeleteAll();
+                            s_dalAssignment!.DeleteAll(); // Delete all objects using the DAL
                             break;
 
                         default:
+                            // Handle invalid choice
                             Console.WriteLine("Invalid choice. Please select a valid option.");
                             break;
                     }
@@ -511,18 +568,22 @@ namespace DalTest
                     Console.WriteLine($"An error occurred: {ex.Message}");
                 }
             }
-
+            // Method to help gather the necessary information for creating an Assignment object
             static Assignment helpAssignment()
             {
+                // Prompt for and parse Assignment ID
                 Console.Write("Enter Assignment ID (integer): ");
                 int id = int.TryParse(Console.ReadLine(), out int parsedId) ? parsedId : 0;
 
+                // Prompt for and parse Call ID
                 Console.Write("Enter Call ID (integer): ");
                 int callId = int.TryParse(Console.ReadLine(), out int parsedCallId) ? parsedCallId : 0;
 
+                // Prompt for and parse Volunteer ID
                 Console.Write("Enter Volunteer ID (integer): ");
                 int volunteerId = int.TryParse(Console.ReadLine(), out int parsedVolunteerId) ? parsedVolunteerId : 0;
 
+                // Prompt for and parse Start Time of treatment, if invalid set to DateTime.MinValue
                 Console.Write("Enter the start time of treatment (yyyy-MM-dd HH:mm:ss): ");
                 DateTime timeStart;
                 if (!DateTime.TryParse(Console.ReadLine(), out timeStart))
@@ -531,6 +592,7 @@ namespace DalTest
                     timeStart = DateTime.MinValue;
                 }
 
+                // Prompt for and parse the actual end time of handling, if empty leave it as null
                 Console.Write("Enter the actual end time of handling (yyyy-MM-dd HH:mm:ss) or leave empty if not applicable: ");
                 DateTime? timeEnd = null;
                 string? timeEndInput = Console.ReadLine();
@@ -539,6 +601,7 @@ namespace DalTest
                     timeEnd = parsedEndTime;
                 }
 
+                // Prompt for and parse the type of treatment conclusion, if empty leave it as null
                 Console.Write("Enter the type of treatment conclusion (0 = Completed, 1 = Self-Cancelled, 2 = Admin-Cancelled, 3 = Expired) or leave empty for default: ");
                 TypeEnd? typeEndTreat = null;
                 string? typeEndTreatInput = Console.ReadLine();
@@ -547,7 +610,7 @@ namespace DalTest
                     typeEndTreat = parsedTypeEnd;
                 }
 
-                // Return a new Assignment object
+                // Return a new Assignment object with the gathered data
                 return new Assignment(
                     Id: id,
                     CallId: callId,
@@ -557,72 +620,85 @@ namespace DalTest
                     TypeEndTreat: typeEndTreat
                 );
             }
-      }
-            private static void ConfigMenu()
+        }
+        // Config Menu method to handle system configuration settings
+        private static void ConfigMenu()
+        {
+            bool exit = false;
+
+            // Loop to keep displaying the menu until the user chooses to exit
+            while (!exit)
             {
-                bool exit = false;
-                while (!exit)
+                Console.WriteLine("\nConfig Menu:");
+                Console.WriteLine("1. Advance System Clock");
+                Console.WriteLine("2. Show System Clock");
+                Console.WriteLine("3. Set Config Variable");
+                Console.WriteLine("4. Show Config Variable");
+                Console.WriteLine("5. Reset Config");
+                Console.WriteLine("0. Exit");
+
+                // Parse the user's choice from the menu
+                ConfigMenuOption choice = (ConfigMenuOption)int.Parse(Console.ReadLine() ?? "0");
+
+                switch (choice)
                 {
-                    Console.WriteLine("\nConfig Menu:");
-                    Console.WriteLine("1. Advance System Clock");
-                    Console.WriteLine("2. Show System Clock");
-                    Console.WriteLine("3. Set Config Variable");
-                    Console.WriteLine("4. Show Config Variable");
-                    Console.WriteLine("5. Reset Config");
-                    Console.WriteLine("0. Exit");
+                    // Advance the system clock by a certain number of hours
+                    case ConfigMenuOption.AdvanceSystemClock:
+                        Console.Write("Enter the number of hours to advance the clock: ");
+                        int hours = int.Parse(Console.ReadLine() ?? "0");
+                        s_dalConfig!.Clock = s_dalConfig.Clock.AddHours(hours); // Update the clock in the config
+                        Console.WriteLine($"System clock advanced by {hours} hours.");
+                        break;
 
-                    ConfigMenuOption choice = (ConfigMenuOption)int.Parse(Console.ReadLine() ?? "0");
+                    // Show the current system clock
+                    case ConfigMenuOption.ShowSystemClock:
+                        Console.WriteLine($"Current System Clock: {s_dalConfig?.Clock}");
+                        break;
 
-                    switch (choice)
-                    {
-                        case ConfigMenuOption.AdvanceSystemClock:
-                            Console.Write("Enter the number of hours to advance the clock: ");
-                            int hours = int.Parse(Console.ReadLine() ?? "0");
-                            s_dalConfig!.Clock = s_dalConfig.Clock.AddHours(hours);
-                            Console.WriteLine($"System clock advanced by {hours} hours."); break;
+                    // Set a specific configuration variable
+                    case ConfigMenuOption.SetConfigVariable:
+                        Console.WriteLine("Choose the variable to set:");
+                        Console.WriteLine("1. Risk Range (in hours)");
 
-                        case ConfigMenuOption.ShowSystemClock:
-                            Console.WriteLine($"Current System Clock: {s_dalConfig?.Clock}");
-                            break;
+                        int option = int.Parse(Console.ReadLine() ?? "0");
 
-                        case ConfigMenuOption.SetConfigVariable:
-                            Console.WriteLine("Choose the variable to set:");
-                            Console.WriteLine("1. Risk Range (in hours)");
+                        switch (option)
+                        {
+                            // Set the risk range variable in hours
+                            case 1:
+                                Console.Write("Enter the new risk range in hours: ");
+                                double hours1 = double.Parse(Console.ReadLine() ?? "1");
+                                s_dalConfig!.RiskRange = TimeSpan.FromHours(hours1); // Set the risk range
+                                Console.WriteLine($"Risk range set to {hours1} hours.");
+                                break;
+                            default:
+                                Console.WriteLine("Invalid option.");
+                                break;
+                        }
+                        break;
 
-                            int option = int.Parse(Console.ReadLine() ?? "0");
+                    // Show the current configuration variables
+                    case ConfigMenuOption.ShowConfigVariable:
+                        Console.WriteLine($"Current System Clock: {s_dalConfig!.Clock}");
+                        Console.WriteLine($"Risk Range: {s_dalConfig.RiskRange.TotalHours} hours");
+                        break;
 
-                            switch (option)
-                            {
-                                case 1:
-                                    Console.Write("Enter the new risk range in hours: ");
-                                    double hours1 = double.Parse(Console.ReadLine() ?? "1");
-                                    s_dalConfig!.RiskRange = TimeSpan.FromHours(hours1);
-                                    Console.WriteLine($"Risk range set to {hours1} hours.");
-                                    break;
-                                default:
-                                    Console.WriteLine("Invalid option.");
-                                    break;
-                            }
-                            break;
+                    // Reset the configuration to its default settings
+                    case ConfigMenuOption.ResetConfig:
+                        s_dalConfig?.Reset(); // Reset the configuration
+                        Console.WriteLine("Config reset to default.");
+                        break;
 
-                        case ConfigMenuOption.ShowConfigVariable:
-                            Console.WriteLine($"Current System Clock: {s_dalConfig!.Clock}");
-                            Console.WriteLine($"Risk Range: {s_dalConfig.RiskRange.TotalHours} hours"); break;
-
-                        case ConfigMenuOption.ResetConfig:
-                            s_dalConfig?.Reset();
-                            Console.WriteLine("Config reset to default.");
-                            break;
-
-                        case ConfigMenuOption.Exit:
-                            exit = true;
-                            break;
-                        default:
-                            Console.WriteLine("Invalid choice, try again.");
-                            break;
-                    }
+                    // Exit the configuration menu
+                    case ConfigMenuOption.Exit:
+                        exit = true;
+                        break;
+                    // Handle invalid input for menu option
+                    default:
+                        Console.WriteLine("Invalid choice, try again.");
+                        break;
                 }
             }
         }
-
     }
+}
