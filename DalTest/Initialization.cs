@@ -85,7 +85,7 @@ public static class Initialization
             bool active = true; // Volunteer is active by default
             double maxReading = s_rand.Next(5, 100); // Generate a random max reading between 5 and 100
 
-            // Create a new Volunteer object and add it to the data source
+            //Create a new Volunteer object and add it to the data source
             s_Volunteer!.Create(new Volunteer(id, name, phone, email, distanceType, role, active, null, null, null, null, maxReading));
         }
 
