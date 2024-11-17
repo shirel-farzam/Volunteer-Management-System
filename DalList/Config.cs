@@ -1,11 +1,11 @@
 ﻿namespace Dal;
 using DO;
-internal static class Config
+public static class Config
 {
     // הגדרת מזהה רץ לישות קריאה
     internal const int startCallId = 1000;
     private static int nextCallId = startCallId;
-    internal static int NextCallId { get => nextCallId++; }
+    public static int NextCallId { get => nextCallId++; }
 
     // הגדרת מזהה רץ לישות מתנדב
     internal const int startVolunteerId = 5000;
@@ -13,7 +13,7 @@ internal static class Config
     // הגדרת מזהה רץ לישות הקצאה
     internal const int startAssignmentId = 2000;
     private static int nextAssignmentId = startAssignmentId;
-    internal static int NextAssignmentId { get => nextAssignmentId++; }
+    public static int NextAssignmentId { get => nextAssignmentId++; }
 
     // משתנים נוספים בהתאם למשתני התצורה של המערכת
     internal static DateTime Clock { get; set; } = DateTime.Now;
@@ -26,7 +26,6 @@ internal static class Config
     {
         nextCallId = startCallId;
         nextAssignmentId = startAssignmentId;
-
         // משתני תצורה נוספים לאיפוס
         Clock = DateTime.Now;
         RiskRange = TimeSpan.FromHours(1);

@@ -1,7 +1,8 @@
 ﻿namespace DalTest;
 using DalApi;
+using Dal;
 using DO;
-    
+
 public static class Initialization
 {
     private static IVolunteer? s_Volunteer; //stage 1
@@ -9,7 +10,6 @@ public static class Initialization
     private static IAssignment? s_Assignment; //stage 1
     private static IConfig? s_dalConfig; //stage 1
     private static readonly Random s_rand = new();
-
     private static void CreateVolunteer()
     {
         string[] VolunteerName = { "Noa Levy", "Omer Cohen", "Rotem Mizrahi",
@@ -22,11 +22,47 @@ public static class Initialization
                          "054-9012345", "053-0123456", "054-1234568", "050-2345679",
                          "058-3456780", "054-4567891", "055-5678902" };
 
-        string[] Email = { "noa.levy@gmail.com", "omer.cohen@gmail.com", "rotem.mizrahi@gmail.com",
-                   "yoav.biton@gmail.com", "maya.peretz@gmail.com", "daniel.avrahami@gmail.com",
-                   "tamar.malka@gmail.com", "yael.adi@gmail.com", "ron.hazan@gmail.com",
-                   "yonatan.green@gmail.com", "michal.cohen@gmail.com", "yuval.levy@gmail.com",
-                   "ofir.dayan@gmail.com", "alon.goldberg@gmail.com", "shira.sharabi@gmail.com" };
+        string[] Email = { "noa.levy@example.com", "omer.cohen@example.com", "rotem.mizrahi@example.com",
+                   "yoav.biton@example.com", "maya.peretz@example.com", "daniel.avrahami@example.com",
+                   "tamar.malka@example.com", "yael.adi@example.com", "ron.hazan@example.com",
+                   "yonatan.green@example.com", "michal.cohen@example.com", "yuval.levy@example.com",
+                   "ofir.dayan@example.com", "alon.goldberg@example.com", "shira.sharabi@example.com" };
+
+        // מערך כתובות
+        /* public static readonly*/
+        string[] addresses =
+{
+    "King George St 20, Jerusalem, Israel",
+    "Jaffa St 45, Jerusalem, Israel",
+    "Agripas St 10, Jerusalem, Israel",
+    "HaPalmach St 25, Jerusalem, Israel",
+    "Emek Refaim St 43, Jerusalem, Israel",
+    "Shlomzion HaMalka St 18, Jerusalem, Israel",
+    "Hillel St 7, Jerusalem, Israel",
+    "Derech Hebron 105, Jerusalem, Israel",
+    "Bezalel St 12, Jerusalem, Israel",
+    "HaNeviim St 29, Jerusalem, Israel",
+    "Shivtei Israel St 15, Jerusalem, Israel",
+    "Azza St 50, Jerusalem, Israel",
+    "Yitzhak Kariv St 4, Jerusalem, Israel",
+    "Prophets St 23, Jerusalem, Israel",
+    "Ben Yehuda St 1, Jerusalem, Israel"
+ };
+        // מערך קווי האורך
+        double[] Longitudes = new double[]
+        {
+        35.3058, 35.3184, 35.3235, 35.3142, 35.3170,
+        35.3198, 35.3107, 35.3124, 35.3135, 35.3089,
+        35.3060, 35.3098, 35.3157, 35.3081, 35.3148
+        };
+
+        // מערך קווי הרוחב
+        double[] Latitudes = new double[]
+        {
+        31.7554, 31.7612, 31.7630, 31.7489, 31.7513,
+        31.7562, 31.7581, 31.7329, 31.7574, 31.7608,
+        31.7611, 31.7400, 31.7432, 31.7539, 31.7591
+        };
         for (int i = 0; i < VolunteerName.Length; i++)
         {
             int id;
@@ -51,124 +87,306 @@ public static class Initialization
             managerId = s_rand.Next(100000000, 1000000000);
         while (s_Volunteer!.Read(managerId) != null);
 
-        s_Volunteer!.Create(new Volunteer(managerId, "Admin Manager", "050-1111111", "admin@gamil.com", Distance.Aerial, Role.Boss, true, "Password246"));
+        s_Volunteer!.Create(new Volunteer(managerId, "Admin Manager", "050-1111111", "admin@example.com", Distance.Aerial, Role.Boss, true, "Password246"));
 
     }
     private static void CreateCalls()
     {
-       
-        DateTime start = new DateTime(s_dalConfig.Clock.Year , s_dalConfig.Clock.Month, s_dalConfig.Clock.Day-7); //stage 1
-        int range = (s_dalConfig.Clock - start).Minutes; //stage 1
-        DateTime bdt = start.AddMinutes(s_rand.Next(range));
+        string[] DescriptionsP = {
+    "Family needs a hot meal in the city center.",
+    "Patient waiting for a meal arranged near the hospital.",
+    "Family in a difficult situation, urgently needs a hot meal.",
+    "Family requested an immediate meal to be delivered to a nearby location.",
+    "Patient in late-stage illness, meal urgently needed near the clinic.",
+    "Family requesting a hot meal for lunch in their residential area.",
+    "Family needs a hot meal after medical treatment at the hospital.",
+    "Meal needed for a patient having difficulty moving, near a busy street.",
+    "Hot meal requested for a family in an area without cooking facilities.",
+    "Family needs a hot meal with a special diet option.",
+    "Patient living in an assisted living facility, requires meals in the evening.",
+    "Family expected a hot meal near the military base.",
+    "Family requested support with meals for a week due to chronic illness.",
+    "Hot meal needed for a patient waiting to be discharged from the hospital.",
+    "Family requests a hot meal for the whole day due to intensive treatment.",
+    "Family needs a hot meal in the suburban area.",
+    "Family needs a meal for a patient in a therapy pool.",
+    "Family needs a hot meal in the evening for a patient after surgery.",
+    "Hot meal requested for the parents of a patient waiting for medical tests.",
+    "Family requests a meal immediately for the afternoon hours."
+};
 
-    }
-    private static void createCalls()
-    {
-        // מאגר של כתובות עם קווי אורך ורוחב אמיתיים
-        var locations = new (string Address, double Latitude, double Longitude)[]
+        string[] DescriptionsL = {
+    "Family locked out of the kitchen after patient left for the hospital.",
+    "Patient alone at home, needs assistance with preparing a meal.",
+    "Family needs a holiday meal but has no access to the kitchen.",
+    "Patient in serious condition, family urgently needs a hot meal.",
+    "Family unable to prepare food after leaving the clinic.",
+    "Patient in serious condition, meal must be tailored to a specific diet.",
+    "Family unable to prepare food and needs immediate help.",
+    "Assistance needed in preparing food for a family member at the hospital.",
+    "Patient at home in treatment, requires a hot meal urgently.",
+    "Family unable to cook and needs immediate help with a meal.",
+    "Patient isolated at home, urgently needs a hot meal.",
+    "Family requests help preparing a meal at night.",
+    "Patient in serious condition and requesting help preparing food at home."
+};
+        string[] DescriptionsC = {
+    "Patient needs a hot meal after finishing medical treatment at the hospital.",
+    "Family needs help preparing meals due to difficulties in the kitchen.",
+    "The patient requires food support after a long period of medical treatment.",
+    "Family unable to prepare food after a difficult surgery.",
+    "Patient needs a hot meal after a prolonged clinic treatment.",
+    "Family requests a hot meal for someone who is hospitalized for several days.",
+    "Family unable to prepare meals after the patient was hospitalized in critical condition.",
+    "Family needs assistance in preparing meals for a patient at home.",
+    "Patient in critical condition needs a hot meal immediately after medical treatment.",
+    "Family requests help with preparing food for a patient requiring daily support.",
+    "Family needs help with preparing a meal for a patient in long-term hospitalization.",
+    "Patient unable to prepare food on their own, needs a hot meal at home.",
+    "Family requests help preparing an evening meal for an elderly patient.",
+    "Patient and family need assistance with meal preparation for an extended period.",
+    "Family requests support with preparing a hot meal for a patient with daily struggles.",
+    "Patient requires an immediate meal after a complex treatment at the clinic.",
+    "Family needs food assistance for a patient waiting at home for medical tests.",
+    "Patient needs a hot meal after an extended hospitalization.",
+    "Family requests help preparing meals for a patient during home medical care."
+};
+        // מערך כתובות
+        string[] addresses = new string[]
         {
-        ("123 Main St, City", 32.109333, 34.855499),
-        ("456 Elm St, City", 32.105699, 34.851502),
-        ("789 Oak St, City", 32.095485, 34.832389),
-        ("101 Pine St, City", 32.077098, 34.791331),
-        ("202 Maple St, City", 32.054198, 34.774587),
-        ("303 Birch St, City", 32.072294, 34.817534)
+    "King David St 12, Jerusalem, Israel",
+    "Keren Hayesod St 15, Jerusalem, Israel",
+    "HaRav Kook St 20, Jerusalem, Israel",
+    "Strauss St 5, Jerusalem, Israel",
+    "Radak St 10, Jerusalem, Israel",
+    "Bezalel St 35, Jerusalem, Israel",
+    "Shmuel HaNagid St 18, Jerusalem, Israel",
+    "David HaMelech St 6, Jerusalem, Israel",
+    "Shivtei Israel St 10, Jerusalem, Israel",
+    "HaMesila Park, Jerusalem, Israel",
+    "Rabbi Akiva St 8, Jerusalem, Israel",
+    "Haneviim St 50, Jerusalem, Israel",
+    "Yemin Moshe St 8, Jerusalem, Israel",
+    "Yoel Moshe Salomon St 22, Jerusalem, Israel",
+    "HaOren St 7, Jerusalem, Israel",
+    "Beit Hakerem St 25, Jerusalem, Israel",
+    "Givat Shaul St 10, Jerusalem, Israel",
+    "Shlomo Zalman Shragai St 5, Jerusalem, Israel",
+    "Emek Refaim St 12, Jerusalem, Israel",
+    "Azza St 40, Jerusalem, Israel",
+    "Derech Har HaTsofim 20, Jerusalem, Israel",
+    "Mount Scopus Campus, Jerusalem, Israel",
+    "Nablus Rd 10, Jerusalem, Israel",
+    "Hebron Rd 50, Jerusalem, Israel",
+    "HaPalmach St 20, Jerusalem, Israel",
+    "Lincoln St 5, Jerusalem, Israel",
+    "Duvdevani St 10, Jerusalem, Israel",
+    "Diskin St 12, Jerusalem, Israel",
+    "Alkalai St 15, Jerusalem, Israel",
+    "Ramban St 20, Jerusalem, Israel",
+    "Mordechai Ben Hillel St 12, Jerusalem, Israel",
+    "HaRav Herzog St 60, Jerusalem, Israel",
+    "Gershon Agron St 12, Jerusalem, Israel",
+    "Givon St 5, Jerusalem, Israel",
+    "Golda Meir Blvd 80, Jerusalem, Israel",
+    "Lev Ram Blvd 5, Jerusalem, Israel",
+    "Harav Shach St 10, Jerusalem, Israel",
+    "Kiryat HaLeom, Jerusalem, Israel",
+    "Shaarei Tsedek St 3, Jerusalem, Israel",
+    "Givat Mordechai St 10, Jerusalem, Israel",
+    "Bayit Vegan St 10, Jerusalem, Israel",
+    "Sanhedria St 12, Jerusalem, Israel",
+    "Bar Ilan St 20, Jerusalem, Israel",
+    "Shmuel Hanavi St 45, Jerusalem, Israel",
+    "Malha Rd 5, Jerusalem, Israel",
+    "Pisgat Ze'ev Blvd 10, Jerusalem, Israel",
+    "Teddy Stadium, Jerusalem, Israel",
+    "Zahal St 7, Jerusalem, Israel",
+    "Ha'Arazim Blvd 5, Jerusalem, Israel",
+    "Ramot Forest, Jerusalem, Israel",
+    "Eliyahu Bashan St 8, Jerusalem, Israel"
         };
 
-        // מאגר של תיאורי קריאות וסוגים
-        string[] descriptions = { "Electric issue", "Water leakage", "Fire alarm", "Noise complaint", "Gas leak", "Lost item" };
-        CallType[] callTypes = { CallType.Emergency, CallType.Technical, CallType.Service, CallType.General };
-
-        foreach (var description in descriptions)
+        // מערך קווי האורך
+        double[] longitudes = new double[]
         {
-            // קבלת מזהה ייחודי מתוך הקונפיגורציה
-            int id = s_dalConfig.GetNextCallId();
+    35.2134, 35.2153, 35.2135, 35.2110, 35.2123,
+    35.2201, 35.2120, 35.2145, 35.2159, 35.2206,
+    35.2221, 35.2113, 35.2176, 35.2138, 35.2109,
+    35.2118, 35.2082, 35.2047, 35.2165, 35.2147,
+    35.2202, 35.2423, 35.2349, 35.2128, 35.2131,
+    35.2169, 35.2074, 35.2117, 35.2105, 35.2139,
+    35.2208, 35.2126, 35.2204, 35.2133, 35.2146,
+    35.2041, 35.2039, 35.2034, 35.2239, 35.2144,
+    35.2223, 35.2174, 35.2300, 35.2332, 35.2122,
+    35.2305, 35.2249, 35.2251, 35.2168, 35.2214
+        };
 
-            // בחירת סוג קריאה וכתובת אקראית
-            CallType type = callTypes[s_rand.Next(callTypes.Length)];
-            var location = locations[s_rand.Next(locations.Length)];
-
-            // זמן פתיחת הקריאה רנדומלי, לפני הזמן הנוכחי
-            DateTime timeOpened = s_dalConfig.Clock.AddMinutes(-s_rand.Next(10, 1440)); // עד יום אחורה
-
-            // זמן סיום רנדומלי או null
-            DateTime? maxTimeToClose = s_rand.NextDouble() < 0.7
-                ? timeOpened.AddHours(s_rand.Next(1, 24))
-                : (DateTime?)null;
-
-            // יצירת אובייקט Call והוספתו לרשימה
-            s_dalCall!.Create(new Call
-            {
-                Id = id,
-                Type = type,
-                Description = description,
-                FullAddress = location.Address,
-                Latitude = location.Latitude,
-                Longitude = location.Longitude,
-                TimeOpened = timeOpened,
-                MaxTimeToClose = maxTimeToClose
-            });
-        }
-    }
-    private static void createAssignments()
-    {
-        // משתנה המייצג סיכוי טיפול
-        double chanceOfAssignment = 0.8;
-
-        foreach (var call in s_dalCall!.ReadAll())
+        // מערך קווי הרוחב
+        double[] latitudes = new double[]
         {
-            // מגרילים אם תהיה הקצאה לקריאה זו
-            if (s_rand.NextDouble() > chanceOfAssignment) continue;
+    31.7769, 31.7747, 31.7830, 31.7739, 31.7762,
+    31.7743, 31.7748, 31.7796, 31.7740, 31.7711,
+    31.7741, 31.7764, 31.7810, 31.7768, 31.7819,
+    31.7795, 31.7780, 31.7825, 31.7814, 31.7817,
+    31.7822, 31.7789, 31.7758, 31.7726, 31.7703,
+    31.7831, 31.7813, 31.7792, 31.7764, 31.7805,
+    31.7753, 31.7755, 31.7793, 31.7761, 31.7708,
+    31.7716, 31.7777, 31.7722, 31.7803, 31.7801,
+    31.7796, 31.7748, 31.7794, 31.7759, 31.7816,
+    31.7809, 31.7730, 31.7792, 31.7749, 31.7731
+        };
 
-            // מזהה הקצאה מתוך הקונפיגורציה
-            int assignmentId = s_dalConfig.NextAssignmentId();
 
-            // הגרלת מתנדב קיים לפי ת.ז
-            int volunteerId;
-            do
-                volunteerId = s_rand.Next(MIN_ID, MAX_ID);
-            while (s_dalVolunteer!.Read(volunteerId) == null); // בדיקה שהמתנדב קיים
 
-            // קביעת זמן כניסה לטיפול לאחר זמן פתיחה
-            DateTime startTreatment = call.TimeOpened.AddMinutes(s_rand.Next(1, 120)); // עד שעתיים אחרי פתיחה
-
-            // זמן סיום טיפול (עשוי להיות אחרי זמן מקסימלי או null)
-            DateTime? endTreatment = null;
-            if (call.MaxTimeToClose.HasValue)
+        // יצירת קריאות
+        for (int i = 0; i < 50; i++)
+        {
+            CallType calltype;  // הכרזה על המשתנה פעם אחת
+            string ndescription;
+            int p = 0, T = 0, I = 0;
+            if (i % 3 == 0)
             {
-                endTreatment = startTreatment.AddMinutes(s_rand.Next(1, 180)); // עד 3 שעות אחרי התחלה
-                if (endTreatment > call.MaxTimeToClose)
-                {
-                    endTreatment = null; // זמן סיום שלא תואם את הזמן המקסימלי של הקריאה
-                }
+                calltype = CallType.FoodPreparation;
+                ndescription = DescriptionsP[p];
+                p++;
             }
-
-            // סוג סיום טיפול
-            string closeType;
-            if (endTreatment.HasValue)
+            else if (i % 4 == 0)
             {
-                closeType = endTreatment <= call.MaxTimeToClose ? "טופלה" : "ביטול מנהל";
+                calltype = CallType.FoodTransport;
+                ndescription = DescriptionsP[T];
+                T++;
             }
             else
             {
-                closeType = "בטיפול";
+                calltype = CallType.InventoryCheck;  // ערך אחר אם לא מתקיים אף תנאי
+                ndescription = DescriptionsP[I];
+                I++;
             }
 
-            // יצירת אובייקט Assignment והוספתו לרשימה
-            s_dalAssignment!.Create(new Assignment
+
+
+            //DateTime? maxTimeToClose =
+            //DateTime start = s_dalConfig.Clock.AddDays(-1); // זמן התחלה יהיה לפני 24 שעות מהשעון הנוכחי
+            //int range = (s_dalConfig.Clock - start).Minutes; // חישוב מספר הדקות מאז זמן ההתחלה
+            //DateTime RndomStart = start.AddMinutes(s_rand.Next(range)); // הגרלת זמן פתיחה רנדומלי בתוך ה-24 שעות האחרונות
+            //DateTime? RandomEnd = null;
+            //if (i % 10 == 0)//5 that endtime- pag tokef
+
+            //    RandomEnd = RndomStart.AddMinutes(new Random().Next(, (int)(s_dalConfig.Clock - RndomStart).TotalMinutes));
+            //// כעת, ניצור זמן סיום מקסימלי בהתאם לזמן הפתיחה:
+            //else
+            //{
+            //    // ערך ברירת מחדל, אין זמן סיום
+            //    if (s_rand.Next(2) == 1) // החלטה רנדומלית אם לכלול זמן סיום או לא
+            //    {
+            //        int maxDurationMinutes = s_rand.Next(1, 1441); // הגדרת טווח זמן סיום מקסימלי (עד 1440 דקות = 24 שעות)
+            //        RandomEnd = RndomStart.AddMinutes(maxDurationMinutes); // זמן סיום הוא זמן פתיחה + מספר דקות רנדומלי
+            //    }
+            //}
+            // הגדרת זמן התחלה - 24 שעות אחורה מהשעה הנוכחית
+            DateTime start = s_dalConfig.Clock.AddDays(-1);
+
+            // חישוב מספר הדקות מאז זמן ההתחלה ועד עכשיו
+            int totalMinutesInLastDay = (int)(s_dalConfig.Clock - start).TotalMinutes;
+
+            // זמן פתיחה רנדומלי בתוך ה-24 שעות האחרונות
+            DateTime RndomStart = start.AddMinutes(s_rand.Next(0, totalMinutesInLastDay));
+
+            // זמן סיום אופציונלי
+            DateTime? RandomEnd = null;
+
+            // אם i מתחלק ב-10
+            if (i % 10 == 0)
             {
-                Id = assignmentId,
-                CallId = call.Id,
-                VolunteerId = volunteerId,
-                StartTreatment = startTreatment,
-                EndTreatment = endTreatment,
-                CloseType = closeType
-            });
+                // זמן סיום רנדומלי בתוך החלון בין RndomStart לזמן הנוכחי
+                int maxRange = (int)(s_dalConfig.Clock - RndomStart).TotalMinutes;
+                if (maxRange > 0) // רק אם יש טווח אפשרי
+                {
+                    RandomEnd = RndomStart.AddMinutes(s_rand.Next(1, maxRange + 1));
+                }
+            }
+            else
+            {
+                // הסתברות של 50% לכלול זמן סיום
+                if (s_rand.Next(2) == 1)
+                {
+                    // זמן סיום יהיה בין דקה אחת ל-24 שעות (1440 דקות) אחרי זמן הפתיחה
+                    int maxDurationMinutes = s_rand.Next(1, 1441);
+                    RandomEnd = RndomStart.AddMinutes(maxDurationMinutes);
+                }
+            }
+
+
+            // נשאר להתעסק עם הכתובות...
+            s_Call.Create(new Call(0, calltype, ndescription, addresses[i], latitudes[i], longitudes[i], RndomStart, RandomEnd));
+        }
+
+    }
+    private static void createAssignment()
+    {
+        for (int i = 0; i < 60; i++)
+        {
+
+            int randVolunteer = s_rand.Next(s_Volunteer!.ReadAll().Count);
+            Volunteer volunteerToAssig = s_Volunteer.ReadAll()[randVolunteer];
+            int randCAll = s_rand.Next(s_Call!.ReadAll().Count - 15);
+            Call callToAssig = s_Call.ReadAll()[randCAll];
+            while (callToAssig.TimeOpened > s_dalConfig!.Clock)
+            {
+                randCAll = s_rand.Next(s_Call!.ReadAll().Count - 15);
+                callToAssig = s_Call.ReadAll()[randCAll];
+            }
+            TypeEnd? finish = null;
+            DateTime? finishTime = null;
+            if (callToAssig.MaxTimeToClose != null && callToAssig.MaxTimeToClose >= s_dalConfig?.Clock)
+            {
+                finish = TypeEnd.ExpiredCancel;
+            }
+            else
+            {
+                int randFinish = s_rand.Next(0, 4);
+                switch (randFinish)
+                {
+                    case 0:
+                        finish = TypeEnd.Treated;
+                        finishTime = s_dalConfig!.Clock;
+                        break;
+                    case 1: finish = TypeEnd.SelfCancel; break;
+                    case 2: finish = TypeEnd.ManagerCancel; break;
+
+                }
+            }
+            s_Assignment?.Create(new Assignment(0, callToAssig.Id, volunteerToAssig.Id, s_dalConfig!.Clock, finishTime, finish));
         }
     }
 
+    public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig)
+    {
+        // בדיקות ערך עבור הפרמטרים
+        s_Volunteer = dalVolunteer ?? throw new NullReferenceException("Volunteer DAL object cannot be null!");
+        s_Call = dalCall ?? throw new NullReferenceException("Call DAL object cannot be null!");
+        s_Assignment = dalAssignment ?? throw new NullReferenceException("Assignment DAL object cannot be null!");
+        s_dalConfig = dalConfig ?? throw new NullReferenceException("Config DAL object cannot be null!");
 
+        Console.WriteLine("Resetting configuration values and clearing all lists...");
 
+        // איפוס כל הנתונים
+        s_dalConfig.Reset();
+        s_Volunteer.DeleteAll();
+        s_Call.DeleteAll();
+        s_Assignment.DeleteAll();
 
+        Console.WriteLine("Initializing volunteers...");
+        CreateVolunteer();
+
+        Console.WriteLine("Initializing calls...");
+        CreateCalls();
+
+        Console.WriteLine("Initializing assignments...");
+        createAssignment();
+
+        Console.WriteLine("Initialization complete.");
+    }
 
 }

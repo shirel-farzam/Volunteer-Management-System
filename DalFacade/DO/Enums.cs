@@ -19,8 +19,9 @@ public enum CallType
 {
     FoodPreparation,  // הכנת אוכל
     FoodTransport,    // שינוע אוכל
-                      // ניתן להוסיף סוגים נוספים לפי הצורך
+    InventoryCheck,   // בדיקת מלאי
 }
+
 public enum TypeEnd
 {
     Treated,          // טופלה
