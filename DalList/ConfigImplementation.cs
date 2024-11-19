@@ -2,7 +2,7 @@
 
 namespace Dal;
 
-public class ConfigImplementation : IConfig
+internal class ConfigImplementation : IConfig
 {
     // Property to get and set the system clock from Config
     public DateTime Clock { get => Config.Clock; set => Config.Clock = value; }

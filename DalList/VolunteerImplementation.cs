@@ -3,7 +3,7 @@ using DO;
 using DalApi;
 using System;
 
-public class VolunteerImplementation : IVolunteer
+internal class VolunteerImplementation : IVolunteer
 {
     // Create a new Volunteer
     public void Create(Volunteer item)
