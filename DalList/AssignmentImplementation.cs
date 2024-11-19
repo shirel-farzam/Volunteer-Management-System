@@ -20,7 +20,7 @@ internal class AssignmentImplementation : IAssignment
         // Find the assignment by its ID
         var assignment = DataSource.Assignments.FirstOrDefault(a => a.Id == id);
         if (assignment == null)
-            throw new Exception($"Assignment with ID={id} not exists");
+            throw new DalDoesNotExistException($"Assignment with ID={id} not exists");
 
         // Remove the assignment from the list
         DataSource.Assignments.Remove(assignment);
@@ -53,7 +53,7 @@ internal class AssignmentImplementation : IAssignment
         int index = DataSource.Assignments.FindIndex(c => c.Id == item.Id);
         if (index == -1)
         {
-            throw new Exception($"Assignment with ID={item.Id} not exists");
+            throw new DalDoesNotExistException($"Assignment with ID={item.Id} not exists");
         }
         // Update the assignment in the list
         DataSource.Assignments[index] = item;

@@ -5,11 +5,16 @@ using DO;
 
 public static class Initialization
 {
-    private static IVolunteer? s_Volunteer; //stage 1 - Interface for handling volunteer operations
-    private static ICall? s_Call; //stage 1 - Interface for handling call operations
-    private static IAssignment? s_Assignment; //stage 1 - Interface for handling assignment operations
-    private static IConfig? s_dalConfig; //stage 1 - Interface for configuration data
-    private static readonly Random s_rand = new(); // Random instance for generating random values
+    //private static IVolunteer? s_Volunteer; //stage 1 - Interface for handling volunteer operations
+    //private static ICall? s_Call; //stage 1 - Interface for handling call operations
+    //private static IAssignment? s_Assignment; //stage 1 - Interface for handling assignment operations
+    //private static IConfig? s_dal.Config; //stage 1 - Interface for configuration data
+    //private static readonly Random s_rand = new(); // Random instance for generating random values
+
+    private static IDal? s_dal; //stage 2
+    private static readonly Random s_rand = new();
+    private const int MIN_ID = 200000000;
+    private const int MAX_ID = 400000000;
 
     // Method to create volunteer data
     private static void CreateVolunteer()
@@ -32,6 +37,7 @@ public static class Initialization
                    "tamar.malka@example.com", "yael.adi@example.com", "ron.hazan@example.com",
                    "yonatan.green@example.com", "michal.cohen@example.com", "yuval.levy@example.com",
                    "ofir.dayan@example.com", "alon.goldberg@example.com", "shira.sharabi@example.com" };
+
 
         // Array of volunteer addresses (strings)
         string[] addresses =
@@ -75,7 +81,7 @@ public static class Initialization
             int id;
             do
                 id = s_rand.Next(700000000, 1000000000); // Generate a random ID with 9 digits
-            while (s_Volunteer!.Read(id) != null); // Check if the ID is unique by verifying that no existing volunteer has the same ID
+            while (s_dal!.Volunteer.Read(id) != null); // Check if the ID is unique by verifying that no existing volunteer has the same ID
 
             string name = VolunteerName[i];
             string phone = PhoneNumber[i];
@@ -86,17 +92,17 @@ public static class Initialization
             double maxReading = s_rand.Next(5, 100); // Generate a random max reading between 5 and 100
 
             //Create a new Volunteer object and add it to the data source
-            s_Volunteer!.Create(new Volunteer(id, name, phone, email, distanceType, role, active, null, null, null, null, maxReading));
+            s_dal!.Volunteer.Create(new Volunteer(id, name, phone, email, distanceType, role, active, null, null, null, null, maxReading));
         }
 
         // Adding at least one manager
         int managerId;
         do
             managerId = s_rand.Next(100000000, 1000000000); // Generate a random ID for the manager
-        while (s_Volunteer!.Read(managerId) != null); // Check if the ID is unique
+        while (s_dal!.Volunteer.Read(managerId) != null); // Check if the ID is unique
 
         // Create a new manager and add to the data source
-        s_Volunteer!.Create(new Volunteer(managerId, "Admin Manager", "050-1111111", "admin@example.com", Distance.Aerial, Role.Boss, true, "Password246"));
+        s_dal!.Volunteer.Create(new Volunteer(managerId, "Admin Manager", "050-1111111", "admin@example.com", Distance.Aerial, Role.Boss, true, "Password246"));
     }
 
 
@@ -277,10 +283,10 @@ public static class Initialization
             }
 
             // Set the start time to one day before the current clock time
-            DateTime start = s_dalConfig.Clock.AddDays(-1);
+            DateTime start = s_dal!.Config.Clock.AddDays(-1);
 
             // Calculate the total minutes from the start time to the current time
-            int totalMinutesInLastDay = (int)(s_dalConfig.Clock - start).TotalMinutes;
+            int totalMinutesInLastDay = (int)(s_dal.Config.Clock - start).TotalMinutes;
 
             // Generate a random start time within the last 24 hours
             DateTime RndomStart = start.AddMinutes(s_rand.Next(0, totalMinutesInLastDay));
@@ -292,7 +298,7 @@ public static class Initialization
             if (i % 10 == 0)
             {
                 // Ensure this call might be expired
-                int maxRange = (int)(s_dalConfig.Clock - RndomStart).TotalMinutes;
+                int maxRange = (int)(s_dal.Config.Clock - RndomStart).TotalMinutes;
                 if (maxRange > 0)
                 {
                     RandomEnd = RndomStart.AddMinutes(s_rand.Next(1, maxRange + 1));
@@ -309,13 +315,13 @@ public static class Initialization
                     // Make approximately 5 calls expire
                     if (i < 5)
                     {
-                        RandomEnd = s_dalConfig.Clock.AddMinutes(-s_rand.Next(1, 60)); // Expired time
+                        RandomEnd = s_dal.Config.Clock.AddMinutes(-s_rand.Next(1, 60)); // Expired time
                     }
                 }
             }
 
             // Create the call object
-            s_Call.Create(new Call(0, calltype, ndescription, addresses[i], latitudes[i], longitudes[i], RndomStart, RandomEnd));
+            s_dal.Call.Create(new Call(0, calltype, ndescription, addresses[i], latitudes[i], longitudes[i], RndomStart, RandomEnd));
         }
     }
         private static void createAssignment()
@@ -324,18 +330,18 @@ public static class Initialization
         for (int i = 0; i < 60; i++)
         {
             // Randomly select a volunteer from the list
-            int randVolunteer = s_rand.Next(s_Volunteer!.ReadAll().Count);
-            Volunteer volunteerToAssig = s_Volunteer.ReadAll()[randVolunteer];
+            int randVolunteer = s_rand.Next(s_dal!.Volunteer.ReadAll().Count);
+            Volunteer volunteerToAssig = s_dal!.Volunteer.ReadAll()[randVolunteer];
 
             // Randomly select a call from the list, excluding the last 15 calls
-            int randCAll = s_rand.Next(s_Call!.ReadAll().Count - 15);
-            Call callToAssig = s_Call.ReadAll()[randCAll];
+            int randCAll = s_rand.Next(s_dal!.Call.ReadAll().Count - 15);
+            Call callToAssig = s_dal.Call.ReadAll()[randCAll];
 
             // Ensure the selected call has been opened before the current time
-            while (callToAssig.TimeOpened > s_dalConfig!.Clock)
+            while (callToAssig.TimeOpened > s_dal!.Config.Clock)
             {
-                randCAll = s_rand.Next(s_Call!.ReadAll().Count - 15);
-                callToAssig = s_Call.ReadAll()[randCAll];
+                randCAll = s_rand.Next(s_dal!.Call.ReadAll().Count - 15);
+                callToAssig = s_dal.Call.ReadAll()[randCAll];
             }
 
             // Declare variables for the finish type and finish time
@@ -343,7 +349,7 @@ public static class Initialization
             DateTime? finishTime = null;
 
             // Check if the call has a max time to close and if it is not expired
-            if (callToAssig.MaxTimeToClose != null && callToAssig.MaxTimeToClose >= s_dalConfig?.Clock)
+            if (callToAssig.MaxTimeToClose != null && callToAssig.MaxTimeToClose >= s_dal?.Config.Clock)
             {
                 finish = TypeEnd.ExpiredCancel;
             }
@@ -355,7 +361,7 @@ public static class Initialization
                 {
                     case 0:
                         finish = TypeEnd.Treated;
-                        finishTime = s_dalConfig!.Clock;
+                        finishTime = s_dal!.Config.Clock;
                         break;
                     case 1: finish = TypeEnd.SelfCancel; break;
                     case 2: finish = TypeEnd.ManagerCancel; break;
@@ -363,25 +369,31 @@ public static class Initialization
             }
 
             // Create the assignment using the selected volunteer and call details
-            s_Assignment?.Create(new Assignment(0, callToAssig.Id, volunteerToAssig.Id, s_dalConfig!.Clock, finishTime, finish));
+            s_dal?.Assignment.Create(new Assignment(0, callToAssig.Id, volunteerToAssig.Id, s_dal!.Config.Clock, finishTime, finish));
         }
     }
 
-    public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig)
+
+    // public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig)
+    public static void Do(IDal dal) //stage 2
     {
         // Null checks for the parameters to ensure that none of them are null
-        s_Volunteer = dalVolunteer ?? throw new NullReferenceException("Volunteer DAL object cannot be null!");
-        s_Call = dalCall ?? throw new NullReferenceException("Call DAL object cannot be null!");
-        s_Assignment = dalAssignment ?? throw new NullReferenceException("Assignment DAL object cannot be null!");
-        s_dalConfig = dalConfig ?? throw new NullReferenceException("Config DAL object cannot be null!");
+        //s_Volunteer = dalVolunteer ?? throw new NullReferenceException("Volunteer DAL object cannot be null!");
+        //s_Call = dalCall ?? throw new NullReferenceException("Call DAL object cannot be null!");
+        //s_Assignment = dalAssignment ?? throw new NullReferenceException("Assignment DAL object cannot be null!");
+        //s_dal.Config = dalConfig ?? throw new NullReferenceException("Config DAL object cannot be null!");
+
+        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
 
         Console.WriteLine("Resetting configuration values and clearing all lists...");
 
         // Resetting all data and deleting entries in the respective databases
-        s_dalConfig.Reset();
-        s_Volunteer.DeleteAll();
-        s_Call.DeleteAll();
-        s_Assignment.DeleteAll();
+        //s_dal.Config.Reset();
+        //s_Volunteer.DeleteAll();
+        //s_Call.DeleteAll();
+        //s_Assignment.DeleteAll();
+        s_dal.ResetDB();//stage 2
+
 
         Console.WriteLine("Initializing volunteers...");
         // Calling method to initialize volunteers

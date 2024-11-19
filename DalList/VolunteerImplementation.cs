@@ -11,7 +11,7 @@ internal class VolunteerImplementation : IVolunteer
         // Check if a volunteer with the same ID already exists in the DataSource
         if (DataSource.Volunteers.Any(v => v.Id == item.Id))
         {
-            throw new Exception($"Volunteer with ID={item.Id} already exists"); // If exists, throw an exception
+            throw new DalAlreadyExistsException($"Volunteer with ID={item.Id} already exists"); // If exists, throw an exception
         }
 
         DataSource.Volunteers.Add(item); // Add the new volunteer to the DataSource
@@ -38,7 +38,7 @@ internal class VolunteerImplementation : IVolunteer
     {
         // Find the index of the volunteer to update by ID
         var index = DataSource.Volunteers.FindIndex(v => v.Id == item.Id);
-        if (index == -1) throw new Exception($"Volunteer with ID={item.Id} not exists"); // If not found, throw an exception
+        if (index == -1) throw new DalDoesNotExistException($"Volunteer with ID={item.Id} not exists"); // If not found, throw an exception
 
         // Replace the existing volunteer at the found index with the updated volunteer details
         DataSource.Volunteers[index] = new Volunteer
@@ -62,7 +62,7 @@ internal class VolunteerImplementation : IVolunteer
     public void Delete(int id)
     {
         var volunteer = DataSource.Volunteers.FirstOrDefault(v => v.Id == id); // Search for the volunteer by ID
-        if (volunteer == null) throw new Exception($"Volunteer with ID={id} not exists"); // If not found, throw an exception
+        if (volunteer == null) throw new DalDoesNotExistException($"Volunteer with ID={id} not exists"); // If not found, throw an exception
 
         DataSource.Volunteers.Remove(volunteer); // Remove the volunteer from the DataSource
     }

@@ -13,7 +13,7 @@ sealed public class DalList : IDal
         Volunteer.DeleteAll();
         Call.DeleteAll();
         Assignment.DeleteAll();
-        //...  	  
+        //.
         Config.Reset();
 
     }

@@ -19,7 +19,7 @@ internal class CallImplementation : ICall
         // Find the call by its ID
         Call? call1 = DataSource.Calls.Find(c => c.Id == id);
         if (call1 == null)
-            throw new Exception($"Call with ID={id} not exists");
+            throw new DalDoesNotExistException($"Call with ID={id} not exists");
 
         // Remove the call from the list
         DataSource.Calls.Remove(call1);
@@ -53,7 +53,7 @@ internal class CallImplementation : ICall
         // Find the index of the call by its ID
         int index = DataSource.Calls.FindIndex(c => c.Id == item.Id);
         if (index == -1)
-            throw new Exception($"Call with ID={item.Id} does not exist.");
+            throw new DalDoesNotExistException($"Call with ID={item.Id} does not exist.");
 
         // Update the call in the list
         DataSource.Calls[index] = item;
