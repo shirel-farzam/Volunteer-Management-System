@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+  <NextCallId>1000</NextCallId> <!-- Initial value for NextCallId -->
+  <NextAssignmentId>1000</NextAssignmentId> <!-- Initial value for NextAssignmentId -->
+  <NextVolunteerId>1000</NextVolunteerId> <!-- Initial value for NextVolunteerId -->
+  <Clock>2024-11-24T12:00:00</Clock> <!-- Initial value for Clock (current date and time) -->
+  <MaxRange>00:30:00</MaxRange> <!-- Initial value for MaxRange (TimeSpan format) -->
+</config>
