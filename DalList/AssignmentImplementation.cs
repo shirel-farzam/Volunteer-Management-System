@@ -35,17 +35,28 @@ internal class AssignmentImplementation : IAssignment
     public Assignment? Read(int id)
     {
         // Search for an assignment by ID
-        var assignment = DataSource.Assignments.FirstOrDefault(a => a.Id == id);
-        if (assignment == null)
-            return null;
-        return assignment;
+        //var assignment = DataSource.Assignments.FirstOrDefault(a => a.Id == id);
+        //if (assignment == null)
+        //    return null;
+        //return assignment;stag1 
+        return DataSource.Assignments.FirstOrDefault(item => item.Id == id); //stage 2
+
+    }
+    public Assignment? Read(Func<Assignment, bool> filter) // stage 2
+    {
+        // Finds the first volunteer that matches the filter function and returns it
+        return DataSource.Assignments.FirstOrDefault(filter);
     }
 
-    public List<Assignment> ReadAll()
-    {
-        // Return a copy of the entire assignment list
-        return new List<Assignment>(DataSource.Assignments);
-    }
+    //public List<Assignment> ReadAll()
+    //{
+    //    // Return a copy of the entire assignment list
+    //    return new List<Assignment>(DataSource.Assignments);
+    //} //stage 1
+    public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null) //stage 2
+           => filter == null
+               ? DataSource.Assignments.Select(item => item)
+            : DataSource.Assignments.Where(filter);
 
     public void Update(Assignment item)
     {

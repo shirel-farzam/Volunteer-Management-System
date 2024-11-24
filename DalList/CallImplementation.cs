@@ -34,19 +34,24 @@ internal class CallImplementation : ICall
     public Call? Read(int id)
     {
         // Find a call by its ID
-        var findCall = DataSource.Calls.Find(c => c.Id == id);
-        if (findCall != null)
-            return findCall;
+        //var findCall = DataSource.Calls.Find(c => c.Id == id);
+        //if (findCall != null)
+        //    return findCall;
 
-        // Return null if the call does not exist
-        return null;
+        //// Return null if the call does not exist
+        //return null;stage 1
+        return DataSource.Calls.FirstOrDefault(item => item.Id == id); //stage 2
+
     }
-
-    public List<Call> ReadAll()
+    public Call? Read(Func<Call, bool> filter) // stage 2
     {
-        // Return a copy of the entire call list
-        return new List<Call>(DataSource.Calls);
+        // Finds the first volunteer that matches the filter function and returns it
+        return DataSource.Calls.FirstOrDefault(filter);
     }
+    public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null) //stage 2
+       => filter == null
+           ? DataSource.Calls.Select(item => item)
+        : DataSource.Calls.Where(filter);
 
     public void Update(Call item)
     {

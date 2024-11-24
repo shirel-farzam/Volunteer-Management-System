@@ -21,17 +21,31 @@ internal class VolunteerImplementation : IVolunteer
     // Read a Volunteer by its ID
     public Volunteer? Read(int id)
     {
-        var volunteer1 = DataSource.Volunteers.FirstOrDefault(v => v.Id == id); // Search for the volunteer by ID
-        if (volunteer1 == null)
-            return null; // If no volunteer is found, return null
-        return volunteer1; // Return the found volunteer
+        // var volunteer1 = DataSource.Volunteers.FirstOrDefault(v => v.Id == id); // Search for the volunteer by ID stage 1
+
+
+        //if (volunteer1 == null)
+        //    return null; // If no volunteer is found, return null
+        //return volunteer1; // Return the found volunteer
+        return DataSource.Volunteers.FirstOrDefault(item => item.Id == id); //stage 2
+
+    }
+    public Volunteer? Read(Func<Volunteer, bool> filter) // stage 2
+    {
+        // Finds the first volunteer that matches the filter function and returns it
+        return DataSource.Volunteers.FirstOrDefault(filter);
     }
 
+
     // Read all Volunteers
-    public List<Volunteer> ReadAll()
-    {
-        return new List<Volunteer>(DataSource.Volunteers); // Return a new list containing all volunteers in DataSource
-    }
+    //public List<Volunteer> ReadAll()
+    //{
+    //    return new List<Volunteer>(DataSource.Volunteers); // Return a new list containing all volunteers in DataSource
+    //} stage 1
+    public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null) //stage 2
+   => filter == null
+       ? DataSource.Volunteers.Select(item => item)
+    : DataSource.Volunteers.Where(filter);
 
     // Update an existing Volunteer
     public void Update(Volunteer item)

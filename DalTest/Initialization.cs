@@ -330,18 +330,25 @@ public static class Initialization
         for (int i = 0; i < 60; i++)
         {
             // Randomly select a volunteer from the list
-            int randVolunteer = s_rand.Next(s_dal!.Volunteer.ReadAll().Count);
-            Volunteer volunteerToAssig = s_dal!.Volunteer.ReadAll()[randVolunteer];
+            //int randVolunteer = s_rand.Next(s_dal!.Volunteer.ReadAll().Count); /stage 1
+            //Volunteer volunteerToAssig = s_dal!.Volunteer.ReadAll()[randVolunteer];
+
+            int randVolunteer = s_rand.Next(s_dal!.Volunteer.ReadAll().Count());
+            Volunteer volunteerToAssig = s_dal!.Volunteer.ReadAll().ElementAt(randVolunteer);
 
             // Randomly select a call from the list, excluding the last 15 calls
-            int randCAll = s_rand.Next(s_dal!.Call.ReadAll().Count - 15);
-            Call callToAssig = s_dal.Call.ReadAll()[randCAll];
+            //int randCAll = s_rand.Next(s_dal!.Call.ReadAll().Count - 15);
+            //Call callToAssig = s_dal.Call.ReadAll()[randCAll]; // stage 1
+            int randCAll = s_rand.Next(s_dal!.Call.ReadAll().Count() - 15);
+            Call callToAssig = s_dal.Call.ReadAll().ElementAt(randCAll);
 
             // Ensure the selected call has been opened before the current time
             while (callToAssig.TimeOpened > s_dal!.Config.Clock)
             {
-                randCAll = s_rand.Next(s_dal!.Call.ReadAll().Count - 15);
-                callToAssig = s_dal.Call.ReadAll()[randCAll];
+                //randCAll = s_rand.Next(s_dal!.Call.ReadAll().Count - 15);
+                //callToAssig = s_dal.Call.ReadAll()[randCAll]; //stage 1
+                randCAll = s_rand.Next(s_dal!.Call.ReadAll().Count() - 15);
+                callToAssig = s_dal.Call.ReadAll().ElementAt(randCAll);
             }
 
             // Declare variables for the finish type and finish time
