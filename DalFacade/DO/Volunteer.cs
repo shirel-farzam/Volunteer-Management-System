@@ -39,6 +39,7 @@ public record Volunteer
     /// Default constructor for stage 3
     /// </summary>
     public Volunteer() : this(0, "", "", "", default(Distance), default(Role), false) { }
+
 }
 
     

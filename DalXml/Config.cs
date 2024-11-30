@@ -43,7 +43,7 @@ internal static class Config
         // Reset RiskRange to a default value (e.g., 1 hour)
         RiskRange = TimeSpan.FromHours(1);
 
-        // Add other properties to reset if needed
+     
     }
 
 }

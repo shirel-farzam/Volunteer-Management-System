@@ -1,10 +1,8 @@
-﻿using Dal;
-using DalApi;
-using DO;
-
-
-namespace DalTest
+﻿namespace DalTest
 {
+    using Dal;
+    using DalApi;
+    using DO;
     internal   class Program
     {
         // Creating instances of data access layer (DAL) for handling different entities
@@ -21,7 +19,8 @@ namespace DalTest
         //// s_dal.Config is used to interact with the data layer for Config settings
         //private static IConfig? s_dal.Config = new ConfigImplementation();
 
-        static readonly IDal s_dal = new Dal.DalList(); //stage 2
+        //static readonly IDal s_dal = new Dal.DalList(); //stage 2
+        static readonly IDal s_dal = new DalXml(); //stage 3
 
         // Enum representing the options available in the Main Menu
         public enum MainMenuOption
@@ -645,14 +644,16 @@ namespace DalTest
                 {
                     // Advance the system clock by a certain number of hours
                     case ConfigMenuOption.AdvanceSystemClock:
-                        Console.Write("Enter the number of hours to advance the clock: ");
-                        int hours = int.Parse(Console.ReadLine() ?? "0");
-                        s_dal.Config!.Clock = s_dal.Config.Clock.AddHours(hours); // Update the clock in the config
-                        Console.WriteLine($"System clock advanced by {hours} hours.");
-                        break;
+                    Console.Write("Enter the number of hours to advance the clock: ");
+                    int hours = int.Parse(Console.ReadLine() ?? "0");
+                    s_dal.Config!.Clock = s_dal.Config.Clock.AddHours(hours); // Update the clock in the config
+                  
+                    Console.WriteLine($"System clock advanced by {hours} hours.");
+                    break;
 
-                    // Show the current system clock
-                    case ConfigMenuOption.ShowSystemClock:
+
+                // Show the current system clock
+                case ConfigMenuOption.ShowSystemClock:
                         Console.WriteLine($"Current System Clock: {s_dal.Config?.Clock}");
                         break;
 
