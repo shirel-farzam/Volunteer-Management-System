@@ -1,5 +1,4 @@
 ﻿using DalApi;
-
 namespace Dal;
 
 internal class ConfigImplementation : IConfig

@@ -392,13 +392,8 @@ public static class Initialization
 
         s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
 
-        Console.WriteLine("Resetting configuration values and clearing all lists...");
+      Console.WriteLine("Resetting configuration values and clearing all lists...");
 
-        // Resetting all data and deleting entries in the respective databases
-        //s_dal.Config.Reset();
-        //s_Volunteer.DeleteAll();
-        //s_Call.DeleteAll();
-        //s_Assignment.DeleteAll();
         s_dal.ResetDB();//stage 2
 
 

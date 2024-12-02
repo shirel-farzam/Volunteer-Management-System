@@ -647,8 +647,7 @@
                     Console.Write("Enter the number of hours to advance the clock: ");
                     int hours = int.Parse(Console.ReadLine() ?? "0");
                     s_dal.Config!.Clock = s_dal.Config.Clock.AddHours(hours); // Update the clock in the config
-                  
-                    Console.WriteLine($"System clock advanced by {hours} hours.");
+                     Console.WriteLine($"System clock advanced by {hours} hours.");
                     break;
 
 

@@ -14,8 +14,8 @@ internal static class Config
     }
     internal static int NextAssignmentId
     {
-        get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextAssignmentId");
-        private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextAssignmentId", value);
+        get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextAssignmentID");
+        private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextAssignmentID", value);
     }
 
     //...	
@@ -31,6 +31,7 @@ internal static class Config
         set => XMLTools.SetConfigTimeSpanVal(s_data_config_xml, "RiskRange", value);
     }
 
+
     internal static void Reset()
     {
         // Reset IDs
@@ -41,9 +42,7 @@ internal static class Config
         Clock = DateTime.Now;
 
         // Reset RiskRange to a default value (e.g., 1 hour)
-        RiskRange = TimeSpan.FromHours(1);
-
-     
+        RiskRange = TimeSpan.Zero;
+        
     }
-
 }

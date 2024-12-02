@@ -1,13 +1,11 @@
-﻿
-namespace Dal;
+﻿namespace Dal;
 
 using DO;
-using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
- static class XMLTools
+static class XMLTools
 {
     const string s_xmlDir = @"..\xml\";
     static XMLTools()
@@ -103,7 +101,6 @@ using System.Xml.Serialization;
         DateTime dt = root.ToDateTimeNullable(elemName) ?? throw new FormatException($"can't convert:  {xmlFileName}, {elemName}");
         return dt;
     }
-  
     public static void SetConfigIntVal(string xmlFileName, string elemName, int elemVal)
     {
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
@@ -116,27 +113,31 @@ using System.Xml.Serialization;
         root.Element(elemName)?.SetValue((elemVal).ToString());
         XMLTools.SaveListToXMLElement(root, xmlFileName);
     }
+
+    public static TimeSpan GetConfigSpanVal(string xmlFileName, string elemName)
+    {
+        XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
+        TimeSpan dt = root.ToTimeSpanNullable(elemName) ?? throw new FormatException($"can't convert:  {xmlFileName}, {elemName}");
+        return dt;
+    }
+
+    public static void SetConfigSpanVal(string xmlFileName, string elemName, TimeSpan elemVal)
+    {
+        XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
+        root.Element(elemName)?.SetValue((elemVal).ToString());
+        XMLTools.SaveListToXMLElement(root, xmlFileName);
+    }
     public static TimeSpan GetConfigTimeSpanVal(string xmlFileName, string elemName)
     {
-        // Load the XML root element from the file
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
-
-        // Find the specified element and retrieve its value
-        string rawValue = root.Element(elemName)?.Value ?? throw new Exception($"Element {elemName} not found");
-
-        // Convert the value from string to TimeSpan
-        return TimeSpan.Parse(rawValue);
+        TimeSpan span = root.ToTimeSpanNullable(elemName) ?? throw new FormatException($"Cannot convert element '{elemName}' in file '{xmlFileName}' to TimeSpan.");
+        return span;
     }
 
     public static void SetConfigTimeSpanVal(string xmlFileName, string elemName, TimeSpan elemVal)
     {
-        // Load the XML root element from the file
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
-
-        // Find the specified element and update its value
-        root.Element(elemName)?.SetValue(elemVal.ToString()); // TimeSpan converted to string
-
-        // Save the updated XML back to the file
+        root.Element(elemName)?.SetValue(elemVal.ToString());
         XMLTools.SaveListToXMLElement(root, xmlFileName);
     }
 
@@ -149,7 +150,8 @@ using System.Xml.Serialization;
         Enum.TryParse<T>((string?)element.Element(name), out var result) ? (T?)result : null;
     public static DateTime? ToDateTimeNullable(this XElement element, string name) =>
         DateTime.TryParse((string?)element.Element(name), out var result) ? (DateTime?)result : null;
-
+    public static TimeSpan? ToTimeSpanNullable(this XElement element, string name) =>
+       TimeSpan.TryParse((string?)element.Element(name), out var result) ? (TimeSpan?)result : null;
     public static double? ToDoubleNullable(this XElement element, string name) =>
         double.TryParse((string?)element.Element(name), out var result) ? (double?)result : null;
     public static int? ToIntNullable(this XElement element, string name) =>
