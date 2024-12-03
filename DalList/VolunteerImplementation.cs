@@ -5,56 +5,65 @@ using System;
 
 internal class VolunteerImplementation : IVolunteer
 {
-    // Create a new Volunteer
+    /// <summary>
+    /// Creates a new volunteer and adds it to the data source.
+    /// Throws an exception if a volunteer with the same ID already exists.
+    /// </summary>
+    /// <param name="item">The volunteer to be created.</param>
     public void Create(Volunteer item)
     {
-        // Check if a volunteer with the same ID already exists in the DataSource
+        // Check if the volunteer already exists in the data source
         if (DataSource.Volunteers.Any(v => v.Id == item.Id))
         {
-            throw new DalAlreadyExistsException($"Volunteer with ID={item.Id} already exists"); // If exists, throw an exception
+            throw new DalAlreadyExistsException($"Volunteer with ID={item.Id} already exists");
         }
 
-        DataSource.Volunteers.Add(item); // Add the new volunteer to the DataSource
-        // return item.Id; // (Commented out: ID return value can be added if needed)
+        // Add the volunteer to the data source
+        DataSource.Volunteers.Add(item);
     }
 
-    // Read a Volunteer by its ID
+    /// <summary>
+    /// Retrieves a volunteer by their unique ID.
+    /// </summary>
+    /// <param name="id">The ID of the volunteer to retrieve.</param>
+    /// <returns>The volunteer with the given ID or null if not found.</returns>
     public Volunteer? Read(int id)
     {
-        // var volunteer1 = DataSource.Volunteers.FirstOrDefault(v => v.Id == id); // Search for the volunteer by ID stage 1
-
-
-        //if (volunteer1 == null)
-        //    return null; // If no volunteer is found, return null
-        //return volunteer1; // Return the found volunteer
-        return DataSource.Volunteers.FirstOrDefault(item => item.Id == id); //stage 2
-
+        return DataSource.Volunteers.FirstOrDefault(item => item.Id == id);
     }
-    public Volunteer? Read(Func<Volunteer, bool> filter) // stage 2
+
+    /// <summary>
+    /// Retrieves a volunteer using a custom filter function.
+    /// </summary>
+    /// <param name="filter">The filter function to apply to the volunteers.</param>
+    /// <returns>The first volunteer that matches the filter or null if not found.</returns>
+    public Volunteer? Read(Func<Volunteer, bool> filter)
     {
-        // Finds the first volunteer that matches the filter function and returns it
         return DataSource.Volunteers.FirstOrDefault(filter);
     }
 
+    /// <summary>
+    /// Retrieves all volunteers, optionally filtered by a custom function.
+    /// </summary>
+    /// <param name="filter">An optional filter function to apply to the list of volunteers.</param>
+    /// <returns>A list of volunteers that match the filter.</returns>
+    public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null) =>
+        filter == null
+            ? DataSource.Volunteers.Select(item => item)
+            : DataSource.Volunteers.Where(filter);
 
-    // Read all Volunteers
-    //public List<Volunteer> ReadAll()
-    //{
-    //    return new List<Volunteer>(DataSource.Volunteers); // Return a new list containing all volunteers in DataSource
-    //} stage 1
-    public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null) //stage 2
-   => filter == null
-       ? DataSource.Volunteers.Select(item => item)
-    : DataSource.Volunteers.Where(filter);
-
-    // Update an existing Volunteer
+    /// <summary>
+    /// Updates an existing volunteer in the data source.
+    /// Throws an exception if the volunteer does not exist.
+    /// </summary>
+    /// <param name="item">The volunteer with updated data.</param>
     public void Update(Volunteer item)
     {
-        // Find the index of the volunteer to update by ID
+        // Find the index of the volunteer in the data source
         var index = DataSource.Volunteers.FindIndex(v => v.Id == item.Id);
-        if (index == -1) throw new DalDoesNotExistException($"Volunteer with ID={item.Id} not exists"); // If not found, throw an exception
+        if (index == -1) throw new DalDoesNotExistException($"Volunteer with ID={item.Id} not exists");
 
-        // Replace the existing volunteer at the found index with the updated volunteer details
+        // Update the volunteer in the data source
         DataSource.Volunteers[index] = new Volunteer
         {
             Id = item.Id,
@@ -72,18 +81,26 @@ internal class VolunteerImplementation : IVolunteer
         };
     }
 
-    // Delete a Volunteer by its ID
+    /// <summary>
+    /// Deletes a volunteer by their unique ID.
+    /// Throws an exception if the volunteer does not exist.
+    /// </summary>
+    /// <param name="id">The ID of the volunteer to delete.</param>
     public void Delete(int id)
     {
-        var volunteer = DataSource.Volunteers.FirstOrDefault(v => v.Id == id); // Search for the volunteer by ID
-        if (volunteer == null) throw new DalDoesNotExistException($"Volunteer with ID={id} not exists"); // If not found, throw an exception
+        // Find the volunteer to delete
+        var volunteer = DataSource.Volunteers.FirstOrDefault(v => v.Id == id);
+        if (volunteer == null) throw new DalDoesNotExistException($"Volunteer with ID={id} not exists");
 
-        DataSource.Volunteers.Remove(volunteer); // Remove the volunteer from the DataSource
+        // Remove the volunteer from the data source
+        DataSource.Volunteers.Remove(volunteer);
     }
 
-    // Delete all Volunteers
+    /// <summary>
+    /// Deletes all volunteers from the data source.
+    /// </summary>
     public void DeleteAll()
     {
-        DataSource.Volunteers.Clear(); // Clear all volunteers from the DataSource
+        DataSource.Volunteers.Clear();
     }
 }

@@ -4,6 +4,9 @@ using DalApi;
 
 internal class CallImplementation : ICall
 {
+    /// <summary>
+    /// Creates a new call by generating a new ID, adding it to the data source.
+    /// </summary>
     public void Create(Call item)
     {
         // Generate a new ID for the call
@@ -14,6 +17,9 @@ internal class CallImplementation : ICall
         DataSource.Calls.Add(copy);
     }
 
+    /// <summary>
+    /// Deletes a call by its ID from the data source.
+    /// </summary>
     public void Delete(int id)
     {
         // Find the call by its ID
@@ -25,34 +31,48 @@ internal class CallImplementation : ICall
         DataSource.Calls.Remove(call1);
     }
 
+    /// <summary>
+    /// Deletes all calls from the data source.
+    /// </summary>
     public void DeleteAll()
     {
         // Clear the entire list of calls
         DataSource.Calls.Clear();
     }
 
+    /// <summary>
+    /// Retrieves a call by its ID.
+    /// </summary>
     public Call? Read(int id)
     {
         // Find a call by its ID
-        //var findCall = DataSource.Calls.Find(c => c.Id == id);
-        //if (findCall != null)
-        //    return findCall;
-
-        //// Return null if the call does not exist
-        //return null;stage 1
         return DataSource.Calls.FirstOrDefault(item => item.Id == id); //stage 2
-
     }
-    public Call? Read(Func<Call, bool> filter) // stage 2
+
+    /// <summary>
+    /// Retrieves the first call that matches the provided filter function.
+    /// </summary>
+    public Call? Read(Func<Call, bool> filter)
     {
-        // Finds the first volunteer that matches the filter function and returns it
+        // Finds the first call that matches the filter function and returns it
         return DataSource.Calls.FirstOrDefault(filter);
     }
-    public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null) //stage 2
-       => filter == null
-           ? DataSource.Calls.Select(item => item)
-        : DataSource.Calls.Where(filter);
 
+    /// <summary>
+    /// Retrieves all calls that match the provided filter function.
+    /// </summary>
+    public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null)
+    {
+        // If no filter is provided, return all calls
+        // Otherwise, return calls that match the filter
+        return filter == null
+            ? DataSource.Calls.Select(item => item)
+            : DataSource.Calls.Where(filter);
+    }
+
+    /// <summary>
+    /// Updates an existing call in the data source.
+    /// </summary>
     public void Update(Call item)
     {
         // Find the index of the call by its ID

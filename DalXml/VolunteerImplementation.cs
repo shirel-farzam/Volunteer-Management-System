@@ -3,8 +3,16 @@ using DalApi;
 using DO;
 using System.Xml.Linq;
 
+/// <summary>
+/// Implementation of the IVolunteer interface for managing Volunteer entities in the DAL.
+/// </summary>
 internal class VolunteerImplementation : IVolunteer
 {
+    /// <summary>
+    /// Converts an XElement into a Volunteer object.
+    /// </summary>
+    /// <param name="v">The XElement to convert.</param>
+    /// <returns>A Volunteer object created from the XElement.</returns>
     static Volunteer GetVolunteer(XElement v)
     {
         Volunteer volunteer = new Volunteer
@@ -30,6 +38,11 @@ internal class VolunteerImplementation : IVolunteer
         return volunteer;
     }
 
+    /// <summary>
+    /// Creates a new Volunteer entity.
+    /// </summary>
+    /// <param name="item">The Volunteer entity to create.</param>
+    /// <exception cref="DalAlreadyExistsException">Thrown if a Volunteer with the same ID already exists.</exception>
     public void Create(Volunteer item)
     {
         XElement volunteersRoot = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
@@ -41,6 +54,11 @@ internal class VolunteerImplementation : IVolunteer
         XMLTools.SaveListToXMLElement(volunteersRoot, Config.s_volunteers_xml);
     }
 
+    /// <summary>
+    /// Converts a Volunteer object into an XElement.
+    /// </summary>
+    /// <param name="v">The Volunteer object to convert.</param>
+    /// <returns>An XElement representing the Volunteer object.</returns>
     private static XElement CreateVolunteerElement(Volunteer v)
     {
         return new XElement("Volunteer",
@@ -59,6 +77,11 @@ internal class VolunteerImplementation : IVolunteer
         );
     }
 
+    /// <summary>
+    /// Deletes a Volunteer entity by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the Volunteer to delete.</param>
+    /// <exception cref="DalDoesNotExistException">Thrown if the Volunteer with the specified ID does not exist.</exception>
     public void Delete(int id)
     {
         XElement volunteersRoot = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
@@ -71,6 +94,9 @@ internal class VolunteerImplementation : IVolunteer
         XMLTools.SaveListToXMLElement(volunteersRoot, Config.s_volunteers_xml);
     }
 
+    /// <summary>
+    /// Deletes all Volunteer entities.
+    /// </summary>
     public void DeleteAll()
     {
         XElement volunteersRoot = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
@@ -78,6 +104,11 @@ internal class VolunteerImplementation : IVolunteer
         XMLTools.SaveListToXMLElement(volunteersRoot, Config.s_volunteers_xml);
     }
 
+    /// <summary>
+    /// Reads a Volunteer entity by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the Volunteer to read.</param>
+    /// <returns>The Volunteer entity with the specified ID, or null if it does not exist.</returns>
     public Volunteer? Read(int id)
     {
         XElement? volunteerElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml)
@@ -87,6 +118,11 @@ internal class VolunteerImplementation : IVolunteer
         return volunteerElem is null ? null : GetVolunteer(volunteerElem);
     }
 
+    /// <summary>
+    /// Reads the first Volunteer entity that matches a specified filter.
+    /// </summary>
+    /// <param name="filter">The filter function to apply.</param>
+    /// <returns>The first Volunteer entity that matches the filter, or null if none match.</returns>
     public Volunteer? Read(Func<Volunteer, bool> filter)
     {
         return XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml)
@@ -95,6 +131,11 @@ internal class VolunteerImplementation : IVolunteer
             .FirstOrDefault(filter);
     }
 
+    /// <summary>
+    /// Reads all Volunteer entities, optionally filtered by a specified condition.
+    /// </summary>
+    /// <param name="filter">The optional filter function to apply.</param>
+    /// <returns>An enumerable collection of Volunteer entities that match the filter, or all entities if no filter is provided.</returns>
     public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null)
     {
         var volunteers = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml)
@@ -104,6 +145,11 @@ internal class VolunteerImplementation : IVolunteer
         return filter == null ? volunteers : volunteers.Where(filter);
     }
 
+    /// <summary>
+    /// Updates an existing Volunteer entity.
+    /// </summary>
+    /// <param name="item">The updated Volunteer entity.</param>
+    /// <exception cref="DalDoesNotExistException">Thrown if the Volunteer with the specified ID does not exist.</exception>
     public void Update(Volunteer item)
     {
         XElement volunteersRoot = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);

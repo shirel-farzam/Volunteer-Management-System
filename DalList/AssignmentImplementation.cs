@@ -1,10 +1,12 @@
-﻿using DalApi;
+﻿namespace Dal;
+using DalApi;
 using DO;
-
-namespace Dal;
 
 internal class AssignmentImplementation : IAssignment
 {
+    /// <summary>
+    /// Creates a new assignment by generating a new ID and adding it to the data source.
+    /// </summary>
     public void Create(Assignment item)
     {
         // Generate a new ID for the assignment
@@ -15,6 +17,9 @@ internal class AssignmentImplementation : IAssignment
         DataSource.Assignments.Add(copy);
     }
 
+    /// <summary>
+    /// Deletes an assignment by its ID from the data source.
+    /// </summary>
     public void Delete(int id)
     {
         // Find the assignment by its ID
@@ -26,46 +31,57 @@ internal class AssignmentImplementation : IAssignment
         DataSource.Assignments.Remove(assignment);
     }
 
+    /// <summary>
+    /// Deletes all assignments from the data source.
+    /// </summary>
     public void DeleteAll()
     {
         // Clear the entire list of assignments
         DataSource.Assignments.Clear();
     }
 
+    /// <summary>
+    /// Retrieves an assignment by its ID.
+    /// </summary>
     public Assignment? Read(int id)
     {
         // Search for an assignment by ID
-        //var assignment = DataSource.Assignments.FirstOrDefault(a => a.Id == id);
-        //if (assignment == null)
-        //    return null;
-        //return assignment;stag1 
         return DataSource.Assignments.FirstOrDefault(item => item.Id == id); //stage 2
-
     }
-    public Assignment? Read(Func<Assignment, bool> filter) // stage 2
+
+    /// <summary>
+    /// Retrieves the first assignment that matches the provided filter function.
+    /// </summary>
+    public Assignment? Read(Func<Assignment, bool> filter)
     {
-        // Finds the first volunteer that matches the filter function and returns it
+        // Finds the first assignment that matches the filter function and returns it
         return DataSource.Assignments.FirstOrDefault(filter);
     }
 
-    //public List<Assignment> ReadAll()
-    //{
-    //    // Return a copy of the entire assignment list
-    //    return new List<Assignment>(DataSource.Assignments);
-    //} //stage 1
-    public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null) //stage 2
-           => filter == null
-               ? DataSource.Assignments.Select(item => item)
+    /// <summary>
+    /// Retrieves all assignments that match the provided filter function.
+    /// </summary>
+    public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
+    {
+        // If no filter is provided, return all assignments
+        // Otherwise, return assignments that match the filter
+        return filter == null
+            ? DataSource.Assignments.Select(item => item)
             : DataSource.Assignments.Where(filter);
+    }
 
+    /// <summary>
+    /// Updates an existing assignment in the data source.
+    /// </summary>
     public void Update(Assignment item)
     {
-        // Find the index of the assignment by ID
+        // Find the index of the assignment by its ID
         int index = DataSource.Assignments.FindIndex(c => c.Id == item.Id);
         if (index == -1)
         {
             throw new DalDoesNotExistException($"Assignment with ID={item.Id} not exists");
         }
+
         // Update the assignment in the list
         DataSource.Assignments[index] = item;
     }
