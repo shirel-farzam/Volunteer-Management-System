@@ -75,7 +75,7 @@ internal class CallImplementation : ICall
     /// </summary>
     public void Update(Call item)
     {
-        // Find the index of the call by its ID
+        // Find the index of the call by its ID.
         int index = DataSource.Calls.FindIndex(c => c.Id == item.Id);
         if (index == -1)
             throw new DalDoesNotExistException($"Call with ID={item.Id} does not exist.");
