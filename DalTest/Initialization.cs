@@ -382,7 +382,8 @@ public static class Initialization
 
 
     // public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig)
-    public static void Do(IDal dal) //stage 2
+    //public static void Do(IDal dal) //stage 2
+    public static void Do() //stage 4
     {
         // Null checks for the parameters to ensure that none of them are null
         //s_Volunteer = dalVolunteer ?? throw new NullReferenceException("Volunteer DAL object cannot be null!");
@@ -390,9 +391,10 @@ public static class Initialization
         //s_Assignment = dalAssignment ?? throw new NullReferenceException("Assignment DAL object cannot be null!");
         //s_dal.Config = dalConfig ?? throw new NullReferenceException("Config DAL object cannot be null!");
 
-        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
+        // s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
+        s_dal = DalApi.Factory.Get; //stage 4
 
-      Console.WriteLine("Resetting configuration values and clearing all lists...");
+        Console.WriteLine("Resetting configuration values and clearing all lists...");
 
         s_dal.ResetDB();//stage 2
 

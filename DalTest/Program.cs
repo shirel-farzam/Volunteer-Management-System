@@ -20,7 +20,8 @@
         //private static IConfig? s_dal.Config = new ConfigImplementation();
 
         //static readonly IDal s_dal = new Dal.DalList(); //stage 2
-        static readonly IDal s_dal = new DalXml(); //stage 3
+        //static readonly IDal s_dal = new DalXml(); //stage 3
+        static readonly IDal s_dal = Factory.Get; //stage 4
 
         // Enum representing the options available in the Main Menu
         public enum MainMenuOption
@@ -92,7 +93,8 @@
                 //s_dal.Call = new CallImplementation();            // Create Call implementation
                 //s_dal.Assignment = new AssignmentImplementation(); // Create Assignment implementation
                 //s_dal.Config = new ConfigImplementation();        // Create Config implementation
-                Initialization.Do(s_dal); //stage 2
+                // Initialization.Do(s_dal); //stage 2
+                Initialization.Do(); //stage 4
                 bool exit = false;  // Flag to control the exit condition of the main loop
                 while (!exit)
                 {
@@ -127,7 +129,8 @@
                             break;
                         case MainMenuOption.InitializeData:
                             // Call the initialization function to populate the system with initial data
-                            Initialization.Do(s_dal);
+                            //Initialization.Do(s_dal);//stage 3
+                            Initialization.Do(); //stage 4
                             break;
                         case MainMenuOption.ShowAllData:
                             // Display all the data in the system

@@ -1,14 +1,16 @@
 ﻿using DalApi;
+using System.Diagnostics;
 namespace Dal;
 
 /// <summary>
 /// Implementation of the IDal interface for managing the DAL layer with XML-based storage.
 /// </summary>
-public class DalXml : IDal
+sealed internal class DalXml : IDal
 {
-    /// <summary>
-    /// Property to access Volunteer-related operations.
-    /// </summary>
+    public static IDal Instance { get; } = new DalXml();
+    private DalXml() { }
+
+
     public IVolunteer Volunteer { get; } = new VolunteerImplementation();
 
     /// <summary>

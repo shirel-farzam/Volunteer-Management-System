@@ -7,11 +7,12 @@ using DalApi;
 /// This class provides access to the different entities (Volunteer, Call, Assignment, Config) 
 /// and allows for resetting the database (removing all data and resetting configurations).
 /// </summary>
-sealed public class DalList : IDal
+sealed internal class DalList : IDal
 {
-    /// <summary>
-    /// Provides access to volunteer management operations.
-    /// </summary>
+    public static IDal Instance { get; } = new DalList();
+    private DalList() { }
+
+
     public IVolunteer Volunteer { get; } = new VolunteerImplementation();
 
     /// <summary>
@@ -29,9 +30,9 @@ sealed public class DalList : IDal
     /// </summary>
     public IConfig Config { get; } = new ConfigImplementation();
 
-    /// <summary>
+    
     /// Resets the entire database by deleting all entries and resetting the configurations.
-    /// </summary>
+
     public void ResetDB()
     {
         Volunteer.DeleteAll();
