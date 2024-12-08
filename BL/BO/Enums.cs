@@ -1,5 +1,14 @@
 ﻿namespace BO
 {
+
+    /// Enum for specifying the sorting field for volunteers.
+    public enum VolunteerSortField
+    {
+        ID,           // Sort by volunteer ID
+        Name,         // Sort by volunteer name
+        JoinDate,     // Sort by the date the volunteer joined
+        ActivityStatus // Sort by the activity status (active/inactive)
+    }
     // Enum for Role of the volunteer (Manager or Regular Volunteer)
     public enum Role
     {
@@ -42,13 +51,20 @@
         OpenRisk,       // The call is open and at risk of expiration
         InProgressRisk // The call is in progress and at risk of expiration
     }
-
-    // Class to represent the current call being handled by the volunteer
-    public class CallInProgress
+    // Enum for specifying the field to filter or sort by for calls
+    public enum CallField
     {
-        public int CallId { get; set; }  // Unique ID for the call
-        public string? Description { get; set; }  // Description of the call
-        public DateTime StartTime { get; set; }  // Time when the call started
-        // Additional properties as needed
+        CallId,          // Filter or sort by the unique ID of the call
+        Description,     // Filter or sort by the description of the call
+        Status,          // Filter or sort by the current status of the call
+        AssignmentDate   // Filter or sort by the assignment date of the call
+    }
+    public enum TimeUnit
+    {
+        MINUTE,  // Minute unit for time advancement
+        HOUR,    // Hour unit for time advancement
+        DAY,     // Day unit for time advancement
+        MONTH,   // Month unit for time advancement
+        YEAR     // Year unit for time advancement
     }
 }

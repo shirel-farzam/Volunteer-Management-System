@@ -74,6 +74,24 @@ public static class Initialization
             31.7562, 31.7581, 31.7329, 31.7574, 31.7608,
             31.7611, 31.7400, 31.7432, 31.7539, 31.7591
         };
+        string[] passwords =
+{
+    "W1nter2024",
+    "M@rk3tX9",
+    "Go!4ItNow",
+    "H@ppyD@ys",
+    "S#1lverKey",
+    "GooD1234",
+    "Tricky5",
+    "R3liable",
+    "C0d3!2024",
+    "J@vaC0d3r",
+    "Adm!n$2024",
+    "S@lute1",
+    "3asY_p@ss",
+    "BlueSky9",
+    "X@mplE7"
+};
 
         // Loop to create volunteer data and add it to the data source
         for (int i = 0; i < VolunteerName.Length; i++)
@@ -86,13 +104,17 @@ public static class Initialization
             string name = VolunteerName[i];
             string phone = PhoneNumber[i];
             string email = Email[i];
+            string Address= addresses[i];
+            string password= passwords[i];
+            double NLatitude = Latitudes[i];
+            double NLongitude = Longitudes[i];
             Distance distanceType = Distance.Aerial; // Default distance type
             Role role = Role.Volunteer; // Default role - regular volunteer
             bool active = true; // Volunteer is active by default
             double maxReading = s_rand.Next(5, 100); // Generate a random max reading between 5 and 100
 
             //Create a new Volunteer object and add it to the data source
-            s_dal!.Volunteer.Create(new Volunteer(id, name, phone, email, distanceType, role, active, null, null, null, null, maxReading));
+            s_dal!.Volunteer.Create(new Volunteer(id, name, phone, email, distanceType, role, active, password, Address, NLatitude, NLongitude, maxReading));
         }
 
         // Adding at least one manager

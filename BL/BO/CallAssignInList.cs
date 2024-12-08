@@ -1,0 +1,26 @@
+﻿using BO;
+public class CallAssignInList
+{
+    // Volunteer ID (from DO.Assignment)
+    public int VolunteerId { get; set; }
+
+    // Volunteer Name (from DO.Volunteer)
+    public string VolunteerName { get; set; }
+
+    // Start time when the volunteer begins treatment for the call
+    public DateTime StartTime { get; set; }
+
+    // Actual end time when the volunteer finishes treatment (if completed)
+    public DateTime? EndTime { get; set; }
+
+    // Completion type of the treatment (e.g., completed, canceled, expired)
+    public AssignmentCompletionType? CompletionType { get; set; }
+    public override string ToString() => this.ToStringProperty();
+
+
+    // Override ToString method to display assignment information as a string
+    //public override string ToString()
+    //{
+    //    return $"Volunteer {VolunteerName} (ID: {VolunteerId}) - Start: {StartTime}, End: {(EndTime.HasValue ? EndTime.Value.ToShortDateString() : "Not completed")}, Completion Type: {CompletionType?.ToString() ?? "Not assigned"}";
+    //}
+}

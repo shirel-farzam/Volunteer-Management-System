@@ -5,39 +5,30 @@ namespace BO;
 
 public class VolunteerInList
 {
-    // Volunteer ID (from DO.Volunteer)
-    public int Id { get; set; }
+    // Volunteer ID (from DO.Volunteer) - cannot be changed after initialization
+    public int Id { get; init; }
 
-    // Full Name of the volunteer (from DO.Volunteer)
-    public string FullName { get; set; }
+    // Full Name of the volunteer (from DO.Volunteer) - cannot be changed after initialization
+    public string FullName { get; init; }
 
-    // Whether the volunteer is active (from DO.Volunteer)
-    public bool Active { get; set; }
+    // Whether the volunteer is active (from DO.Volunteer) - cannot be changed after initialization
+    public bool Active { get; init; }
 
-    // Total number of calls handled by the volunteer (based on successful completion)
+    // Total number of calls handled by the volunteer (based on successful completion) - mutable, can change over time
     public int TotalCallsHandled { get; set; }
 
-    // Total number of calls canceled by the volunteer
+    // Total number of calls canceled by the volunteer - mutable, can change over time
     public int TotalCallsCanceled { get; set; }
 
-    // Total number of calls that expired (not handled in time) by the volunteer
+    // Total number of calls that expired (not handled in time) by the volunteer - mutable, can change over time
     public int TotalCallsExpired { get; set; }
 
-    // The ID of the current call the volunteer is handling (if any)
+    // The ID of the current call the volunteer is handling (if any) - nullable, mutable
     public int? CurrentCallId { get; set; }
 
-    // The type of the current call being handled by the volunteer (None if no active call)
+    // The type of the current call being handled by the volunteer (None if no active call) - mutable
     public CallType CurrentCallType { get; set; }
+    public override string ToString() => this.ToStringProperty();
 
-    // Constructor to initialize VolunteerInList
-    public VolunteerInList(int id, string fullName, bool active, int totalCallsHandled, int totalCallsCanceled, int totalCallsExpired, int? currentCallId, CallType currentCallType)
-    {
-        Id = id;
-        FullName = fullName;
-        Active = active;
-        TotalCallsHandled = totalCallsHandled;
-        TotalCallsCanceled = totalCallsCanceled;
-        TotalCallsExpired = totalCallsExpired;
-        CurrentCallId = currentCallId;
-        CurrentCallType = currentCallType;
-    }
+
+}
