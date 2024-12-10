@@ -28,6 +28,7 @@ public class VolunteerInList
 
     // The type of the current call being handled by the volunteer (None if no active call) - mutable
     public CallType CurrentCallType { get; set; }
+  
     public override string ToString() => this.ToStringProperty();
 
 

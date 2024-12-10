@@ -4,10 +4,10 @@
     /// Enum for specifying the sorting field for volunteers.
     public enum VolunteerSortField
     {
-        ID,           // Sort by volunteer ID
-        Name,         // Sort by volunteer name
-        JoinDate,     // Sort by the date the volunteer joined
-        ActivityStatus // Sort by the activity status (active/inactive)
+        ID,            // Sort by volunteer ID (ID of the volunteer)
+        Name,          // Sort by full name (FullName of the volunteer)
+        ActivityStatus, // Sort by activity status (whether the volunteer is active or not)
+        Job
     }
     // Enum for Role of the volunteer (Manager or Regular Volunteer)
     public enum Role

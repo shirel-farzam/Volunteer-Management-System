@@ -32,7 +32,6 @@ public record Volunteer
      double? Latitude = null,
      double? Longitude = null,
      double? MaxReading = null
-
 )
 {
     /// <summary>
