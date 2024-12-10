@@ -75,59 +75,55 @@ internal class VolunteerImplementation : IVolunteer
 
     public Volunteer VolunteerDetails(int id)
     {
-        try
-        {
-            // Retrieve the volunteer data from the DAL. 
-            // If no volunteer exists with the given ID, throw a business logic exception.
-            var doVolunteer = _dal.Volunteer.Read(id)
-                ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={id} does not exist.");
+        //    try
+        //    {
+        //        // Retrieve the volunteer data from the DAL. 
+        //        // If no volunteer exists with the given ID, throw a business logic exception.
+        //        var doVolunteer = _dal.Volunteer.Read(id)
+        //            ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={id} does not exist.");
 
-            // Map the data object (DO) to the business object (BO)
-            var boVolunteer = new BO.Volunteer
-            {
-                Id = doVolunteer.Id,                          // Volunteer ID
-                FullName = doVolunteer.Name,                  // Full name of the volunteer
-                PhoneNumber = doVolunteer.Number_phone,       // Phone number of the volunteer
-                Email = doVolunteer.Email,                    // Email address
-                Password = doVolunteer.Password,              // User password (consider hashing if not already done)
-                FullAddress = doVolunteer.FullCurrentAddress, // Full address of the volunteer
-                Latitude = doVolunteer.Latitude,              // Current latitude of the volunteer
-                Longitude = doVolunteer.Longitude,            // Current longitude of the volunteer
-                Job = (BO.Role)doVolunteer.Role,              // Role of the volunteer, mapped to BO.Role
-                Active = doVolunteer.Active,                  // Indicates if the volunteer is currently active
-                MaxReading = doVolunteer.distance,            // Maximum distance the volunteer can handle
-                TypeDistance = (BO.Distance)doVolunteer.Distance_Type, // Type of distance measurement (e.g., KM or Miles)
-                TotalHandledCalls = doVolunteer.TotalHandledCalls,     // Total calls handled by the volunteer
-                TotalCanceledCalls = doVolunteer.TotalCanceledCalls,   // Total calls canceled by the volunteer
-                TotalExpiredCalls = doVolunteer.TotalExpiredCalls,     // Total calls that expired without resolution
-                CurrentCall = null                             // Initialize CurrentCall as null (will populate later if exists)
-            };
+        //        // Map the data object (DO) to the business object (BO)
+        //        var boVolunteer = new BO.Volunteer
+        //        {
+        //            Id = doVolunteer.Id,                          // Volunteer ID
+        //            FullName = doVolunteer.FullName,                  // Full name of the volunteer
+        //            PhoneNumber = doVolunteer.PhoneNumber,       // Phone number of the volunteer
+        //            Email = doVolunteer.Email,                    // Email address
+        //            Password = doVolunteer.Password,              // User password (consider hashing if not already done)
+        //            FullAddress = doVolunteer.FullAddress, // Full address of the volunteer
+        //            Latitude = doVolunteer.Latitude,              // Current latitude of the volunteer
+        //            Longitude = doVolunteer.Longitude,            // Current longitude of the volunteer
+        //            Job = (BO.Role)doVolunteer.Job,              // Role of the volunteer, mapped to BO.Role
+        //            Active = doVolunteer.Active,                  // Indicates if the volunteer is currently active
+        //            //MaxReading = doVolunteer.distance,            // Maximum distance the volunteer can handle
+        //            CurrentCall = null                             // Initialize CurrentCall as null (will populate later if exists)
+        //        };
 
-            // Check if there is an ongoing call associated with the volunteer
-            var doCall = _dal.Call.Read(doVolunteer.CurrentCallId);
-            if (doCall != null)
-            {
-                // Map the call data object (DO) to the business object (BO)
-                boVolunteer.CurrentCall = new BO.CallInProgress
-                {
-                    CallId = doCall.Id,                       // Call ID
-                    Description = doCall.Description,  // Description of the call
-                    CallType = (BO.CallType)doCall.Type, // Type of the call (mapped to BO.Calltype)
-                                                         // Populate additional fields if necessary (e.g., location, status, etc.)
-                };
-            }
+        //        // Check if there is an ongoing call associated with the volunteer
+        //        var doCall = _dal.Call.Read(doVolunteer.CurrentCallId);
+        //        if (doCall != null)
+        //        {
+        //            // Map the call data object (DO) to the business object (BO)
+        //            boVolunteer.CurrentCall = new BO.CallInProgress
+        //            {
+        //                CallId = doCall.Id,                       // Call ID
+        //                Description = doCall.Description,  // Description of the call
+        //                CallType = (BO.CallType)doCall.Type, // Type of the call (mapped to BO.Calltype)
+        //                                                     // Populate additional fields if necessary (e.g., location, status, etc.)
+        //            };
+        //        }
 
-            // Return the fully populated BO.Volunteer object
-            return boVolunteer;
-        }
-        catch (DO.DalDeletionImpossible ex) // Handle exception when volunteer does not exist
-        {
-            throw new BO.BlDoesNotExistException($"Volunteer with ID={id} does not exist.", ex);
-        }
-        catch (Exception ex) // Catch all other exceptions and wrap in a general business logic exception
-        {
-            throw new BO.GeneralException("An unexpected error occurred while retrieving volunteer details.", ex);
-        }
-    } 
+        //        // Return the fully populated BO.Volunteer object
+        //        return boVolunteer;
+        //    }
+        //    catch (DO.DalDeletionImpossible ex) // Handle exception when volunteer does not exist
+        //    {
+        //        throw new BO.BlDoesNotExistException($"Volunteer with ID={id} does not exist.", ex);
+        //    }
+        //    catch (Exception ex) // Catch all other exceptions and wrap in a general business logic exception
+        //    {
+        //        throw new BO.GeneralException("An unexpected error occurred while retrieving volunteer details.", ex);
+        //    }
+        //} 
+    }
 }
-

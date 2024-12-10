@@ -12,8 +12,8 @@
     // Enum for Role of the volunteer (Manager or Regular Volunteer)
     public enum Role
     {
-        Manager,  // The volunteer is a manager
-        Volunteer  // The volunteer is a regular volunteer
+        Manager=1,  // The volunteer is a manager
+        Volunteer=2  // The volunteer is a regular volunteer
     }
 
     // Enum for Distance (used for calculating distances)

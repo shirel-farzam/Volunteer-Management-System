@@ -29,6 +29,5 @@ public interface ICall
     // Method to update the cancellation of treatment for a specific call
     void UpdateTreatmentCancellation(int volunteerId, int assignmentId);
 
-    // Method to assign a call to a specific volunteer
-    void AssignCallToVolunteer(int volunteerId, int callId);
+    void AssignCallToVolunteer(int volunteerId, int callId);  // Method to assign a call to a specific volunteer
 }
