@@ -15,8 +15,6 @@ namespace DO;
 /// <param name="Latitude">Latitude of the volunteer's location (optional)</param>
 /// <param name="Longitude">Longitude of the volunteer's location (optional)</param>
 /// <param name="MaxReading">Maximum reading distance for the volunteer (optional)</param>
-
-
 public record Volunteer
 (
 
@@ -32,7 +30,6 @@ public record Volunteer
      double? Latitude = null,
      double? Longitude = null,
      double? MaxReading = null
-
 )
 {
     /// <summary>

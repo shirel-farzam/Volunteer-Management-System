@@ -27,8 +27,13 @@ public class VolunteerInList
     // The ID of the current call the volunteer is handling (if any)
     public int? CurrentCallId { get; set; }
 
+
     // The type of the current call being handled by the volunteer (None if no active call)
     public CallType CurrentCallType { get; set; }
+
+
+    public override string ToString() => this.ToStringProperty();
+
 
     // Constructor to initialize VolunteerInList
     public VolunteerInList(int id, string fullName, bool active, int totalCallsHandled, int totalCallsCanceled, int totalCallsExpired, int? currentCallId, CallType currentCallType)

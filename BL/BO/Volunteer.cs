@@ -51,7 +51,6 @@ public class Volunteer
     public CallInProgress? CurrentCall { get; set; }
 
     // Registration date (immutable)
-    public DateTime RegistrationDate { get; init; }
     public override string ToString() => this.ToStringProperty();
 
 
