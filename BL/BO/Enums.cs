@@ -38,7 +38,8 @@
     {
         Completed,  // Treatment was completed
         Canceled,   // Treatment was canceled
-        Expired     // Treatment expired (not handled in time)
+        Expired,    // Treatment expired (not handled in time)
+        AdminCanceled
     }
 
     // Enum for Call Status (סטטוס הקריאה)

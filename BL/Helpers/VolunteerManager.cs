@@ -1,232 +1,19 @@
 ﻿using BO;
 using DalApi;
+using DO;
 using System.Text.RegularExpressions;
-namespace Helpers;
 
+using Helpers;
 internal static class VolunteerManager
 {
-    private static IDal s_dal = Factory.Get; //stage 4
-    internal static BO.VolunteerInList ConvertDOToBOInList(DO.Volunteer doVolunteer)
-    {
-        // שליפת הקריאות הקשורות למתנדב
-        var assignments = s_dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
-
-        // חישוב מספר הקריאות שטופלו
-        int sumCalls = assignments.Count(ass => ass.TypeEndTreat == DO.TypeEnd.Treated);
-
-        // חישוב מספר הקריאות שבוטלו
-        int sumCanceled = assignments.Count(ass => ass.TypeEndTreat == DO.TypeEnd.SelfCancel);
-
-        // חישוב מספר הקריאות שזמן הטיפול בהן פג
-        int sumExpired = assignments.Count(ass => ass.TypeEndTreat == DO.TypeEnd.ExpiredCancel);
-
-        // חישוב הקריאות שנמצאות בהמתנה (לא הסתיימו)
-        int? currentCallId = assignments.Count(ass => ass.TimeEnd == null);
-
-        // יצירת אובייקט BO.VolunteerInList והחזרת המידע המומר
-        return new BO.VolunteerInList
-        {
-            Id = doVolunteer.Id,
-            FullName = doVolunteer.FullName,
-            Active = doVolunteer.Active,
-            TotalCallsHandled = sumCalls,
-            TotalCallsCanceled = sumCanceled,
-            TotalCallsExpired = sumExpired
-        };
-    }
-    internal static void CheckId(int id)
-    {
-        // Convert the integer ID to a string to process individual digits
-        string idString = id.ToString();
-
-        // Ensure the ID is exactly 9 digits long
-        if (idString.Length != 9)
-        {
-            throw new BO.BlWrongItemtException($"this ID {id} does not possible");
-        }
-
-        int sum = 0;
-
-        // Iterate through each digit in the ID
-        for (int i = 0; i < 9; i++)
-        {
-            // Convert the character to its numeric value
-            int digit = idString[i] - '0';
-
-            // Determine the multiplier: 1 for odd positions, 2 for even positions
-            int multiplier = (i % 2) + 1;
-
-            // Multiply the digit by the multiplier
-            int product = digit * multiplier;
-
-            // If the result is two digits, sum the digits (e.g., 14 -> 1 + 4)
-            if (product > 9)
-            {
-                product = product / 10 + product % 10;
-            }
-
-            // Add the processed digit to the total sum
-            sum += product;
-        }
-
-        // תעודת זהות תקינה אם סכום ספרות הביקורת מתחלק ב-10
-        if (sum % 10 != 0)
-        {
-            throw new BO.BlWrongItemtException($"this ID {id} does not possible");
-        }
-    }
+    private static IDal _dal = Factory.Get; //stage 4
     internal static void CheckFormat(BO.Volunteer boVolunteer)
-    {
-        /// <summary>
-        /// Validate the ID of the volunteer.
-        /// The ID must be a positive integer and consist of 8 to 9 digits.
-        /// </summary>
-        if (boVolunteer.Id <= 0 || boVolunteer.Id.ToString().Length < 8 || boVolunteer.Id.ToString().Length > 9)
-        {
-            throw new ArgumentException("Invalid ID. It must be 8-9 digits.");
-        }
-
-        /// <summary>
-        /// Validate the FullName field.
-        /// The name must not be null, empty, or consist of only whitespace.
-        /// </summary>
-        if (string.IsNullOrWhiteSpace(boVolunteer.FullName))
-        {
-            throw new ArgumentException("FullName cannot be null or empty.");
-        }
-
-        /// <summary>
-        /// Validate the PhoneNumber field.
-        /// The phone number must be exactly 10 digits and start with 0.
-        /// </summary>
-        if (!Regex.IsMatch(boVolunteer.PhoneNumber, @"^0\d{9}$"))
-        {
-            throw new ArgumentException("PhoneNumber must be 10 digits and start with 0.");
-        }
-
-        /// <summary>
-        /// Validate the Email field.
-        /// The email must match the standard email format.
-        /// </summary>
-        if (!Regex.IsMatch(boVolunteer.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-        {
-            throw new ArgumentException("Invalid Email format.");
-        }
-
-        /// <summary>
-        /// Validate the MaxReading field.
-        /// If provided, it must be a positive number.
-        /// </summary>
-        if (boVolunteer.MaxReading.HasValue && boVolunteer.MaxReading.Value <= 0)
-        {
-            throw new ArgumentException("MaxReading must be a positive number.");
-        }
-
-        /// <summary>
-        /// Validate the Latitude field.
-        /// If provided, it must be between -90 and 90 (inclusive).
-        /// </summary>
-        if (boVolunteer.Latitude.HasValue && (boVolunteer.Latitude.Value < -90 || boVolunteer.Latitude.Value > 90))
-        {
-            throw new ArgumentException("Latitude must be between -90 and 90.");
-        }
-
-        /// <summary>
-        /// Validate the Longitude field.
-        /// If provided, it must be between -180 and 180 (inclusive).
-        /// </summary>
-        if (boVolunteer.Longitude.HasValue && (boVolunteer.Longitude.Value < -180 || boVolunteer.Longitude.Value > 180))
-        {
-            throw new ArgumentException("Longitude must be between -180 and 180.");
-        }
-
-        /// <summary>
-        /// Add any additional validation checks here if needed in the future.
-        /// </summary>
-    }
-
-    internal static void CheckAddress(BO.Volunteer boVolunteer)
-    {
-        // בדיקה אם הכתובת ריקה
-        if (string.IsNullOrWhiteSpace(boVolunteer.FullAddress))
-            throw new BO.BlWrongItemtException("Address cannot be empty.");
-
-        // בדיקת תקינות קואורדינטות (אם נדרשות)
-        if (boVolunteer.Latitude.HasValue && (boVolunteer.Latitude < -90 || boVolunteer.Latitude > 90))
-            throw new BO.BlWrongItemtException("Latitude must be between -90 and 90.");
-
-        if (boVolunteer.Longitude.HasValue && (boVolunteer.Longitude < -180 || boVolunteer.Longitude > 180))
-            throw new BO.BlWrongItemtException("Longitude must be between -180 and 180.");
-
-        // בדיקה נוספת (אופציונלית) אם רוצים לוודא שהכתובת כוללת פרטים מסוימים (לדוגמה: רחוב, עיר וכו')
-        var addressParts = boVolunteer.FullAddress.Split(',');
-        if (addressParts.Length < 2)
-            throw new BO.BlWrongItemtException("Address must include both street and city.");
-
-        // וידוא שכל חלק בכתובת אינו ריק
-        foreach (var part in addressParts)
-        {
-            if (string.IsNullOrWhiteSpace(part))
-                throw new BO.BlWrongItemtException("Address contains empty parts. Please provide full details.");
-        }
-    }
-    internal static void CheckPhoneNumber(string phoneNumber)
-    {
-        if (string.IsNullOrWhiteSpace(phoneNumber))
-            throw new BO.BlWrongItemtException("Phone number cannot be empty.");
-
-        // בדיקה שמספר הטלפון מכיל רק ספרות ואורכו מתאים
-        if (!Regex.IsMatch(phoneNumber, @"^\d{10}$"))
-            throw new BO.BlWrongItemtException("Phone number must be exactly 10 digits.");
-
-        // בדיקת תקינות קידומת (למשל בישראל)
-        if (!phoneNumber.StartsWith("05"))
-            throw new BO.BlWrongItemtException("Phone number must start with a valid prefix (e.g., 05 for Israel).");
-    }
-    internal static void CheckEmail(string email)
-    {
-        if (string.IsNullOrWhiteSpace(email))
-            throw new BO.BlWrongItemtException("Email cannot be empty.");
-
-        // שימוש ב-Regex לבדיקת תקינות של כתובת דוא"ל
-        if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-            throw new BO.BlWrongItemtException("Email format is invalid. Please provide a valid email address.");
-    }
-    internal static void CheckPassword(string? password)
-    {
-        if (password == null)
-            throw new BO.BlWrongItemtException("Password cannot be null.");
-
-        // בדיקה שאורך הסיסמה הוא לפחות 8 תווים
-        if (password.Length < 8)
-            throw new BO.BlWrongItemtException("Password must be at least 8 characters long.");
-
-        // בדיקה שהסיסמה מכילה לפחות אות גדולה
-        if (!Regex.IsMatch(password, @"[A-Z]"))
-            throw new BO.BlWrongItemtException("Password must contain at least one uppercase letter.");
-
-        // בדיקה שהסיסמה מכילה לפחות אות קטנה
-        if (!Regex.IsMatch(password, @"[a-z]"))
-            throw new BO.BlWrongItemtException("Password must contain at least one lowercase letter.");
-
-        // בדיקה שהסיסמה מכילה לפחות ספרה
-        if (!Regex.IsMatch(password, @"\d"))
-            throw new BO.BlWrongItemtException("Password must contain at least one digit.");
-
-        // בדיקה שהסיסמה מכילה לפחות תו מיוחד
-        if (!Regex.IsMatch(password, @"[!@#$%^&*(),.?""{}|<>]"))
-            throw new BO.BlWrongItemtException("Password must contain at least one special character.");
-    }
-    internal static void CheckLogic(BO.Volunteer boVolunteer)
     {
         try
         {
-            CheckId(boVolunteer.Id);
-            CheckPhoneNumber(boVolunteer.PhoneNumber);
+            CheckPhonnumber(boVolunteer.PhoneNumber);
             CheckEmail(boVolunteer.Email);
-            CheckPassword(boVolunteer.Password);
-            CheckAddress(boVolunteer);
-
+            Tools.IsAddressValid(boVolunteer.FullAddress);
         }
         catch (BO.BlWrongItemtException ex)
         {
@@ -234,50 +21,277 @@ internal static class VolunteerManager
         }
 
     }
-
-
-
-    //   internal static BO.CallInProgress GetVolunteerInList(DO.Call doCall, DateTime entryTime, double distanceFromVolunteer)
-    //{
-    //        return new BO.CallInProgress
-    //        {
-    //            Id = doCall.Id,
-    //            FullName = doCall.Description, // הנחה: FullName תואם ל-Description
-    //            Active = doCall.Type == DO.CallType.Active, // הנחה: Active תואם ל-CallType מסוים
-    //            TotalCallsHandled = (int)distanceFromVolunteer, // הנחה: TotalCallsHandled תואם למרחק
-    //            TotalCallsCanceled = (int)doCall.MaxTimeToClose.TotalMinutes, // הנחה: TotalCallsCanceled תואם לזמן
-    //            TotalCallsExpired = (int)(DateTime.Now - doCall.TimeOpened).TotalMinutes, // הנחה: TotalCallsExpired מחושב מזמן הפתיחה
-    //            CurrentCallId = doCall.Id,
-    //            CurrentCallType = (BO.CallType)doCall.Type
-    //        };
-
-
-
-    internal static DO.Volunteer GetVolunteer(BO.Volunteer boVolunteer)
+    
+    internal static void CheckLogic(BO.Volunteer boVolunteer, BO.Volunteer existingVolunteer, bool isManager)
     {
-        VolunteerManager.CheckLogic(boVolunteer);
-
-        DO.Volunteer doVolunteer = new DO.Volunteer
+        // Validate ID
+        if (!IsValidIsraeliID(boVolunteer.Id))
         {
-            Id = boVolunteer.Id,
-            FullName = boVolunteer.FullName,
-            PhoneNumber = boVolunteer.PhoneNumber,
-            Email = boVolunteer.Email,
-            Password = boVolunteer.Password,
-            FullAddress = boVolunteer.FullAddress,
-            Latitude = boVolunteer.Latitude,
-            Longitude = boVolunteer.Longitude,
-            Job = (DO.Role)boVolunteer.Job,
-            Active = boVolunteer.Active,
-            MaxReading = boVolunteer.MaxReading,
-            DistanceType = (DO.Distance)boVolunteer.TypeDistance
-        };
+            throw new BO.Incompatible_ID("Invalid ID: The ID does not pass validation.");
+        }
 
-        return doVolunteer;
+        // Check if the Job was changed
+        if (boVolunteer.Job != existingVolunteer.Job)
+        {
+            if (!isManager)
+            {
+                throw new BO.BlPermissionException("Only a manager is authorized to update the volunteer's Job.");
+            }
+        }
+
+        // Check if the password was changed
+        if (boVolunteer.Password != existingVolunteer.Password && !isManager)
+        {
+            throw new BO.BlIncorrectPasswordException("Only the volunteer or a manager can update the password.");
+        }
+
+        // Check if the active status was changed
+        if (boVolunteer.Active != existingVolunteer.Active)
+        {
+            if (!isManager)
+            {
+                throw new BO.BlGeneralException("Only a manager is authorized to change the active status.");
+            }
+        }
+
+        // Add additional checks here for other properties if necessary
+    }
+    internal static void CheckLogic(BO.Volunteer boVolunteer, BO.Volunteer existingVolunteer, int requesterId, DO.Job requesterJob)
+    {
+        // Check if the Job has changed - only a manager can update the volunteer's Job
+        if (boVolunteer.Job != existingVolunteer.Job)
+        {
+            if (requesterJob != DO.Role.Manager)
+            {
+                throw new BO.BlPermissionException("Only a manager is authorized to update the volunteer's Job.");
+            }
+        }
+
+        // Check if the password has changed - only the volunteer or a manager can update the password
+        if (boVolunteer.Password != existingVolunteer.Password)
+        {
+            if (requesterId != boVolunteer.Id && requesterJob != DO.Role.Manager)
+            {
+                throw new BO.BlPermissionException("Only the volunteer or a manager can update the password.");
+            }
+        }
+
+        // Check if the active status has changed - only a manager can change the active status
+        if (boVolunteer.Active != existingVolunteer.Active)
+        {
+            if (requesterJob != DO.Role.Manager)
+            {
+                throw new BO.BlPermissionException("Only a manager is authorized to change the active status.");
+            }
+        }
+
+        // Add additional checks if there are any other restricted fields
+    }
+    internal static void CheckPassword(string password)
+    {
+        // דרישות בסיסיות
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new ArgumentException("הסיסמה לא יכולה להיות ריקה או null.");
+        }
+
+        // אורך מקסימלי של 5 תווים
+        if (password.Length > 5)
+        {
+            throw new ArgumentException("הסיסמה לא יכולה להכיל יותר מ-5 תווים.");
+        }
+
+        // לפחות אות אחת גדולה
+        if (!password.Any(char.IsUpper))
+        {
+            throw new ArgumentException("הסיסמה חייבת לכלול לפחות אות אחת גדולה.");
+        }
+
+        // לפחות אות אחת קטנה
+        if (!password.Any(char.IsLower))
+        {
+            throw new ArgumentException("הסיסמה חייבת לכלול לפחות אות אחת קטנה.");
+        }
+
+        // לפחות מספר אחד
+        if (!password.Any(char.IsDigit))
+        {
+            throw new ArgumentException("הסיסמה חייבת לכלול לפחות מספר אחד.");
+        }
+
+        // לפחות סימן מיוחד
+        if (!password.Any(ch => !char.IsLetterOrDigit(ch)))
+        {
+            throw new ArgumentException("הסיסמה חייבת לכלול לפחות סימן מיוחד (למשל: !, @, #, $, וכו').");
+        }
     }
 
-}
+
+    public static bool IsValidIsraeliID(int id)
+    {
+        // Convert the integer to a string to validate length
+        string idStr = id.ToString();
+
+        // Ensure the ID is exactly 9 digits
+        if (idStr.Length != 9)
+            return false;
+
+        int sum = 0;
+        for (int i = 0; i < 9; i++)
+        {
+            // Extract each digit
+            int digit = idStr[i] - '0'; // Convert character to integer
+
+            // Multiply alternately by 1 or 2
+            int multiplied = digit * (i % 2 + 1);
+
+            // If the result is greater than 9, sum its digits (e.g., 18 -> 1 + 8)
+            sum += (multiplied > 9) ? multiplied - 9 : multiplied;
+        }
+
+        // The ID is valid if the total sum is divisible by 10
+        return sum % 10 == 0;
+    }
+
+    internal static void CheckPhonnumber(string PhoneNumber)
+    {
+        if (string.IsNullOrWhiteSpace(PhoneNumber) || !Regex.IsMatch(PhoneNumber, @"^0\d{9}$"))
+        {
+            throw new ArgumentException("PhoneNumber must be a 10-digit number starting with 0.");
+        }
+    }
+
+    internal static void CheckEmail(string Email)
+    {
+        if (!Regex.IsMatch(Email, @"^(?("")(""[^""]+?""@)|(([0-9a-zA-Z](([\.\-]?)(?![\.\-])))[0-9a-zA-Z]@))([0-9a-zA-Z][\-0-9a-zA-Z][0-9a-zA-Z]\.)+[a-zA-Z]{2,}$"))
+        {
+            throw new ArgumentException("Invalid Email format.");
+        }
+
+    }
+
+    public static BO.Volunteer GetVolunteer(int id)
+    {
+        DO.Volunteer? doVolunteer = _dal.Volunteer.Read(id) ?? throw new BlDoesNotExistException("Error: Volunteer ID not found.");
+
+        return new BO.Volunteer
+        {
+            Id = doVolunteer.Id,
+            FullName = doVolunteer.FullName,
+            PhoneNumber = doVolunteer.PhoneNumber,
+            Email = doVolunteer.Email,
+            FullAddress = doVolunteer.FullAddress,
+            Password = doVolunteer.Password,
+            Latitude = doVolunteer.Latitude,
+            Longitude = doVolunteer.Longitude,
+            Job = (BO.Role)doVolunteer.Job, // Enum conversion between DO and BO
+            Active = doVolunteer.Active,
+            TypeDistance = (BO.Distance)doVolunteer.D, // Assuming `D` is a DistanceType enum in DO
+            Distance = (BO.DistanceType)doVolunteer.TypeDistance, // Assuming this is another property in DO
+
+            // Calculating the totals for the volunteer
+            TotalHandledCalls = _dal.Assignment.ReadAll().Count(a => a.VolunteerId == doVolunteer.Id && a.TimeEnd == AssignmentCompletionType.TreatedOnTime),
+            TotalExpiredCalls = _dal.Assignment.ReadAll().Count(a => a.VolunteerId == doVolunteer.Id && a.TimeEnd == AssignmentCompletionType.Expired),
+
+            // Getting current call
+            CurrentCall = CallManager.GetCallInProgress(doVolunteer.Id), // Retrieve the current active call for the volunteer
+        };
+    }
 
 
+    public static DO.Volunteer BOconvertDO(BO.Volunteer Volunteer)
+    {
+        return new DO.Volunteer
+        {
+            Id = Volunteer.Id,
+            FullName = Volunteer.FullName,
+            PhoneNumber = Volunteer.PhoneNumber,
+            Email = Volunteer.Email,
+            Password = Volunteer.Password,
+            Job = (DO.Role)Volunteer.Job,
+            TypeDistance = (DO.Distance)Volunteer.TypeDistance,
+            Active = Volunteer.Active,
+            FullAddress = Volunteer.FullAddress,
+            Latitude = Volunteer.Latitude,
+            Longitude = Volunteer.Longitude
+        };
+    }
 
+
+    // GetVolunteerInList and helper methods for each field
+    public static BO.VolunteerInList GetVolunteerInList(int VolunteerId)
+    {
+        DO.Volunteer? doVolunteer = _dal.Volunteer.Read(VolunteerId) ?? throw new BlDoesNotExistException("Error: Volunteer ID not found.");
+
+        var doAssignment = _dal.Assignment.ReadAll().FirstOrDefault(a => a.VolunteerId == VolunteerId && a.TimeEnd == null);
+        if (doAssignment == null)
+        {
+            throw new BlDoesNotExistException("No active assignment found for this volunteer.");
+        }
+
+        var doCall = _dal.Call.ReadAll().FirstOrDefault(c => c.Id == doAssignment.CallId);
+        if (doCall == null)
+        {
+            throw new BlDoesNotExistException("No call found for this assignment.");
+        }
+
+        return new BO.VolunteerInList
+        {
+            Id = doVolunteer.Id,
+            FullName = doVolunteer.FullName,
+            Active = doVolunteer.Active,
+            TotalCallsHandled = Tools.TotalHandledCalls(VolunteerId),
+            TotalCallsCanceled = Tools.TotalCallsCancelledhelp(VolunteerId),
+            TotalCallsExpired = Tools.TotalCallsExpiredelo(VolunteerId),
+            CurrentCallId = Tools.CurrentCallIdhelp(VolunteerId),
+            CurrentCallType = Tools.CurrentCallType(VolunteerId)
+        };
+    }
+
+    // GetClosedCallInList 
+    public static BO.ClosedCallInList GetClosedCallInList(int VolunteerId)
+    {
+        DO.Volunteer? doVolunteer = _dal.Volunteer.Read(VolunteerId) ?? throw new BlDoesNotExistException("Error ID");
+
+        var doAssignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == VolunteerId && a.TimeEnd == null).FirstOrDefault();
+        var doCall = _dal.Call.ReadAll().Where(c => c.Id == doAssignment!.CallId).FirstOrDefault();
+
+        return new BO.ClosedCallInList
+        {
+            Id = doAssignment.Id,
+            CallType = (BO.CallType)doCall.Type,
+            FullAddress = doCall.FullAddress,
+            OpeningTime = doCall.TimeOpened, // Using the OpeningTime from DO.Call
+            EntryTime = doAssignment.TimeStart,
+            CompletionTime = doAssignment.TimeEnd,
+            CompletionType = (BO.AssignmentCompletionType?)doAssignment.TypeEndTreat
+        };
+    }
+
+
+    //GetOpenCallInList
+    public static BO.OpenCallInList GetOpenCallInList(int VolunteerId)
+    {
+        DO.Volunteer? doVolunteer = _dal.Volunteer.Read(VolunteerId) ?? throw new BlDoesNotExistException("Error ID");
+
+        var doAssignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == VolunteerId && a.TimeEnd == null).FirstOrDefault();
+        var doCall = _dal.Call.ReadAll().Where(c => c.Id == doAssignment!.CallId).FirstOrDefault();
+
+        if (Tools.IsAddressValid(doVolunteer.FullAddress).Result == false)
+        {
+            throw new BlInvalidaddress("Invalid address of Volunteer");
+        }
+        double LatitudeVolunteer = Tools.GetLatitudeAsync(doVolunteer.FullAddress).Result;
+        double LongitudeVolunteer = Tools.GetLongitudeAsync(doVolunteer.FullAddress).Result;
+
+        return new BO.OpenCallInList
+        {
+            Id = doAssignment.Id,
+            CallType = (BO.CallType)doCall.Type,
+            FullAddress = doCall.FullAddress,
+            OpeningTime = doCall.TimeOpened,
+            MaxCompletionTime = doCall.MaxTimeToClose,
+            DistanceFromVolunteer = CallManager.CalculateAirDistance(doCall.Latitude, doCall.Longitude, LatitudeVolunteer, LongitudeVolunteer),
+        };
+    }
 }

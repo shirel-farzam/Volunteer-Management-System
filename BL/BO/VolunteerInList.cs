@@ -33,17 +33,4 @@ public class VolunteerInList
 
 
     public override string ToString() => this.ToStringProperty();
-
-
-    // Constructor to initialize VolunteerInList
-    public VolunteerInList(int id, string fullName, bool active, int totalCallsHandled, int totalCallsCanceled, int totalCallsExpired, int? currentCallId, CallType currentCallType)
-    {
-        Id = id;
-        FullName = fullName;
-        Active = active;
-        TotalCallsHandled = totalCallsHandled;
-        TotalCallsCanceled = totalCallsCanceled;
-        TotalCallsExpired = totalCallsExpired;
-        CurrentCallId = curregggntCak;
-        CurrentCallType = currentCallType;
-    }
+}

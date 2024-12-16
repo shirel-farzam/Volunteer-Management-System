@@ -8,7 +8,7 @@ namespace DO;
 /// <param name="PhoneNumber">Phone number of the volunteer</param>
 /// <param name="Email">Email address of the volunteer</param>
 /// <param name="TypeDistance">Preferred type of distance calculation (Aerial, Walking, Driving)</param>
-/// <param name="Job">Role of the volunteer (e.g., Volunteer, Boss)</param>
+/// <param name="Job">Role of the volunteer (e.g., Volunteer, Manager)</param>
 /// <param name="Active">Indicates whether the volunteer is active</param>
 /// <param name="Password">Password for the volunteer's account (optional)</param>
 /// <param name="FullAddress">Full address of the volunteer (optional)</param>

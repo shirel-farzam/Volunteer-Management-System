@@ -216,7 +216,7 @@
     <PhoneNumber>050-1111111</PhoneNumber>
     <Email>admin@example.com</Email>
     <TypeDistance>Aerial</TypeDistance>
-    <Job>Boss</Job>
+    <Job>Manager</Job>
     <Active>true</Active>
     <Password>Password246</Password>
     <FullAddress />

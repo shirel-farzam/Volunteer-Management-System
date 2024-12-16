@@ -4,7 +4,7 @@
 public enum Role
 {
     Volunteer,   // Volunteer
-    Boss         // Manager
+    Manager         // Manager
 }
 
 // Enum definition for types of distance

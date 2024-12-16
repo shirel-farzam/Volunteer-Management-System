@@ -124,7 +124,7 @@ public static class Initialization
         while (s_dal!.Volunteer.Read(managerId) != null); // Check if the ID is unique
 
         // Create a new manager and add to the data source
-        s_dal!.Volunteer.Create(new Volunteer(managerId, "Admin Manager", "050-1111111", "admin@example.com", Distance.Aerial, Role.Boss, true, "Password246"));
+        s_dal!.Volunteer.Create(new Volunteer(managerId, "Admin Manager", "050-1111111", "admin@example.com", Distance.Aerial, Role.Manager, true, "Password246"));
     }
 
 
