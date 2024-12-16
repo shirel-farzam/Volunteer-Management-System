@@ -52,49 +52,5 @@ public class Volunteer
 
     // Registration date (immutable)
     public override string ToString() => this.ToStringProperty();
-
-
-    //// Method to represent the volunteer as a string
-    //public override string ToString() =>
-    //    $"{FullName} ({Job}) - Active: {Active}, Registered: {RegistrationDate.ToShortDateString()}";
-
-    //// Constructor for initial password setup by the manager
-    //public Volunteer(string fullName, string phoneNumber, string email, string initialPassword)
-    //{
-    //    FullName = fullName;
-    //    PhoneNumber = phoneNumber;
-    //    Email = email;
-
-    //    // Set initial password by manager, ensure it's strong
-    //    SetPassword(initialPassword);
-    //}
-    //// Method to validate a strong password
-    //private bool IsPasswordStrong(string password)
-    //{
-    //    // Password strength requirements: at least 8 characters, 1 uppercase, 1 number, 1 special character
-    //    return Regex.IsMatch(password, @"^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
-    //}
-
-    //// Method to set password (with validation and encryption)
-    //public void SetPassword(string password)
-    //{
-    //    if (IsPasswordStrong(password))
-    //    {
-    //        // Encrypt the password before setting it
-    //        Password = EncryptPassword(password);
-    //    }
-    //    else
-    //    {
-    //        throw new ArgumentException("Password is not strong enough.");
-    //    }
-    //}
-
-    //// Simple encryption method for demonstration (use a stronger algorithm in real-world scenarios)
-    //private string EncryptPassword(string password)
-    //{
-    //    // Placeholder encryption: in a real-world scenario, use a stronger algorithm like BCrypt or SHA256
-    //    return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(password));
-    //}
-
 }
 

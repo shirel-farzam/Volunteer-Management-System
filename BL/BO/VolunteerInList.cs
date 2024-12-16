@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 
 namespace BO;
-
+using Helpers;
 public class VolunteerInList
 {
     // Volunteer ID (from DO.Volunteer)
@@ -30,7 +30,6 @@ public class VolunteerInList
 
     // The type of the current call being handled by the volunteer (None if no active call)
     public CallType CurrentCallType { get; set; }
-
 
     public override string ToString() => this.ToStringProperty();
 }

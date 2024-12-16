@@ -3,15 +3,15 @@ using BO;
 
 public interface IVolunteer
 {
-    string Login(string username, string password);
+    public string Login(string username, string password);
 
-    IEnumerable<VolunteerInList> RequestVolunteerList(bool? isActive, VolunteerInList? sortField = null);
+    public IEnumerable<BO.VolunteerInList> RequestVolunteerList(bool? isActive, VolunteerSortField? sortField = null);
 
-    Volunteer RequestVolunteerDetails(int volunteerId);
+    public BO.Volunteer RequestVolunteerDetails(int volunteerId);
 
-    void UpdateVolunteerDetails(int volunteerId, Volunteer volunteerDetails);
+    public void UpdateVolunteerDetails(int volunteerId, BO.Volunteer boVolunteer);
 
-    void DeleteVolunteer(int volunteerId);
+    public void DeleteVolunteer(int volunteerId);
 
-    void AddVolunteer(Volunteer volunteerDetails);
+    public void AddVolunteer(BO.Volunteer boVolunteer);
 }

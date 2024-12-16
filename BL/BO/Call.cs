@@ -1,4 +1,5 @@
 ﻿using DO;
+using Helpers;
 
 namespace BO;
 public class Call
@@ -14,6 +15,5 @@ public class Call
     public CallStatus Status { get; set; } // Current status of the call (Open, InProgress, etc.)
     public List<CallAssignmentInList>? CallAssignments { get; set; } // List of assignments for the call (past and present)
     public override string ToString() => this.ToStringProperty();
-
 }
 

@@ -1,4 +1,5 @@
 ﻿namespace BO;
+using Helpers;
 public class ClosedCallInList
 {
     // Unique identifier of the closed call (from DO.Call) - Cannot be null

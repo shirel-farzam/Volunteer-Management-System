@@ -1,15 +1,22 @@
 ﻿namespace BlImplementation;
 using BlApi;
 using BO;
+using Helpers;
 using System.Collections.Generic;
 
 internal class CallImplementation : ICall
 {
-
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
-    public void AddCall(Call call)
+    public void AddCall(BO.Call boCall)
     {
-        throw new NotImplementedException();
+        CallManager.IsValideCall(boCall);
+        CallManager.CheckLogic(boCall);
+        DO.Call doCall = ConvertDOToBO(boCall);
+        try
+        {
+            
+        }
+        catch { }
     }
 
     public void AssignCallToVolunteer(int volunteerId, int callId)
@@ -43,37 +50,29 @@ internal class CallImplementation : ICall
 
     return result;
    }
-    public Call GetCallDetails(int callId)
+    public BO.Call GetCallDetails(int callId)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<CallInList> GetCallList(CallField? filterField, object? filterValue, CallField? sortField)
+    public IEnumerable<BO.CallInList> GetCallList(BO.CallField? filterField, object? filterValue, BO.CallField? sortField)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, CallType? type = null, CallField? sortField = null)
+    public IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, BO.CallType? type = null, BO.CallField? sortField = null)
     {
         throw new NotImplementedException();
     }
-
-    public IEnumerable<OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, CallType? type = null, CallField? sortField = null)
+    public IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, Type? type = null, CallField? sortField = null)
     {
         throw new NotImplementedException();
     }
-
-    public void UpdateCallDetails(Call call)
+    public void UpdateCallDetails(BO.Call call)
     {
         throw new NotImplementedException();
     }
-
     public void UpdateTreatmentCancellation(int volunteerId, int assignmentId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void UpdateTreatmentCompletion(int volunteerId, int assignmentId)
     {
         throw new NotImplementedException();
     }
