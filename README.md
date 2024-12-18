@@ -5,6 +5,4 @@
 
 
 #  BO Bonos:
-# Initially, an initial password will be given by the administrator and then the volunteer will be able to update it.
-# Checking that the password is strong.
-# Password encryption
+

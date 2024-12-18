@@ -113,10 +113,7 @@ internal class VolunteerManager
             throw new BlWrongItemException("Invalid Email format.");
         }
 
-        /// <summary>
-        /// Validate the MaxReading field.
-        /// If provided, it must be a positive number.
-        /// </summary>
+       
         if (boVolunteer.MaxReading.HasValue)
         {
             if (!double.TryParse(boVolunteer.MaxReading.Value.ToString(), out double maxReadingValue) || maxReadingValue <= 0)
@@ -126,10 +123,6 @@ internal class VolunteerManager
         }
 
 
-        /// <summary>
-        /// Validate the Latitude field.
-        /// If provided, it must be between -90 and 90 (inclusive).
-        /// </summary>
         if (boVolunteer.Latitude.HasValue && (boVolunteer.Latitude.Value < -90 || boVolunteer.Latitude.Value > 90))
         {
             throw new BlWrongItemException("Latitude must be between -90 and 90.");

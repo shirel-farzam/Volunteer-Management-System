@@ -1,6 +1,7 @@
 ﻿namespace BlImplementation;
 using BlApi;
 using BO;
+using DO;
 using Helpers;
 using System.Collections.Generic;
 
@@ -8,61 +9,57 @@ internal class VolunteerImplementation : IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
-    public string Login(string username, string password)
+    // Handles volunteer login by verifying username and password
+    public BO.Role Login(int username, string password)
     {
-        var volunteer = _dal.Volunteer.ReadAll(v => v.Email == username).FirstOrDefault();
-        if (volunteer == null)
-        {
-            throw new BO.BlWrongItemException($"User with email {username} not found.");
-        }
-
+        var volunteer = _dal.Volunteer.Read(username)
+            ?? throw new BO.BlNullPropertyException("The volunteer is null");
         VolunteerManager.CheckPassword(password);
-
         if (volunteer.Password != password)
-        {
-            throw new BO.BlWrongItemException("Incorrect password.");
-        }
+            throw new BO.BlWrongInputException("The password does not match");
 
-        return volunteer.Job.ToString();
+        return (BO.Role)volunteer.Job;
     }
 
-    public IEnumerable<BO.VolunteerInList> RequestVolunteerList(bool? isActive,  BO.VolunteerSortField? sortField = null)
+    // Retrieves a filtered and/or sorted list of volunteers
+    public IEnumerable<BO.VolunteerInList> RequestVolunteerList(bool? isActive, BO.VolunteerSortField? sortField = null)
     {
-        IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll() ?? throw new BO.BlNullPropertyException("There are not volunteers int database");
+        IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll()
+            ?? throw new BO.BlNullPropertyException("There are no volunteers in the database");
+
         IEnumerable<BO.VolunteerInList> boVolunteersInList = volunteers
             .Select(doVolunteer => VolunteerManager.ConvertDOToBOInList(doVolunteer));
 
-        // If an 'active' filter is provided, filter the volunteers based on their active status
-        // Otherwise, keep all volunteers without filtering
+        // Apply filtering based on 'isActive' status if provided
         var filteredVolunteers = isActive.HasValue
-              ? boVolunteersInList.Where(v => v.Active == isActive)
-              : boVolunteersInList;
+            ? boVolunteersInList.Where(v => v.Active == isActive)
+            : boVolunteersInList;
 
-        // If a 'sortBy' criteria is provided, sort the filtered volunteers by the selected property
+        // Apply sorting based on the 'sortField' criteria if provided
         var sortedVolunteers = sortField.HasValue
             ? filteredVolunteers.OrderBy(v =>
                 sortField switch
                 {
-                    // Sorting by different properties of the volunteer (ID, Full Name, etc.)
-                    BO.VolunteerSortField.ID => (object)v.Id, // Sorting by ID (T.Z)
-                    BO.VolunteerSortField.Name => v.FullName, // Sorting by full name
-                    BO.VolunteerSortField.ActivityStatus => v.Active, // Sorting by active status
-                    BO.VolunteerSortField.SumCalls => v.TotalCallsHandled, // Sorting by total number of calls
-                    BO.VolunteerSortField.SumCanceled => v.TotalCallsCanceled, // Sorting by total number of cancellations
-                    BO.VolunteerSortField.SumExpired => v.TotalCallsExpired, // Sorting by total number of expired calls
-                    BO.VolunteerSortField.IdCall => v.CurrentCallId ?? null, // Sorting by call ID (nullable)
-                    BO.VolunteerSortField.CType => v.CurrentCallType.ToString(), // Sorting by call type (converted to string)
+                    BO.VolunteerSortField.ID => (object)v.Id, // Sort by ID
+                    BO.VolunteerSortField.Name => v.FullName, // Sort by full name
+                    BO.VolunteerSortField.ActivityStatus => v.Active, // Sort by active status
+                    BO.VolunteerSortField.SumCalls => v.TotalCallsHandled, // Sort by total handled calls
+                    BO.VolunteerSortField.SumCanceled => v.TotalCallsCanceled, // Sort by canceled calls
+                    BO.VolunteerSortField.SumExpired => v.TotalCallsExpired, // Sort by expired calls
+                    BO.VolunteerSortField.IdCall => v.CurrentCallId ?? null, // Sort by call ID (nullable)
+                    BO.VolunteerSortField.CType => v.CurrentCallType.ToString(), // Sort by call type
                 })
-            : filteredVolunteers.OrderBy(v => v.Id); // Default sorting by ID (T.Z) if no 'sortBy' is provided
+            : filteredVolunteers.OrderBy(v => v.Id); // Default sorting by ID
 
-        // Return the sorted and filtered list of volunteers
         return sortedVolunteers;
     }
+
+    // Retrieves detailed information about a specific volunteer
     public BO.Volunteer RequestVolunteerDetails(int volunteerId)
     {
+        var doVolunteer = _dal.Volunteer.Read(volunteerId)
+            ?? throw new BO.BlWrongInputException($"Volunteer with ID={volunteerId} does not exist");
 
-        var doVolunteer = _dal.Volunteer.Read(volunteerId) ??
-        throw new BO.BlWrongInputException($"Volunteer with ID={volunteerId} does Not exist");
         return new()
         {
             Id = volunteerId,
@@ -77,22 +74,23 @@ internal class VolunteerImplementation : IVolunteer
             Longitude = doVolunteer.Longitude,
             CurrentCall = VolunteerManager.GetCallIn(doVolunteer),
         };
-
     }
+
+    // Updates volunteer details with necessary validations
     public void UpdateVolunteerDetails(int volunteerId, BO.Volunteer boVolunteer)
     {
-        // קריאת המתנדב מה-DAL
+        // Read the volunteer from DAL
         DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId)
             ?? throw new BO.BlWrongInputException($"Volunteer with ID={volunteerId} does not exist");
 
-        // בדיקת האם המשתמש שמבצע את העדכון הוא מנהל
+        // Ensure the updating user is a manager
         DO.Volunteer manager = _dal.Volunteer.Read(boVolunteer.Id)
             ?? throw new BO.BlWrongInputException($"Volunteer with ID={boVolunteer.Id} does not exist");
 
-        if (manager.Job != DO.Role.Boss)
+        if (manager.Job != DO.Role.Manager)
             throw new BO.BlWrongInputException("Only a manager can update volunteer details.");
 
-        // אם הכתובת השתנתה, עדכון הקואורדינטות
+        // If the address changed, update coordinates
         if (boVolunteer.FullAddress != doVolunteer.FullAddress)
         {
             double[] coordinates = VolunteerManager.GetCoordinates(boVolunteer.FullAddress);
@@ -100,17 +98,15 @@ internal class VolunteerImplementation : IVolunteer
             boVolunteer.Longitude = coordinates[1];
         }
 
-        // בדיקות לוגיות
+        // Perform logical and format checks on the volunteer details
         VolunteerManager.CheckLogic(boVolunteer);
-
-        // בדיקות פורמט
         VolunteerManager.CheckFormat(boVolunteer);
 
-        // אם המשתמש אינו מנהל, לא ניתן לשנות את התפקיד
-        if (manager.Job != DO.Role.Boss && boVolunteer.Job != (BO.Role)doVolunteer.Job)
+        // Prevent non-managers from changing the role
+        if (manager.Job != DO.Role.Manager && boVolunteer.Job != (BO.Role)doVolunteer.Job)
             throw new BO.BlWrongInputException("You do not have permission to change the role.");
 
-        // יצירת אובייקט מעודכן
+        // Create an updated volunteer object
         DO.Volunteer volunteerUpdate = new DO.Volunteer(
             boVolunteer.Id,
             boVolunteer.FullName,
@@ -126,46 +122,52 @@ internal class VolunteerImplementation : IVolunteer
             boVolunteer.MaxReading
         );
 
-        // ניסיון לעדכון ב-DAL
+        // Attempt to update the volunteer in DAL
         try
         {
             _dal.Volunteer.Update(volunteerUpdate);
         }
         catch (DO.DalAlreadyExistsException ex)
         {
-            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} does not exist", ex);
+            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
         }
     }
 
+    // Deletes a volunteer if there are no active assignments
     public void DeleteVolunteer(int volunteerId)
     {
         DO.Volunteer? doVolunteer = _dal.Volunteer.Read(volunteerId);
         IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(ass => ass.VolunteerId == volunteerId);
 
         if (assignments != null && assignments.Count(ass => ass.TimeEnd == null) > 0)
+            throw new BlWrongInputException("Cannot delete - the volunteer has active assignments.");
 
-            throw new BlWrongInputException("cannot delete have assignment in treat");
         try
         {
             _dal.Volunteer.Delete(volunteerId);
         }
         catch (DO.DalDeletionImpossible doEx)
         {
-            throw new BO.BlDeleteNotPossibleException("id not valid", doEx);
+            throw new BO.BlDeleteNotPossibleException("Deletion is not possible due to invalid ID", doEx);
         }
     }
+
+    // Adds a new volunteer with validations
     public void AddVolunteer(BO.Volunteer boVolunteer)
     {
-
+        // Retrieve coordinates for the address
         double[] cordinate = VolunteerManager.GetCoordinates(boVolunteer.FullAddress);
         double latitude = cordinate[0];
         double longitude = cordinate[1];
         boVolunteer.Latitude = latitude;
         boVolunteer.Longitude = longitude;
+
+        // Perform logical and format checks on the volunteer details
         VolunteerManager.CheckLogic(boVolunteer);
         VolunteerManager.CheckFormat(boVolunteer);
-        DO.Volunteer doVolunteer = new
-            (
+
+        // Create a DO.Volunteer object
+        DO.Volunteer doVolunteer = new(
             boVolunteer.Id,
             boVolunteer.FullName,
             boVolunteer.PhoneNumber,
@@ -178,9 +180,9 @@ internal class VolunteerImplementation : IVolunteer
             boVolunteer.Latitude,
             boVolunteer.Longitude,
             boVolunteer.MaxReading
+        );
 
-            );
-
+        // Attempt to create the volunteer in DAL
         try
         {
             _dal.Volunteer.Create(doVolunteer);

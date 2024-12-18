@@ -71,36 +71,6 @@ internal static class Tools
         }
     }
 
-    //public static async Task<bool> IsAddressValid(string address)
-    //{
-    //    string baseUrl = "https://geocode.maps.co/search";
-    //    string query = $"{baseUrl}?q={Uri.EscapeDataString(address)}";
-
-    //    using (HttpClient client = new HttpClient())
-    //    {
-    //        try
-    //        {
-    //            HttpResponseMessage response = await client.GetAsync(query);
-    //            if (response.IsSuccessStatusCode)
-    //            {
-    //                string result = await response.Content.ReadAsStringAsync();
-    //                return !string.IsNullOrWhiteSpace(result) && result.Contains("\"lat\":") && result.Contains("\"lon\":");
-    //            }
-    //            else
-    //            {
-    //                Console.WriteLine($"Error: {response.StatusCode}");
-    //                return false;
-    //            }
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            Console.WriteLine($"Exception: {ex.Message}");
-    //            return false;
-    //        }
-    //    }
-    //}
-
-
 
     private const string BaseUrl = "https://geocode.maps.co/search"; // For lines of longitude and latitude 
 
@@ -234,30 +204,8 @@ internal static class Tools
             throw new BO.BlWrongItemException($"this ID {id} does not posssible");
         }
     }
-    public static int TotalHandledCalls(int Id)
-    {
-        // Count how many were treated on time
-        return _dal.Assignment.ReadAll()
-            .Count(a => a.VolunteerId == Id &&
-                        a.TimeEnd == AssignmentCompletionType.Canceled);
-    }
-    public static int GetTotalCallsCancelled(int Id)
-    {
-        var assignments = _dal.Assignment.ReadAll();
-        return assignments.Count(a => a.VolunteerId == Id &&
-                                      (a.TimeEnd.HasValue &&
-                                       (a.TimeEnd.Value == AssignmentCompletionType.AdminCancelled ||
-                                        a.TimeEnd.Value == AssignmentCompletionType.Canceled)));
-    }
 
-    public static int TotalCallsExpiredelo(int Id)
-    {
-        // Count how many were Expired
-        return _dal.Assignment.ReadAll()
-            .Count(a => a.VolunteerId == Id &&
-                        a.TimeEnd == AssignmentCompletionType.Expired);
-
-    }
+    
     public static int? CurrentCallIdhelp(int Id)
     {
         // check CurrentCallId

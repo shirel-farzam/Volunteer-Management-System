@@ -34,11 +34,11 @@ internal static class ClockManager //stage 4
         //TO_DO:
         //Add calls here to any logic method that should be called periodically,
         //after each clock update
-        //for example, Periodic Volunteers' updates:
-        //Go through all Volunteers to update properties that are affected by the clock update
-        //(Volunteers becomes not active after 5 years etc.)
+        //for example, Periodic students' updates:
+        //Go through all students to update properties that are affected by the clock update
+        //(students becomes not active after 5 years etc.)
 
-       VolunteerManager.PeriodicVolunteersUpdates(oldClock, newClock); //stage 4
+        //   VolunteerManager.PeriodicVolunteersUpdates(oldClock, newClock); //stage 4
         //etc ...
 
         //Calling all the observers of clock update
@@ -94,7 +94,7 @@ internal static class ClockManager //stage 4
             //TO_DO:
             //Add calls here to any logic simulation that was required in stage 7
             //for example: course registration simulation
-           VolunteerManager.SimulateCourseRegistrationAndGrade(); //stage 7
+            //    StudentManager.SimulateCourseRegistrationAndGrade(); //stage 7
 
             //etc...
             #endregion Stage 7

@@ -1,22 +1,38 @@
-﻿
-namespace BlApi;
+﻿namespace BlApi;
 
 public interface IAdmin
 {
+    /// <summary>
+    /// Sets a predefined maximum range for operations or tasks.
+    /// </summary>
+    /// <param name="time">The maximum time range to define.</param>
+    void Definition(TimeSpan time);
+
+    /// <summary>
+    /// Advances the system clock by the specified time unit.
+    /// </summary>
+    /// <param name="unit">The time unit to advance the clock by.</param>
+    void ForwardClock(BO.TimeUnit unit);
+
+    /// <summary>
+    /// Retrieves the current system clock.
+    /// </summary>
+    /// <returns>The current date and time.</returns>
     DateTime GetClock();
-    // Method declaration for advancing the system clock by a specific time unit
-     void AdvanceClock(BO.TimeUnit timeUnit);
 
-    // Method declaration for getting the risk time range configuration
-     TimeSpan GetRiskTimeRange();
+    /// <summary>
+    /// Retrieves the maximum time range that has been defined.
+    /// </summary>
+    /// <returns>The maximum time range.</returns>
+    TimeSpan GetMaxRange();
 
-    // Method declaration for setting the risk time range configuration
-     void SetRiskTimeRange(TimeSpan riskTimeRange);
+    /// <summary>
+    /// Initializes the system, preparing it for operation.
+    /// </summary>
+    void initialization();
 
-    // Method declaration for resetting the database to its initial state
-     void ResetDatabase();
-
-    // Method declaration for initializing the database with default values
-     void InitializeDatabase();
+    /// <summary>
+    /// Resets the system to its initial state.
+    /// </summary>
+    void Reset();
 }
-

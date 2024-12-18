@@ -23,7 +23,7 @@
     // Enum for Distance (used for calculating distances)
     public enum Distance
     {
-        Distance,  // Air distance (straight-line distance)
+        Arial,  // Air distance (straight-line distance)
         Walking,  // Walking distance
         Driving  // Driving distance
     }
@@ -71,5 +71,55 @@
         DAY,     // Day unit for time advancement
         MONTH,   // Month unit for time advancement
         YEAR     // Year unit for time advancement
+    }
+    public enum CallInListField
+    {
+        Id,
+        CallId,
+        Type,
+        OpeningTime,
+        TimeToFinish,
+        LastVolunteerName,
+        TreatmentDuration,
+        Status,
+        TotalAssignments
+    }
+
+    public enum ClosedCallInListField
+    {
+        Id,
+        CallType,
+        FullAddress,
+        OpeningTime,
+        EntryTime,
+        CompletionTime,
+        CompletionType
+    }
+    public enum OpenCallInListField
+    {
+        Id,
+        CallType,
+        Description,
+        FullAddress,
+        OpeningTime,
+        MaxCompletionTime,
+        DistanceFromVolunteer
+    }
+    public enum VolunteerInListField
+    {
+        Id,
+        FullName,
+        Active,
+        TotalCallsHandled,
+        TotalCallsCanceled,
+        TotalCallsExpired,
+        CurrentCallId,
+        CurrentCallType
+    }
+    public enum TypeOfCalls
+    {
+        FoodPreparation,  // Food preparation
+        FoodTransport,    // Food transport
+        InventoryCheck,   // Inventory check
     }
 }

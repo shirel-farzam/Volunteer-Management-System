@@ -1,80 +1,47 @@
-﻿namespace BlImplementation;
-using BlApi;
-using BO;
-using DalApi;
+﻿using BlApi;
+using DalTest;
 using Helpers;
-using System;
 
+
+namespace BlImplementation;
 internal class AdminImplementation : IAdmin
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
-    public void UpdateClock(TimeUnit unit)
+    public void Definition(TimeSpan time)
     {
-        DateTime newTime = ClockManager.Now;
-
-        switch (unit)
-        {
-            case TimeUnit.MINUTE:
-                newTime = ClockManager.Now.AddMinutes(1);
-                break;
-            case TimeUnit.HOUR:
-                newTime = ClockManager.Now.AddHours(1);
-                break;
-            case TimeUnit.DAY:
-                newTime = ClockManager.Now.AddDays(1);
-                break;
-            case TimeUnit.MONTH:
-                newTime = ClockManager.Now.AddMonths(1);
-                break;
-            case TimeUnit.YEAR:
-                newTime = ClockManager.Now.AddYears(1);
-                break;
-            default:
-                throw new ArgumentException("Invalid TimeUnit value");
-        }
-
-        ClockManager.UpdateClock(newTime);
+        _dal.ResetDB();
+        Initialization.Do();
+        ClockManager.UpdateClock(ClockManager.Now);
     }
 
-    public DateTime GetClock()
+    public void ForwardClock(BO.TimeUnit unit) => ClockManager.UpdateClock(unit switch
     {
-        return ClockManager.Now;
-    }
+        BO.TimeUnit.MINUTE => ClockManager.Now.AddMinutes(1),
+        BO.TimeUnit.HOUR => ClockManager.Now.AddHours(1),
+        BO.TimeUnit.DAY => ClockManager.Now.AddDays(1),
+        BO.TimeUnit.MONTH => ClockManager.Now.AddMonths(1),
+        BO.TimeUnit.YEAR => ClockManager.Now.AddYears(1),
+        _ => DateTime.MinValue
+    });
+
+
+    public DateTime GetClock() => _dal.Config.Clock;
+
 
     public TimeSpan GetMaxRange()
     {
         return _dal.Config.RiskRange;
     }
-    public void InitializeDatabase()
+
+    public void initialization()
     {
-        ResetDatabase();
         DalTest.Initialization.Do();
         ClockManager.UpdateClock(ClockManager.Now);
     }
 
-    public void ResetDatabase()
+    public void Reset()
     {
         _dal.ResetDB();
+        ClockManager.UpdateClock(ClockManager.Now);
     }
-
-    public void SetMaxRange(TimeSpan maxRange)
-    {
-        _dal.Config.RiskRange = maxRange;
-    }
-
-    public void AdvanceClock(TimeUnit timeUnit)
-    {
-        throw new NotImplementedException();
-    }
-
-    public TimeSpan GetRiskTimeRange()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void SetRiskTimeRange(TimeSpan riskTimeRange)
-    {
-        throw new NotImplementedException();
-    }
-
 }

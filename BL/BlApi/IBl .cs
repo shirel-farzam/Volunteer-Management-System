@@ -1,8 +1,5 @@
-﻿
-
-namespace BlApi;
-
-internal interface IBl
+﻿namespace BlApi;
+public interface IBl
 {
     IVolunteer Volunteer { get; }
     ICall Call { get; }
