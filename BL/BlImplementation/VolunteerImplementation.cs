@@ -7,49 +7,49 @@ using System.Collections.Generic;
 
 internal class VolunteerImplementation : IVolunteer
 {
-    private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    private readonly DalApi.IDal _dal = DalApi.Factory.Get; // Access DAL instance
 
-    // Handles volunteer login by verifying username and password
+    // Volunteer login with username and password validation
     public BO.Role Login(int username, string password)
     {
         var volunteer = _dal.Volunteer.Read(username)
-            ?? throw new BO.BlNullPropertyException("The volunteer is null");
-        VolunteerManager.CheckPassword(password);
+            ?? throw new BO.BlNullPropertyException("The volunteer does not exist");
+        VolunteerManager.CheckPassword(password); // Validate password format
         if (volunteer.Password != password)
-            throw new BO.BlWrongInputException("The password does not match");
+            throw new BO.BlWrongInputException("Incorrect password");
 
-        return (BO.Role)volunteer.Job;
+        return (BO.Role)volunteer.Job; // Return volunteer's role
     }
 
-    // Retrieves a filtered and/or sorted list of volunteers
+    // Retrieves a filtered and sorted list of volunteers
     public IEnumerable<BO.VolunteerInList> RequestVolunteerList(bool? isActive, BO.VolunteerSortField? sortField = null)
     {
         IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll()
-            ?? throw new BO.BlNullPropertyException("There are no volunteers in the database");
+            ?? throw new BO.BlNullPropertyException("No volunteers in the database");
 
-        IEnumerable<BO.VolunteerInList> boVolunteersInList = volunteers
-            .Select(doVolunteer => VolunteerManager.ConvertDOToBOInList(doVolunteer));
+        // Convert DO.Volunteer to BO.VolunteerInList
+        var boVolunteersInList = volunteers
+            .Select(VolunteerManager.ConvertDOToBOInList);
 
-        // Apply filtering based on 'isActive' status if provided
+        // Apply filter and sorting if specified
         var filteredVolunteers = isActive.HasValue
             ? boVolunteersInList.Where(v => v.Active == isActive)
             : boVolunteersInList;
 
-        // Apply sorting based on the 'sortField' criteria if provided
         var sortedVolunteers = sortField.HasValue
-            ? filteredVolunteers.OrderBy(v =>
-                sortField switch
-                {
-                    BO.VolunteerSortField.ID => (object)v.Id, // Sort by ID
-                    BO.VolunteerSortField.Name => v.FullName, // Sort by full name
-                    BO.VolunteerSortField.ActivityStatus => v.Active, // Sort by active status
-                    BO.VolunteerSortField.SumCalls => v.TotalCallsHandled, // Sort by total handled calls
-                    BO.VolunteerSortField.SumCanceled => v.TotalCallsCanceled, // Sort by canceled calls
-                    BO.VolunteerSortField.SumExpired => v.TotalCallsExpired, // Sort by expired calls
-                    BO.VolunteerSortField.IdCall => v.CurrentCallId ?? null, // Sort by call ID (nullable)
-                    BO.VolunteerSortField.CType => v.CurrentCallType.ToString(), // Sort by call type
-                })
-            : filteredVolunteers.OrderBy(v => v.Id); // Default sorting by ID
+            ? filteredVolunteers.OrderBy(v => sortField switch
+            {
+                BO.VolunteerSortField.ID => (object)v.Id,
+                BO.VolunteerSortField.Name => v.FullName,
+                BO.VolunteerSortField.ActivityStatus => v.Active,
+                BO.VolunteerSortField.SumCalls => v.TotalCallsHandled,
+                BO.VolunteerSortField.SumCanceled => v.TotalCallsCanceled,
+                BO.VolunteerSortField.SumExpired => v.TotalCallsExpired,
+                BO.VolunteerSortField.IdCall => v.CurrentCallId ?? 0,
+                BO.VolunteerSortField.CType => v.CurrentCallType.ToString(),
+                _ => v.Id
+            })
+            : filteredVolunteers.OrderBy(v => v.Id); // Default sort by ID
 
         return sortedVolunteers;
     }
@@ -60,7 +60,7 @@ internal class VolunteerImplementation : IVolunteer
         var doVolunteer = _dal.Volunteer.Read(volunteerId)
             ?? throw new BO.BlWrongInputException($"Volunteer with ID={volunteerId} does not exist");
 
-        return new()
+        return new BO.Volunteer
         {
             Id = volunteerId,
             FullName = doVolunteer.FullName,
@@ -76,38 +76,29 @@ internal class VolunteerImplementation : IVolunteer
         };
     }
 
-    // Updates volunteer details with necessary validations
+    // Updates volunteer details with validations
     public void UpdateVolunteerDetails(int volunteerId, BO.Volunteer boVolunteer)
     {
-        // Read the volunteer from DAL
-        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteerId)
+        var doVolunteer = _dal.Volunteer.Read(volunteerId)
             ?? throw new BO.BlWrongInputException($"Volunteer with ID={volunteerId} does not exist");
 
-        // Ensure the updating user is a manager
-        DO.Volunteer manager = _dal.Volunteer.Read(boVolunteer.Id)
-            ?? throw new BO.BlWrongInputException($"Volunteer with ID={boVolunteer.Id} does not exist");
+        var manager = _dal.Volunteer.Read(boVolunteer.Id)
+            ?? throw new BO.BlWrongInputException($"Manager with ID={boVolunteer.Id} does not exist");
 
         if (manager.Job != DO.Role.Manager)
-            throw new BO.BlWrongInputException("Only a manager can update volunteer details.");
+            throw new BO.BlWrongInputException("Only a manager can update details");
 
-        // If the address changed, update coordinates
         if (boVolunteer.FullAddress != doVolunteer.FullAddress)
         {
-            double[] coordinates = VolunteerManager.GetCoordinates(boVolunteer.FullAddress);
+            var coordinates = VolunteerManager.GetCoordinates(boVolunteer.FullAddress);
             boVolunteer.Latitude = coordinates[0];
             boVolunteer.Longitude = coordinates[1];
         }
 
-        // Perform logical and format checks on the volunteer details
         VolunteerManager.CheckLogic(boVolunteer);
         VolunteerManager.CheckFormat(boVolunteer);
 
-        // Prevent non-managers from changing the role
-        if (manager.Job != DO.Role.Manager && boVolunteer.Job != (BO.Role)doVolunteer.Job)
-            throw new BO.BlWrongInputException("You do not have permission to change the role.");
-
-        // Create an updated volunteer object
-        DO.Volunteer volunteerUpdate = new DO.Volunteer(
+        var volunteerUpdate = new DO.Volunteer(
             boVolunteer.Id,
             boVolunteer.FullName,
             boVolunteer.PhoneNumber,
@@ -122,7 +113,6 @@ internal class VolunteerImplementation : IVolunteer
             boVolunteer.MaxReading
         );
 
-        // Attempt to update the volunteer in DAL
         try
         {
             _dal.Volunteer.Update(volunteerUpdate);
@@ -136,38 +126,33 @@ internal class VolunteerImplementation : IVolunteer
     // Deletes a volunteer if there are no active assignments
     public void DeleteVolunteer(int volunteerId)
     {
-        DO.Volunteer? doVolunteer = _dal.Volunteer.Read(volunteerId);
-        IEnumerable<DO.Assignment> assignments = _dal.Assignment.ReadAll(ass => ass.VolunteerId == volunteerId);
+        var doVolunteer = _dal.Volunteer.Read(volunteerId);
+        var assignments = _dal.Assignment.ReadAll(ass => ass.VolunteerId == volunteerId);
 
-        if (assignments != null && assignments.Count(ass => ass.TimeEnd == null) > 0)
-            throw new BlWrongInputException("Cannot delete - the volunteer has active assignments.");
+        if (assignments.Any(ass => ass.TimeEnd == null))
+            throw new BO.BlWrongInputException("Volunteer has active assignments");
 
         try
         {
             _dal.Volunteer.Delete(volunteerId);
         }
-        catch (DO.DalDeletionImpossible doEx)
+        catch (DO.DalDeletionImpossible ex)
         {
-            throw new BO.BlDeleteNotPossibleException("Deletion is not possible due to invalid ID", doEx);
+            throw new BO.BlDeleteNotPossibleException("Deletion failed due to invalid ID", ex);
         }
     }
 
     // Adds a new volunteer with validations
     public void AddVolunteer(BO.Volunteer boVolunteer)
     {
-        // Retrieve coordinates for the address
-        double[] cordinate = VolunteerManager.GetCoordinates(boVolunteer.FullAddress);
-        double latitude = cordinate[0];
-        double longitude = cordinate[1];
-        boVolunteer.Latitude = latitude;
-        boVolunteer.Longitude = longitude;
+        var coordinates = VolunteerManager.GetCoordinates(boVolunteer.FullAddress);
+        boVolunteer.Latitude = coordinates[0];
+        boVolunteer.Longitude = coordinates[1];
 
-        // Perform logical and format checks on the volunteer details
         VolunteerManager.CheckLogic(boVolunteer);
         VolunteerManager.CheckFormat(boVolunteer);
 
-        // Create a DO.Volunteer object
-        DO.Volunteer doVolunteer = new(
+        var doVolunteer = new DO.Volunteer(
             boVolunteer.Id,
             boVolunteer.FullName,
             boVolunteer.PhoneNumber,
@@ -182,7 +167,6 @@ internal class VolunteerImplementation : IVolunteer
             boVolunteer.MaxReading
         );
 
-        // Attempt to create the volunteer in DAL
         try
         {
             _dal.Volunteer.Create(doVolunteer);

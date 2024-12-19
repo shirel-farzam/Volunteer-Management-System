@@ -49,14 +49,6 @@
     <TypeEndTreat>ManagerCancel</TypeEndTreat>
   </Assignment>
   <Assignment>
-    <Id>1006</Id>
-    <CallId>1001</CallId>
-    <VolunteerId>907385535</VolunteerId>
-    <TimeStart>2024-12-18T22:46:40</TimeStart>
-    <TimeEnd xsi:nil="true" />
-    <TypeEndTreat xsi:nil="true" />
-  </Assignment>
-  <Assignment>
     <Id>1007</Id>
     <CallId>1011</CallId>
     <VolunteerId>796809815</VolunteerId>
@@ -479,5 +471,13 @@
     <TimeStart>2024-12-18T22:46:40</TimeStart>
     <TimeEnd xsi:nil="true" />
     <TypeEndTreat xsi:nil="true" />
+  </Assignment>
+  <Assignment>
+    <Id>1006</Id>
+    <CallId>1001</CallId>
+    <VolunteerId>907385535</VolunteerId>
+    <TimeStart>2024-12-18T22:46:40</TimeStart>
+    <TimeEnd>2024-12-18T22:46:40</TimeEnd>
+    <TypeEndTreat>ManagerCancel</TypeEndTreat>
   </Assignment>
 </ArrayOfAssignment>

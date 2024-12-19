@@ -13,3 +13,18 @@ C:\Users\ayele\OneDrive\שולחן העבודה\מיניפ\dotNet5785_-4642_7701
 C:\Users\ayele\OneDrive\שולחן העבודה\מיניפ\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\stage0.pdb
 C:\Users\ayele\OneDrive\שולחן העבודה\מיניפ\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\stage0.genruntimeconfig.cache
 C:\Users\ayele\OneDrive\שולחן העבודה\מיניפ\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\ref\stage0.dll
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\bin\Debug\net8.0\stage0.exe
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\bin\Debug\net8.0\stage0.deps.json
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\bin\Debug\net8.0\stage0.runtimeconfig.json
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\bin\Debug\net8.0\stage0.dll
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\bin\Debug\net8.0\stage0.pdb
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\stage0.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\stage0.AssemblyInfoInputs.cache
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\stage0.AssemblyInfo.cs
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\stage0.csproj.CoreCompileInputs.cache
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\stage0.sourcelink.json
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\stage0.dll
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\refint\stage0.dll
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\stage0.pdb
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\stage0.genruntimeconfig.cache
+C:\Users\shire\Source\Repos\dotNet5785_-4642_7701\stage0\obj\Debug\net8.0\ref\stage0.dll

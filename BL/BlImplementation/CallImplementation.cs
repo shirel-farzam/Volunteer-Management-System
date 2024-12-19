@@ -14,11 +14,10 @@ internal class CallImplementation : ICall
         DO.Call doCall = CallManager.BOConvertDO_Call(boCall);
         try
         {
-            _dal.Call.Create(doCall); // שכבת הנתונים - הוספת הקריאה
+            _dal.Call.Create(doCall); 
         }
         catch (Exception ex)
         {
-            // טיפול בחריגות במקרה של כשל בהוספה
             throw new BO.BlWrongInputException("Failed to add the new call.", ex);
         }
     }
@@ -70,9 +69,9 @@ internal class CallImplementation : ICall
 
         // קיבוץ לפי סוג סיום טיפול מתוך Assignment
         var groupedCalls = calls
-            .SelectMany(call => _dal.Assignment.ReadAll(ass => ass.CallId == call.Id))  // שליפת ההקצאות
-            .GroupBy(ass => (int)ass.TypeEndTreat)  // קיבוץ לפי סוג סיום טיפול בהקצאה
-            .ToDictionary(group => group.Key, group => group.Count());  // מילון: מפתח - TypeEnd, ערך - מספר ההקצאות
+            .SelectMany(call => _dal.Assignment.ReadAll(ass => ass.CallId == call.Id))  
+            .GroupBy(ass => (int)ass.TypeEndTreat) 
+            .ToDictionary(group => group.Key, group => group.Count()); 
 
         int maxTypeEnd = groupedCalls.Keys.Any() ? groupedCalls.Keys.Max() : 0;
 
@@ -381,7 +380,6 @@ internal class CallImplementation : ICall
         double latitude = coordinate[0];
         double longitude = coordinate[1];
 
-        // המרת הערכים ל-double עם ערך ברירת מחדל אם הם null
         boCall.Latitude = latitude;
         boCall.Longitude = longitude;
 
@@ -393,8 +391,8 @@ internal class CallImplementation : ICall
                     (DO.CallType)boCall.Type,
                     boCall.Description,
                     boCall.FullAddress,
-                    boCall.Latitude ?? 0.0, // המרת Nullable Double ל-Double עם ערך ברירת מחדל
-                    boCall.Longitude ?? 0.0, // כנ"ל
+                    boCall.Latitude ?? 0.0, 
+                    boCall.Longitude ?? 0.0, 
                     boCall.OpenTime,
                     boCall.MaxEndTime
                     );
@@ -408,4 +406,3 @@ internal class CallImplementation : ICall
         }
     }
 }
-
