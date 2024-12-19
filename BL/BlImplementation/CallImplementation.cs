@@ -3,208 +3,260 @@ using BlApi;
 using BO;
 using Helpers;
 
-
 internal class CallImplementation : ICall
 {
-    private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    private readonly DalApi.IDal _dal = DalApi.Factory.Get; // Dependency to access the data access layer (DAL)
+
+    // Adds a new call to the system after validating it and converting it to the appropriate format.
     public void AddCall(BO.Call boCall)
     {
-        CallManager.IsValideCall(boCall);
-        CallManager.IsLogicCall(boCall);
-        DO.Call doCall = CallManager.BOConvertDO_Call(boCall);
+        CallManager.IsValideCall(boCall); // Validates the call's properties
+        CallManager.IsLogicCall(boCall); // Ensures the call follows logical business rules
+        DO.Call doCall = CallManager.BOConvertDO_Call(boCall); // Converts the business object to a data object
         try
         {
-            _dal.Call.Create(doCall); 
+            _dal.Call.Create(doCall); // Adds the call to the DAL
         }
         catch (Exception ex)
         {
+            // Handles exceptions if adding the call fails
             throw new BO.BlWrongInputException("Failed to add the new call.", ex);
         }
     }
+
+    // Assigns a volunteer to treat a specific call and creates an assignment record.
     public void ChooseCallForTreat(int volunteerId, int callId)
     {
-        DO.Volunteer vol = _dal.Volunteer.Read(volunteerId) ?? throw new BO.BlNullPropertyException($"there is no volunteer with this ID {volunteerId}");
-        BO.Call bocall = Read(callId) ?? throw new BO.BlNullPropertyException($"there is no call with this ID {callId}");
+        // Reads the volunteer from the data layer or throws an exception if not found
+        DO.Volunteer vol = _dal.Volunteer.Read(volunteerId)
+                           ?? throw new BO.BlNullPropertyException($"There is no volunteer with this ID {volunteerId}");
+
+        // Reads the call from the business logic or throws an exception if not found
+        BO.Call bocall = Read(callId)
+                         ?? throw new BO.BlNullPropertyException($"There is no call with this ID {callId}");
+
+        // Ensures the call is not open or expired before assigning a volunteer
         if (bocall.Status == BO.CallStatus.Open || bocall.Status == BO.CallStatus.Expired)
-            throw new BO.BlAlreadyExistsException($"the call is open or expired callId is={callId}");
+            throw new BO.BlAlreadyExistsException($"The call is open or expired. Call ID is={callId}");
+
+        // Creates a new assignment record for the volunteer and call
         DO.Assignment assignmentToCreate = new DO.Assignment
         {
             Id = 0,
             CallId = callId,
             VolunteerId = volunteerId,
-            TimeStart = ClockManager.Now,
-            TimeEnd = null,
-            TypeEndTreat = null
+            TimeStart = ClockManager.Now, // Sets the start time for the assignment
+            TimeEnd = null,               // No end time initially
+            TypeEndTreat = null           // No completion type initially
         };
+
         try
         {
-            _dal.Assignment.Create(assignmentToCreate);
+            _dal.Assignment.Create(assignmentToCreate); // Adds the assignment to the DAL
         }
         catch (DO.DalDeletionImpossible)
-        { throw new BO.BlAlreadyExistsException("impossible to create"); }
-
+        {
+            throw new BO.BlAlreadyExistsException("Impossible to create assignment"); // Handles creation failure
+        }
     }
-
     public void DeleteCall(int callId)
     {
-
         try
         {
+            // Check if the call can be deleted (only calls with "Open" status can be deleted)
             if (Read(callId).Status == BO.CallStatus.Open)
             {
-                _dal.Call.Delete(callId);
+                _dal.Call.Delete(callId); // Delete the call from the data layer
                 return;
             }
-            throw new BO.BlDeleteNotPossibleException($"Call with id={callId} can not be deleted");
+            // Throw exception if the call cannot be deleted
+            throw new BO.BlDeleteNotPossibleException($"Call with id={callId} cannot be deleted");
         }
         catch (DO.DalAlreadyExistsException ex)
         {
+            // Handle the case where the call does not exist in the data layer
             throw new BO.BlDoesNotExistException($"Call with id={callId} does not exist");
         }
     }
 
     public int[] CountCall()
     {
-        var calls = _dal.Call.ReadAll();
+        var calls = _dal.Call.ReadAll(); // Read all calls from the data layer
 
-        // קיבוץ לפי סוג סיום טיפול מתוך Assignment
+        // Group assignments by their completion type (`TypeEndTreat`) across all calls
         var groupedCalls = calls
-            .SelectMany(call => _dal.Assignment.ReadAll(ass => ass.CallId == call.Id))  
-            .GroupBy(ass => (int)ass.TypeEndTreat) 
-            .ToDictionary(group => group.Key, group => group.Count()); 
+            .SelectMany(call => _dal.Assignment.ReadAll(ass => ass.CallId == call.Id)) // Get all assignments for each call
+            .GroupBy(ass => (int)ass.TypeEndTreat) // Group assignments by `TypeEndTreat`
+            .ToDictionary(group => group.Key, group => group.Count()); // Convert to dictionary: Key = TypeEndTreat, Value = Count
 
+        // Determine the highest `TypeEndTreat` value for array size
         int maxTypeEnd = groupedCalls.Keys.Any() ? groupedCalls.Keys.Max() : 0;
 
+        // Initialize the result array with the appropriate size
         int[] result = new int[maxTypeEnd + 1];
 
+        // Populate the result array with counts for each completion type
         foreach (var kvp in groupedCalls)
         {
             result[kvp.Key] = kvp.Value;
         }
 
-        return result;
+        return result; // Return the array with counts
     }
+
     public BO.Call Read(int callId)
     {
         {
+            // Define a filter function to get assignments related to the specified call
             Func<DO.Assignment, bool> func = item => item.CallId == callId;
-            IEnumerable<DO.Assignment> dataOfAssignments = _dal.Assignment.ReadAll(func);
+            IEnumerable<DO.Assignment> dataOfAssignments = _dal.Assignment.ReadAll(func); // Fetch the related assignments
 
+            // Read the call from the data layer or throw an exception if not found
+            var doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does not exist");
 
-            var doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does Not exist");
+            // Map the data object (DO.Call) to a business object (BO.Call)
             return new()
             {
                 Id = callId,
-                Type = (BO.CallType)doCall.Type,
-                Description = doCall.Description,
-                FullAddress = doCall.FullAddress,
-                Latitude = doCall.Latitude,
-                Longitude = doCall.Longitude,
-                OpenTime = doCall.TimeOpened,
-                MaxEndTime = doCall.MaxTimeToClose,
-                // Status = CallManager.GetCallStatus(dataOfAssignments, doCall.MaxTimeToClose),
-                Status = CallManager.GetCallStatus(doCall),
+                Type = (BO.CallType)doCall.Type, // Map the call type
+                Description = doCall.Description, // Map the description
+                FullAddress = doCall.FullAddress, // Map the address
+                Latitude = doCall.Latitude, // Map the latitude
+                Longitude = doCall.Longitude, // Map the longitude
+                OpenTime = doCall.TimeOpened, // Map the time the call was opened
+                MaxEndTime = doCall.MaxTimeToClose, // Map the maximum time to close the call
+                Status = CallManager.GetCallStatus(doCall), // Determine the call's status
+                                                            // Map the list of assignments related to the call
                 CallAssignments = dataOfAssignments.Select(assign => new BO.CallAssignmentInList
                 {
-                    VolunteerId = assign.VolunteerId,
-                    VolunteerName = _dal.Volunteer.Read(callId).FullName,
-                    StartTime = assign.TimeStart,
-                    EndTime = assign.TimeEnd,
-                    CompletionType = (BO.AssignmentCompletionType)assign.TypeEndTreat,
-                }).ToList()
+                    VolunteerId = assign.VolunteerId, // Map the volunteer ID
+                    VolunteerName = _dal.Volunteer.Read(callId).FullName, // Map the volunteer's name
+                    StartTime = assign.TimeStart, // Map the assignment start time
+                    EndTime = assign.TimeEnd, // Map the assignment end time
+                    CompletionType = (BO.AssignmentCompletionType)assign.TypeEndTreat, // Map the completion type
+                }).ToList() // Convert to a list
             };
-            throw new Exception();
 
+            throw new Exception(); // This line is unreachable and seems unnecessary
         }
     }
 
     public IEnumerable<BO.CallInList> GetCallInLists(BO.CallInListField? filter, object? obj, BO.CallInListField? sortBy)
     {
-        IEnumerable<DO.Call> calls = _dal.Call.ReadAll() ?? throw new BO.BlNullPropertyException("There are not calls int database");
-        IEnumerable<BO.CallInList> boCallsInList = _dal.Call.ReadAll().Select(call => CallManager.ConvertDOCallToBOCallInList(call));
+        // Fetch all calls from the data layer, throw an exception if no calls exist in the database
+        IEnumerable<DO.Call> calls = _dal.Call.ReadAll() ?? throw new BO.BlNullPropertyException("There are no calls in the database");
+
+        // Convert the data-layer calls (DO.Call) to business-layer call lists (BO.CallInList)
+        IEnumerable<BO.CallInList> boCallsInList = _dal.Call.ReadAll()
+            .Select(call => CallManager.ConvertDOCallToBOCallInList(call));
+
+        // Apply filtering logic if a filter and a filter object are provided
         if (filter != null && obj != null)
         {
             switch (filter)
             {
                 case BO.CallInListField.Id:
-                    boCallsInList.Where(item => item.Id == (int)obj).Select(item => item);
+                    // Filter by ID
+                    boCallsInList = boCallsInList.Where(item => item.Id == (int)obj);
                     break;
 
                 case BO.CallInListField.CallId:
-                    boCallsInList.Where(item => item.CallId == (int)obj).Select(item => item);
+                    // Filter by CallId
+                    boCallsInList = boCallsInList.Where(item => item.CallId == (int)obj);
                     break;
 
                 case BO.CallInListField.Type:
-                    boCallsInList.Where(item => item.Type == (BO.CallType)obj).Select(item => item);
+                    // Filter by call type
+                    boCallsInList = boCallsInList.Where(item => item.Type == (BO.CallType)obj);
                     break;
 
                 case BO.CallInListField.OpeningTime:
-                    boCallsInList.Where(item => item.OpeningTime == (DateTime)obj).Select(item => item);
+                    // Filter by opening time
+                    boCallsInList = boCallsInList.Where(item => item.OpeningTime == (DateTime)obj);
                     break;
 
                 case BO.CallInListField.TimeToFinish:
-                    boCallsInList.Where(item => item.TimeToFinish == (TimeSpan)obj).Select(item => item);
+                    // Filter by time to finish
+                    boCallsInList = boCallsInList.Where(item => item.TimeToFinish == (TimeSpan)obj);
                     break;
 
                 case BO.CallInListField.LastVolunteerName:
-                    boCallsInList.Where(item => item.LastVolunteerName == (string)obj).Select(item => item);
+                    // Filter by last volunteer name
+                    boCallsInList = boCallsInList.Where(item => item.LastVolunteerName == (string)obj);
                     break;
 
                 case BO.CallInListField.TreatmentDuration:
-                    boCallsInList.Where(item => item.TreatmentDuration == (TimeSpan)obj).Select(item => item);
+                    // Filter by treatment duration
+                    boCallsInList = boCallsInList.Where(item => item.TreatmentDuration == (TimeSpan)obj);
                     break;
 
                 case BO.CallInListField.Status:
-                    boCallsInList.Where(item => item.Status == (BO.CallStatus)obj).Select(item => item);
+                    // Filter by call status
+                    boCallsInList = boCallsInList.Where(item => item.Status == (BO.CallStatus)obj);
                     break;
 
                 case BO.CallInListField.TotalAssignments:
-                    boCallsInList.Where(item => item.TotalAssignments == (int)obj).Select(item => item);
+                    // Filter by total assignments
+                    boCallsInList = boCallsInList.Where(item => item.TotalAssignments == (int)obj);
                     break;
             }
         }
+
+        // Default sorting field if no sort field is provided
         if (sortBy == null)
             sortBy = BO.CallInListField.CallId;
+
+        // Apply sorting based on the specified sort field
         switch (sortBy)
         {
             case BO.CallInListField.Id:
+                // Sort by ID, prioritizing null values
                 boCallsInList = boCallsInList.OrderBy(item => item.Id.HasValue ? 0 : 1)
-    .ThenBy(item => item.Id)
-    .ToList();
+                                             .ThenBy(item => item.Id)
+                                             .ToList();
                 break;
 
             case BO.CallInListField.CallId:
+                // Sort by CallId
                 boCallsInList = boCallsInList.OrderBy(item => item.CallId).ToList();
                 break;
 
             case BO.CallInListField.Type:
+                // Sort by call type
                 boCallsInList = boCallsInList.OrderBy(item => item.Type).ToList();
                 break;
 
             case BO.CallInListField.OpeningTime:
+                // Sort by opening time
                 boCallsInList = boCallsInList.OrderBy(item => item.OpeningTime).ToList();
                 break;
 
             case BO.CallInListField.TimeToFinish:
+                // Sort by time to finish
                 boCallsInList = boCallsInList.OrderBy(item => item.TimeToFinish).ToList();
                 break;
 
             case BO.CallInListField.LastVolunteerName:
+                // Sort by last volunteer name
                 boCallsInList = boCallsInList.OrderBy(item => item.LastVolunteerName).ToList();
                 break;
 
             case BO.CallInListField.TreatmentDuration:
+                // Sort by treatment duration
                 boCallsInList = boCallsInList.OrderBy(item => item.TreatmentDuration).ToList();
                 break;
 
             case BO.CallInListField.Status:
+                // Sort by call status
                 boCallsInList = boCallsInList.OrderBy(item => item.Status).ToList();
                 break;
 
             case BO.CallInListField.TotalAssignments:
+                // Sort by total assignments
                 boCallsInList = boCallsInList.OrderBy(item => item.TotalAssignments).ToList();
                 break;
         }
+
         return boCallsInList;
     }
 
@@ -371,38 +423,74 @@ internal class CallImplementation : ICall
 
     public void CloseTreat(int idVol, int idAssig)
     {
-        throw new NotImplementedException();
+        {
+            DO.Assignment assigmnetToClose = _dal.Assignment.Read(idAssig) ?? throw new BO.BlDeleteNotPossibleException("there is no assigment with this ID");
+            if (assigmnetToClose.VolunteerId != idVol)
+            {
+                throw new BO.BlWrongInputException("the volunteer is not treat in this assignment");
+            }
+            BO.Call bocall = Read(assigmnetToClose.CallId);
+            if (assigmnetToClose.TypeEndTreat != null || (bocall.Status != BO.CallStatus.Open && bocall.Status != BO.CallStatus.OpenRisk) || assigmnetToClose.TimeEnd != null)
+                throw new BO.BlDeleteNotPossibleException("The assignment not open");
+
+            DO.Assignment assignmentToUP = new DO.Assignment
+            {
+                Id = assigmnetToClose.Id,
+                CallId = assigmnetToClose.CallId,
+                VolunteerId = assigmnetToClose.VolunteerId,
+                TimeStart = assigmnetToClose.TimeStart,
+                TimeEnd = ClockManager.Now,
+                TypeEndTreat = DO.TypeEnd.Treated,
+            };
+            try
+            {
+                _dal.Assignment.Update(assignmentToUP);
+            }
+            catch (DO.DalAlreadyExistsException ex)
+            {
+                throw new BO.BlDeleteNotPossibleException("cannot update in DO");
+            }
+        }
+
     }
 
     public void Update(Call boCall)
     {
+        // Get coordinates (latitude and longitude) for the provided address using the VolunteerManager utility.
         double[] coordinate = VolunteerManager.GetCoordinates(boCall.FullAddress);
         double latitude = coordinate[0];
         double longitude = coordinate[1];
 
+        // Assign the calculated coordinates to the call object, handling nullable types.
         boCall.Latitude = latitude;
         boCall.Longitude = longitude;
 
+        // Perform logic validation on the call object to ensure it complies with business rules.
         CallManager.IsLogicCall(boCall);
 
+        // Convert the BO.Call object to a DO.Call object for data layer processing.
         DO.Call doCall = new
                     (
-                    boCall.Id,
-                    (DO.CallType)boCall.Type,
-                    boCall.Description,
-                    boCall.FullAddress,
-                    boCall.Latitude ?? 0.0, 
-                    boCall.Longitude ?? 0.0, 
-                    boCall.OpenTime,
-                    boCall.MaxEndTime
+                    boCall.Id, // Call ID
+                    (DO.CallType)boCall.Type, // Convert call type from BO to DO
+                    boCall.Description, // Description of the call
+                    boCall.FullAddress, // Full address of the call
+                    boCall.Latitude ?? 0.0, // Default latitude if null
+                    boCall.Longitude ?? 0.0, // Default longitude if null
+                    boCall.OpenTime, // The time the call was opened
+                    boCall.MaxEndTime // The maximum time allowed for the call to close
                     );
         try
         {
+            // Update the call in the data layer.
             _dal.Call.Update(doCall);
         }
         catch (DO.DalDeletionImpossible ex)
         {
+            // Handle exception if the call does not exist, wrapping it in a business logic exception.
             throw new BO.BlDoesNotExistException($"Call with ID={boCall.Id} does Not exist", ex);
         }
     }
+
 }
+

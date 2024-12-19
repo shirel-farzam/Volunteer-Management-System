@@ -302,7 +302,7 @@ OPTION Options:
                     BO.Distance distanceTypeUpdate;
                     if (!Enum.TryParse(distanceTypeInput, true, out distanceTypeUpdate))
                     {
-                        distanceTypeUpdate = BO.Distance.Arial;
+                        distanceTypeUpdate = BO.Distance.Aerial;
                     }
 
                     //}
@@ -836,9 +836,9 @@ Call Options:
         {
             throw new BO.BlWrongInputException("Invalid input. Please enter a valid integer for the ID:");
         }
-        Console.WriteLine("Enter call type (Puncture, Cables, LockedCar):");
+        Console.WriteLine("Enter call type (FoodPreparation, FoodTransport,InventoryCheck):");
         string callTypeInput = Console.ReadLine();
-        if (!Enum.TryParse(callTypeInput, true, out BO.CallType callType) || !Enum.IsDefined(typeof(BO.CallType), callType))
+        if (!Enum.TryParse(callTypeInput, true, out BO.TypeOfCalls callType) || !Enum.IsDefined(typeof(BO.CallType), callType))
         {
             throw new BO.BlWrongInputException("Invalid input. Please enter a valid call type (Puncture, Cables, LockedCar):");
         }
@@ -874,7 +874,7 @@ Call Options:
         return new BO.Call
         {
             Id = id,
-            Type = callType,
+            Type = (BO.CallType)callType,
             Description = description,
             FullAddress = fullAddress,
             Latitude = 0,

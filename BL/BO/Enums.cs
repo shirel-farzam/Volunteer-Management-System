@@ -23,7 +23,7 @@
     // Enum for Distance (used for calculating distances)
     public enum Distance
     {
-        Arial,  // Air distance (straight-line distance)
+        Aerial,  // Air distance (straight-line distance)
         Walking,  // Walking distance
         Driving  // Driving distance
     }
