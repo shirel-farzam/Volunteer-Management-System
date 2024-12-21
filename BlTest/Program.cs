@@ -305,10 +305,8 @@ OPTION Options:
                         distanceTypeUpdate = BO.Distance.Aerial;
                     }
 
-                    //}
-
                     // Role
-                    Console.WriteLine("Role (Volunteer, Boss):");
+                    Console.WriteLine("Role (Volunteer, Manager):");
                     //string roleInput = Console.ReadLine();
                     //if (!string.IsNullOrEmpty(roleInput))
                     //{
@@ -317,7 +315,7 @@ OPTION Options:
                     {
                         throw new BO.BlWrongInputException("Invalid role.");
                     }
-                    //}
+                    
 
                     // Active
                     Console.WriteLine("Active (true/false): defult is true");
@@ -393,11 +391,11 @@ OPTION Options:
 
                         Console.WriteLine("Please enter volunteer details:");
                         Console.WriteLine("Please enter the ID :");
-                        string idCreat = Console.ReadLine();  // לוקחים את הקלט מהמשתמש
+                        string idCreate = Console.ReadLine();  
 
-                        if (!int.TryParse(idCreat, out int idC))  // מנסים להמיר את הקלט למספר
+                        if (!int.TryParse(idCreate, out int idC))  // מנסים להמיר את הקלט למספר
                         {
-                            throw new BO.BlWrongInputException($"Invalid ID{idCreat} format");  // זורקים חריגה אם המזהה לא תקני
+                            throw new BO.BlWrongInputException($"Invalid ID{idCreate} format");  // זורקים חריגה אם המזהה לא תקני
                         }
                         // Full Name
                         Console.WriteLine("Full Name:");
@@ -408,7 +406,7 @@ OPTION Options:
                         string phoneNumberUp = Console.ReadLine();
 
                         // Email
-                        Console.WriteLine("Email:");
+                        Console.WriteLine("Email:");    
                         string emailUp = Console.ReadLine();
 
                         // Distance Type
@@ -422,7 +420,7 @@ OPTION Options:
                         }
 
                         // Role
-                        Console.WriteLine("Role (Volunteer, Boss):");
+                        Console.WriteLine("Role (Volunteer, Manager):");
                         string roleUp = Console.ReadLine();
                         BO.Role roleup;
                         if (!Enum.TryParse(roleUp, true, out roleup))
@@ -478,7 +476,7 @@ OPTION Options:
                         };
 
                         // Call the Create method
-                        s_bl.Volunteer.RequestVolunteerDetails(newVolunteer.Id);
+                        s_bl.Volunteer.AddVolunteer(newVolunteer);
                         break;
 
                     }

@@ -1,12 +1,15 @@
 ﻿using BlImplementation;
-using BO;
 using DalApi;
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Net.NetworkInformation;
+using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace Helpers;
 
@@ -78,7 +81,7 @@ internal class VolunteerManager
         /// </summary>
         if (boVolunteer.Id <= 0 || boVolunteer.Id.ToString().Length < 8 || boVolunteer.Id.ToString().Length > 9)
         {
-            throw new BlWrongItemException($"Invalid ID {boVolunteer.Id}. It must be 8-9 digits.");
+            throw new BO.BlWrongItemException($"Invalid ID {boVolunteer.Id}. It must be 8-9 digits.");
         }
         /// <summary>
         /// Validate the FullName field.
@@ -86,7 +89,7 @@ internal class VolunteerManager
         /// </summary>
         if (string.IsNullOrWhiteSpace(boVolunteer.FullName) || !Regex.IsMatch(boVolunteer.FullName, @"^[a-zA-Z\s]+$"))
         {
-            throw new BlWrongItemException($"FullName {boVolunteer.FullName} cannot be null, empty, or contain invalid characters.");
+            throw new BO.BlWrongItemException($"FullName {boVolunteer.FullName} cannot be null, empty, or contain invalid characters.");
         }
 
         /// <summary>
@@ -96,12 +99,12 @@ internal class VolunteerManager
 
         if (string.IsNullOrWhiteSpace(boVolunteer.FullName))
         {
-            throw new BlWrongItemException($"FullName {boVolunteer.FullName} cannot be null or empty.");
+            throw new BO.BlWrongItemException($"FullName {boVolunteer.FullName} cannot be null or empty.");
         }
 
         if (boVolunteer.FullName.Any(c => !Char.IsLetter(c) && !Char.IsWhiteSpace(c)))
         {
-            throw new BlWrongItemException($"FullName {boVolunteer.FullName} contains invalid characters.");
+            throw new BO.BlWrongItemException($"FullName {boVolunteer.FullName} contains invalid characters.");
         }
 
         /// <summary>
@@ -110,7 +113,7 @@ internal class VolunteerManager
         /// </summary>
         if (!Regex.IsMatch(boVolunteer.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
         {
-            throw new BlWrongItemException("Invalid Email format.");
+            throw new BO.BlWrongItemException("Invalid Email format.");
         }
 
        
@@ -118,14 +121,14 @@ internal class VolunteerManager
         {
             if (!double.TryParse(boVolunteer.MaxReading.Value.ToString(), out double maxReadingValue) || maxReadingValue <= 0)
             {
-                throw new BlWrongItemException($"MaxReading {boVolunteer.MaxReading} must be a positive number.");
+                throw new BO.BlWrongItemException($"MaxReading {boVolunteer.MaxReading} must be a positive number.");
             }
         }
 
 
         if (boVolunteer.Latitude.HasValue && (boVolunteer.Latitude.Value < -90 || boVolunteer.Latitude.Value > 90))
         {
-            throw new BlWrongItemException("Latitude must be between -90 and 90.");
+            throw new BO.BlWrongItemException("Latitude must be between -90 and 90.");
         }
 
         /// <summary>
@@ -134,15 +137,13 @@ internal class VolunteerManager
         /// </summary>
         if (boVolunteer.Longitude.HasValue && (boVolunteer.Longitude.Value < -180 || boVolunteer.Longitude.Value > 180))
         {
-            throw new BlWrongItemException($"Longitude {boVolunteer.Longitude} must be between -180 and 180.");
+            throw new BO.BlWrongItemException($"Longitude {boVolunteer.Longitude} must be between -180 and 180.");
         }
 
         /// <summary>
         /// Add any additional validation checks here if needed in the future.
         /// </summary>
     }
-
-
     internal static void CheckLogic(BO.Volunteer boVolunteer)
     {
         try
@@ -300,81 +301,86 @@ internal class VolunteerManager
     /// The request is synchronous, meaning it waits for the response before continuing.
     /// </summary>
     /// <param name="address">The address to be geocoded</param>
+
     /// <returns>A double array containing the latitude and longitude</returns>
-    public static double[] GetCoordinates(string address)//לטפל בחריגות!!!!!
+    private const string ApiKey = "pk.3d8d3ac902d00ffcd65fdf9a26ec253c";
+    public static double[] GetCoordinates(string address)
     {
-        // Checking if the address is null or empty
+        // Check if the address is empty or null
         if (string.IsNullOrWhiteSpace(address))
         {
             throw new ArgumentException("Address cannot be empty or null.", nameof(address));
         }
 
-        // Constructing the URL for the geocoding service with the provided address
-        string url = $"https://geocode.maps.co/search?q={Uri.EscapeDataString(address)}";
+        // Build the API URL using the access key and the address
+        string url = $"https://us1.locationiq.com/v1/search.php?key={Uri.EscapeDataString(ApiKey)}&q={Uri.EscapeDataString(address)}&format=json";
 
-        // Creating a synchronous HTTP request
+        // Create an HTTP request
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
         request.Method = "GET";
 
+        // Add a User-Agent header to avoid server blocking
+        request.Headers.Add("User-Agent", "MyCSharpApp/1.0");
+
         try
         {
-            // Sending the request and getting the response synchronously
+            // Send the request and get the response
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
-                // Checking if the response status is OK
+                // Check if the response status is OK (200)
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
                     throw new Exception($"Error in request: {response.StatusCode}");
                 }
 
-                // Reading the response body as a string
+                // Read the response body as a string
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
                     string jsonResponse = reader.ReadToEnd();
 
-                    // Deserializing the JSON response to extract location data
+                    // Deserialize the response into an array of objects
                     var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                     var results = JsonSerializer.Deserialize<LocationResult[]>(jsonResponse, options);
 
-                    // If no results are found, throwing an exception
+                    // Check if any results were found
                     if (results == null || results.Length == 0)
                     {
                         throw new Exception("No coordinates found for the given address.");
                     }
 
-                    // Returning the latitude and longitude as an array
+                    // Return the coordinates
                     return new double[] { double.Parse(results[0].Lat), double.Parse(results[0].Lon) };
                 }
             }
         }
         catch (WebException ex)
         {
-            // Handling web exceptions (e.g., network issues)
+            // Handle network-related errors
             throw new Exception("Error sending web request: " + ex.Message);
         }
         catch (Exception ex)
         {
-            // Handling general exceptions
+            // Handle general errors
             throw new Exception("General error: " + ex.Message);
         }
     }
 
-    /// <summary>
-    /// Class to represent the structure of the geocoding response (latitude and longitude)
-    /// </summary>
-    private class LocationResult
+
+
+    // Data structure to match the JSON response from the API
+    public class LocationResult
     {
-        // Latitude as string in the JSON response
-        public string Lat { get; set; }
-        // Longitude as string in the JSON response
-        public string Lon { get; set; }
+        public string Lat { get; set; } // Latitude of the location
+        public string Lon { get; set; } // Longitude of the location
     }
+
     internal static void CheckAddress(BO.Volunteer volunteer)
     {
         double[] cordinates = GetCoordinates(volunteer.FullAddress);
-        if (cordinates[0] != volunteer.Latitude || cordinates[1] == volunteer.Longitude)
+        if (cordinates[0] != volunteer.Latitude || cordinates[1] != volunteer.Longitude)
             throw new BO.BlWrongItemException($"not math cordinates");
     }
+
 
     internal static double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
     {
