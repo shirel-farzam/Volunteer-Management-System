@@ -5,6 +5,17 @@ using Helpers;
 
 internal class CallImplementation : ICall
 {
+    #region Stage 5
+    public void AddObserver(Action listObserver) =>
+    CallManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+    CallManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+    CallManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+    CallManager.Observers.RemoveObserver(id, observer); //stage 5
+    #endregion Stage 5
+
     private readonly DalApi.IDal _dal = DalApi.Factory.Get; // Dependency to access the data access layer (DAL)
 
     // Adds a new call to the system after validating it and converting it to the appropriate format.
@@ -16,6 +27,7 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Call.Create(doCall); // Adds the call to the DAL
+           CallManager.Observers.NotifyListUpdated(); //stage 5   
         }
         catch (Exception ex)
         {
@@ -53,6 +65,7 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Assignment.Create(assignmentToCreate); // Adds the assignment to the DAL
+            CallManager.Observers.NotifyListUpdated(); //stage 5   
         }
         catch (DO.DalDeletionImpossible)
         {
@@ -67,6 +80,7 @@ internal class CallImplementation : ICall
             if (Read(callId).Status == BO.CallStatus.Open)
             {
                 _dal.Call.Delete(callId); // Delete the call from the data layer
+                CallManager.Observers.NotifyListUpdated(); //stage 5   
                 return;
             }
             // Throw exception if the call cannot be deleted
@@ -380,6 +394,12 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Assignment.Update(assigmnetToUP);
+            CallManager.Observers.NotifyItemUpdated(assigmnetToUP.Id);  //stage 5
+            CallManager.Observers.NotifyListUpdated();  //stage 5
+
+
+
+
         }
         catch (DO.DalDoesNotExistException ex)
         {
@@ -414,6 +434,9 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Assignment.Update(assigmnetToUP);
+            CallManager.Observers.NotifyItemUpdated(assigmnetToUP.Id);  //stage 5
+            CallManager.Observers.NotifyListUpdated();  //stage 5
+
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -445,6 +468,9 @@ internal class CallImplementation : ICall
             try
             {
                 _dal.Assignment.Update(assignmentToUP);
+                CallManager.Observers.NotifyItemUpdated(assignmentToUP.Id);  //stage 5
+                CallManager.Observers.NotifyListUpdated();  //stage 5
+
             }
             catch (DO.DalAlreadyExistsException ex)
             {
@@ -484,6 +510,8 @@ internal class CallImplementation : ICall
         {
             // Update the call in the data layer.
             _dal.Call.Update(doCall);
+            CallManager.Observers.NotifyItemUpdated(doCall.Id);  //stage 5
+           CallManager.Observers.NotifyListUpdated();  //stage 5
         }
         catch (DO.DalDeletionImpossible ex)
         {

@@ -16,8 +16,9 @@ namespace Helpers;
 internal class VolunteerManager
 {
     private static IDal s_dal = Factory.Get;
+    internal static ObserverManager Observers = new(); //stage 5 
 
-    
+
     internal static BO.VolunteerInList ConvertDOToBOInList(DO.Volunteer doVolunteer)
     {
         var calls = s_dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();

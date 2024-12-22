@@ -7,6 +7,17 @@ using System.Collections.Generic;
 
 internal class VolunteerImplementation : IVolunteer
 {
+    #region Stage 5
+    public void AddObserver(Action listObserver) =>
+    VolunteerManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+    VolunteerManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+    VolunteerManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+    VolunteerManager.Observers.RemoveObserver(id, observer); //stage 5
+    #endregion Stage 5
+
     private readonly DalApi.IDal _dal = DalApi.Factory.Get; // Access DAL instance
 
     // Volunteer login with username and password validation
@@ -116,6 +127,9 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
             _dal.Volunteer.Update(volunteerUpdate);
+            VolunteerManager.Observers.NotifyItemUpdated(volunteerUpdate.Id);  //stage 5
+            VolunteerManager.Observers.NotifyListUpdated();  //stage 5
+
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -135,6 +149,8 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
             _dal.Volunteer.Delete(volunteerId);
+            VolunteerManager.Observers.NotifyListUpdated();  //stage 5  	
+
         }
         catch (DO.DalDeletionImpossible ex)
         {
@@ -170,6 +186,7 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
             _dal.Volunteer.Create(doVolunteer);
+            VolunteerManager.Observers.NotifyListUpdated(); //stage 5   
         }
         catch (DO.DalAlreadyExistsException ex)
         {

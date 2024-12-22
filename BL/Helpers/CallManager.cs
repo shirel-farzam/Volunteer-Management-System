@@ -12,6 +12,8 @@ namespace Helpers;
 internal static class CallManager
 {
     private static IDal _dal = DalApi.Factory.Get; //stage 4
+    internal static ObserverManager Observers = new(); //stage 5 
+
     internal static void IsLogicCall(BO.Call boCall)
     {
         // Ensure MaxEndTime is greater than OpenTime.
@@ -84,7 +86,6 @@ internal static class CallManager
         var doCall = _dal.Call.ReadAll().Where(c => c.Id == doAssignment!.CallId).FirstOrDefault();
 
 
-        // בודק האם הכתובת אמיתית ומחזיר קווי אורך ורוחב עבור הכתובת 
 
         if (Tools.IsAddressValid(doVolunteer.FullAddress).Result == false)// לא כתובת אמיתית 
         {
@@ -237,7 +238,7 @@ internal static class CallManager
             StartTime = doAssignment.TimeStart, // The time the volunteer started handling the call
             EndTime = doAssignment.TimeEnd, // The time the handling of the call was completed
             CompletionType = doAssignment.TypeEndTreat.HasValue
-            ? (BO.AssignmentCompletionType?)doAssignment.TypeEndTreat.Value // המרה מפורשת ל-BL Enum
+            ? (BO.AssignmentCompletionType?)doAssignment.TypeEndTreat.Value 
             : null // Completion status (nullable)
         };
 
@@ -283,18 +284,17 @@ internal static class CallManager
         var DOCall = new DO.Call
         {
             Id = BOCall.Id,
-            Type = (DO.CallType)BOCall.Type, // המרת ה-Enum ל-DO.CallType
+            Type = (DO.CallType)BOCall.Type, 
             Description = BOCall.Description,
             FullAddress = BOCall.FullAddress,
-            Latitude = BOCall.Latitude ?? 0, // טיפול ב-Nullable
-            Longitude = BOCall.Longitude ?? 0, // טיפול ב-Nullable
+            Latitude = BOCall.Latitude ?? 0, 
+            Longitude = BOCall.Longitude ?? 0, 
             TimeOpened = BOCall.OpenTime,
             MaxTimeToClose = BOCall.MaxEndTime
         };
 
         return DOCall;
     }
-
 
     public static TimeSpan? CalculateTimeRemaining(DateTime? maxEndTime)
     {
@@ -391,4 +391,51 @@ internal static class CallManager
         };
     }
     public static bool IsInRisk(DO.Call call) => call!.MaxTimeToClose - _dal.Config.Clock <= _dal.Config.RiskRange;
+
+    internal static void UpdateExpired()
+    {
+        // Step 1: Retrieves all calls where the MaxTimeToEnd has passed.
+        var expiredCalls = _dal.Call.ReadAll(c => c.MaxTimeToClose < ClockManager.Now);
+
+        // Step 2: Checks for calls without assignments and creates a new assignment with the expired status.
+        foreach (var call in expiredCalls)
+        {
+            var hasAssignment = _dal.Assignment
+                .ReadAll(a => a.CallId == call.Id)
+                .Any();
+
+            if (!hasAssignment)  // If there is no assignment for the call yet
+            {
+                var newAssignment = new DO.Assignment(
+                    Id: 0,  // Creates a new ID for the assignment.
+                    CallId: call.Id,
+                    VolunteerId: 0,  // Volunteer ID is set to 0 (no assignment).
+                    TimeStart: ClockManager.Now,  // Sets the start time to the current time.
+                    TypeEndTreat: DO.TypeEnd.ExpiredCancel  // Sets the end type to expired.
+                );
+                _dal.Assignment.Create(newAssignment);  // Creates the new assignment.
+            }
+        }
+
+        // Step 3: Updates assignments with null TimeEnd for calls that are expired.
+        foreach (var assignment in _dal.Assignment.ReadAll(a => a.TimeEnd == null))
+        {
+            var call = expiredCalls.FirstOrDefault(c => c.Id == assignment.CallId);
+            if (call != null)  // If the call is still marked as expired
+            {
+                // Creating a new updated assignment
+                var updatedAssignment = assignment with
+                {
+                    TimeEnd = ClockManager.Now,  // Sets the actual end time to the current time.
+                    TypeEndTreat = DO.TypeEnd.ExpiredCancel  // Marks the end type as expired.
+                };
+
+                // Now we update the assignment with the new updatedAssignment object
+                _dal.Assignment.Update(updatedAssignment);  // Updates the assignment with the new values.
+            }
+        }
+    }
+
+
 }
+
