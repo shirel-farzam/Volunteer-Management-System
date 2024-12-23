@@ -1,6 +1,7 @@
 ﻿using BlImplementation;
 using DalApi;
 using System;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
@@ -48,7 +49,7 @@ internal class VolunteerManager
         DO.Call? currentCall = s_dal.Call.Read(currentAssignment.CallId);
         if (currentCall == null) return null;
 
-        double[] coordinates = GetCoordinates(doVolunteer.FullAddress);
+        double[] coordinates = GetCoordinatesFromAddress(doVolunteer.FullAddress);
         double latitude = coordinates[0];
         double longitude = coordinates[1];
 
@@ -161,7 +162,7 @@ internal class VolunteerManager
             throw new BO.BlWrongItemException($"the item have logic problem", ex);
         }
     }
-    /// <summary>
+    /// <summary> from chatgpt
     /// Validates an Israeli ID number.
     /// Throws an exception if the ID is invalid.
     /// </summary>
@@ -208,7 +209,7 @@ internal class VolunteerManager
             throw new BO.BlWrongItemException($"this ID {id} does not posssible");
         }
     }
-    /// <summary>
+    /// <summary> from chatgpt
     /// Validates if a given phone number represents a valid mobile number.
     /// The number must be exactly 10 digits long, consist only of digits, 
     /// and start with the digit '0'.
@@ -239,7 +240,7 @@ internal class VolunteerManager
         }
 
     }
-    /// <summary>
+    /// <summary>from chatgpt
     /// Validates whether the given string is a valid email address.
     /// The email address must match a standard email format (e.g., username@domain.com).
     /// </summary>
@@ -256,7 +257,7 @@ internal class VolunteerManager
             throw new BO.BlWrongItemException($"The provided email {email} address is not valid.");
         }
     }
-    /// <summary>
+    /// <summary> 
     /// Validates if a given password is strong.
     /// A strong password must:
     /// - Be at least 5 characters long.
@@ -296,75 +297,124 @@ internal class VolunteerManager
         if (!hasDigit)
             throw new BO.BlWrongItemException($"Password{password} must contain at least one digit.");
     }
+    private const string ApiKey = "pk.3d8d3ac902d00ffcd65fdf9a26ec253c";
+    private const string LocationIqBaseUrl = "https://us1.locationiq.com/v1/search.php";
 
-    /// <summary>
+    /// <summary> from chatgpt
     /// This method takes an address as input and returns an array with the latitude and longitude.
     /// The request is synchronous, meaning it waits for the response before continuing.
-    /// </summary>
     /// <param name="address">The address to be geocoded</param>
 
     /// <returns>A double array containing the latitude and longitude</returns>
-    private const string ApiKey = "pk.3d8d3ac902d00ffcd65fdf9a26ec253c";
-    public static double[] GetCoordinates(string address)
+    public static double[] GetCoordinatesFromAddress(string address)
     {
-        // Check if the address is empty or null
         if (string.IsNullOrWhiteSpace(address))
         {
-            throw new ArgumentException("Address cannot be empty or null.", nameof(address));
+            throw new ArgumentException("The provided address is empty or invalid.");
         }
 
-        // Build the API URL using the access key and the address
-        string url = $"https://us1.locationiq.com/v1/search.php?key={Uri.EscapeDataString(ApiKey)}&q={Uri.EscapeDataString(address)}&format=json";
-
-        // Create an HTTP request
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "GET";
-
-        // Add a User-Agent header to avoid server blocking
-        request.Headers.Add("User-Agent", "MyCSharpApp/1.0");
-
-        try
+        using (var client = new HttpClient())
         {
-            // Send the request and get the response
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            try
             {
-                // Check if the response status is OK (200)
-                if (response.StatusCode != HttpStatusCode.OK)
+                string requestUrl = $"{LocationIqBaseUrl}?key={ApiKey}&q={Uri.EscapeDataString(address)}&format=json";
+                HttpResponseMessage response = client.GetAsync(requestUrl).Result;
+
+                if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"Error in request: {response.StatusCode}");
+                    throw new Exception($"Error while making the geocoding request: {response.StatusCode}");
                 }
 
-                // Read the response body as a string
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                string jsonResponse = response.Content.ReadAsStringAsync().Result;
+
+                using (JsonDocument document = JsonDocument.Parse(jsonResponse))
                 {
-                    string jsonResponse = reader.ReadToEnd();
-
-                    // Deserialize the response into an array of objects
-                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                    var results = JsonSerializer.Deserialize<LocationResult[]>(jsonResponse, options);
-
-                    // Check if any results were found
-                    if (results == null || results.Length == 0)
+                    JsonElement root = document.RootElement;
+                    if (root.ValueKind == JsonValueKind.Array && root.GetArrayLength() > 0)
                     {
-                        throw new Exception("No coordinates found for the given address.");
-                    }
+                        JsonElement firstResult = root[0];
 
-                    // Return the coordinates
-                    return new double[] { double.Parse(results[0].Lat), double.Parse(results[0].Lon) };
+                        if (firstResult.TryGetProperty("lat", out JsonElement latElement) &&
+                            firstResult.TryGetProperty("lon", out JsonElement lonElement))
+                        {
+                            double latitude = double.Parse(latElement.GetString() ?? throw new InvalidOperationException("Latitude is missing."), CultureInfo.InvariantCulture);
+                            double longitude = double.Parse(lonElement.GetString() ?? throw new InvalidOperationException("Longitude is missing."), CultureInfo.InvariantCulture);
+
+                            return new double[] { latitude, longitude };
+                        }
+                    }
                 }
+
+                throw new Exception("Latitude or Longitude is missing in the response.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error occurred while retrieving the coordinates of the address.", ex);
             }
         }
-        catch (WebException ex)
-        {
-            // Handle network-related errors
-            throw new Exception("Error sending web request: " + ex.Message);
-        }
-        catch (Exception ex)
-        {
-            // Handle general errors
-            throw new Exception("General error: " + ex.Message);
-        }
     }
+
+
+    //public static double[] GetCoordinatesFromAddress(string address)
+    //{
+    //    // Check if the address is empty or null
+    //    if (string.IsNullOrWhiteSpace(address))
+    //    {
+    //        throw new ArgumentException("Address cannot be empty or null.", nameof(address));
+    //    }
+
+    //    // Build the API URL using the access key and the address
+    //    string url = $"https://us1.locationiq.com/v1/search.php?key={Uri.EscapeDataString(ApiKey)}&q={Uri.EscapeDataString(address)}&format=json";
+
+    //    // Create an HTTP request
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "GET";
+
+    //    // Add a User-Agent header to avoid server blocking
+    //    request.Headers.Add("User-Agent", "MyCSharpApp/1.0");
+
+    //    try
+    //    {
+    //        // Send the request and get the response
+    //        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            // Check if the response status is OK (200)
+    //            if (response.StatusCode != HttpStatusCode.OK)
+    //            {
+    //                throw new Exception($"Error in request: {response.StatusCode}");
+    //            }
+
+    //            // Read the response body as a string
+    //            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+    //            {
+    //                string jsonResponse = reader.ReadToEnd();
+
+    //                // Deserialize the response into an array of objects
+    //                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+    //                var results = JsonSerializer.Deserialize<LocationResult[]>(jsonResponse, options);
+
+    //                // Check if any results were found
+    //                if (results == null || results.Length == 0)
+    //                {
+    //                    throw new Exception("No coordinates found for the given address.");
+    //                }
+
+    //                // Return the coordinates
+    //                return new double[] { double.Parse(results[0].Lat), double.Parse(results[0].Lon) };
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        // Handle network-related errors
+    //        throw new Exception("Error sending web request: " + ex.Message);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // Handle general errors
+    //        throw new Exception("General error: " + ex.Message);
+    //    }
+    //}
 
 
 
@@ -377,7 +427,7 @@ internal class VolunteerManager
 
     internal static void CheckAddress(BO.Volunteer volunteer)
     {
-        double[] cordinates = GetCoordinates(volunteer.FullAddress);
+        double[] cordinates = GetCoordinatesFromAddress(volunteer.FullAddress);
         if (cordinates[0] != volunteer.Latitude || cordinates[1] != volunteer.Longitude)
             throw new BO.BlWrongItemException($"not math cordinates");
     }

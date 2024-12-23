@@ -101,7 +101,7 @@ internal class VolunteerImplementation : IVolunteer
 
         if (boVolunteer.FullAddress != doVolunteer.FullAddress)
         {
-            var coordinates = VolunteerManager.GetCoordinates(boVolunteer.FullAddress);
+            var coordinates = VolunteerManager.GetCoordinatesFromAddress(boVolunteer.FullAddress);
             boVolunteer.Latitude = coordinates[0];
             boVolunteer.Longitude = coordinates[1];
         }
@@ -161,7 +161,7 @@ internal class VolunteerImplementation : IVolunteer
     // Adds a new volunteer with validations
     public void AddVolunteer(BO.Volunteer boVolunteer)
     {
-        var coordinates = VolunteerManager.GetCoordinates(boVolunteer.FullAddress);
+        var coordinates = VolunteerManager.GetCoordinatesFromAddress(boVolunteer.FullAddress);
         boVolunteer.Latitude = coordinates[0];
         boVolunteer.Longitude = coordinates[1];
 

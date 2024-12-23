@@ -483,7 +483,7 @@ internal class CallImplementation : ICall
     public void Update(Call boCall)
     {
         // Get coordinates (latitude and longitude) for the provided address using the VolunteerManager utility.
-        double[] coordinate = VolunteerManager.GetCoordinates(boCall.FullAddress);
+        double[] coordinate = VolunteerManager.GetCoordinatesFromAddress(boCall.FullAddress);
         double latitude = coordinate[0];
         double longitude = coordinate[1];
 
