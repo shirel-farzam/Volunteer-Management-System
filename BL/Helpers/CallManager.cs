@@ -215,7 +215,7 @@ internal static class CallManager
 
     public static void MaxEndTimeCheck(DateTime? MaxEndTime, DateTime OpeningTime)
     {
-        if (MaxEndTime < OpeningTime || MaxEndTime < ClockManager.Now)
+        if (MaxEndTime < OpeningTime || MaxEndTime < AdminManager.Now)
         {
             throw new BlWrongInputException("The time entered according to the current time or opening time");
         }
@@ -301,7 +301,7 @@ internal static class CallManager
         if (maxEndTime == null)
             return null;
 
-        return maxEndTime - ClockManager.Now;
+        return maxEndTime - AdminManager.Now;
     }
     public static string? GetLatestVolunteerNameForCall(int callId)
     {
@@ -395,7 +395,7 @@ internal static class CallManager
     internal static void UpdateExpired()
     {
         // Step 1: Retrieves all calls where the MaxTimeToEnd has passed.
-        var expiredCalls = _dal.Call.ReadAll(c => c.MaxTimeToClose < ClockManager.Now);
+        var expiredCalls = _dal.Call.ReadAll(c => c.MaxTimeToClose < AdminManager.Now);
 
         // Step 2: Checks for calls without assignments and creates a new assignment with the expired status.
         foreach (var call in expiredCalls)
@@ -410,7 +410,7 @@ internal static class CallManager
                     Id: 0,  // Creates a new ID for the assignment.
                     CallId: call.Id,
                     VolunteerId: 0,  // Volunteer ID is set to 0 (no assignment).
-                    TimeStart: ClockManager.Now,  // Sets the start time to the current time.
+                    TimeStart: AdminManager.Now,  // Sets the start time to the current time.
                     TypeEndTreat: DO.TypeEnd.ExpiredCancel  // Sets the end type to expired.
                 );
                 _dal.Assignment.Create(newAssignment);  // Creates the new assignment.
@@ -426,12 +426,14 @@ internal static class CallManager
                 // Creating a new updated assignment
                 var updatedAssignment = assignment with
                 {
-                    TimeEnd = ClockManager.Now,  // Sets the actual end time to the current time.
+                    TimeEnd = AdminManager.Now,  // Sets the actual end time to the current time.
                     TypeEndTreat = DO.TypeEnd.ExpiredCancel  // Marks the end type as expired.
                 };
 
                 // Now we update the assignment with the new updatedAssignment object
                 _dal.Assignment.Update(updatedAssignment);  // Updates the assignment with the new values.
+                Observers.NotifyItemUpdated(updatedAssignment.Id); //stage 5
+
             }
         }
     }

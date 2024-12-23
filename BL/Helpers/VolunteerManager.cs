@@ -54,7 +54,7 @@ internal class VolunteerManager
 
         AdminImplementation admin = new AdminImplementation();
         BO.CallStatus status;
-        if (currentCall.MaxTimeToClose - ClockManager.Now <= admin.GetMaxRange())
+        if (currentCall.MaxTimeToClose - AdminManager.Now <= admin.GetMaxRange())
             status = BO.CallStatus.OpenRisk;
         else
             status = BO.CallStatus.InProgress;

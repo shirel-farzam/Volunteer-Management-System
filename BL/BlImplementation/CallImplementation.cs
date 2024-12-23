@@ -57,7 +57,7 @@ internal class CallImplementation : ICall
             Id = 0,
             CallId = callId,
             VolunteerId = volunteerId,
-            TimeStart = ClockManager.Now, // Sets the start time for the assignment
+            TimeStart = AdminManager.Now, // Sets the start time for the assignment
             TimeEnd = null,               // No end time initially
             TypeEndTreat = null           // No completion type initially
         };
@@ -379,7 +379,7 @@ internal class CallImplementation : ICall
                 ismanager = true;
             else throw new BO.BlDeleteNotPossibleException("the volunteer is not manager or not in this call");
         }
-        if (assigmnetToCancel.TypeEndTreat != null || (_dal.Call.Read(assigmnetToCancel.CallId).MaxTimeToClose > ClockManager.Now) | assigmnetToCancel.TimeEnd != null)
+        if (assigmnetToCancel.TypeEndTreat != null || (_dal.Call.Read(assigmnetToCancel.CallId).MaxTimeToClose > AdminManager.Now) | assigmnetToCancel.TimeEnd != null)
             throw new BO.BlDeleteNotPossibleException("The assignment not open or expaierd");
 
         DO.Assignment assigmnetToUP = new DO.Assignment
@@ -388,7 +388,7 @@ internal class CallImplementation : ICall
             CallId = assigmnetToCancel.CallId,
             VolunteerId = assigmnetToCancel.VolunteerId,
             TimeStart = assigmnetToCancel.TimeStart,
-            TimeEnd = ClockManager.Now,
+            TimeEnd = AdminManager.Now,
             TypeEndTreat = ismanager ? DO.TypeEnd.ManagerCancel : DO.TypeEnd.SelfCancel,
         };
         try
@@ -419,7 +419,7 @@ internal class CallImplementation : ICall
                 ismanager = true;
             else throw new BO.BlDeleteNotPossibleException("the volunteer is not manager or not in this call");
         }
-        if (assigmnetToCancel.TypeEndTreat != null || (_dal.Call.Read(assigmnetToCancel.CallId).MaxTimeToClose > ClockManager.Now) | assigmnetToCancel.TimeEnd != null)
+        if (assigmnetToCancel.TypeEndTreat != null || (_dal.Call.Read(assigmnetToCancel.CallId).MaxTimeToClose > AdminManager.Now) | assigmnetToCancel.TimeEnd != null)
             throw new BO.BlDeleteNotPossibleException("The assignment not open or expaired");
 
         DO.Assignment assigmnetToUP = new DO.Assignment
@@ -428,7 +428,7 @@ internal class CallImplementation : ICall
             CallId = assigmnetToCancel.CallId,
             VolunteerId = assigmnetToCancel.VolunteerId,
             TimeStart = assigmnetToCancel.TimeStart,
-            TimeEnd = ClockManager.Now,
+            TimeEnd = AdminManager.Now,
             TypeEndTreat = ismanager ? DO.TypeEnd.ManagerCancel : DO.TypeEnd.SelfCancel,
         };
         try
@@ -462,7 +462,7 @@ internal class CallImplementation : ICall
                 CallId = assigmnetToClose.CallId,
                 VolunteerId = assigmnetToClose.VolunteerId,
                 TimeStart = assigmnetToClose.TimeStart,
-                TimeEnd = ClockManager.Now,
+                TimeEnd = AdminManager.Now,
                 TypeEndTreat = DO.TypeEnd.Treated,
             };
             try

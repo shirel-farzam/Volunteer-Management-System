@@ -15,40 +15,61 @@ internal class AdminImplementation : IAdmin
     {
         _dal.ResetDB(); // Reset the database to its initial state
         Initialization.Do(); // Perform initial setup
-        ClockManager.UpdateClock(ClockManager.Now); // Update the system clock to the current time
+        AdminManager.UpdateClock(AdminManager.Now); // Update the system clock to the current time
     }
 
     // Method to move the system clock forward by a specified time unit
-    public void ForwardClock(BO.TimeUnit unit) => ClockManager.UpdateClock(unit switch
+    public void ForwardClock(BO.TimeUnit unit) => AdminManager.UpdateClock(unit switch
     {
-        BO.TimeUnit.MINUTE => ClockManager.Now.AddMinutes(1), // Add one minute
-        BO.TimeUnit.HOUR => ClockManager.Now.AddHours(1), // Add one hour
-        BO.TimeUnit.DAY => ClockManager.Now.AddDays(1), // Add one day
-        BO.TimeUnit.MONTH => ClockManager.Now.AddMonths(1), // Add one month
-        BO.TimeUnit.YEAR => ClockManager.Now.AddYears(1), // Add one year
+        BO.TimeUnit.MINUTE => AdminManager.Now.AddMinutes(1), // Add one minute
+        BO.TimeUnit.HOUR => AdminManager.Now.AddHours(1), // Add one hour
+        BO.TimeUnit.DAY => AdminManager.Now.AddDays(1), // Add one day
+        BO.TimeUnit.MONTH => AdminManager.Now.AddMonths(1), // Add one month
+        BO.TimeUnit.YEAR => AdminManager.Now.AddYears(1), // Add one year
         _ => DateTime.MinValue // Default value in case of an invalid unit
     });
 
     // Method to get the current clock time
-    public DateTime GetClock() => _dal.Config.Clock;
-
+    public DateTime GetClock() => AdminManager.Now;
     // Method to retrieve the maximum allowed range for a configuration parameter
     public TimeSpan GetMaxRange()
     {
-        return _dal.Config.RiskRange;
+        return AdminManager.MaxRange;
+        //  return _dal.Config.RiskRange;
     }
 
     // Method to reinitialize the system
     public void initialization()
     {
-        DalTest.Initialization.Do(); // Reinitialize the DAL for testing purposes
-        ClockManager.UpdateClock(ClockManager.Now); // Update the clock to the current time
+        DalTest.Initialization.Do();
+        AdminManager.UpdateClock(AdminManager.Now);
+        AdminManager.MaxRange = AdminManager.MaxRange;
+
+       
     }
 
     // Method to reset the system
     public void Reset()
     {
         _dal.ResetDB(); // Reset the database
-        ClockManager.UpdateClock(ClockManager.Now); // Update the clock to the current time
+        AdminManager.UpdateClock(AdminManager.Now); // Update the clock to the current time
+        AdminManager.MaxRange = AdminManager.MaxRange;
+
     }
+    #region Stage 5
+
+    public void AddClockObserver(Action clockObserver) =>
+        AdminManager.ClockUpdatedObservers += clockObserver;
+
+    public void RemoveClockObserver(Action clockObserver) =>
+        AdminManager.ClockUpdatedObservers -= clockObserver;
+
+    public void AddConfigObserver(Action configObserver) =>
+        AdminManager.ConfigUpdatedObservers += configObserver;
+
+    public void RemoveConfigObserver(Action configObserver) =>
+        AdminManager.ConfigUpdatedObservers -= configObserver;
+
+    #endregion Stage 5
+
 }

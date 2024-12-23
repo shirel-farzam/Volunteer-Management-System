@@ -11,6 +11,8 @@ public static class Initialization
     //private static IConfig? s_dal.Config; //stage 1 - Interface for configuration data
     //private static readonly Random s_rand = new(); // Random instance for generating random values
 
+    
+
     private static IDal? s_dal; //stage 2
     private static readonly Random s_rand = new();
     private const int MIN_ID = 200000000;
