@@ -14,26 +14,13 @@ public interface IAdmin
     /// <param name="unit">The time unit to advance the clock by.</param>
     void ForwardClock(BO.TimeUnit unit);
 
-    /// <summary>
-    /// Retrieves the current system clock.
-    /// </summary>
-    /// <returns>The current date and time.</returns>
+
     DateTime GetClock();
 
-    /// <summary>
-    /// Retrieves the maximum time range that has been defined.
-    /// </summary>
-    /// <returns>The maximum time range.</returns>
-    TimeSpan GetMaxRange();
-
-    /// <summary>
-    /// Initializes the system, preparing it for operation.
-    /// </summary>
+   TimeSpan GetMaxRange();
+    //TimeSpan SetMaxRange(TimeSpan maxRange);
     void initialization();
 
-    /// <summary>
-    /// Resets the system to its initial state.
-    /// </summary>
     void Reset();
     #region Stage 5
     void AddConfigObserver(Action configObserver);

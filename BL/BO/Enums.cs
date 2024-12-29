@@ -114,7 +114,8 @@
         TotalCallsCanceled,
         TotalCallsExpired,
         CurrentCallId,
-        CurrentCallType
+        CurrentCallType,
+        None
     }
     public enum TypeOfCalls
     {

@@ -1,78 +1,37 @@
-﻿<Window x:Class="PL.Volunteer.VolunteerListWindow"
+﻿<Window x:Class="PL.Volunteer.VolunteerInListWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="Volunteer List" Height="450" Width="800">
+        Title="VolunteerInListWindow" Height="640" Width="800">
+    <!--External Grid-->
     <Grid>
-        <!-- Grid Column Definitions -->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="15*"/>
-            <ColumnDefinition Width="181*"/>
-        </Grid.ColumnDefinitions>
-
-        <!-- Grid Row Definitions -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="500*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <!-- Filter Section -->
-        <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" Content="Filter Label"/>
-        <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10"/>
-
-        <!-- ListView Section -->
-        <ListView Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Column 1" DisplayMemberBinding="{Binding Property1}" Width="120"/>
-                    <GridViewColumn Header="Column 2" DisplayMemberBinding="{Binding Property2}" Width="120"/>
-                    <GridViewColumn Header="Column 3" DisplayMemberBinding="{Binding Property3}" Width="120"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-
-        <!-- Add Button -->
-        <Button Grid.Row="2" Content="Add" HorizontalAlignment="Center" Height="40" Width="100" Margin="10"/>
-
-        <!-- System Clock Section -->
-        <Grid Grid.Row="3" Grid.ColumnSpan="3" Margin="10">
-            <Label Content="System Clock:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Label Content="12:00 PM" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="150,0,0,0"/>
-        </Grid>
-
-        <!-- System Clock Control Buttons -->
-        <Grid Grid.Row="4" Grid.ColumnSpan="3" Margin="10">
-            <Button Content="Increment by Minute" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" Margin="10"/>
-            <Button Content="Increment by Hour" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" Margin="180,0,0,0"/>
-            <Button Content="Increment by Day" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" Margin="350,0,0,0"/>
-            <Button Content="Increment by Year" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" Margin="520,0,0,0"/>
-        </Grid>
-
-        <!-- Configuration Section -->
-        <Grid Grid.Row="5" Grid.ColumnSpan="3" Margin="10">
-            <Label Content="Configuration Variable (Max Years):" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,0,0" Width="200"/>
-            <Button Content="Update Configuration" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" Margin="220,0,0,0"/>
-        </Grid>
-
-        <!-- Action Buttons Section -->
-        <Grid Grid.Row="6" Grid.ColumnSpan="3" Margin="10">
+        <!--Internal, Upper Grid-->
+        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="Show List" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Margin="10"/>
-            <Button Content="Initialize Database" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Margin="10" Grid.Column="1"/>
-            <Button Content="Reset Database" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Margin="10" Grid.Column="2"/>
+            <Label Content="Label" Grid.Column="0" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top"/>
         </Grid>
+        <ComboBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <ListView  Margin="55,18,60,370" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+
+
     </Grid>
+
 </Window>

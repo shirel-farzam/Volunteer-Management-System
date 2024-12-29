@@ -15,11 +15,13 @@ using System.Windows.Shapes;
 namespace PL.Volunteer
 {
     /// <summary>
-    /// Interaction logic for VolunteerListWindow.xaml
+    /// Interaction logic for VolunteerInListWindow.xaml
     /// </summary>
-    public partial class VolunteerListWindow : Window
+    public partial class VolunteerInListWindow : Window
     {
-        public VolunteerListWindow()
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+        public VolunteerInListWindow()
         {
             InitializeComponent();
         }
