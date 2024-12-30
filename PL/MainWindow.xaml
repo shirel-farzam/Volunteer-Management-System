@@ -66,26 +66,36 @@
         <!-- Navigation and Volunteer Section -->
         <Grid Grid.Row="2" Margin="10,10,10,10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="78*" />
                 <!-- Left Section -->
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="37*" />
+                <ColumnDefinition Width="41*"/>
                 <!-- Right Section -->
             </Grid.ColumnDefinitions>
 
             <!-- Navigation Buttons -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="Initialize Database" Margin="10" Padding="10" Click="InitializeDatabase_Click" Width="136" />
                 <Button Content="Reset Database" Margin="10" Padding="10" Click="ResetDatabase_Click" Width="136" />
             </StackPanel>
 
             <!-- List Volunteers Button -->
             <Button Content="List Volunteers" 
-                    Margin="244,0,0,0" Padding="10" 
+                    Margin="60,-98,0,0" Padding="10" 
                     Click="ListVolunteers_Click" 
                     Width="136" 
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Grid.Column="1" Height="73" />
+                    VerticalAlignment="Top"
+                    Grid.Column="2" Height="73" />
+            <!-- List Calls Button -->
+            <Button Content="List Calls" 
+         Margin="100,-98,0,0" Padding="10" 
+         Click="ListVolunteers_Click" 
+         Width="136" 
+         HorizontalAlignment="Left"
+         VerticalAlignment="Top" Height="75" Grid.Column="1" Grid.ColumnSpan="2"  />
+            <Button Content="Simulator" Margin="170,12,35,10" Padding="10" Click="StartSimulator_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+
         </Grid>
     </Grid>
 </Window>
