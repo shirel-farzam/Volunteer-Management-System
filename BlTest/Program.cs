@@ -225,12 +225,12 @@ OPTION Options:
                     Console.WriteLine("Please select a sort option (Id, FullName, Active, SumCalls, SumCanceled, SumExpired, IdCall, CType):");
                     string sortByInput = Console.ReadLine();
 
-                    BO.VolunteerSortField? sortBy = Enum.TryParse<BO.VolunteerSortField>(sortByInput, true, out var sortOption)
+                    BO.VolunteerInListField? sortBy = Enum.TryParse<BO.VolunteerInListField>(sortByInput, true, out var sortOption)
                     ? sortOption
                     : null;
 
 
-                    IEnumerable<BO.VolunteerInList> volunteerList = s_bl.Volunteer.RequestVolunteerList(activeFilter,sortBy);
+                    IEnumerable<BO.VolunteerInList> volunteerList = s_bl.Volunteer.ReadAll(activeFilter,sortBy);
 
 
                     Console.WriteLine("Volunteer List:");

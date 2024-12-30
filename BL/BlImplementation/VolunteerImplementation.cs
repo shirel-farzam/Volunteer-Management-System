@@ -33,7 +33,7 @@ internal class VolunteerImplementation : IVolunteer
     }
 
     // Retrieves a filtered and sorted list of volunteers
-    public IEnumerable<BO.VolunteerInList> RequestVolunteerList(bool? isActive, BO.VolunteerSortField? sortField = null)
+    public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField = null)
     {
         IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll()
             ?? throw new BO.BlNullPropertyException("No volunteers in the database");
@@ -50,14 +50,14 @@ internal class VolunteerImplementation : IVolunteer
         var sortedVolunteers = sortField.HasValue
             ? filteredVolunteers.OrderBy(v => sortField switch
             {
-                BO.VolunteerSortField.ID => (object)v.Id,
-                BO.VolunteerSortField.Name => v.FullName,
-                BO.VolunteerSortField.ActivityStatus => v.Active,
-                BO.VolunteerSortField.SumCalls => v.TotalCallsHandled,
-                BO.VolunteerSortField.SumCanceled => v.TotalCallsCanceled,
-                BO.VolunteerSortField.SumExpired => v.TotalCallsExpired,
-                BO.VolunteerSortField.IdCall => v.CurrentCallId ?? 0,
-                BO.VolunteerSortField.CType => v.CurrentCallType.ToString(),
+                BO.VolunteerInListField.Id => (object)v.Id,
+                BO.VolunteerInListField.FullName => v.FullName,
+                BO.VolunteerInListField.Active => v.Active,
+                BO.VolunteerInListField.TotalCallsHandled => v.TotalCallsHandled,
+                BO.VolunteerInListField.TotalCallsCanceled => v.TotalCallsCanceled,
+                BO.VolunteerInListField.TotalCallsExpired => v.TotalCallsExpired,
+                BO.VolunteerInListField.CurrentCallId => v.CurrentCallId ?? 0,
+                BO.VolunteerInListField.CurrentCallType => v.CurrentCallType.ToString(),
                 _ => v.Id
             })
             : filteredVolunteers.OrderBy(v => v.Id); // Default sort by ID

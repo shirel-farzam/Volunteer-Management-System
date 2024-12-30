@@ -27,22 +27,26 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Content="Label:" Grid.Column="0" 
+            <Label Content="Filter By:" Grid.Column="0" 
                    HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Center"/>
 
+            <!-- ComboBox with binding to Enum values for filtering -->
             <ComboBox VerticalAlignment="Center" 
-          Margin="190,0,140,0" 
-          Grid.ColumnSpan="2" 
-          ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}"
-          Grid.Column="1" 
-          HorizontalAlignment="Stretch" />
+                      Margin="190,0,140,0" 
+                      Grid.ColumnSpan="2" 
+                      ItemsSource="{Binding Source={StaticResource VolunteerInListFieldCollectionKey}}"
+                      HorizontalAlignment="Stretch" 
+                      SelectedValue="{Binding Path=VolIn, Mode=TwoWay}"
+                      SelectionChanged="OnFilterSelectionChanged" />
         </Grid>
 
         <!-- ListView -->
-        <ListView Grid.Row="1" Margin="20,10,20,10" ItemsSource="{Binding Path=CourseList}">
+        <ListView Grid.Row="1" Margin="20,10,20,10" ItemsSource="{Binding Path=VolunteerInList}">
             <ListView.View>
                 <GridView>
-                  
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" />
+                    <GridViewColumn Header="Full Name" DisplayMemberBinding="{Binding FullName}" />
+                    <GridViewColumn Header="Active" DisplayMemberBinding="{Binding Active}" />
                 </GridView>
             </ListView.View>
         </ListView>

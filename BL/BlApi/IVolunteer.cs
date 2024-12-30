@@ -16,7 +16,7 @@ public interface IVolunteer : IObservable
     /// <param name="isActive">Filter by active status: true for active, false for inactive, null for all.</param>
     /// <param name="sortField">Optional field to sort the volunteer list by.</param>
     /// <returns>An enumerable list of volunteers.</returns>
-    public IEnumerable<BO.VolunteerInList> RequestVolunteerList(bool? isActive, VolunteerSortField? sortField = null);
+    public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, VolunteerInListField? sortField = null);
 
     /// <summary>
     /// Retrieves the detailed information of a specific volunteer.
