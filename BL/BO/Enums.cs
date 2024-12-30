@@ -28,7 +28,7 @@
         Driving  // Driving distance
     }
 
-    // Enum for Call Type (קריאה) - Combined for all Call Types
+    // Enum for Call Type  Combined for all Call Types
     public enum CallType
     {
         None,       // No call is being handled
@@ -37,7 +37,7 @@
         FollowUp    // Follow-up call
     }
 
-    // Enum for Assignment Completion Type (סוג סיום הטיפול)
+    // Enum for Assignment Completion Type 
     public enum AssignmentCompletionType
     {
         Completed,  // Treatment was completed

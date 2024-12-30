@@ -80,17 +80,17 @@
             </StackPanel>
 
             <!-- List Volunteers Button -->
-            <Button Content="List Volunteers" 
+            <Button Content="Handle Volunteers" 
                     Margin="60,-98,0,0" Padding="10" 
-                    Click="ListVolunteers_Click" 
+                    Click="btnVolunteer_Click" 
                     Width="136" 
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Grid.Column="2" Height="73" />
             <!-- List Calls Button -->
-            <Button Content="List Calls" 
+            <Button Content="Handle Calls" 
          Margin="100,-98,0,0" Padding="10" 
-         Click="ListVolunteers_Click" 
+         Click="ListCall_Click" 
          Width="136" 
          HorizontalAlignment="Left"
          VerticalAlignment="Top" Height="75" Grid.Column="1" Grid.ColumnSpan="2"  />

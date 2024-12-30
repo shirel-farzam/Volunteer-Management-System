@@ -25,5 +25,14 @@ namespace PL.Volunteer
         {
             InitializeComponent();
         }
+        public IEnumerable<BO.VolunteerInList> CourseList
+        {
+            get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolunteerInListProperty); }
+            set { SetValue(VolunteerInListProperty, value); }
+        }
+
+        public static readonly DependencyProperty VolunteerInListProperty =
+            DependencyProperty.Register("VolunteerList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerInListWindow), new PropertyMetadata(null));
+
     }
 }

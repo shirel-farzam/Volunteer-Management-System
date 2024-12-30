@@ -90,7 +90,7 @@ namespace PL
             s_bl.Admin.Reset();
         }
 
-        private void ListVolunteers_Click(object sender, RoutedEventArgs e)
+        private void btnVolunteer_Click(object sender, RoutedEventArgs e)
         {
             new VolunteerInListWindow().Show();
         }
@@ -111,16 +111,22 @@ namespace PL
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            
-                MaxRange = s_bl.Admin.GetMaxRange();
-                CurrentTime = s_bl.Admin.GetClock();
-                MaxRange = s_bl.Admin.GetMaxRange();
 
-                s_bl.Admin.AddClockObserver(clockObserver);
-                s_bl.Admin.AddConfigObserver(configObserver);
+            s_bl.Admin.Reset();
+            CurrentTime = s_bl.Admin.GetClock();
+            MaxRange = s_bl.Admin.GetMaxRange();
 
-
-            }
+            s_bl.Admin.AddClockObserver(clockObserver);
+            s_bl.Admin.AddConfigObserver(configObserver);
 
         }
+        private void ListCall_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void StartSimulator_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+    }
 }

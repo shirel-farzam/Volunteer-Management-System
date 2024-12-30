@@ -5,33 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="VolunteerInListWindow" Height="640" Width="800">
-    <!--External Grid-->
+        Title="Volunteer In List Window" Height="640" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+
+    <!-- External Grid -->
     <Grid>
+        <!-- Row Definitions -->
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
+            <!-- Upper Grid -->
             <RowDefinition Height="500*"/>
+            <!-- ListView -->
             <RowDefinition Height="Auto"/>
+            <!-- Button -->
         </Grid.RowDefinitions>
-        <!--Internal, Upper Grid-->
-        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
+
+        <!-- Internal, Upper Grid -->
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Label" Grid.Column="0" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top"/>
+
+            <Label Content="Label:" Grid.Column="0" 
+                   HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Center"/>
+
+            <ComboBox VerticalAlignment="Center" 
+          Margin="190,0,140,0" 
+          Grid.ColumnSpan="2" 
+          ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}"
+          Grid.Column="1" 
+          HorizontalAlignment="Stretch" />
         </Grid>
-        <ComboBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        <ListView  Margin="55,18,60,370" Grid.Row="1">
+
+        <!-- ListView -->
+        <ListView Grid.Row="1" Margin="20,10,20,10" ItemsSource="{Binding Path=CourseList}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                  
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
 
-
+        <!-- Button -->
+        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                Height="50" Width="100" Margin="0,10,0,10"/>
     </Grid>
 
 </Window>
