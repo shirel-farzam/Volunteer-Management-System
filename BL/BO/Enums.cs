@@ -2,17 +2,27 @@
 {
 
     /// Enum for specifying the sorting field for volunteers.
-    public enum VolunteerSortField
-    {
-        ID,             // Sort by volunteer ID (ID of the volunteer)
-        Name,           // Sort by full name (FullName of the volunteer)
-        ActivityStatus, // Sort by activity status (whether the volunteer is active or not)
-        SumCalls,       // Sort by total calls handled by the volunteer (SumCalls)
-        SumCanceled,    // Sort by total calls canceled by the volunteer (Sumcanceled)
-        SumExpired,     // Sort by total expired calls of the volunteer (SumExpired)
-        IdCall,         // Sort by current call ID (IdCall)
-        CType
-    }
+    //public enum VolunteerSortField
+    //{
+    //    ID,             // Sort by volunteer ID (ID of the volunteer)
+    //    Name,           // Sort by full name (FullName of the volunteer)
+    //    ActivityStatus, // Sort by activity status (whether the volunteer is active or not)
+    //    SumCalls,       // Sort by total calls handled by the volunteer (SumCalls)
+    //    SumCanceled,    // Sort by total calls canceled by the volunteer (Sumcanceled)
+    //    SumExpired,     // Sort by total expired calls of the volunteer (SumExpired)
+    //    IdCall,         // Sort by current call ID (IdCall)
+    //    CType
+    //}
+
+
+    //public enum VolIn
+    //{
+    //    Id,             // Sort by volunteer ID (ID of the volunteer)
+    //    FullName,           // Sort by full name (FullName of the volunteer)
+    //    Active,
+    //    None
+
+    //}
     // Enum for Role of the volunteer (Manager or Regular Volunteer)
     public enum Role
     {

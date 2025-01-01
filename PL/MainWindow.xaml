@@ -9,10 +9,15 @@
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Closed="Window_Closed"
         Loaded="MainWindow_Loaded">
+    <Window.Resources>
+        <SolidColorBrush x:Key="ButtonBlue" Color="#D9EAFD" />
+        <SolidColorBrush x:Key="DarkBlue" Color="#7C93C3" />
+        <SolidColorBrush x:Key="LightBlue" Color="#BCCCDC" />
+        <SolidColorBrush x:Key="SimulatorBlue" Color="#A5BFCC" />
+    </Window.Resources>
 
     <!-- Main Grid Layout -->
     <Grid>
-        <!-- Define rows for layout -->
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
             <!-- System Clock Area -->
@@ -26,76 +31,78 @@
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <!-- Clock Display -->
                 <RowDefinition Height="*" />
-                <!-- Clock Advancement Buttons -->
             </Grid.RowDefinitions>
 
-            <!-- Label to display the system clock -->
+            <!-- Clock Display -->
             <Label Content="{Binding CurrentTime, StringFormat='{}{0:HH:mm:ss}'}" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 
                    FontSize="20" 
                    FontWeight="Bold" />
 
-            <!-- Buttons to advance the clock -->
+            <!-- Clock Advancement Buttons -->
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <Button Content="Add One Minute" Click="AddOneMinute_Click" Padding="8,5" Margin="5"  Height="120" Width="120"/>
-                <Button Content="Add One Hour" Click="AddOneHour_Click" Padding="8,5" Margin="5" Height="120" Width="120"/>
-                <Button Content="Add One Day" Click="AddOneDay_Click" Padding="8,5" Margin="5"  Height="120" Width="120"/>
-                <Button Content="Add One Month" Click="AddOneMonth_Click" Padding="8,5" Margin="5" Height="120" Width="120"/>
-                <Button Content="Add One Year" Click="AddOneYear_Click" Padding="8,5" Margin="5"  Height="120" Width="120" />
+                <Button Content="Add One Hour" Click="AddOneHour_Click" Padding="8,5" Margin="5" Height="82" Width="120"
+                        Background="{StaticResource ButtonBlue}" Foreground="Black" />
+                <Button Content="Add One Day" Click="AddOneDay_Click" Padding="8,5" Margin="5" Height="82" Width="120"
+                        Background="{StaticResource ButtonBlue}" Foreground="Black" />
+                <Button Content="Add One Month" Click="AddOneMonth_Click" Padding="8,5" Margin="5" Height="82" Width="120"
+                        Background="{StaticResource ButtonBlue}" Foreground="Black" />
+                <Button Content="Add One Year" Click="AddOneYear_Click" Padding="8,5" Margin="5" Height="82" Width="120"
+                        Background="{StaticResource ButtonBlue}" Foreground="Black" />
+                <Button Content="Add One Minute" Click="AddOneMinute_Click" Padding="8,5" Height="82" Width="120"
+                        Background="{StaticResource ButtonBlue}" Foreground="Black" />
             </StackPanel>
         </Grid>
 
         <!-- Configuration Variables Section -->
         <Grid Grid.Row="1" Margin="15,15,5,3">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <!-- Configuration TextBox -->
-                <RowDefinition Height="Auto" />
-                <!-- Update Button -->
-            </Grid.RowDefinitions>
-            <!-- Button to update Risk Range -->
             <Button Content="Update Risk Range" 
-                        HorizontalAlignment="Center" 
-                        Padding="10,5" 
-                        Click="UpdateRiskRange_Click" RenderTransformOrigin="3.247,1.231" Grid.RowSpan="2" Width="230" />
+                    HorizontalAlignment="Center" 
+                    Padding="10,5" 
+                    Click="UpdateRiskRange_Click" 
+                    Width="230" 
+                    Background="#C6E7FF" Foreground="Black" Margin="0,0,0,176" />
         </Grid>
 
         <!-- Navigation and Volunteer Section -->
-        <Grid Grid.Row="2" Margin="10,10,10,10">
+        <Grid Grid.Row="2" Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="78*" />
-                <!-- Left Section -->
-                <ColumnDefinition Width="37*" />
-                <ColumnDefinition Width="41*"/>
-                <!-- Right Section -->
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <!-- Navigation Buttons -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Initialize Database" Margin="10" Padding="10" Click="InitializeDatabase_Click" Width="136" />
-                <Button Content="Reset Database" Margin="10" Padding="10" Click="ResetDatabase_Click" Width="136" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="0">
+                <Button Content="Initialize Database" Margin="10" Padding="10" Click="InitializeDatabase_Click" Width="136" 
+                        Background="{StaticResource LightBlue}" Foreground="Black" />
+                <Button Content="Reset Database" Margin="10" Padding="10" Click="ResetDatabase_Click" Width="136" 
+                        Background="{StaticResource LightBlue}" Foreground="Black" />
             </StackPanel>
 
             <!-- List Volunteers Button -->
             <Button Content="Handle Volunteers" 
-                    Margin="60,-98,0,0" Padding="10" 
+                    Margin="171,-128,5,128" Padding="10" 
                     Click="btnVolunteer_Click" 
                     Width="136" 
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Grid.Column="2" Height="73" />
+                    Grid.Column="1"
+                    Background="{StaticResource DarkBlue}" Foreground="White" Grid.ColumnSpan="2" />
+
             <!-- List Calls Button -->
             <Button Content="Handle Calls" 
-         Margin="100,-98,0,0" Padding="10" 
-         Click="ListCall_Click" 
-         Width="136" 
-         HorizontalAlignment="Left"
-         VerticalAlignment="Top" Height="75" Grid.Column="1" Grid.ColumnSpan="2"  />
-            <Button Content="Simulator" Margin="170,12,35,10" Padding="10" Click="StartSimulator_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    Margin="27,-128,149,128" Padding="10" 
+                    Click="ListCall_Click" 
+                    Width="136" 
+                    Grid.Column="1"
+                    Background="{StaticResource DarkBlue}" Foreground="White" Grid.ColumnSpan="2" />
 
+            <!-- Simulator Button -->
+            <Button Content="Simulator" Margin="101,-5,75,5" Padding="10" 
+                    Click="StartSimulator_Click" 
+                    Width="136" 
+                    Background="#D3F1DF" Foreground="Black" Grid.Column="1" Grid.ColumnSpan="2" />
         </Grid>
     </Grid>
 </Window>

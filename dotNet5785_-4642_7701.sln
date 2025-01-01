@@ -23,8 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xml", "xml", "{536F5483-523
 		xml\assignments.xml = xml\assignments.xml
 		xml\calls.xml = xml\calls.xml
 		xml\dal-config.xml = xml\dal-config.xml
-		xml\data-config.xml = xml\data-config.xml
 		xml\volunteers.xml = xml\volunteers.xml
+		xml\data-config.xml = xml\data-config.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{2FBDD671-7386-4D79-A759-A0F6D2F86C3F}"

@@ -5,5 +5,9 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <local:VolunteerInListFieldCollection x:Key="VolunteerInListFieldCollectionKey" />
+        <local:ConvertRoleToColor x:Key="ConvertRoleToColorKey" />
+        <local:ConvertDistanceToColor x:Key="ConvertDistanceToColorKey" />
+        <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
     </Application.Resources>
+
 </Application>

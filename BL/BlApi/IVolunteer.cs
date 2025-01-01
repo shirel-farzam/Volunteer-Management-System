@@ -23,14 +23,14 @@ public interface IVolunteer : IObservable
     /// </summary>
     /// <param name="volunteerId">The ID of the volunteer to retrieve.</param>
     /// <returns>The details of the specified volunteer.</returns>
-    public BO.Volunteer RequestVolunteerDetails(int volunteerId);
+    public BO.Volunteer Read(int volunteerId);
 
     /// <summary>
     /// Updates the details of an existing volunteer.
     /// </summary>
     /// <param name="volunteerId">The ID of the volunteer to update.</param>
     /// <param name="boVolunteer">The updated volunteer object containing new details.</param>
-    public void UpdateVolunteerDetails(int volunteerId, BO.Volunteer boVolunteer);
+    public void Update(int volunteerId, BO.Volunteer boVolunteer);
 
     /// <summary>
     /// Deletes a volunteer from the system.

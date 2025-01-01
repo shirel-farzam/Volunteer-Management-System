@@ -66,7 +66,7 @@ internal class VolunteerImplementation : IVolunteer
     }
 
     // Retrieves detailed information about a specific volunteer
-    public BO.Volunteer RequestVolunteerDetails(int volunteerId)
+    public BO.Volunteer Read(int volunteerId)
     {
         var doVolunteer = _dal.Volunteer.Read(volunteerId)
             ?? throw new BO.BlWrongInputException($"Volunteer with ID={volunteerId} does not exist");
@@ -77,6 +77,7 @@ internal class VolunteerImplementation : IVolunteer
             FullName = doVolunteer.FullName,
             PhoneNumber = doVolunteer.PhoneNumber,
             TypeDistance = (BO.Distance)doVolunteer.TypeDistance,
+            Email=doVolunteer.Email,
             Job = (BO.Role)doVolunteer.Job,
             Active = doVolunteer.Active,
             Password = doVolunteer.Password,
@@ -88,7 +89,7 @@ internal class VolunteerImplementation : IVolunteer
     }
 
     // Updates volunteer details with validations
-    public void UpdateVolunteerDetails(int volunteerId, BO.Volunteer boVolunteer)
+    public void Update(int volunteerId, BO.Volunteer boVolunteer)
     {
         var doVolunteer = _dal.Volunteer.Read(volunteerId)
             ?? throw new BO.BlWrongInputException($"Volunteer with ID={volunteerId} does not exist");

@@ -6,12 +6,15 @@ using System.Windows;
 using System.ComponentModel;
 using System.Windows.Controls;
 using DalTest;
+using PL.VolunteerWindow;
+using System.Windows.Input;
 
 namespace PL.Volunteer
 {
     public partial class VolunteerInListWindow : Window, INotifyPropertyChanged
     {
         private VolunteerInListField _selectedFilter = VolunteerInListField.None;  // Default to None (no filter)
+        public BO.VolunteerInList? SelectedVolunteer { get; set; }
 
         // SelectedFilter property
         public VolunteerInListField SelectedFilter
@@ -31,11 +34,11 @@ namespace PL.Volunteer
         // VolunteerInList property (DependencyProperty)
         public IEnumerable<BO.VolunteerInList> VolunteerInList
         {
-            get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolInListProperty); }
-            set { SetValue(VolInListProperty, value); }
+            get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolunteerInListFieldListProperty); }
+            set { SetValue(VolunteerInListFieldListProperty, value); }
         }
 
-        public static readonly DependencyProperty VolInListProperty =
+        public static readonly DependencyProperty VolunteerInListFieldListProperty =
             DependencyProperty.Register(
                 "VolunteerInList",
                 typeof(IEnumerable<BO.VolunteerInList>),
@@ -108,6 +111,50 @@ namespace PL.Volunteer
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        // Add Volunteer button click event
+        private void AddVolunteerButton_Click(object sender, RoutedEventArgs e)
+        {
+            new VolunteerWindow.VolunteerWindow().Show();
+        }
+
+        // Double-click on volunteer list to view details
+        private void lsvVolunteerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (SelectedVolunteer != null)
+                new VolunteerWindow.VolunteerWindow(SelectedVolunteer.Id).Show();
+        }
+
+        // Delete Volunteer by ID
+        private void DeleteVolunteer(int volunteerId)
+        {
+            try
+            {
+                var bl = BlApi.Factory.Get().Volunteer;
+                bl.DeleteVolunteer(volunteerId); // Delete the volunteer
+                UpdateVolunteerList();  // Refresh the list
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while deleting the volunteer: {ex.Message}",
+                                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Delete button click event
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is int volunteerId)
+            {
+                var result = MessageBox.Show("Are you sure you want to delete this volunteer?",
+                    "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    DeleteVolunteer(volunteerId); // Call the delete method
+                }
+            }
         }
     }
 }

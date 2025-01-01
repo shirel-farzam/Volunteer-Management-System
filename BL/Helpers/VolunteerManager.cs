@@ -457,5 +457,26 @@ internal class VolunteerManager
         // Final distance in meters
         return EarthRadius * c;
     }
+    //private BO.Volunteer ConvertToVolunteer(BO.VolunteerInList volunteerInList)
+    //{
+    //    return new BO.Volunteer
+    //    {
+    //        Id = volunteerInList.Id,
+    //        FullName = volunteerInList.FullName,
+    //        PhoneNumber = volunteerInList.,
+    //        Email = volunteerInList.Email,
+    //        FullAddress = volunteerInList.,  // אם יש שדה כזה
+    //        Password = volunteerInList.Password,        // אם יש שדה כזה
+    //        Latitude = volunteerInList.Latitude,
+    //        Longitude = volunteerInList.Longitude,
+    //        Job = volunteerInList.Job,
+    //        Active = volunteerInList.Active,
+    //        TypeDistance = volunteerInList.TypeDistance,
+    //        TotalHandledCalls = volunteerInList.TotalHandledCalls,
+    //        TotalCanceledCalls = volunteerInList.TotalCanceledCalls,
+    //        TotalExpiredCalls = volunteerInList.TotalExpiredCalls,
+    //        CurrentCall = volunteerInList.CurrentCall
+    //    };
+    //}
 
 }

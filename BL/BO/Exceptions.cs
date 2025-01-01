@@ -3,6 +3,23 @@ using System.Runtime.Serialization;
 
 namespace BO
 {
+    [Serializable]
+    public class BLException : Exception
+    {
+        // Default constructor.
+        public BLException() { }
+
+        // Constructor accepting a message explaining the exception.
+        public BLException(string? message) : base(message) { }
+
+        // Constructor that also accepts an inner exception to chain exceptions.
+        public BLException(string message, Exception innerException)
+                : base(message, innerException) { }
+
+        // Constructor for serialization support.
+        protected BLException(SerializationInfo info, StreamingContext context)
+                : base(info, context) { }
+    }
     // Exception class for errors related to loading or creating XML files in the business logic.
     [Serializable]
     public class BlXMLFileLoadCreateException : Exception

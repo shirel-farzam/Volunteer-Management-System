@@ -1,2 +1,503 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+<ArrayOfCall xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Call>
+    <Id>1000</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>King David St 12, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7769</Latitude>
+    <Longitude>35.2134</Longitude>
+    <TimeOpened>2025-01-01T09:58:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T18:52:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1001</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Keren Hayesod St 15, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7747</Latitude>
+    <Longitude>35.2153</Longitude>
+    <TimeOpened>2024-12-31T19:49:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1002</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>HaRav Kook St 20, Jerusalem, Israel</FullAddress>
+    <Latitude>31.783</Latitude>
+    <Longitude>35.2135</Longitude>
+    <TimeOpened>2025-01-01T02:13:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1003</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Strauss St 5, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7739</Latitude>
+    <Longitude>35.211</Longitude>
+    <TimeOpened>2025-01-01T05:55:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T19:38:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1004</Id>
+    <Type>FoodTransport</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Radak St 10, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7762</Latitude>
+    <Longitude>35.2123</Longitude>
+    <TimeOpened>2025-01-01T02:47:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T19:24:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1005</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Bezalel St 35, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7743</Latitude>
+    <Longitude>35.2201</Longitude>
+    <TimeOpened>2025-01-01T02:57:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T17:59:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1006</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Shmuel HaNagid St 18, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7748</Latitude>
+    <Longitude>35.212</Longitude>
+    <TimeOpened>2025-01-01T08:05:24</TimeOpened>
+    <MaxTimeToClose>2025-01-02T04:25:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1007</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>David HaMelech St 6, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7796</Latitude>
+    <Longitude>35.2145</Longitude>
+    <TimeOpened>2025-01-01T16:31:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1008</Id>
+    <Type>FoodTransport</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Shivtei Israel St 10, Jerusalem, Israel</FullAddress>
+    <Latitude>31.774</Latitude>
+    <Longitude>35.2159</Longitude>
+    <TimeOpened>2025-01-01T10:57:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T17:57:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1009</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>HaMesila Park, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7711</Latitude>
+    <Longitude>35.2206</Longitude>
+    <TimeOpened>2025-01-01T10:26:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1010</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Rabbi Akiva St 8, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7741</Latitude>
+    <Longitude>35.2221</Longitude>
+    <TimeOpened>2024-12-31T20:12:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T00:51:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1011</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Haneviim St 50, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7764</Latitude>
+    <Longitude>35.2113</Longitude>
+    <TimeOpened>2025-01-01T16:33:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1012</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Yemin Moshe St 8, Jerusalem, Israel</FullAddress>
+    <Latitude>31.781</Latitude>
+    <Longitude>35.2176</Longitude>
+    <TimeOpened>2024-12-31T21:18:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1013</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Yoel Moshe Salomon St 22, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7768</Latitude>
+    <Longitude>35.2138</Longitude>
+    <TimeOpened>2025-01-01T08:10:24</TimeOpened>
+    <MaxTimeToClose>2025-01-02T07:58:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1014</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>HaOren St 7, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7819</Latitude>
+    <Longitude>35.2109</Longitude>
+    <TimeOpened>2025-01-01T13:11:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T23:11:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1015</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Beit Hakerem St 25, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7795</Latitude>
+    <Longitude>35.2118</Longitude>
+    <TimeOpened>2025-01-01T16:26:24</TimeOpened>
+    <MaxTimeToClose>2025-01-02T08:41:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1016</Id>
+    <Type>FoodTransport</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Givat Shaul St 10, Jerusalem, Israel</FullAddress>
+    <Latitude>31.778</Latitude>
+    <Longitude>35.2082</Longitude>
+    <TimeOpened>2025-01-01T14:51:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1017</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Shlomo Zalman Shragai St 5, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7825</Latitude>
+    <Longitude>35.2047</Longitude>
+    <TimeOpened>2025-01-01T03:11:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1018</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Emek Refaim St 12, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7814</Latitude>
+    <Longitude>35.2165</Longitude>
+    <TimeOpened>2025-01-01T16:44:24</TimeOpened>
+    <MaxTimeToClose>2025-01-02T06:25:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1019</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Azza St 40, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7817</Latitude>
+    <Longitude>35.2147</Longitude>
+    <TimeOpened>2024-12-31T22:45:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1020</Id>
+    <Type>FoodTransport</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Derech Har HaTsofim 20, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7822</Latitude>
+    <Longitude>35.2202</Longitude>
+    <TimeOpened>2025-01-01T16:30:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T18:10:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1021</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Mount Scopus Campus, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7789</Latitude>
+    <Longitude>35.2423</Longitude>
+    <TimeOpened>2025-01-01T10:42:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1022</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Nablus Rd 10, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7758</Latitude>
+    <Longitude>35.2349</Longitude>
+    <TimeOpened>2025-01-01T12:13:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T18:26:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1023</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Hebron Rd 50, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7726</Latitude>
+    <Longitude>35.2128</Longitude>
+    <TimeOpened>2025-01-01T08:55:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1024</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>HaPalmach St 20, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7703</Latitude>
+    <Longitude>35.2131</Longitude>
+    <TimeOpened>2025-01-01T15:16:24</TimeOpened>
+    <MaxTimeToClose>2025-01-02T05:44:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1025</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Lincoln St 5, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7831</Latitude>
+    <Longitude>35.2169</Longitude>
+    <TimeOpened>2025-01-01T19:33:24</TimeOpened>
+    <MaxTimeToClose>2025-01-02T06:57:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1026</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Duvdevani St 10, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7813</Latitude>
+    <Longitude>35.2074</Longitude>
+    <TimeOpened>2025-01-01T00:48:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1027</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Diskin St 12, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7792</Latitude>
+    <Longitude>35.2117</Longitude>
+    <TimeOpened>2025-01-01T13:24:24</TimeOpened>
+    <MaxTimeToClose>2025-01-02T07:43:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1028</Id>
+    <Type>FoodTransport</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Alkalai St 15, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7764</Latitude>
+    <Longitude>35.2105</Longitude>
+    <TimeOpened>2025-01-01T01:51:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1029</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Ramban St 20, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7805</Latitude>
+    <Longitude>35.2139</Longitude>
+    <TimeOpened>2025-01-01T19:36:24</TimeOpened>
+    <MaxTimeToClose>2025-01-02T18:42:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1030</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Mordechai Ben Hillel St 12, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7753</Latitude>
+    <Longitude>35.2208</Longitude>
+    <TimeOpened>2025-01-01T14:38:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T15:03:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1031</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>HaRav Herzog St 60, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7755</Latitude>
+    <Longitude>35.2126</Longitude>
+    <TimeOpened>2025-01-01T06:13:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1032</Id>
+    <Type>FoodTransport</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Gershon Agron St 12, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7793</Latitude>
+    <Longitude>35.2204</Longitude>
+    <TimeOpened>2025-01-01T01:09:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T14:09:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1033</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Givon St 5, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7761</Latitude>
+    <Longitude>35.2133</Longitude>
+    <TimeOpened>2025-01-01T05:50:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1034</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Golda Meir Blvd 80, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7708</Latitude>
+    <Longitude>35.2146</Longitude>
+    <TimeOpened>2025-01-01T08:32:24</TimeOpened>
+    <MaxTimeToClose>2025-01-02T04:33:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1035</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Lev Ram Blvd 5, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7716</Latitude>
+    <Longitude>35.2041</Longitude>
+    <TimeOpened>2025-01-01T16:59:24</TimeOpened>
+    <MaxTimeToClose>2025-01-02T08:58:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1036</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Harav Shach St 10, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7777</Latitude>
+    <Longitude>35.2039</Longitude>
+    <TimeOpened>2025-01-01T12:52:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1037</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Kiryat HaLeom, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7722</Latitude>
+    <Longitude>35.2034</Longitude>
+    <TimeOpened>2024-12-31T23:21:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T07:56:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1038</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Shaarei Tsedek St 3, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7803</Latitude>
+    <Longitude>35.2239</Longitude>
+    <TimeOpened>2025-01-01T14:10:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T22:48:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1039</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Givat Mordechai St 10, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7801</Latitude>
+    <Longitude>35.2144</Longitude>
+    <TimeOpened>2025-01-01T01:31:24</TimeOpened>
+    <MaxTimeToClose>2025-01-02T00:51:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1040</Id>
+    <Type>FoodTransport</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Bayit Vegan St 10, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7796</Latitude>
+    <Longitude>35.2223</Longitude>
+    <TimeOpened>2025-01-01T16:52:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T18:22:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1041</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Sanhedria St 12, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7748</Latitude>
+    <Longitude>35.2174</Longitude>
+    <TimeOpened>2025-01-01T10:15:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T23:12:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1042</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Bar Ilan St 20, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7794</Latitude>
+    <Longitude>35.23</Longitude>
+    <TimeOpened>2025-01-01T08:51:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1043</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Shmuel Hanavi St 45, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7759</Latitude>
+    <Longitude>35.2332</Longitude>
+    <TimeOpened>2025-01-01T05:25:24</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1044</Id>
+    <Type>FoodTransport</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Malha Rd 5, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7816</Latitude>
+    <Longitude>35.2122</Longitude>
+    <TimeOpened>2024-12-31T23:00:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T16:37:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1045</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Pisgat Ze'ev Blvd 10, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7809</Latitude>
+    <Longitude>35.2305</Longitude>
+    <TimeOpened>2025-01-01T05:15:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T14:06:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1046</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Teddy Stadium, Jerusalem, Israel</FullAddress>
+    <Latitude>31.773</Latitude>
+    <Longitude>35.2249</Longitude>
+    <TimeOpened>2025-01-01T03:15:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T20:01:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1047</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Zahal St 7, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7792</Latitude>
+    <Longitude>35.2251</Longitude>
+    <TimeOpened>2025-01-01T14:58:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T15:45:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1048</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Ha'Arazim Blvd 5, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7749</Latitude>
+    <Longitude>35.2168</Longitude>
+    <TimeOpened>2024-12-31T22:11:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T03:27:24</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1049</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Ramot Forest, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7731</Latitude>
+    <Longitude>35.2214</Longitude>
+    <TimeOpened>2024-12-31T22:21:24</TimeOpened>
+    <MaxTimeToClose>2025-01-01T15:10:24</MaxTimeToClose>
+  </Call>
+</ArrayOfCall>

@@ -36,24 +36,139 @@
                       Grid.ColumnSpan="2" 
                       ItemsSource="{Binding Source={StaticResource VolunteerInListFieldCollectionKey}}"
                       HorizontalAlignment="Stretch" 
-                      SelectedValue="{Binding Path=VolIn, Mode=TwoWay}"
+                      SelectedValue="{Binding Path=VolunteerInListField, Mode=TwoWay}"
                       SelectionChanged="OnFilterSelectionChanged" />
         </Grid>
 
-        <!-- ListView -->
-        <ListView Grid.Row="1" Margin="20,10,20,10" ItemsSource="{Binding Path=VolunteerInList}">
+        <ListView Grid.Row="1" Margin="20,10,20,10" ItemsSource="{Binding Path=VolunteerInList}" SelectedItem="{Binding SelectedVolunteer}"
+          MouseDoubleClick="lsvVolunteerList_MouseDoubleClick">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" />
-                    <GridViewColumn Header="Full Name" DisplayMemberBinding="{Binding FullName}" />
-                    <GridViewColumn Header="Active" DisplayMemberBinding="{Binding Active}" />
+                    <!-- Existing Columns -->
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}">
+                        <GridViewColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontWeight="Bold" FontSize="14" Foreground="#009990" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.HeaderTemplate>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Id}" Foreground="Black" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Full Name" DisplayMemberBinding="{Binding FullName}">
+                        <GridViewColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontWeight="Bold" FontSize="14" Foreground="#009990" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.HeaderTemplate>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding FullName}" Foreground="Black" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Active" DisplayMemberBinding="{Binding Active}">
+                        <GridViewColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontWeight="Bold" FontSize="14" Foreground="#009990" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.HeaderTemplate>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Active}" Foreground="Black" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Total Calls Handled" DisplayMemberBinding="{Binding TotalCallsHandled}">
+                        <GridViewColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontWeight="Bold" FontSize="14" Foreground="#009990" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.HeaderTemplate>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding TotalCallsHandled}" Foreground="Black" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Total Calls Canceled" DisplayMemberBinding="{Binding TotalCallsCanceled}">
+                        <GridViewColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontWeight="Bold" FontSize="14" Foreground="#009990" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.HeaderTemplate>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding TotalCallsCanceled}" Foreground="Black" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Total Calls Expired" DisplayMemberBinding="{Binding TotalCallsExpired}">
+                        <GridViewColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontWeight="Bold" FontSize="14" Foreground="#009990" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.HeaderTemplate>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding TotalCallsExpired}" Foreground="Black" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Current Call ID" DisplayMemberBinding="{Binding CurrentCallId}">
+                        <GridViewColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontWeight="Bold" FontSize="14" Foreground="#009990" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.HeaderTemplate>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding CurrentCallId}" Foreground="Black" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Current Call Type" DisplayMemberBinding="{Binding CurrentCallType}">
+                        <GridViewColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontWeight="Bold" FontSize="14" Foreground="#009990" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.HeaderTemplate>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding CurrentCallType}" Foreground="Black" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <!-- Add the "Delete" button column -->
+                    <GridViewColumn Header="Actions">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <!-- Delete Button for each row -->
+                                <Button Content="Delete" Click="DeleteButton_Click" Tag="{Binding Id}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
                 </GridView>
             </ListView.View>
         </ListView>
 
+
+
         <!-- Button -->
         <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                Height="50" Width="100" Margin="0,10,0,10"/>
+                Height="50" Width="100" Margin="0,10,0,10" 
+                Background="#009990" Foreground="Black" Click="AddVolunteerButton_Click" />
     </Grid>
 
 </Window>

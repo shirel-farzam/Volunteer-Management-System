@@ -248,7 +248,7 @@ OPTION Options:
                         throw new BO.BlWrongInputException($"Invalid ID{idInput} format");  // זורקים חריגה אם המזהה לא תקני
                     }
 
-                    BO.Volunteer volunteer = s_bl.Volunteer.RequestVolunteerDetails(id);
+                    BO.Volunteer volunteer = s_bl.Volunteer.Read(id);
                     Console.WriteLine("Volunteer Details:");
                     Console.WriteLine(volunteer);
                     break;
@@ -374,7 +374,7 @@ OPTION Options:
 
                     // Update the volunteer in the system
 
-                    s_bl.Volunteer.UpdateVolunteerDetails(idPersson, volunteerToUpdate);
+                    s_bl.Volunteer.Update(idPersson, volunteerToUpdate);
                     break;
 
                 case IVolunteer.DELETE:
