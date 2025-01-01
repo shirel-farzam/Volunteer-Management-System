@@ -156,5 +156,24 @@ namespace PL.Volunteer
                 }
             }
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            BlApi.Factory.Get().Volunteer.AddObserver(volunteerListObserver);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            BlApi.Factory.Get().Volunteer.RemoveObserver(volunteerListObserver);
+        }
+
+        // Observer method to refresh volunteer list
+        private void volunteerListObserver()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                UpdateVolunteerList();  // Refresh the volunteer list when notified of changes
+            });
+        }
     }
 }

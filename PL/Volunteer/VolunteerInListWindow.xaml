@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
         Title="Volunteer In List Window" Height="640" Width="800"
+        Loaded="Window_Loaded"
+        Closed="Window_Closed"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
     <!-- External Grid -->
@@ -162,9 +164,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
-
-
         <!-- Button -->
         <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Height="50" Width="100" Margin="0,10,0,10" 
