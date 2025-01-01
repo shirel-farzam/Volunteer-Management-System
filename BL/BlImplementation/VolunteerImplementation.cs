@@ -97,7 +97,7 @@ internal class VolunteerImplementation : IVolunteer
         var manager = _dal.Volunteer.Read(boVolunteer.Id)
             ?? throw new BO.BlWrongInputException($"Manager with ID={boVolunteer.Id} does not exist");
 
-        if (manager.Job != DO.Role.Manager)
+        if (manager.Job != DO.Role.Manager&&volunteerId!=boVolunteer.Id)
             throw new BO.BlWrongInputException("Only a manager can update details");
 
         if (boVolunteer.FullAddress != doVolunteer.FullAddress)

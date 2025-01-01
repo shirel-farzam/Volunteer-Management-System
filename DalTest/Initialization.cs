@@ -21,6 +21,11 @@ public static class Initialization
     // Method to create volunteer data
     private static void CreateVolunteer()
     {
+
+        int[] Id = { 214429151, 214432767, 214485302, 214545303, 214554958,
+                     214616104, 214631426, 214664260, 214675688, 214736456,
+                     214736688, 214763252, 214773020, 214776742, 214786972 };
+
         // Array of volunteer names
         string[] VolunteerName = { "Noa Levy", "Omer Cohen", "Rotem Mizrahi",
                            "Yoav Biton", "Maya Peretz", "Daniel Avrahami", "Tamar Malka",
@@ -28,10 +33,10 @@ public static class Initialization
                            "Yuval Levy", "Ofir Dayan", "Alon Goldberg", "Shira Sharabi" };
 
         // Array of phone numbers corresponding to the volunteer names
-        string[] PhoneNumber = { "054-1234567", "053-2345678", "054-3456789", "050-4567890",
-                         "055-5678901", "054-6789012", "052-7890123", "054-8901234",
-                         "054-9012345", "053-0123456", "054-1234568", "050-2345679",
-                         "058-3456780", "054-4567891", "055-5678902" };
+        string[] PhoneNumber = { "0541234567", "0532345678", "0543456789",
+                                 "0504567890", "0555678901", "0546789012", "0527890123",
+                                 "0548901234", "0549012345", "0530123456", "0541234568",
+                                 "0502345679", "0583456780", "0544567891", "0555678902" };
 
         // Array of email addresses corresponding to the volunteer names
         string[] Email = { "noa.levy@example.com", "omer.cohen@example.com", "rotem.mizrahi@example.com",
@@ -44,21 +49,21 @@ public static class Initialization
         // Array of volunteer addresses (strings)
         string[] addresses =
         {
-            "King George St 20, Jerusalem, Israel",
-            "Jaffa St 45, Jerusalem, Israel",
-            "Agripas St 10, Jerusalem, Israel",
-            "HaPalmach St 25, Jerusalem, Israel",
-            "Emek Refaim St 43, Jerusalem, Israel",
-            "Shlomzion HaMalka St 18, Jerusalem, Israel",
-            "Hillel St 7, Jerusalem, Israel",
+            "King George 20, Jerusalem, Israel",
+            "Jaffa 45, Jerusalem, Israel",
+            "Agripas 10, Jerusalem, Israel",
+            "HaPalmach 25, Jerusalem, Israel",
+            "Emek Refaim 43, Jerusalem, Israel",
+            "Shlomzion HaMalka 18, Jerusalem, Israel",
+            "Hillel 7, Jerusalem, Israel",
             "Derech Hebron 105, Jerusalem, Israel",
-            "Bezalel St 12, Jerusalem, Israel",
-            "HaNeviim St 29, Jerusalem, Israel",
-            "Shivtei Israel St 15, Jerusalem, Israel",
-            "Azza St 50, Jerusalem, Israel",
-            "Yitzhak Kariv St 4, Jerusalem, Israel",
-            "Prophets St 23, Jerusalem, Israel",
-            "Ben Yehuda St 1, Jerusalem, Israel"
+            "Bezalel 12, Jerusalem, Israel",
+            "HaNeviim 29, Jerusalem, Israel",
+            "Shivtei Israel 15, Jerusalem, Israel",
+            "Azza 50, Jerusalem, Israel",
+            "Yitzhak Kariv 4, Jerusalem, Israel",
+            "Prophets 23, Jerusalem, Israel",
+            "Ben Yehuda 1, Jerusalem, Israel"
         };
 
         // Array of longitude coordinates
@@ -96,13 +101,9 @@ public static class Initialization
 };
 
         // Loop to create volunteer data and add it to the data source
-        for (int i = 0; i < VolunteerName.Length; i++)
+        for (int i = 0; i < 15; i++)
         {
-            int id;
-            do
-                id = s_rand.Next(700000000, 1000000000); // Generate a random ID with 9 digits
-            while (s_dal!.Volunteer.Read(id) != null); // Check if the ID is unique by verifying that no existing volunteer has the same ID
-
+            int Currid = Id[i];
             string name = VolunteerName[i];
             string phone = PhoneNumber[i];
             string email = Email[i];
@@ -116,7 +117,7 @@ public static class Initialization
             double maxReading = s_rand.Next(5, 100); // Generate a random max reading between 5 and 100
 
             //Create a new Volunteer object and add it to the data source
-            s_dal!.Volunteer.Create(new Volunteer(id, name, phone, email, distanceType, role, active, password, Address, NLatitude, NLongitude, maxReading));
+            s_dal!.Volunteer.Create(new Volunteer(Currid, name, phone, email, distanceType, role, active, password, Address, NLatitude, NLongitude, maxReading));
         }
 
         // Adding at least one manager
