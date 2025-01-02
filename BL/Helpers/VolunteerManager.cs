@@ -300,24 +300,26 @@ internal class VolunteerManager
     private const string ApiKey = "pk.3d8d3ac902d00ffcd65fdf9a26ec253c";
     private const string LocationIqBaseUrl = "https://us1.locationiq.com/v1/search.php";
 
-    /// <summary> from chatgpt
+    /// <summary> 
     /// This method takes an address as input and returns an array with the latitude and longitude.
-    /// The request is synchronous, meaning it waits for the response before continuing.
+    /// </summary>
     /// <param name="address">The address to be geocoded</param>
-
     /// <returns>A double array containing the latitude and longitude</returns>
     public static double[] GetCoordinatesFromAddress(string address)
     {
         if (string.IsNullOrWhiteSpace(address))
         {
-            throw new ArgumentException("The provided address is empty or invalid.");
+            throw new ArgumentException("The provided address is empty or invalid.", nameof(address));
         }
 
         using (var client = new HttpClient())
         {
             try
             {
+                // Construct the request URL
                 string requestUrl = $"{LocationIqBaseUrl}?key={ApiKey}&q={Uri.EscapeDataString(address)}&format=json";
+
+                // Send the HTTP request synchronously
                 HttpResponseMessage response = client.GetAsync(requestUrl).Result;
 
                 if (!response.IsSuccessStatusCode)
@@ -325,11 +327,14 @@ internal class VolunteerManager
                     throw new Exception($"Error while making the geocoding request: {response.StatusCode}");
                 }
 
+                // Read the response body
                 string jsonResponse = response.Content.ReadAsStringAsync().Result;
 
+                // Parse the JSON response
                 using (JsonDocument document = JsonDocument.Parse(jsonResponse))
                 {
                     JsonElement root = document.RootElement;
+
                     if (root.ValueKind == JsonValueKind.Array && root.GetArrayLength() > 0)
                     {
                         JsonElement firstResult = root[0];
@@ -337,9 +342,11 @@ internal class VolunteerManager
                         if (firstResult.TryGetProperty("lat", out JsonElement latElement) &&
                             firstResult.TryGetProperty("lon", out JsonElement lonElement))
                         {
+                            // Parse the latitude and longitude
                             double latitude = double.Parse(latElement.GetString() ?? throw new InvalidOperationException("Latitude is missing."), CultureInfo.InvariantCulture);
                             double longitude = double.Parse(lonElement.GetString() ?? throw new InvalidOperationException("Longitude is missing."), CultureInfo.InvariantCulture);
 
+                            // Return the coordinates
                             return new double[] { latitude, longitude };
                         }
                     }
@@ -347,74 +354,17 @@ internal class VolunteerManager
 
                 throw new Exception("Latitude or Longitude is missing in the response.");
             }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception("Network-related error occurred while sending the request.", ex);
+            }
             catch (Exception ex)
             {
-                throw new Exception("Error occurred while retrieving the coordinates of the address.", ex);
+                throw new Exception("An error occurred while retrieving the coordinates of the address.", ex);
             }
         }
     }
 
-
-    //public static double[] GetCoordinatesFromAddress(string address)
-    //{
-    //    // Check if the address is empty or null
-    //    if (string.IsNullOrWhiteSpace(address))
-    //    {
-    //        throw new ArgumentException("Address cannot be empty or null.", nameof(address));
-    //    }
-
-    //    // Build the API URL using the access key and the address
-    //    string url = $"https://us1.locationiq.com/v1/search.php?key={Uri.EscapeDataString(ApiKey)}&q={Uri.EscapeDataString(address)}&format=json";
-
-    //    // Create an HTTP request
-    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-    //    request.Method = "GET";
-
-    //    // Add a User-Agent header to avoid server blocking
-    //    request.Headers.Add("User-Agent", "MyCSharpApp/1.0");
-
-    //    try
-    //    {
-    //        // Send the request and get the response
-    //        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-    //        {
-    //            // Check if the response status is OK (200)
-    //            if (response.StatusCode != HttpStatusCode.OK)
-    //            {
-    //                throw new Exception($"Error in request: {response.StatusCode}");
-    //            }
-
-    //            // Read the response body as a string
-    //            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-    //            {
-    //                string jsonResponse = reader.ReadToEnd();
-
-    //                // Deserialize the response into an array of objects
-    //                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-    //                var results = JsonSerializer.Deserialize<LocationResult[]>(jsonResponse, options);
-
-    //                // Check if any results were found
-    //                if (results == null || results.Length == 0)
-    //                {
-    //                    throw new Exception("No coordinates found for the given address.");
-    //                }
-
-    //                // Return the coordinates
-    //                return new double[] { double.Parse(results[0].Lat), double.Parse(results[0].Lon) };
-    //            }
-    //        }
-    //    }
-    //    catch (WebException ex)
-    //    {
-    //        // Handle network-related errors
-    //        throw new Exception("Error sending web request: " + ex.Message);
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // Handle general errors
-    //        throw new Exception("General error: " + ex.Message);
-    //    }
-    //}
 
 
 

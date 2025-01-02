@@ -42,7 +42,7 @@
                       SelectionChanged="OnFilterSelectionChanged" />
         </Grid>
 
-        <ListView Grid.Row="1" Margin="20,10,20,10" ItemsSource="{Binding Path=VolunteerInList}" SelectedItem="{Binding SelectedVolunteer}"
+        <ListView Grid.Row="1" Margin="20,10,20,10" FontFamily="Times New Roman" ItemsSource="{Binding Path=VolunteerInList}" SelectedItem="{Binding SelectedVolunteer}"
           MouseDoubleClick="lsvVolunteerList_MouseDoubleClick">
             <ListView.View>
                 <GridView>

@@ -49,37 +49,38 @@ public static class Initialization
         // Array of volunteer addresses (strings)
         string[] addresses =
         {
-            "King George 20, Jerusalem, Israel",
-            "Jaffa 45, Jerusalem, Israel",
-            "Agripas 10, Jerusalem, Israel",
-            "HaPalmach 25, Jerusalem, Israel",
-            "Emek Refaim 43, Jerusalem, Israel",
-            "Shlomzion HaMalka 18, Jerusalem, Israel",
-            "Hillel 7, Jerusalem, Israel",
-            "Derech Hebron 105, Jerusalem, Israel",
-            "Bezalel 12, Jerusalem, Israel",
-            "HaNeviim 29, Jerusalem, Israel",
-            "Shivtei Israel 15, Jerusalem, Israel",
-            "Azza 50, Jerusalem, Israel",
-            "Yitzhak Kariv 4, Jerusalem, Israel",
-            "Prophets 23, Jerusalem, Israel",
-            "Ben Yehuda 1, Jerusalem, Israel"
+            "Rothschild Boulevard 1, Tel Aviv, Israel",
+"King George 10, Haifa, Israel",
+"Herzl Street 5, Netanya, Israel",
+"Jabotinsky Street 20, Petah Tikva, Israel",
+"Ben Gurion Boulevard 50, Ashdod, Israel",
+"Yigal Alon Street 30, Tel Aviv, Israel",
+"Independence Square 8, Hadera, Israel",
+"David HaMelech Street 12, Eilat, Israel",
+"Hanegev Boulevard 3, Beersheba, Israel",
+"Emek Refaim 43, Jerusalem, Israel",
+"HaAtzmaut Boulevard 2, Bat Yam, Israel",
+"Allenby Street 35, Tel Aviv, Israel",
+"Namal Street 4, Ashkelon, Israel",
+"Sokolov Street 22, Rishon LeZion, Israel",
+"Hertzel Boulevard 9, Holon, Israel"
+
         };
 
         // Array of longitude coordinates
         double[] Longitudes = new double[]
         {
-            35.3058, 35.3184, 35.3235, 35.3142, 35.3170,
-            35.3198, 35.3107, 35.3124, 35.3135, 35.3089,
-            35.3060, 35.3098, 35.3157, 35.3081, 35.3148
+          34.7688262, 34.995336,35.125519,34.770817,34.651074
+           , 34.811118,34.91956,34.94821,34.785262,35.2179409,
+           34.779417,34.772842,34.4091,34.776051, 34.780119
         };
 
         // Array of latitude coordinates
         double[] Latitudes = new double[]
         {
-            31.7554, 31.7612, 31.7630, 31.7489, 31.7513,
-            31.7562, 31.7581, 31.7329, 31.7574, 31.7608,
-            31.7611, 31.7400, 31.7432, 31.7539, 31.7591
+           32.0631559,32.792761,32.303342,32.089587,31.791658,
+            32.109166,32.43645, 29.55805,31.257023,31.7619324,
+            32.096611, 32.062991,31.437793,32.062593, 32.008484
         };
         string[] passwords =
 {
