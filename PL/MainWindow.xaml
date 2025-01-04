@@ -48,6 +48,10 @@
             <RowDefinition Height="1*" />
             <!-- Navigation Buttons -->
         </Grid.RowDefinitions>
+        <Image Source="C:/Users/ayele/Desktop/שיראל ואיילת.png"
+       Width="110" Height="71"
+       HorizontalAlignment="Left"
+       VerticalAlignment="Top" Margin="688,18,0,0" />
 
         <!-- System Clock Section -->
         <Grid Grid.Row="0">
@@ -64,7 +68,7 @@
                    FontWeight="Bold" />
 
             <!-- Clock Advancement Buttons -->
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,19,0,1">
                 <Button Content="Add One Minute" Click="AddOneMinute_Click" Padding="8,5" Margin="5" Height="82" Width="120" Style="{StaticResource RoundedButtonStyle}"
                         Background="{StaticResource ButtonBlue}" Foreground="Black" />
                 <Button Content="Add One Hour" Click="AddOneHour_Click" Padding="8,5" Margin="5" Height="82" Width="120" Style="{StaticResource RoundedButtonStyle}"
@@ -77,20 +81,57 @@
                         Background="{StaticResource ButtonBlue}" Foreground="Black" />
             </StackPanel>
         </Grid>
-
-        <!-- Configuration Variables Section -->
-        <Grid Margin="-5,38,25,213" Grid.RowSpan="2">
+        <Grid Margin="0,108,-5,88" Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="23*"/>
-                <ColumnDefinition Width="29*"/>
+                <ColumnDefinition Width="23*" />
+                <ColumnDefinition Width="29*" />
             </Grid.ColumnDefinitions>
+
+            <!-- TextBox inside a Border with rounded corners -->
+            <Border Background="#F2F9FF" 
+        Width="175" Height="33" 
+        HorizontalAlignment="Left" 
+        VerticalAlignment="Top" 
+        Margin="44,86,0,0" 
+        CornerRadius="10" 
+        Grid.Column="1">
+                <TextBox Text="01:00:00" 
+             FontSize="16" 
+             BorderBrush="Transparent" 
+             Background="Transparent" 
+             HorizontalContentAlignment="Center" 
+             VerticalContentAlignment="Center" 
+             Grid.Column="1"/>
+            </Border>
+
+
+            <!-- Risk Range Label -->
+            <Label Content="Risk Range:" 
+           HorizontalAlignment="Left" 
+           VerticalAlignment="Top" 
+           Margin="238,86,0,0" 
+           Width="107" 
+           Height="35"
+           FontFamily="Arial" 
+           FontSize="14"
+           Foreground="#A2D2DF" 
+           FontWeight="Bold" RenderTransformOrigin="0.467,-0.224" />
+
+
             <Button Content="Update Risk Range" 
-                    HorizontalAlignment="Left" 
-                    Padding="10,5" 
-                    Click="UpdateRiskRange_Click" 
-                    Width="230"  Style="{StaticResource RoundedButtonStyle}" 
-                    Background="#A2D2DF" Foreground="Black" Margin="265,228,0,-75" Grid.ColumnSpan="2" />
+        HorizontalAlignment="Left" 
+        Padding="10,5" 
+        Click="UpdateRiskRange_Click" 
+        Width="215" 
+        Height="NaN" 
+        Style="{StaticResource RoundedButtonStyle}" 
+        Background="#A2D2DF" 
+        Foreground="Black" 
+        Margin="255,126,0,90" Grid.ColumnSpan="2" />
+
         </Grid>
+
+
 
         <!-- Navigation and Volunteer Section -->
         <Grid Grid.Row="2" Margin="10">
@@ -121,11 +162,20 @@
         Grid.Column="2" 
         Background="{StaticResource DarkBlue}" Foreground="White" />
 
-            <!-- Simulator Button -->
-            <Button Content="Simulator" Margin="30,32,85,25" Padding="10" 
-                    Click="StartSimulator_Click" 
-                    Width="150"  Style="{StaticResource RoundedButtonStyle}" 
-                    Background="#4DA1A9" Foreground="Black" Grid.Column="2" />
+            <Button Content="Simulator" 
+        Margin="35,22,80,25" 
+        Padding="10" 
+        Click="StartSimulator_Click" 
+        Width="150"
+        Height="50"  
+        Style="{StaticResource RoundedButtonStyle}" 
+        Background="#4DA1A9" 
+        Foreground="Black" 
+        Grid.Column="2" 
+        HorizontalAlignment="Center" 
+        VerticalAlignment="Center" />
+
+
         </Grid>
     </Grid>
 </Window>

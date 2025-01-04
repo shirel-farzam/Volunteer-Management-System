@@ -33,7 +33,9 @@ namespace PL
         }
 
         public static readonly DependencyProperty MaxRangeProperty =
-            DependencyProperty.Register("MaxRange", typeof(TimeSpan), typeof(MainWindow));
+            DependencyProperty.Register("MaxRange", typeof(TimeSpan), typeof(MainWindow),
+                new PropertyMetadata(TimeSpan.FromHours(1), OnRiskRangeChanged));
+        
         public DateTime CurrentTime
         {
             get { return (DateTime)GetValue(CurrentTimeProperty); }
@@ -41,6 +43,17 @@ namespace PL
         }
         public static readonly DependencyProperty CurrentTimeProperty =
             DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
+
+        // Event handler when the RiskRange property changes
+        private static void OnRiskRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is MainWindow window && e.NewValue is TimeSpan newRange)
+            {
+                s_bl.Admin.Definition(newRange); // Update Risk Range via business logic
+            }
+        }
+
+
         // Handles the "Add One Minute" button click
         // Event handler for "Add One Minute" button click
         private void AddOneMinute_Click(object sender, RoutedEventArgs e)
@@ -75,7 +88,8 @@ namespace PL
         // Handles the "Update Risk Range" button click
         private void UpdateRiskRange_Click(object sender, RoutedEventArgs e)
         {
-            s_bl.Admin.Definition(MaxRange);
+            s_bl.Admin.Definition(MaxRange); // Update the Risk Range in business logic
+           MessageBox.Show($"Risk Range updated to: {MaxRange}"); // Show confirmation message
         }
 
         // Handles the "Initialize Database" button click

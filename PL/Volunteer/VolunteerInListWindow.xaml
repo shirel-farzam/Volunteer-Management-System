@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
         Title="Volunteer In List Window" Height="640" Width="800"
+        Background="#A2D2DF"
         Loaded="Window_Loaded"
         Closed="Window_Closed"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
@@ -21,7 +22,10 @@
             <RowDefinition Height="Auto"/>
             <!-- Button -->
         </Grid.RowDefinitions>
-
+        <Image Source="C:/Users/ayele/Desktop/שיראל ואיילת.png"
+Width="77" Height="60"
+HorizontalAlignment="Left"
+VerticalAlignment="Top" Margin="530,498,0,0" Grid.Row="1" Grid.RowSpan="2" RenderTransformOrigin="-0.455,0.5" />
         <!-- Internal, Upper Grid -->
         <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
@@ -152,11 +156,11 @@
                     </GridViewColumn>
 
                     <!-- Add the "Delete" button column -->
-                    <GridViewColumn Header="Actions">
+                    <GridViewColumn Header="Actions"  >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <!-- Delete Button for each row -->
-                                <Button Content="Delete" Click="DeleteButton_Click" Tag="{Binding Id}" />
+                                <Button Content="Delete" Click="DeleteButton_Click" Tag="{Binding Id}" Foreground="#009990"  />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -167,7 +171,7 @@
         <!-- Button -->
         <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Height="50" Width="100" Margin="0,10,0,10" 
-                Background="#009990" Foreground="Black" Click="AddVolunteerButton_Click" />
+                Background="#2E5077" Foreground="Black" Click="AddVolunteerButton_Click" />
     </Grid>
 
 </Window>

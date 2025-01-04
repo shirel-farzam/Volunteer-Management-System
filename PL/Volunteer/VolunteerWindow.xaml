@@ -57,7 +57,10 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-
+            <Image Source="C:/Users/ayele/Desktop/שיראל ואיילת.png"
+            Width="110" Height="71"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top" Margin="293,19,0,0" Grid.Column="1" Grid.RowSpan="2" />
             <!-- ID (Read-only) -->
             <Label Content="ID:" Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelStyle}" />
             <TextBox Text="{Binding Volunteer.Id}" Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}" 

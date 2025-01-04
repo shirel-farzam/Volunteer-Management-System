@@ -74,6 +74,6 @@ internal static class Config
         Clock = DateTime.Now;
 
         // Reset RiskRange to a default value (e.g., 0)
-        RiskRange = TimeSpan.Zero;
+        RiskRange = TimeSpan.FromHours(1);
     }
 }

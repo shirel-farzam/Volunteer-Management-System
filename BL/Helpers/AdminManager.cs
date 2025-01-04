@@ -65,6 +65,7 @@ internal static class AdminManager //stage 4
         //Calling all the observers of clock update
         ClockUpdatedObservers?.Invoke(); //prepared for stage 5
     }
+    
     #endregion Stage 4
 
     #region Stage 7 base

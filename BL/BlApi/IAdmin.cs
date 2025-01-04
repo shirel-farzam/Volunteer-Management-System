@@ -18,7 +18,7 @@ public interface IAdmin
     DateTime GetClock();
 
    TimeSpan GetMaxRange();
-    //TimeSpan SetMaxRange(TimeSpan maxRange);
+  // void SetMaxRange(TimeSpan maxRange);
     void initialization();
 
     void Reset();

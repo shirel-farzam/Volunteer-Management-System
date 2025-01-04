@@ -37,7 +37,8 @@ internal class AdminImplementation : IAdmin
         return AdminManager.MaxRange;
         //  return _dal.Config.RiskRange;
     }
-
+   // public void SetMaxRange(TimeSpan maxRange) => AdminManager.MaxRange = maxRange;
+    
     // Method to reinitialize the system
     public void initialization()
     {
