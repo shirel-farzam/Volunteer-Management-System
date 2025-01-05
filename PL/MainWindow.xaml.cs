@@ -96,6 +96,71 @@ namespace PL
         private void InitializeDatabase_Click(object sender, RoutedEventArgs e)
         {
             s_bl.Admin.initialization();
+            //var result = MessageBox.Show(
+            //    "Are you sure you want to initialize the database?",
+            //    "Database Initialization",
+            //    MessageBoxButton.YesNo,
+            //    MessageBoxImage.Question
+            //);
+
+            //if (result == MessageBoxResult.Yes)
+            //{
+            //    Mouse.OverrideCursor = Cursors.AppStarting; // Change the cursor to hourglass
+
+            //    try
+            //    {
+            //        var openWindows = Application.Current.Windows.OfType<Window>().Where(w => w != this).ToList();
+            //        foreach (var window in openWindows)
+            //        {
+            //            window.Close(); // Close all other windows
+            //        }
+
+            //        // Perform the database initialization on a separate thread to avoid blocking the UI
+            //        var thread = new System.Threading.Thread(() =>
+            //        {
+            //            try
+            //            {
+            //                s_bl.Admin.initialization(); // Initialize the database
+            //                Application.Current.Dispatcher.Invoke(() =>
+            //                {
+            //                    MessageBox.Show(
+            //                        "The database has been successfully initialized.",
+            //                        "Success",
+            //                        MessageBoxButton.OK,
+            //                        MessageBoxImage.Information
+            //                    );
+            //                });
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                Application.Current.Dispatcher.Invoke(() =>
+            //                {
+            //                    MessageBox.Show(
+            //                        $"An error occurred: {ex.Message}",
+            //                        "Error",
+            //                        MessageBoxButton.OK,
+            //                        MessageBoxImage.Error
+            //                    );
+            //                });
+            //            }
+            //            finally
+            //            {
+            //                Application.Current.Dispatcher.Invoke(() =>
+            //                {
+            //                    Mouse.OverrideCursor = Cursors.Arrow; // Restore the cursor to normal
+            //                });
+            //            }
+            //        });
+
+            //        thread.IsBackground = true;
+            //        thread.Start();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show($"An unexpected error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //        Mouse.OverrideCursor = Cursors.Arrow; // Restore the cursor in case of failure
+            //    }
+            //}
         }
 
         // Handles the "Reset Database" button click

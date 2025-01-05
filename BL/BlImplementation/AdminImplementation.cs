@@ -13,9 +13,10 @@ internal class AdminImplementation : IAdmin
     // Method to define and initialize the system
     public void Definition(TimeSpan time)
     {
-        _dal.ResetDB(); // Reset the database to its initial state
-        Initialization.Do(); // Perform initial setup
-        AdminManager.UpdateClock(AdminManager.Now); // Update the system clock to the current time
+        //_dal.ResetDB(); // Reset the database to its initial state
+        //Initialization.Do(); // Perform initial setup
+        //AdminManager.UpdateClock(AdminManager.Now); // Update the system clock to the current time
+        AdminManager.MaxRange = time;
     }
 
     // Method to move the system clock forward by a specified time unit

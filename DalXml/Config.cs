@@ -43,6 +43,10 @@ internal static class Config
         private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextAssignmentID", value);
     }
 
+    internal const int startVolunteerId = 1000;
+
+    internal const int startAssignmentId = 1000;
+
     /// <summary>
     /// Property to get and set the system clock value.
     /// </summary>
@@ -67,8 +71,8 @@ internal static class Config
     internal static void Reset()
     {
         // Reset IDs
-        NextCallId = 1000;
-        NextAssignmentId = 1000;
+        NextCallId = startVolunteerId;
+        NextAssignmentId = startAssignmentId;
 
         // Reset Clock to the current time
         Clock = DateTime.Now;

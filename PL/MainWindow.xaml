@@ -48,7 +48,7 @@
             <RowDefinition Height="1*" />
             <!-- Navigation Buttons -->
         </Grid.RowDefinitions>
-        <Image Source="C:/Users/ayele/Desktop/שיראל ואיילת.png"
+        <Image Source="C:\Users\ayele\source\repos\dotNet5785_-4642_7701\שיראל ואיילת.png"
        Width="110" Height="71"
        HorizontalAlignment="Left"
        VerticalAlignment="Top" Margin="688,18,0,0" />
@@ -151,8 +151,8 @@
 
             <!-- List Volunteers Button -->
             <Button Content="Handle Volunteers" 
-        Margin="80,-108,220,125" Padding="15" 
-        Click="btnVolunteer_Click" Height="80"  Width="150"
+        Margin="85,-103,280,120" Padding="15" 
+        Click="btnVolunteer_Click" Height="80"  Width="150" 
         Background="{StaticResource DarkBlue}" Foreground="White" />
 
             <!-- List Calls Button -->

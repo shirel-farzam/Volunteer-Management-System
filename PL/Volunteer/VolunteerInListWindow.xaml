@@ -22,7 +22,7 @@
             <RowDefinition Height="Auto"/>
             <!-- Button -->
         </Grid.RowDefinitions>
-        <Image Source="C:/Users/ayele/Desktop/שיראל ואיילת.png"
+        <Image Source="C:\Users\ayele\source\repos\dotNet5785_-4642_7701\שיראל ואיילת.png"
 Width="77" Height="60"
 HorizontalAlignment="Left"
 VerticalAlignment="Top" Margin="530,498,0,0" Grid.Row="1" Grid.RowSpan="2" RenderTransformOrigin="-0.455,0.5" />

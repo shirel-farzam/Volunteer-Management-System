@@ -57,7 +57,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Image Source="C:/Users/ayele/Desktop/שיראל ואיילת.png"
+            <Image Source="C:\Users\ayele\source\repos\dotNet5785_-4642_7701\שיראל ואיילת.png"
             Width="110" Height="71"
                HorizontalAlignment="Left"
                VerticalAlignment="Top" Margin="293,19,0,0" Grid.Column="1" Grid.RowSpan="2" />
