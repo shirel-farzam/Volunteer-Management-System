@@ -63,7 +63,7 @@
                VerticalAlignment="Top" Margin="293,19,0,0" Grid.Column="1" Grid.RowSpan="2" />
             <!-- ID (Read-only) -->
             <Label Content="ID:" Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-            <TextBox Text="{Binding Volunteer.Id}" Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}" 
+            <TextBox Text="{Binding Volunteer.Id}" Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}"  
                      IsReadOnly="{Binding Volunteer.Id, Converter={StaticResource ConvertUpdateToTrueKey}}" />
 
             <!-- Full Name -->
@@ -88,10 +88,15 @@
 
             <!-- Role (ComboBox for Job) -->
             <Label Content="Role:" Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-            <ComboBox SelectedItem="{Binding Volunteer.Job}" Grid.Row="6" Grid.Column="1" Style="{StaticResource ComboBoxStyle}">
+            <ComboBox SelectedValue="{Binding Volunteer.Job, Mode=TwoWay}" 
+          SelectedValuePath="Content" 
+          Grid.Row="6" 
+          Grid.Column="1" 
+          Style="{StaticResource ComboBoxStyle}">
                 <ComboBoxItem Content="Manager" />
                 <ComboBoxItem Content="Volunteer" />
             </ComboBox>
+
 
             <!-- Active (CheckBox) -->
             <Label Content="Active:" Grid.Row="7" Grid.Column="0" Style="{StaticResource LabelStyle}" />
@@ -100,14 +105,17 @@
             <!-- Max Reading -->
             <Label Content="Max Reading:" Grid.Row="8" Grid.Column="0" Style="{StaticResource LabelStyle}" />
             <TextBox Text="{Binding Volunteer.MaxReading}" Grid.Row="8" Grid.Column="1" Style="{StaticResource InputStyle}" />
-
-            <!-- Distance Type -->
-            <Label Content="Distance Type:" Grid.Row="9" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-            <ComboBox SelectedItem="{Binding Volunteer.TypeDistance}" Grid.Row="9" Grid.Column="1" Style="{StaticResource ComboBoxStyle}">
+            <!-- Distance -->
+            <ComboBox SelectedValue="{Binding Volunteer.TypeDistance}" 
+          SelectedValuePath="Content" 
+          Grid.Row="9" 
+          Grid.Column="1" 
+          Style="{StaticResource ComboBoxStyle}">
                 <ComboBoxItem Content="Aerial" />
                 <ComboBoxItem Content="Walking" />
                 <ComboBoxItem Content="Driving" />
             </ComboBox>
+
         </Grid>
 
         <!-- Add/Update Button -->

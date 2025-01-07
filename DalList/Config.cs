@@ -8,10 +8,10 @@ public static class Config
     public static int NextCallId { get => nextCallId++; }
 
     // Define a starting ID for the Volunteer entity
-    internal const int startVolunteerId = 5000;
+    internal const int startVolunteerId = 1000;
 
     // Define a starting ID for the Assignment entity
-    internal const int startAssignmentId = 2000;
+    internal const int startAssignmentId = 1000;
     private static int nextAssignmentId = startAssignmentId;
     public static int NextAssignmentId { get => nextAssignmentId++; }
 

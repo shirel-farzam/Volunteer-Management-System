@@ -40,8 +40,7 @@
 
             public static readonly DependencyProperty VolunteerInListFieldListProperty =
                 DependencyProperty.Register(
-                    "VolunteerInList",
-                    typeof(IEnumerable<BO.VolunteerInList>),
+                    "VolunteerInList",typeof(IEnumerable<BO.VolunteerInList>),
                     typeof(VolunteerInListWindow),
                     new PropertyMetadata(null));
 
@@ -94,7 +93,10 @@
                     case VolunteerInListField.Active:
                         volunteers = BlApi.Factory.Get().Volunteer.ReadAll(true, VolunteerInListField.Active).Where(v => v.Active);
                         break;
-                    case VolunteerInListField.None:  // No filter (default)
+                case VolunteerInListField.CurrentCallType:
+                    volunteers = BlApi.Factory.Get().Volunteer.ReadAll(true, VolunteerInListField.CurrentCallType).OrderBy(v => v.CurrentCallType);
+                    break;
+                case VolunteerInListField.None:  // No filter (default)
                         volunteers = BlApi.Factory.Get().Volunteer.ReadAll(null, null);
                         break;
                     default:

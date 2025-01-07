@@ -166,11 +166,13 @@ namespace PL
         // Handles the "Reset Database" button click
         private void ResetDatabase_Click(object sender, RoutedEventArgs e)
         {
+            
             s_bl.Admin.Reset();
         }
 
         private void btnVolunteer_Click(object sender, RoutedEventArgs e)
         {
+            s_bl.Admin.initialization();
             new VolunteerInListWindow().Show();
         }
         private void clockObserver()
@@ -191,7 +193,7 @@ namespace PL
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
 
-            s_bl.Admin.Reset();
+            
             CurrentTime = s_bl.Admin.GetClock();
             MaxRange = s_bl.Admin.GetMaxRange();
 
@@ -207,5 +209,7 @@ namespace PL
         {
 
         }
+
+        
     }
 }

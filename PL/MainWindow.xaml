@@ -9,34 +9,7 @@
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Closed="Window_Closed"
         Loaded="MainWindow_Loaded">
-    <Window.Resources>
-        <SolidColorBrush x:Key="ButtonBlue" Color="#D9EAFD" />
-        <SolidColorBrush x:Key="DarkBlue" Color="#7C93C3" />
-        <SolidColorBrush x:Key="LightBlue" Color="#BCCCDC" />
-        <SolidColorBrush x:Key="SimulatorBlue" Color="#A5BFCC" />
 
-        <!-- Style for rounded buttons -->
-        <Style TargetType="Button" x:Key="RoundedButtonStyle">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="1" 
-                            CornerRadius="15" 
-                            Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                          VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Height" Value="40" />
-            <Setter Property="Width" Value="120" />
-        </Style>
-    </Window.Resources>
 
     <!-- Main Grid Layout -->
     <Grid>
@@ -50,6 +23,7 @@
         </Grid.RowDefinitions>
         <Image Source="C:\Users\ayele\source\repos\dotNet5785_-4642_7701\שיראל ואיילת.png"
        Width="110" Height="71"
+       Stretch="Uniform"
        HorizontalAlignment="Left"
        VerticalAlignment="Top" Margin="688,18,0,0" />
 
@@ -70,7 +44,7 @@
             <!-- Clock Advancement Buttons -->
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,19,0,1">
                 <Button Content="Add One Minute" Click="AddOneMinute_Click" Padding="8,5" Margin="5" Height="82" Width="120" Style="{StaticResource RoundedButtonStyle}"
-                        Background="{StaticResource ButtonBlue}" Foreground="Black" />
+                        Background="{StaticResource ButtonBlue}" Foreground="Black"   />
                 <Button Content="Add One Hour" Click="AddOneHour_Click" Padding="8,5" Margin="5" Height="82" Width="120" Style="{StaticResource RoundedButtonStyle}"
                         Background="{StaticResource ButtonBlue}" Foreground="Black" />
                 <Button Content="Add One Day" Click="AddOneDay_Click" Padding="8,5" Margin="5" Height="82" Width="120" Style="{StaticResource RoundedButtonStyle}"
@@ -81,57 +55,42 @@
                         Background="{StaticResource ButtonBlue}" Foreground="Black" />
             </StackPanel>
         </Grid>
-        <Grid Margin="0,108,-5,88" Grid.RowSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="23*" />
-                <ColumnDefinition Width="29*" />
-            </Grid.ColumnDefinitions>
-
-            <!-- TextBox inside a Border with rounded corners -->
-            <Border Background="#F2F9FF" 
-        Width="175" Height="33" 
-        HorizontalAlignment="Left" 
-        VerticalAlignment="Top" 
-        Margin="44,86,0,0" 
-        CornerRadius="10" 
-        Grid.Column="1">
-                <TextBox Text="01:00:00" 
-             FontSize="16" 
-             BorderBrush="Transparent" 
-             Background="Transparent" 
-             HorizontalContentAlignment="Center" 
-             VerticalContentAlignment="Center" 
-             Grid.Column="1"/>
-            </Border>
-
+        <StackPanel Margin="285,230,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Vertical" Grid.RowSpan="2">
 
             <!-- Risk Range Label -->
-            <Label Content="Risk Range:" 
-           HorizontalAlignment="Left" 
-           VerticalAlignment="Top" 
-           Margin="238,86,0,0" 
-           Width="107" 
-           Height="35"
-           FontFamily="Arial" 
+            <Label Content="Risk Range:"
+           FontFamily="Arial"
            FontSize="14"
-           Foreground="#A2D2DF" 
-           FontWeight="Bold" RenderTransformOrigin="0.467,-0.224" />
+           Foreground="#A2D2DF"
+           FontWeight="Bold"
+           HorizontalAlignment="Center"
+           Margin="0,0,0,5" />
 
+            <!-- TextBox inside a Border with rounded corners -->
+            <Border Background="#F2F9FF"
+            Width="175"
+            Height="33"
+            CornerRadius="10"
+            Margin="0,0,0,10"
+            VerticalAlignment="Center">
+                <TextBox Text="{Binding MaxRange, Mode=TwoWay}"
+                 FontSize="16"
+                 BorderBrush="Transparent"
+                 Background="Transparent"
+                 HorizontalContentAlignment="Center"
+                 VerticalContentAlignment="Center" />
+            </Border>
 
-            <Button Content="Update Risk Range" 
-        HorizontalAlignment="Left" 
-        Padding="10,5" 
-        Click="UpdateRiskRange_Click" 
-        Width="215" 
-        Height="NaN" 
-        Style="{StaticResource RoundedButtonStyle}" 
-        Background="#A2D2DF" 
-        Foreground="Black" 
-        Margin="255,126,0,90" Grid.ColumnSpan="2" />
-
-        </Grid>
-
-
+            <!-- Update Button -->
+            <Button Content="Update Risk Range"
+            Padding="10,5"
+            Width="215"
+            Style="{StaticResource RoundedButtonStyle}"
+            Background="#A2D2DF"
+            Foreground="Black"
+            HorizontalAlignment="Center"
+            Click="UpdateRiskRange_Click" />
+        </StackPanel>
 
         <!-- Navigation and Volunteer Section -->
         <Grid Grid.Row="2" Margin="10">
@@ -169,7 +128,7 @@
         Width="150"
         Height="50"  
         Style="{StaticResource RoundedButtonStyle}" 
-        Background="#4DA1A9" 
+        Background="#4DA1A9"
         Foreground="Black" 
         Grid.Column="2" 
         HorizontalAlignment="Center" 

@@ -15,19 +15,11 @@
     //}
 
 
-    //public enum VolIn
-    //{
-    //    Id,             // Sort by volunteer ID (ID of the volunteer)
-    //    FullName,           // Sort by full name (FullName of the volunteer)
-    //    Active,
-    //    None
-
-    //}
     // Enum for Role of the volunteer (Manager or Regular Volunteer)
     public enum Role
     {
-        Manager=1,  // The volunteer is a manager
-        Volunteer=2  // The volunteer is a regular volunteer
+        Volunteer,   // Volunteer
+        Manager         // Manager
     }
 
     // Enum for Distance (used for calculating distances)

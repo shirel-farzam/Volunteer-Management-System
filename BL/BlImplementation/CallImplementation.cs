@@ -1,6 +1,7 @@
 ﻿namespace BlImplementation;
 using BlApi;
 using BO;
+using DO;
 using Helpers;
 
 internal class CallImplementation : ICall
@@ -140,15 +141,17 @@ internal class CallImplementation : ICall
                 OpenTime = doCall.TimeOpened, // Map the time the call was opened
                 MaxEndTime = doCall.MaxTimeToClose, // Map the maximum time to close the call
                 Status = CallManager.GetCallStatus(doCall), // Determine the call's status
-                                                            // Map the list of assignments related to the call
-                CallAssignments = dataOfAssignments.Select(assign => new BO.CallAssignmentInList
+                CallAssignments=dataOfAssignments.Any()                                          // Map the list of assignments related to the call
+               ?dataOfAssignments.Select(assign=>new BO.CallAssignmentInList
                 {
                     VolunteerId = assign.VolunteerId, // Map the volunteer ID
-                    VolunteerName = _dal.Volunteer.Read(callId).FullName, // Map the volunteer's name
+                   VolunteerName = _dal.Volunteer.Read(assign.VolunteerId).FullName, // Map the volunteer's name
                     StartTime = assign.TimeStart, // Map the assignment start time
                     EndTime = assign.TimeEnd, // Map the assignment end time
-                    CompletionType = (BO.AssignmentCompletionType)assign.TypeEndTreat, // Map the completion type
+                    //CompletionType = (BO.AssignmentCompletionType)assign.TypeEndTreat, // Map the completion type
+                    CompletionType=assign.TypeEndTreat==null? null:( BO.AssignmentCompletionType)assign.TypeEndTreat,
                 }).ToList() // Convert to a list
+                :null,
             };
 
             throw new Exception(); // This line is unreachable and seems unnecessary
@@ -480,7 +483,7 @@ internal class CallImplementation : ICall
 
     }
 
-    public void Update(Call boCall)
+    public void Update(BO.Call boCall)
     {
         // Get coordinates (latitude and longitude) for the provided address using the VolunteerManager utility.
         double[] coordinate = VolunteerManager.GetCoordinatesFromAddress(boCall.FullAddress);

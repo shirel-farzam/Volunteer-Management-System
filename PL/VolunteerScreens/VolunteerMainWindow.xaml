@@ -1,0 +1,129 @@
+﻿<Window x:Class="PL.VolunteerScreens.VolunteerMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.VolunteerScreens"
+        mc:Ignorable="d"
+        Title="VolunteerMainWindow" Height="450" Width="800">
+    <Grid>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <!-- Space for other content (e.g., form) -->
+                <RowDefinition Height="Auto" />
+                <!-- Space for the buttons -->
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Buttons -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20">
+                <Button Content="New Call" Height="55" Width="185" Margin="0,0,10,0" />
+                <Button Content="My Calls History" Height="55" Width="185" />
+            </StackPanel>
+        </Grid>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <!-- Dividing the page into two parts -->
+                <ColumnDefinition Width="2*" />
+                <!-- Empty half -->
+                <ColumnDefinition Width="*" />
+                <!-- Half with the form -->
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" Margin="15,24,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="395" Width="275">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- ID -->
+                <Label Content="ID:" Grid.Row="0" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
+                <TextBox Text="{Binding CurrentVolunteer.Id}" Grid.Row="0" Grid.Column="1" Margin="10,3,10,3" 
+                 IsReadOnly="{Binding CurrentVolunteer.Id, Converter={StaticResource ConvertUpdateToTrueKey}}" FontSize="10" />
+
+                <!-- Full Name -->
+                <Label Content="Full Name:" Grid.Row="1" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
+                <TextBox Text="{Binding CurrentVolunteer.FullName}" Grid.Row="1" Grid.Column="1" Margin="3" FontSize="10" />
+
+                <!-- Phone Number -->
+                <Label Content="Phone Number:" Grid.Row="2" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
+                <TextBox Text="{Binding CurrentVolunteer.PhoneNumber}" Grid.Row="2" Grid.Column="1" Margin="3" FontSize="10" />
+
+                <!-- Email -->
+                <Label Content="Email:" Grid.Row="3" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
+                <TextBox Text="{Binding CurrentVolunteer.Email}" Grid.Row="3" Grid.Column="1" Margin="3" FontSize="10" />
+
+                <!-- Password -->
+                <Label Content="Password:" Grid.Row="4" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
+                <TextBox Text="{Binding CurrentVolunteer.Password}" Grid.Row="4" Grid.Column="1" Margin="3" FontSize="10" />
+
+                <!-- Full Address -->
+                <Label Content="Full Address:" Grid.Row="5" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
+                <TextBox Text="{Binding CurrentVolunteer.FullAddress}" Grid.Row="5" Grid.Column="1" Margin="3" FontSize="10" />
+
+                <!-- Active -->
+                <Label Content="Active:" Grid.Row="6" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
+                <CheckBox IsChecked="{Binding CurrentVolunteer.Active}" Grid.Row="6" Grid.Column="1" Margin="3" />
+
+                <!-- Max Reading -->
+                <Label Content="Max Reading:" Grid.Row="7" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
+                <TextBox Text="{Binding CurrentVolunteer.MaxReading}" Grid.Row="7" Grid.Column="1" Margin="5,3,10,3" FontSize="10" />
+
+                <!-- Distance Type -->
+                <Label Content="Distance Type:" Grid.Row="8" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
+                <ComboBox SelectedItem="{Binding CurrentVolunteer.Distance}" Grid.Row="8" Grid.Column="1" Margin="5,3,5,3" FontSize="10" SelectedValue="{Binding CurrentVolunteer.Distance}" 
+          SelectedValuePath="Content" >
+                    <ComboBoxItem Content="Aerial" />
+                    <ComboBoxItem Content="Walking" />
+                    <ComboBoxItem Content="Driving" />
+                </ComboBox>
+
+                <!-- Total Handled Calls -->
+                <Label Content="Total Handled Calls:" Grid.Row="9" Grid.Column="0" Margin="3" VerticalAlignment="Center" IsHitTestVisible="False" Foreground="Gray" FontSize="10" />
+                <TextBox Text="{Binding CurrentVolunteer.TotalHandledCalls, Converter={StaticResource ConvertUpdateToTrueKey}}" Grid.Row="9" Grid.Column="1" Margin="36,7,54,3" Width="80" FontSize="10" />
+
+                <!-- Total Canceled Calls -->
+                <Label Content="Total Canceled Calls:" Grid.Row="10" Grid.Column="0" Margin="2,5,4,0" VerticalAlignment="Top" IsHitTestVisible="False" Foreground="Gray" FontSize="10" />
+                <TextBox Text="{Binding CurrentVolunteer.TotalCanceledCalls, Converter={StaticResource ConvertUpdateToTrueKey}}" Grid.Row="10" Grid.Column="1" Margin="36,7,54,34" Width="80" FontSize="10" />
+
+                <!-- Total Expired Calls -->
+                <Label Content="Total Expired Calls:" Grid.Row="10" Grid.Column="0" Margin="3,33,3,0" VerticalAlignment="Top" IsHitTestVisible="False" Foreground="Gray" FontSize="10" />
+                <TextBox Text="{Binding CurrentVolunteer.TotalExpiredCalls, Converter={StaticResource ConvertUpdateToTrueKey}}"
+                Grid.Row="10" Grid.Column="1" Margin="36,37,54,11" Width="80" FontSize="10" />
+            </Grid>
+            <!-- Update Button -->
+            <Button Content="Update"
+        Click="btnAddUpdate_Click" 
+        Margin="30,383,278,0" 
+        DockPanel.Dock="Bottom" 
+        Height="35"                   
+        Background="#F8FAFC" 
+        Foreground="#507687" 
+        FontWeight="Bold" VerticalAlignment="Top"/>
+        </Grid>
+
+    </Grid>
+
+</Window>

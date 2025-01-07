@@ -163,6 +163,8 @@ static class XMLTools
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
         TimeSpan span = root.ToTimeSpanNullable(elemName) ?? throw new FormatException($"Cannot convert element '{elemName}' in file '{xmlFileName}' to TimeSpan.");
         return span;
+
+
     }
 
     // Set a TimeSpan value in the XML configuration file.
