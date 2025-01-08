@@ -53,7 +53,7 @@ namespace PL.VolunteerScreens
             if (CurrentVolunteer.CurrentCall != null)
             {
 
-                Call = s_bl.Call.Read(CurrentVolunteer.CurrentCall.Id);
+                Call = s_bl.Call.Read(CurrentVolunteer.CurrentCall.CallId);
             }
             InitializeComponent();
             DataContext = this;
@@ -83,6 +83,16 @@ namespace PL.VolunteerScreens
                 // Handle any errors during the update
                 MessageBox.Show($"Failed to update volunteer details: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            // Update the volunteer details in the database
+            s_bl.Volunteer.Update(CurrentVolunteer.Id, CurrentVolunteer);
+
+            // Notify the user
+            MessageBox.Show("Volunteer details updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
         }
     }
 }

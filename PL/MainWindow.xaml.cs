@@ -172,7 +172,7 @@ namespace PL
 
         private void btnVolunteer_Click(object sender, RoutedEventArgs e)
         {
-            s_bl.Admin.initialization();
+            //s_bl.Admin.initialization();
             new VolunteerInListWindow().Show();
         }
         private void clockObserver()

@@ -36,96 +36,119 @@
     </Window.Resources>
 
     <DockPanel Margin="10">
-        <!-- Main Grid for form inputs -->
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="3*" />
-            </Grid.ColumnDefinitions>
+        <!-- Scrollable Grid for form inputs -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" DockPanel.Dock="Top">
+            <Grid Margin="20" Width="706">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Image Source="C:\Users\ayele\source\repos\dotNet5785_-4642_7701\שיראל ואיילת.png"
-            Width="110" Height="71"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Top" Margin="293,19,0,0" Grid.Column="1" Grid.RowSpan="2" />
-            <!-- ID (Read-only) -->
-            <Label Content="ID:" Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-            <TextBox Text="{Binding Volunteer.Id}" Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}"  
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Header Image -->
+                <Image Source="C:\Users\ayele\source\repos\dotNet5785_-4642_7701\שיראל ואיילת.png"
+                   Width="110" Height="71"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top" 
+                   Margin="349,-12,0,0"
+                   Grid.Column="1" Grid.RowSpan="2" />
+
+                <!-- ID (Read-only) -->
+                <Label Content="ID:" Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Volunteer.Id}" Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}"  
                      IsReadOnly="{Binding Volunteer.Id, Converter={StaticResource ConvertUpdateToTrueKey}}" />
 
-            <!-- Full Name -->
-            <Label Content="Full Name:" Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-            <TextBox Text="{Binding Volunteer.FullName}" Grid.Row="1" Grid.Column="1" Style="{StaticResource InputStyle}" />
+                <!-- Full Name -->
+                <Label Content="Full Name:" Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Volunteer.FullName}" Grid.Row="1" Grid.Column="1" Style="{StaticResource InputStyle}" />
 
-            <!-- Phone Number -->
-            <Label Content="Phone Number:" Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-            <TextBox Text="{Binding Volunteer.PhoneNumber}" Grid.Row="2" Grid.Column="1" Style="{StaticResource InputStyle}" />
+                <!-- Phone Number -->
+                <Label Content="Phone Number:" Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Volunteer.PhoneNumber}" Grid.Row="2" Grid.Column="1" Style="{StaticResource InputStyle}" />
 
-            <!-- Email -->
-            <Label Content="Email:" Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-            <TextBox Text="{Binding Volunteer.Email}" Grid.Row="3" Grid.Column="1" Style="{StaticResource InputStyle}" />
+                <!-- Email -->
+                <Label Content="Email:" Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Volunteer.Email}" Grid.Row="3" Grid.Column="1" Style="{StaticResource InputStyle}" />
 
-            <!-- Password -->
-            <Label Content="Password:" Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-            <TextBox Text="{Binding Volunteer.Password}" Grid.Row="4" Grid.Column="1" Style="{StaticResource InputStyle}" />
+                <!-- Password -->
+                <Label Content="Password:" Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Volunteer.Password}" Grid.Row="4" Grid.Column="1" Style="{StaticResource InputStyle}" />
 
-            <!-- Full Address -->
-            <Label Content="Full Address:" Grid.Row="5" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-            <TextBox Text="{Binding Volunteer.FullAddress}" Grid.Row="5" Grid.Column="1" Style="{StaticResource InputStyle}" />
+                <!-- Full Address -->
+                <Label Content="Full Address:" Grid.Row="5" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Volunteer.FullAddress}" Grid.Row="5" Grid.Column="1" Style="{StaticResource InputStyle}" />
 
-            <!-- Role (ComboBox for Job) -->
-            <Label Content="Role:" Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-            <ComboBox SelectedValue="{Binding Volunteer.Job, Mode=TwoWay}" 
-          SelectedValuePath="Content" 
-          Grid.Row="6" 
-          Grid.Column="1" 
-          Style="{StaticResource ComboBoxStyle}">
-                <ComboBoxItem Content="Manager" />
-                <ComboBoxItem Content="Volunteer" />
-            </ComboBox>
+                <!-- Role (ComboBox for Job) -->
+                <Label Content="Role:" Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <ComboBox SelectedValue="{Binding Volunteer.Job, Mode=TwoWay}" 
+                      SelectedValuePath="Content" 
+                      Grid.Row="6" 
+                      Grid.Column="1" 
+                      Style="{StaticResource ComboBoxStyle}">
+                    <ComboBoxItem Content="Manager" />
+                    <ComboBoxItem Content="Volunteer" />
+                </ComboBox>
 
+                <!-- Active (CheckBox) -->
+                <Label Content="Active:" Grid.Row="7" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <CheckBox IsChecked="{Binding Volunteer.Active}" Grid.Row="7" Grid.Column="1" Style="{StaticResource InputStyle}" />
 
-            <!-- Active (CheckBox) -->
-            <Label Content="Active:" Grid.Row="7" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-            <CheckBox IsChecked="{Binding Volunteer.Active}" Grid.Row="7" Grid.Column="1" Style="{StaticResource InputStyle}" />
+                <!-- Max Reading -->
+                <Label Content="Max Reading:" Grid.Row="8" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Volunteer.MaxReading}" Grid.Row="8" Grid.Column="1" Style="{StaticResource InputStyle}" />
 
-            <!-- Max Reading -->
-            <Label Content="Max Reading:" Grid.Row="8" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-            <TextBox Text="{Binding Volunteer.MaxReading}" Grid.Row="8" Grid.Column="1" Style="{StaticResource InputStyle}" />
-            <!-- Distance -->
-            <ComboBox SelectedValue="{Binding Volunteer.TypeDistance}" 
-          SelectedValuePath="Content" 
-          Grid.Row="9" 
-          Grid.Column="1" 
-          Style="{StaticResource ComboBoxStyle}">
-                <ComboBoxItem Content="Aerial" />
-                <ComboBoxItem Content="Walking" />
-                <ComboBoxItem Content="Driving" />
-            </ComboBox>
+                <!-- Distance -->
+                <Label Content="Distance Type:" Grid.Row="9" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <ComboBox SelectedValue="{Binding Volunteer.TypeDistance}" 
+                      SelectedValuePath="Content" 
+                      Grid.Row="9" 
+                      Grid.Column="1" 
+                      Style="{StaticResource ComboBoxStyle}">
+                    <ComboBoxItem Content="Aerial" />
+                    <ComboBoxItem Content="Walking" />
+                    <ComboBoxItem Content="Driving" />
+                </ComboBox>
 
-        </Grid>
+                <!-- Total Handled Calls -->
+                <Label Content="Total Handled Calls:" Grid.Row="10" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Volunteer.TotalHandledCalls}" Grid.Row="10" Grid.Column="1" 
+                     Style="{StaticResource InputStyle}" IsReadOnly="True" />
+
+                <!-- Total Canceled Calls -->
+                <Label Content="Total Canceled Calls:" Grid.Row="11" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Volunteer.TotalCanceledCalls}" Grid.Row="11" Grid.Column="1" 
+                     Style="{StaticResource InputStyle}" IsReadOnly="True" />
+
+                <!-- Total Expired Calls -->
+                <Label Content="Total Expired Calls:" Grid.Row="12" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Volunteer.TotalExpiredCalls}" Grid.Row="12" Grid.Column="1" 
+                     Style="{StaticResource InputStyle}" IsReadOnly="True" />
+            </Grid>
+        </ScrollViewer>
 
         <!-- Add/Update Button -->
         <Button Content="{Binding ButtonText}" 
-                Click="btnAddUpdate_Click" 
-                Margin="10" 
-                DockPanel.Dock="Bottom" 
-                Height="40" 
-                Background="#F8FAFC" 
-                Foreground="#507687" 
-                FontWeight="Bold"/>
+            Click="btnAddUpdate_Click" 
+            Margin="10" 
+            DockPanel.Dock="Bottom" 
+            Height="40" 
+            Background="#F8FAFC" 
+            Foreground="#507687" 
+            FontWeight="Bold" />
     </DockPanel>
 </Window>

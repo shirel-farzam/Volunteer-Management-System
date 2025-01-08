@@ -4,6 +4,7 @@ using PL.VolunteerScreens;
 using PL.VolunteerWindow;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace PL
 {
@@ -29,6 +30,42 @@ namespace PL
 
         public static readonly DependencyProperty PasswordProperty =
             DependencyProperty.Register("Password", typeof(string), typeof(LoginSystem), new PropertyMetadata(""));
+
+        // Event handler without sender
+        private void OnPasswordChanged(object _, RoutedEventArgs __)
+        {
+            // Iterate over children to find the PasswordBox
+            PasswordBox passwordBox = GetPasswordBox();
+            if (passwordBox != null)
+            {
+                // Update the Password property when the PasswordBox content changes
+                Password = passwordBox.Password;
+            }
+        }
+
+        // Helper method to locate PasswordBox in the UI hierarchy
+        private PasswordBox GetPasswordBox()
+        {
+            return FindVisualChild<PasswordBox>(this);
+        }
+
+        private static T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T correctlyTyped)
+                {
+                    return correctlyTyped;
+                }
+                var descendant = FindVisualChild<T>(child);
+                if (descendant != null)
+                {
+                    return descendant;
+                }
+            }
+            return null;
+        }
 
         public LoginSystem()
         {
@@ -75,5 +112,10 @@ namespace PL
 
 
         }
+
+        
+
+
     }
+
 }

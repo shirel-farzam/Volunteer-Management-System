@@ -34,12 +34,11 @@
             <TextBox Text="{Binding Id, Mode=TwoWay}" 
                      Padding="10" 
                      FontSize="16" />
+            <!-- Password Label and PasswordBox -->
+            <Label Content="Enter Password:" FontSize="16" Margin="0,20,0,5" />
+            <PasswordBox Padding="10" FontSize="16" PasswordChanged="OnPasswordChanged" />
 
-            <!-- Password Label and TextBox -->
-            <Label Content="Enter Password:" FontSize="16" Margin="0,20,0,5"/>
-            <TextBox Text="{Binding Password, Mode=TwoWay}" 
-                     Padding="10" 
-                     FontSize="16" />
+
 
             <!-- Login Button -->
             <Button Content="Login" 

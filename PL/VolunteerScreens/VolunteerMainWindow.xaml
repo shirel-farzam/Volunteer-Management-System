@@ -5,125 +5,152 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.VolunteerScreens"
         mc:Ignorable="d"
-        Title="VolunteerMainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Volunteer Main Window" Height="600" Width="900" Background="#F4F7FC">
 
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <!-- Space for other content (e.g., form) -->
-                <RowDefinition Height="Auto" />
-                <!-- Space for the buttons -->
-            </Grid.RowDefinitions>
+    <Grid Margin="20">
+        <!-- Main Layout -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- Buttons Row -->
+            <RowDefinition Height="*" />
+            <!-- Main Content Row -->
+        </Grid.RowDefinitions>
+
+        <!-- Top Buttons -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,10">
+            <Button Content="New Call" Height="45" Width="150" Margin="0,0,10,0" Background="#507687" Foreground="White" FontWeight="Bold" />
+            <Button Content="My Calls History" Height="45" Width="150" Background="#507687" Foreground="White" FontWeight="Bold" />
+        </StackPanel>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <!-- Buttons -->
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20">
-                <Button Content="New Call" Height="55" Width="185" Margin="0,0,10,0" />
-                <Button Content="My Calls History" Height="55" Width="185" />
-            </StackPanel>
-        </Grid>
-
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <!-- Dividing the page into two parts -->
                 <ColumnDefinition Width="2*" />
-                <!-- Empty half -->
+                <!-- Volunteer Details Form -->
                 <ColumnDefinition Width="*" />
-                <!-- Half with the form -->
+                <!-- Call Details -->
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="0" Margin="15,24,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="395" Width="275">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+            <!-- Volunteer Details Form -->
+            <Border Grid.Column="0" CornerRadius="10" BorderThickness="1" BorderBrush="#CBD5E1" Padding="15" Background="White" Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Text="Volunteer Details" FontSize="18" FontWeight="Bold" Foreground="#334155" Margin="0,0,0,15" />
 
-                <!-- ID -->
-                <Label Content="ID:" Grid.Row="0" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
-                <TextBox Text="{Binding CurrentVolunteer.Id}" Grid.Row="0" Grid.Column="1" Margin="10,3,10,3" 
-                 IsReadOnly="{Binding CurrentVolunteer.Id, Converter={StaticResource ConvertUpdateToTrueKey}}" FontSize="10" />
+                    <!-- Form Fields -->
+                    <UniformGrid Columns="2" Rows="0" Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Top" >
+                        <!-- ID -->
+                        <Label Content="ID:" FontSize="12" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CurrentVolunteer.Id}" FontSize="12" IsEnabled="False" />
 
-                <!-- Full Name -->
-                <Label Content="Full Name:" Grid.Row="1" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
-                <TextBox Text="{Binding CurrentVolunteer.FullName}" Grid.Row="1" Grid.Column="1" Margin="3" FontSize="10" />
+                        <!-- Full Name -->
+                        <Label Content="Full Name:" FontSize="12" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CurrentVolunteer.FullName}" FontSize="12" />
 
-                <!-- Phone Number -->
-                <Label Content="Phone Number:" Grid.Row="2" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
-                <TextBox Text="{Binding CurrentVolunteer.PhoneNumber}" Grid.Row="2" Grid.Column="1" Margin="3" FontSize="10" />
+                        <!-- Phone Number -->
+                        <Label Content="Phone Number:" FontSize="12" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CurrentVolunteer.PhoneNumber}" FontSize="12" />
 
-                <!-- Email -->
-                <Label Content="Email:" Grid.Row="3" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
-                <TextBox Text="{Binding CurrentVolunteer.Email}" Grid.Row="3" Grid.Column="1" Margin="3" FontSize="10" />
+                        <!-- Email -->
+                        <Label Content="Email:" FontSize="12" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CurrentVolunteer.Email}" FontSize="12" />
 
-                <!-- Password -->
-                <Label Content="Password:" Grid.Row="4" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
-                <TextBox Text="{Binding CurrentVolunteer.Password}" Grid.Row="4" Grid.Column="1" Margin="3" FontSize="10" />
+                        <!-- Password -->
+                        <Label Content="Password:" FontSize="12" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CurrentVolunteer.Password}" FontSize="12" />
 
-                <!-- Full Address -->
-                <Label Content="Full Address:" Grid.Row="5" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
-                <TextBox Text="{Binding CurrentVolunteer.FullAddress}" Grid.Row="5" Grid.Column="1" Margin="3" FontSize="10" />
+                        <!-- Full Address -->
+                        <Label Content="Full Address:" FontSize="12" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CurrentVolunteer.FullAddress}" FontSize="12" />
 
-                <!-- Active -->
-                <Label Content="Active:" Grid.Row="6" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
-                <CheckBox IsChecked="{Binding CurrentVolunteer.Active}" Grid.Row="6" Grid.Column="1" Margin="3" />
+                        <!-- Active -->
+                        <Label Content="Active:" FontSize="12" VerticalAlignment="Center" />
+                        <CheckBox IsChecked="{Binding CurrentVolunteer.Active}" VerticalAlignment="Center" />
+                        <!-- Role (ComboBox for Job) -->
+                        <Label Content="Role:" Grid.Row="6" Grid.Column="0" />
+                        <ComboBox SelectedValue="{Binding CurrentVolunteer.Job, Mode=TwoWay}" SelectedValuePath="Content"  Grid.Row="6" Grid.Column="1" IsEnabled="False">
+                            <ComboBoxItem Content="Manager" />
+                            <ComboBoxItem Content="Volunteer" />
+                        </ComboBox>
 
-                <!-- Max Reading -->
-                <Label Content="Max Reading:" Grid.Row="7" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
-                <TextBox Text="{Binding CurrentVolunteer.MaxReading}" Grid.Row="7" Grid.Column="1" Margin="5,3,10,3" FontSize="10" />
 
-                <!-- Distance Type -->
-                <Label Content="Distance Type:" Grid.Row="8" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontSize="10" />
-                <ComboBox SelectedItem="{Binding CurrentVolunteer.Distance}" Grid.Row="8" Grid.Column="1" Margin="5,3,5,3" FontSize="10" SelectedValue="{Binding CurrentVolunteer.Distance}" 
-          SelectedValuePath="Content" >
-                    <ComboBoxItem Content="Aerial" />
-                    <ComboBoxItem Content="Walking" />
-                    <ComboBoxItem Content="Driving" />
-                </ComboBox>
+                        <!-- Max Reading -->
+                        <Label Content="Max Reading:" FontSize="12" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CurrentVolunteer.MaxReading}" FontSize="12" />
 
-                <!-- Total Handled Calls -->
-                <Label Content="Total Handled Calls:" Grid.Row="9" Grid.Column="0" Margin="3" VerticalAlignment="Center" IsHitTestVisible="False" Foreground="Gray" FontSize="10" />
-                <TextBox Text="{Binding CurrentVolunteer.TotalHandledCalls, Converter={StaticResource ConvertUpdateToTrueKey}}" Grid.Row="9" Grid.Column="1" Margin="36,7,54,3" Width="80" FontSize="10" />
+                        <!-- Distance Type -->
+                        <Label Content="Distance Type:" FontSize="12" VerticalAlignment="Center" />
+                        <ComboBox SelectedValue="{Binding CurrentVolunteer.TypeDistance, Mode=TwoWay}" 
+          SelectedValuePath="Content" 
+          FontSize="12" >
+                            <ComboBoxItem Content="Aerial" />
+                            <ComboBoxItem Content="Walking" />
+                            <ComboBoxItem Content="Driving" />
+                        </ComboBox>
 
-                <!-- Total Canceled Calls -->
-                <Label Content="Total Canceled Calls:" Grid.Row="10" Grid.Column="0" Margin="2,5,4,0" VerticalAlignment="Top" IsHitTestVisible="False" Foreground="Gray" FontSize="10" />
-                <TextBox Text="{Binding CurrentVolunteer.TotalCanceledCalls, Converter={StaticResource ConvertUpdateToTrueKey}}" Grid.Row="10" Grid.Column="1" Margin="36,7,54,34" Width="80" FontSize="10" />
+                        <!-- Total Handled Calls -->
+                        <Label Content="Total Handled Calls:" FontSize="12" Foreground="Gray" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CurrentVolunteer.TotalHandledCalls}" FontSize="12" IsReadOnly="True" Foreground="Gray" Background="#F5F5F5" BorderBrush="LightGray" />
 
-                <!-- Total Expired Calls -->
-                <Label Content="Total Expired Calls:" Grid.Row="10" Grid.Column="0" Margin="3,33,3,0" VerticalAlignment="Top" IsHitTestVisible="False" Foreground="Gray" FontSize="10" />
-                <TextBox Text="{Binding CurrentVolunteer.TotalExpiredCalls, Converter={StaticResource ConvertUpdateToTrueKey}}"
-                Grid.Row="10" Grid.Column="1" Margin="36,37,54,11" Width="80" FontSize="10" />
-            </Grid>
-            <!-- Update Button -->
-            <Button Content="Update"
-        Click="btnAddUpdate_Click" 
-        Margin="30,383,278,0" 
-        DockPanel.Dock="Bottom" 
-        Height="35"                   
-        Background="#F8FAFC" 
-        Foreground="#507687" 
-        FontWeight="Bold" VerticalAlignment="Top"/>
+                        <!-- Total Canceled Calls -->
+                        <Label Content="Total Canceled Calls:" FontSize="12" Foreground="Gray" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CurrentVolunteer.TotalCanceledCalls}" FontSize="12" IsReadOnly="True" Foreground="Gray" Background="#F5F5F5" BorderBrush="LightGray" />
+
+                        <!-- Total Expired Calls -->
+                        <Label Content="Total Expired Calls:" FontSize="12" Foreground="Gray" VerticalAlignment="Center" />
+                        <TextBox Text="{Binding CurrentVolunteer.TotalExpiredCalls}" FontSize="12" IsReadOnly="True" Foreground="Gray" Background="#F5F5F5" BorderBrush="LightGray" />
+
+                    </UniformGrid>
+
+                    <!-- Update Button -->
+                    <Button Content="Update" Height="40" Width="100" HorizontalAlignment="Left" Margin="0,15,0,0" Background="#10B981" Foreground="White" FontWeight="Bold" Click="Button_Click" />
+                </StackPanel>
+            </Border>
+
+            <!-- Call Details -->
+            <Border CornerRadius="10" BorderThickness="1" BorderBrush="#CBD5E1" Padding="15" Background="White" Grid.ColumnSpan="2" Margin="573,0,0,60">
+                <StackPanel>
+                    <TextBlock Text="Current Call Details" FontSize="18" FontWeight="Bold" Foreground="#334155" Margin="0,0,0,15" />
+
+                    <!-- Call Fields -->
+                    <StackPanel Margin="0,10">
+                        <TextBlock Text="Description:" FontWeight="Bold" Foreground="#334155" />
+                        <TextBlock Text="{Binding Volunteer.CurrentCall.Description}" Margin="10,0,0,10" />
+
+                        <TextBlock Text="Call ID:" FontWeight="Bold" Foreground="#334155" />
+                        <TextBlock Text="{Binding Volunteer.CurrentCall.CallId}" Margin="10,0,0,10" />
+
+                        <TextBlock Text="Call Type:" FontWeight="Bold" Foreground="#334155" />
+                        <TextBlock Text="{Binding Volunteer.CurrentCall.CallType}" Margin="10,0,0,10" />
+
+                        <TextBlock Text="Full Address:" FontWeight="Bold" Foreground="#334155" />
+                        <TextBlock Text="{Binding Volunteer.CurrentCall.FullAddress}" Margin="10,0,0,10" />
+
+                        <TextBlock Text="Open Time:" FontWeight="Bold" Foreground="#334155" />
+                        <TextBlock Text="{Binding Volunteer.CurrentCall.OpenTime, StringFormat=G}" Margin="10,0,0,10" />
+
+                        <TextBlock Text="Max Completion Time:" FontWeight="Bold" Foreground="#334155" />
+                        <TextBlock Text="{Binding Volunteer.CurrentCall.MaxCompletionTime, StringFormat=G}" Margin="10,0,0,10" />
+
+                        <TextBlock Text="Enter Time:" FontWeight="Bold" Foreground="#334155" />
+                        <TextBlock Text="{Binding Volunteer.CurrentCall.EnterTime, StringFormat=G}" Margin="10,0,0,10" />
+
+                        <TextBlock Text="Distance from Volunteer:" FontWeight="Bold" Foreground="#334155" />
+                        <TextBlock Text="{Binding Volunteer.CurrentCall.DistanceFromVolunteer}" Margin="10,0,0,10" />
+
+                        <TextBlock Text="Status:" FontWeight="Bold" Foreground="#334155" />
+                        <TextBlock Text="{Binding Volunteer.CurrentCall.Status}" Margin="10,0,0,10" />
+                    </StackPanel>
+
+
+                </StackPanel>
+
+            </Border>
+            <!-- Action Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="7,434,0,5" Width="264" Grid.Column="1">
+                <Button Content="End Current Call" Height="38" Width="126" Background="#86EFAC" Foreground="White" FontWeight="Bold" Margin="0,0,10,0" />
+                <Button Content="Cancel Call" Height="40" Width="129" Background="#4ADE80" Foreground="White" FontWeight="Bold" />
+            </StackPanel>
+
         </Grid>
-
     </Grid>
-
 </Window>

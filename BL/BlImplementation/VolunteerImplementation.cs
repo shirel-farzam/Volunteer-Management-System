@@ -1,11 +1,12 @@
 ﻿namespace BlImplementation;
 using BlApi;
 using BO;
+using DalApi;
 using DO;
 using Helpers;
 using System.Collections.Generic;
 
-internal class VolunteerImplementation : IVolunteer
+internal class VolunteerImplementation : BlApi.IVolunteer
 {
     #region Stage 5
     public void AddObserver(Action listObserver) =>
@@ -70,6 +71,13 @@ internal class VolunteerImplementation : IVolunteer
     {
         var doVolunteer = _dal.Volunteer.Read(volunteerId)
             ?? throw new BO.BlWrongInputException($"Volunteer with ID={volunteerId} does not exist");
+        var calls = _dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
+
+        int totalCallsHandled = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.Treated);
+        int totalCallsCanceled = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.SelfCancel);
+        int totalCallsExpired = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.ExpiredCancel);
+        int? currentCallId = calls.FirstOrDefault(ass => ass.TimeEnd == null)?.Id;
+
 
         return new BO.Volunteer
         {
@@ -77,7 +85,7 @@ internal class VolunteerImplementation : IVolunteer
             FullName = doVolunteer.FullName,
             PhoneNumber = doVolunteer.PhoneNumber,
             TypeDistance = (BO.Distance)doVolunteer.TypeDistance,
-            Email=doVolunteer.Email,
+            Email = doVolunteer.Email,
             Job = (BO.Role)doVolunteer.Job,
             Active = doVolunteer.Active,
             Password = doVolunteer.Password,
@@ -85,6 +93,11 @@ internal class VolunteerImplementation : IVolunteer
             Latitude = doVolunteer.Latitude,
             Longitude = doVolunteer.Longitude,
             CurrentCall = VolunteerManager.GetCallIn(doVolunteer),
+            TotalCanceledCalls = totalCallsCanceled,
+            TotalExpiredCalls = totalCallsExpired,
+            TotalHandledCalls = totalCallsHandled,
+            MaxReading=doVolunteer.MaxReading
+            
         };
     }
 
