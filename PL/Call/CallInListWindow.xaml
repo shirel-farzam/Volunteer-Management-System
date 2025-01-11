@@ -16,7 +16,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <Label Content="Status:" VerticalAlignment="Center" />
                 <ComboBox Width="120" Margin="5,0,10,0"  
-                          ItemsSource="{Binding Source={StaticResource CallStatusCollection}}"
+                          ItemsSource="{Binding Source={StaticResource CallStatusCollectionKey}}"
                           SelectedValue="{Binding Path=SelectedCallStatus, Mode=TwoWay}"
                           SelectionChanged="OnFilterSelectionChanged" />
 

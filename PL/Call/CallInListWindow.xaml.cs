@@ -1,30 +1,13 @@
-﻿using BO;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using PL.Call;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
-
-
-namespace PL.Call
+using System.Windows;
+namespace PL.call
 {
-    /// <summary>
-    /// Interaction logic for CallWindow.xaml
-    /// </summary>
     public partial class CallInListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
         public IEnumerable<BO.CallInList> CallList
         {
             get { return (IEnumerable<BO.CallInList>)GetValue(CallInListProperty); }
@@ -33,91 +16,143 @@ namespace PL.Call
 
         public static readonly DependencyProperty CallInListProperty =
             DependencyProperty.Register("CallInList", typeof(IEnumerable<BO.CallInList>), typeof(CallInListWindow), new PropertyMetadata(null));
+
+        public BO.CallStatus SelectedCallStatus { get; set; } = BO.CallStatus.Open;
+
         public CallInListWindow()
         {
             InitializeComponent();
             DataContext = this;
         }
-        public BO.CallStatus SelectedCallStatus { get; set; } = BO.CallStatus.Open;
+
         private void OnFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Handle selection change and update the SelectedFilter property
-            if (sender is ComboBox comboBox && comboBox.SelectedItem is CallStatus selectedFilter)
+            // Update the SelectedCallStatus when ComboBox selection changes
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is BO.CallStatus selectedFilter)
             {
-                SelectedCallStatus = selectedFilter; // Update the SelectedFilter property
+                SelectedCallStatus = selectedFilter;
             }
         }
+
+        // Function to filter the list of calls
         private IEnumerable<BO.CallInList> queryCallList()
         {
             IEnumerable<BO.CallInList> calls;
 
+            // Get CallId filter from TextBox
+            var callIdText = ((TextBox)this.FindName("CallIdTextBox")).Text;
+
             switch (SelectedCallStatus)
             {
-                case CallStatus.Open:
-                    // קריאות פתוחות, ממויינות לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
-                              .Where(c => c.Status == CallStatus.Open)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
+                case BO.CallStatus.Open:
+                    calls = s_bl.Call.GetCallInLists(BO.CallInListField.Status, null, BO.CallInListField.Status)
+                             .Where(c => c.Status == BO.CallStatus.Open);
                     break;
 
-                case CallStatus.InProgress:
-                    // קריאות בטיפול, ממויינות לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
-                              .Where(c => c.Status == CallStatus.InProgress)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
+                case BO.CallStatus.InProgress:
+                    calls = s_bl.Call.GetCallInLists(BO.CallInListField.Status, null, BO.CallInListField.Status)
+                             .Where(c => c.Status == BO.CallStatus.InProgress);
                     break;
 
-                case CallStatus.Closed:
-                    // קריאות סגורות, ממויינות לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
-                              .Where(c => c.Status == CallStatus.Closed)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
+                case BO.CallStatus.Closed:
+                    calls = s_bl.Call.GetCallInLists(BO.CallInListField.Status, null, BO.CallInListField.Status)
+                             .Where(c => c.Status == BO.CallStatus.Closed);
                     break;
 
-                case CallStatus.Expired:
-                    // קריאות שפג תוקפן, ממויינות לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
-                              .Where(c => c.Status == CallStatus.Expired)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
+                case BO.CallStatus.Expired:
+                    calls = s_bl.Call.GetCallInLists(BO.CallInListField.Status, null, BO.CallInListField.Status)
+                             .Where(c => c.Status == BO.CallStatus.Expired);
                     break;
 
-                case CallStatus.OpenRisk:
-                    // קריאות פתוחות בסיכון, ממויינות לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
-                              .Where(c => c.Status == CallStatus.OpenRisk)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
+                case BO.CallStatus.OpenRisk:
+                    calls = s_bl.Call.GetCallInLists(BO.CallInListField.Status, null, BO.CallInListField.Status)
+                             .Where(c => c.Status == BO.CallStatus.OpenRisk);
                     break;
 
-                case CallStatus.InProgressRisk:
-                    // קריאות בטיפול בסיכון, ממויינות לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
-                              .Where(c => c.Status == CallStatus.InProgressRisk)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
+                case BO.CallStatus.InProgressRisk:
+                    calls = s_bl.Call.GetCallInLists(BO.CallInListField.Status, null, BO.CallInListField.Status)
+                             .Where(c => c.Status == BO.CallStatus.InProgressRisk);
                     break;
 
                 default:
-                    // ללא סינון לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(null, null, null)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
+                    calls = s_bl.Call.GetCallInLists(null, null, null);
                     break;
             }
 
+            // Apply CallId filter if provided
+            if (!string.IsNullOrEmpty(callIdText))
+            {
+                calls = calls.Where(c => c.CallId.ToString().Contains(callIdText));
+            }
+
+            // Order the results
+            calls = calls.OrderBy(c => c.Status).ThenBy(c => c.CallId);
+
             return calls;
         }
+
+        // Filter the calls when the filter button is clicked
+        private void FilterCalls_Click(object sender, RoutedEventArgs e)
+        {
+            // Update the CallList property with filtered results
+            CallList = queryCallList();
+        }
+
         private void CallsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (SelectedCallStatus != null)
                 new CallWindow().Show();
         }
 
+        private void CancelAssignment_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button button && button.DataContext is BO.CallInList selectedCall)
+                {
+                    int callId = selectedCall.CallId;
 
+                    // Retrieve call data and cancel assignment logic
+                    var call = s_bl.Call.Read(callId);
+                    if (call == null)
+                    {
+                        MessageBox.Show("Call not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    var currentAssignment = call.CallAssignments?.FirstOrDefault(a => a.CompletionType == null);
+                    if (currentAssignment == null)
+                    {
+                        MessageBox.Show("No active assignment found for this call.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    var volunteer = s_bl.Volunteer.Read(currentAssignment.VolunteerId);
+                    if (volunteer == null)
+                    {
+                        MessageBox.Show("Volunteer not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    // Cancel the assignment
+                    currentAssignment.CompletionType = BO.AssignmentCompletionType.Canceled;
+                    s_bl.Call.Update(call);
+
+                    MessageBox.Show($"Assignment for call {callId} has been canceled and email sent to volunteer {volunteer.FullName}.",
+                                     "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Unable to retrieve call information.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 
 }
+
+
