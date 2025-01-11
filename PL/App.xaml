@@ -7,9 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!-- Link to the Colors.xaml file -->
-                <ResourceDictionary Source="Themes/ColorsBlue.xaml" />
-                <ResourceDictionary Source="Themes/ColorsLightBrown.xaml" />
-                <ResourceDictionary Source="Themes/ColorLightParple.xaml" />
+                <ResourceDictionary Source="Themes/ColorLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Additional resources -->

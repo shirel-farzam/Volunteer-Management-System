@@ -156,6 +156,41 @@ namespace PL.Call
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private bool CanDeleteCall(BO.CallInList call)
+        {
+            // בדוק אם הקריאה בסטטוס Open וטרם הוקצתה למתנדב
+            return call.Status == BO.CallStatus.Open;
+        }
+
+        private void DeleteCall_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button button && button.DataContext is BO.CallInList selectedCall)
+                {
+                    // בדוק אם ניתן למחוק את הקריאה
+                    if (CanDeleteCall(selectedCall))
+                    {
+                        // מחיקת הקריאה מהמאגר
+                        s_bl.Call.DeleteCall(selectedCall.CallId);
+
+                        // עדכון הרשימה
+                        CallList = queryCallList();
+
+                        MessageBox.Show($"Call {selectedCall.CallId} has been deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("This call cannot be deleted. It must be Open and not assigned to any volunteer.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
     }
 
 }

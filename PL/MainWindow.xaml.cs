@@ -1,4 +1,6 @@
-﻿using PL.Volunteer;
+﻿using BO;
+using PL.Volunteer;
+using PL.Call;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -203,7 +205,7 @@ namespace PL
         }
         private void ListCall_Click(object sender, RoutedEventArgs e)
         {
-
+              new  CallInListWindow().Show(); 
         }
         private void StartSimulator_Click(object sender, RoutedEventArgs e)
         {

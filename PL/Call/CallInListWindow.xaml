@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:PL.Call"
         mc:Ignorable="d"
         Title="CallInListWindow" Height="450" Width="800"
-        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Background="{StaticResource ButtonBlue}"
+        >
 
 
 

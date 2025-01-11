@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Windows;
+using PL.Volunteer;
+using PL.VolunteerWindow;
+
 
 namespace PL.Admin
 {
@@ -18,6 +21,9 @@ namespace PL.Admin
         /// </summary>
         private void NavigateToVolunteerScreen_Click(object sender, RoutedEventArgs e)
         {
+
+            new VolunteerWindow.VolunteerWindow().Show();
+
             // יצירת חלון חדש למסך המתנדבים ופתיחתו
             //VolunteerScreenWindow volunteerWindow = new VolunteerScreenWindow(); // ודא שהחלון קיים
             //volunteerWindow.Show();

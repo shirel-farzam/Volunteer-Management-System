@@ -65,6 +65,7 @@
                         <!-- Active -->
                         <Label Content="Active:" FontSize="12" VerticalAlignment="Center" />
                         <CheckBox IsChecked="{Binding CurrentVolunteer.Active}" VerticalAlignment="Center" />
+                        
                         <!-- Role (ComboBox for Job) -->
                         <Label Content="Role:" Grid.Row="6" Grid.Column="0" />
                         <ComboBox SelectedValue="{Binding CurrentVolunteer.Job, Mode=TwoWay}" SelectedValuePath="Content"  Grid.Row="6" Grid.Column="1" IsEnabled="False">

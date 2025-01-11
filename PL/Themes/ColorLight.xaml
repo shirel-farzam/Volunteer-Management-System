@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Color Resources -->
+    <Color x:Key="ColorLightPurple1">#F5EFFF</Color>
+    <Color x:Key="ColorLightPurple2">#E5D9F2</Color>
+    <Color x:Key="ColorLightPurple3">#CDC1FF</Color>
+    <Color x:Key="ColorLightPurple4">#A294F9</Color>
+
+    <!-- My Color-->
+    <SolidColorBrush x:Key="ButtonBlue" Color="#D9EAFD" />
+    <SolidColorBrush x:Key="DarkBlue" Color="#7C93C3" />
+    <SolidColorBrush x:Key="LightBlue" Color="#BCCCDC" />
+    <SolidColorBrush x:Key="SimulatorBlue" Color="#A5BFCC" />
+
+
+    <SolidColorBrush x:Key="PrimaryLight" Color="#FFF2E1" />
+    <SolidColorBrush x:Key="Primary" Color="#EAD8C0" />
+    <SolidColorBrush x:Key="AccentLight" Color="#D1BB9E" />
+    <SolidColorBrush x:Key="AccentDark" Color="#A79277" />
+
+
+</ResourceDictionary>
