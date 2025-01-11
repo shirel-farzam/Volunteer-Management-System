@@ -5,29 +5,67 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
+using System.ComponentModel;
+using DO;
 
 namespace PL.Call
 
 {
-    public partial class CallInListWindow : Window
+    public partial class CallInListWindow : Window, INotifyPropertyChanged
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private BO.CallStatus _selectedCallStatus = BO.CallStatus.None;
 
-        public IEnumerable<BO.CallInList> CallList
+        public BO.CallStatus SelectedCallStatus
         {
-            get { return (IEnumerable<BO.CallInList>)GetValue(CallInListProperty); }
-            set { SetValue(CallInListProperty, value); }
+            get => _selectedCallStatus;
+            set
+            {
+                if (_selectedCallStatus != value)
+                {
+                    _selectedCallStatus = value;
+                    OnPropertyChanged(nameof(SelectedCallStatus));
+                    RefreshCallList(); // רענן את רשימת הקריאות
+                }
+            }
         }
 
-        public static readonly DependencyProperty CallInListProperty =
-            DependencyProperty.Register("CallInList", typeof(IEnumerable<BO.CallInList>), typeof(CallInListWindow), new PropertyMetadata(null));
+        private IEnumerable<BO.CallInList> _callInList;
+        public IEnumerable<BO.CallInList> CallInList
+        {
+            get => _callInList;
+            set
+            {
+                if (_callInList != value)
+                {
+                    _callInList = value;
+                    OnPropertyChanged(nameof(CallInList)); // עדכן את ה-UI אם הרשימה השתנתה
+                }
+            }
+        }
 
-        public BO.CallStatus SelectedCallStatus { get; set; } = BO.CallStatus.Open;
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public CallInListWindow()
         {
             InitializeComponent();
             DataContext = this;
+            RefreshCallList();
+        }
+        private void RefreshCallList()
+        {
+            try
+            {
+                CallInList = queryCallList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load call list: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void OnFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -36,6 +74,7 @@ namespace PL.Call
             if (sender is ComboBox comboBox && comboBox.SelectedItem is BO.CallStatus selectedFilter)
             {
                 SelectedCallStatus = selectedFilter;
+                RefreshCallList();
             }
         }
 
@@ -44,63 +83,75 @@ namespace PL.Call
         {
             IEnumerable<BO.CallInList> calls;
 
-            // Get CallId filter from TextBox
-            var callIdText = ((TextBox)this.FindName("CallIdTextBox")).Text;
-
             switch (SelectedCallStatus)
             {
-                case BO.CallStatus.Open:
-                    calls = s_bl.Call.GetCallInLists(BO.CallInListField.Status, null, BO.CallInListField.Status)
-                             .Where(c => c.Status == BO.CallStatus.Open);
+                case CallStatus.Open:
+                    // קריאות פתוחות, ממויינות לפי סטטוס
+                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
+                              .Where(c => c.Status == CallStatus.Open)
+                              .OrderBy(c => c.Status)
+                              .ThenBy(c => c.CallId);
                     break;
 
-                case BO.CallStatus.InProgress:
-                    calls = s_bl.Call.GetCallInLists(BO.CallInListField.Status, null, BO.CallInListField.Status)
-                             .Where(c => c.Status == BO.CallStatus.InProgress);
+                case CallStatus.InProgress:
+                    // קריאות בטיפול, ממויינות לפי סטטוס
+                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
+                              .Where(c => c.Status == CallStatus.InProgress)
+                              .OrderBy(c => c.Status)
+                              .ThenBy(c => c.CallId);
                     break;
 
-                case BO.CallStatus.Closed:
-                    calls = s_bl.Call.GetCallInLists(BO.CallInListField.Status, null, BO.CallInListField.Status)
-                             .Where(c => c.Status == BO.CallStatus.Closed);
+                case CallStatus.Closed:
+                    // קריאות סגורות, ממויינות לפי סטטוס
+                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
+                              .Where(c => c.Status == CallStatus.Closed)
+                              .OrderBy(c => c.Status)
+                              .ThenBy(c => c.CallId);
                     break;
 
-                case BO.CallStatus.Expired:
-                    calls = s_bl.Call.GetCallInLists(BO.CallInListField.Status, null, BO.CallInListField.Status)
-                             .Where(c => c.Status == BO.CallStatus.Expired);
+                case CallStatus.Expired:
+                    // קריאות שפג תוקפן, ממויינות לפי סטטוס
+                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
+                              .Where(c => c.Status == CallStatus.Expired)
+                              .OrderBy(c => c.Status)
+                              .ThenBy(c => c.CallId);
                     break;
 
-                case BO.CallStatus.OpenRisk:
-                    calls = s_bl.Call.GetCallInLists(BO.CallInListField.Status, null, BO.CallInListField.Status)
-                             .Where(c => c.Status == BO.CallStatus.OpenRisk);
+                case CallStatus.OpenRisk:
+                    // קריאות פתוחות בסיכון, ממויינות לפי סטטוס
+                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
+                              .Where(c => c.Status == CallStatus.OpenRisk)
+                              .OrderBy(c => c.Status)
+                              .ThenBy(c => c.CallId);
                     break;
 
-                case BO.CallStatus.InProgressRisk:
-                    calls = s_bl.Call.GetCallInLists(BO.CallInListField.Status, null, BO.CallInListField.Status)
-                             .Where(c => c.Status == BO.CallStatus.InProgressRisk);
+                case CallStatus.InProgressRisk:
+                    // קריאות בטיפול בסיכון, ממויינות לפי סטטוס
+                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
+                              .Where(c => c.Status == CallStatus.InProgressRisk)
+                              .OrderBy(c => c.Status)
+                              .ThenBy(c => c.CallId);
                     break;
 
                 default:
-                    calls = s_bl.Call.GetCallInLists(null, null, null);
+                    // ללא סינון לפי סטטוס
+                    calls = BlApi.Factory.Get().Call.GetCallInLists(null, null, null)
+                              .OrderBy(c => c.Status)
+                              .ThenBy(c => c.CallId);
                     break;
             }
 
-            // Apply CallId filter if provided
-            if (!string.IsNullOrEmpty(callIdText))
-            {
-                calls = calls.Where(c => c.CallId.ToString().Contains(callIdText));
-            }
-
-            // Order the results
-            calls = calls.OrderBy(c => c.Status).ThenBy(c => c.CallId);
-
             return calls;
         }
+
+
+
 
         // Filter the calls when the filter button is clicked
         private void FilterCalls_Click(object sender, RoutedEventArgs e)
         {
             // Update the CallList property with filtered results
-            CallList = queryCallList();
+            CallInList = queryCallList();
         }
 
         private void CallsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -174,8 +225,7 @@ namespace PL.Call
                         // מחיקת הקריאה מהמאגר
                         s_bl.Call.DeleteCall(selectedCall.CallId);
 
-                        // עדכון הרשימה
-                        CallList = queryCallList();
+                        RefreshCallList();
 
                         MessageBox.Show($"Call {selectedCall.CallId} has been deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
@@ -189,6 +239,35 @@ namespace PL.Call
             {
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            //try
+            //{
+            //    var bl = BlApi.Factory.Get().Call;
+            //    bl.DeleteCall(selectedCall.CallId); // Delete the volunteer
+            //    RefreshCallList();  // Refresh the list
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show($"An error occurred while deleting the volunteer: {ex.Message}",
+            //                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+        }
+        private void callListObserver()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                RefreshCallList();  // Refresh the list when notified of changes
+            });
+        }
+        // Add observer on window load
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            BlApi.Factory.Get().Call.AddObserver(callListObserver);
+        }
+
+        // Remove observer on window close
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            BlApi.Factory.Get().Call.RemoveObserver(callListObserver);
         }
 
     }

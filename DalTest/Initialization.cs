@@ -121,14 +121,10 @@ public static class Initialization
             s_dal!.Volunteer.Create(new Volunteer(Currid, name, phone, email, distanceType, role, active, password, Address, NLatitude, NLongitude, maxReading));
         }
 
-        // Adding at least one manager
-        //int managerId;
-        //do
-        //   /* managerId = s_rand.Next(100000000, 1000000000); */// Generate a random ID for the manager
-        //while (s_dal!.Volunteer.Read(managerId) != null); // Check if the ID is unique
+       
 
         // Create a new manager and add to the data source
-        s_dal!.Volunteer.Create(new Volunteer(326047701, "Ayelet Benisty", "0556882236", "admin@example.com", Distance.Aerial, Role.Manager, true, "Password246","Ein Gedi 37,Beer sheva, Israel", 31.2509036, 34.7668511,50));
+        s_dal!.Volunteer.Create(new Volunteer(326047701, "Ayelet Benisty", "0556882236", "admin@example.com", Distance.Aerial, Role.Manager, true, "Zaq12wsx","Ein Gedi 37,Beer sheva, Israel", 31.2509036, 34.7668511,50));
     }
 
 

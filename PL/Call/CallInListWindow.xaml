@@ -3,31 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL.Call"
         mc:Ignorable="d"
         Title="CallInListWindow" Height="450" Width="800"
-        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Background="{StaticResource ButtonBlue}"
-        >
-
-
+        Background="{StaticResource ButtonBlue}">
 
     <Grid>
-        <StackPanel x:Name="StackPanel1" Orientation="Vertical" Margin="10">
+        <StackPanel Orientation="Vertical" Margin="10">
             <!-- Filtering and Sorting -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <Label Content="Status:" VerticalAlignment="Center" />
                 <ComboBox Width="120" Margin="5,0,10,0"  
                           ItemsSource="{Binding Source={StaticResource CallStatusCollectionKey}}"
-                          SelectedValue="{Binding Path=SelectedCallStatus, Mode=TwoWay}"
-                          SelectionChanged="OnFilterSelectionChanged" />
+                          SelectedValue="{Binding SelectedCallStatus, Mode=TwoWay}" />
 
                 <Label Content="Search by Call ID:" VerticalAlignment="Center" />
-                <TextBox Width="200" Margin="5,0,10,0" />
-                <Button Content="Filter" Width="80" Click="FilterCalls_Click" />
-
+                <TextBox Width="200" Margin="5,0,10,0" 
+                         Text="{Binding SearchCallId, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Content="Filter" Width="80" Command="{Binding FilterCommand}" />
             </StackPanel>
-            <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" ItemsSource="{Binding Path=CallList}"
+
+            <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
+                      ItemsSource="{Binding CallInList}"
                       SelectionMode="Single" MouseDoubleClick="CallsDataGrid_MouseDoubleClick">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Call ID" Binding="{Binding CallId}" Width="100"/>
@@ -41,19 +37,17 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <!-- Delete Button -->
-                                    <Button Content="Delete" Click="DeleteCall_Click"
-                                            IsEnabled="{Binding CanDelete}" Margin="0,0,5,0"/>
+                                    <Button Content="Delete" Command="{Binding DataContext.DeleteCallCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                            CommandParameter="{Binding}" Margin="0,0,5,0" />
                                     <!-- Cancel Assignment Button -->
-                                    <Button Content="Cancel Assignment" Click="CancelAssignment_Click"
-                                            IsEnabled="{Binding CanCancelAssignment}" />
+                                    <Button Content="Cancel Assignment" Command="{Binding DataContext.CancelAssignmentCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                            CommandParameter="{Binding}" />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
-            <!-- Calls Table -->
         </StackPanel>
     </Grid>
 </Window>

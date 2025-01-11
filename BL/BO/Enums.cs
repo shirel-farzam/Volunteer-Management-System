@@ -56,7 +56,8 @@
         Closed,         // The call has been completed
         Expired,        // The call has expired (not handled in time)
         OpenRisk,       // The call is open and at risk of expiration
-        InProgressRisk // The call is in progress and at risk of expiration
+        InProgressRisk, // The call is in progress and at risk of expiration
+        None
     }
     // Enum for specifying the field to filter or sort by for calls
     public enum CallField

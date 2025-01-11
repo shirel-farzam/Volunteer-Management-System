@@ -342,22 +342,43 @@ internal static class CallManager
     }
     internal static BO.CallInList ConvertDOCallToBOCallInList(DO.Call doCall)
     {
-        var assignmentsForCall = _dal.Assignment.ReadAll(a => a.CallId == doCall.Id);
+  
+        if (doCall == null)
+        {
+            throw new ArgumentNullException(nameof(doCall), "The provided call is null.");
+        }
+
+        // קבל את כל ההקצותות עבור הקריאה
+        var assignmentsForCall = _dal.Assignment.ReadAll(a => a.CallId == doCall.Id) ?? new List<DO.Assignment>();
+
+        // קבל את ההקצאה האחרונה על פי זמן ההתחלה
         var lastAssignmentsForCall = assignmentsForCall.OrderByDescending(item => item.TimeStart).FirstOrDefault();
 
-        return new()
+        // קבע את שם המתנדב האחרון אם יש
+        var volunteerName = lastAssignmentsForCall != null
+                            ? _dal.Volunteer.Read(lastAssignmentsForCall.VolunteerId)?.FullName
+                            : null;
+
+        // חישוב משך הזמן של טיפול אם יש
+        var treatmentDuration = lastAssignmentsForCall != null && lastAssignmentsForCall.TimeEnd != null
+                                ? lastAssignmentsForCall.TimeEnd - lastAssignmentsForCall.TimeStart
+                                : null;
+
+        // החזר את האובייקט CallInList
+        return new BO.CallInList
         {
-            Id = (lastAssignmentsForCall == null) ? null : lastAssignmentsForCall.Id,
+            Id = lastAssignmentsForCall?.Id,  // אם אין הקצאה אחרונה, id יהיה null
             CallId = doCall.Id,
             Type = (BO.CallType)doCall.Type,
             OpeningTime = doCall.TimeOpened,
             TimeToFinish = doCall.MaxTimeToClose != null ? doCall.MaxTimeToClose - _dal.Config.Clock : null,
-            LastVolunteerName = (lastAssignmentsForCall != null) ? _dal.Volunteer.Read(lastAssignmentsForCall.VolunteerId)!.FullName : null,
-            TreatmentDuration = (lastAssignmentsForCall != null && lastAssignmentsForCall.TimeEnd != null) ? lastAssignmentsForCall.TimeEnd - lastAssignmentsForCall.TimeStart : null,
+            LastVolunteerName = volunteerName,
+            TreatmentDuration = treatmentDuration,
             Status = CallManager.GetCallStatus(doCall),
-            TotalAssignments = (assignmentsForCall == null) ? 0 : assignmentsForCall.Count()
+            TotalAssignments = assignmentsForCall.Count()
         };
     }
+
 
     internal static BO.ClosedCallInList ConvertDOCallToBOCloseCallInList(DO.Call doCall, CallAssignmentInList lastAssignment)
     {

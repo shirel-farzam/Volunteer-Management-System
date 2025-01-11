@@ -177,5 +177,6 @@
                     UpdateVolunteerList();  // Refresh the volunteer list when notified of changes
                 });
             }
+
         }
     }
