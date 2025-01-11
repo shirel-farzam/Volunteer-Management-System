@@ -14,7 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using PL.CallWindow;
 using static System.Net.Mime.MediaTypeNames;
 
 
@@ -115,7 +114,7 @@ namespace PL.Call
         private void CallsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (SelectedCallStatus != null)
-                new CallWindow.CallWindow().Show();
+                new CallWindow().Show();
         }
 
 
