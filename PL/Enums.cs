@@ -61,4 +61,12 @@ namespace PL
         public BO.VolunteerInListField VolIn { get; set; } = BO.VolunteerInListField.None;
 
     }
+    internal class CallStatusCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.CallStatus> s_enums =
+    (Enum.GetValues(typeof(BO.CallStatus)) as IEnumerable<BO.CallStatus>)!;
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
+
 }

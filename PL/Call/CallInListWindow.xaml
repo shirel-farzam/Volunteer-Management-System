@@ -1,0 +1,57 @@
+﻿<Window x:Class="PL.Call.CallInListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Call"
+        mc:Ignorable="d"
+        Title="CallInListWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+
+
+
+    <Grid>
+        <StackPanel x:Name="StackPanel1" Orientation="Vertical" Margin="10">
+            <!-- Filtering and Sorting -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <Label Content="Status:" VerticalAlignment="Center" />
+                <ComboBox Width="120" Margin="5,0,10,0"  
+                          ItemsSource="{Binding Source={StaticResource CallStatusCollection}}"
+                          SelectedValue="{Binding Path=SelectedCallStatus, Mode=TwoWay}"
+                          SelectionChanged="OnFilterSelectionChanged" />
+
+                <Label Content="Search by Call ID:" VerticalAlignment="Center" />
+                <TextBox Width="200" Margin="5,0,10,0" />
+                <Button Content="Filter" Width="80" Click="FilterCalls_Click" />
+
+            </StackPanel>
+            <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" ItemsSource="{Binding Path=CallList}"
+                      SelectionMode="Single" MouseDoubleClick="CallsDataGrid_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Call ID" Binding="{Binding CallId}" Width="100"/>
+                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                    <DataGridTextColumn Header="Last Assigned Volunteer" Binding="{Binding LastAssignedTo}" Width="150"/>
+                    <DataGridTextColumn Header="Time Left" Binding="{Binding TimeLeft}" Width="100"/>
+                    <DataGridTextColumn Header="Completion Time" Binding="{Binding CompletionTime}" Width="100"/>
+                    <DataGridTextColumn Header="Assignment Count" Binding="{Binding AssignmentCount}" Width="100"/>
+                    <DataGridTemplateColumn Header="Actions">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Delete Button -->
+                                    <Button Content="Delete" Click="DeleteCall_Click"
+                                            IsEnabled="{Binding CanDelete}" Margin="0,0,5,0"/>
+                                    <!-- Cancel Assignment Button -->
+                                    <Button Content="Cancel Assignment" Click="CancelAssignment_Click"
+                                            IsEnabled="{Binding CanCancelAssignment}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Calls Table -->
+        </StackPanel>
+    </Grid>
+</Window>

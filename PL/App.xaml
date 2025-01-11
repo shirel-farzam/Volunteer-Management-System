@@ -17,6 +17,7 @@
             <local:ConvertRoleToColor x:Key="ConvertRoleToColorKey" />
             <local:ConvertDistanceToColor x:Key="ConvertDistanceToColorKey" />
             <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
+            <local:CallStatusCollection x:Key="CallStatusCollectionKey" />
 
             <!-- Style for rounded buttons -->
             <Style TargetType="Button" x:Key="RoundedButtonStyle">
