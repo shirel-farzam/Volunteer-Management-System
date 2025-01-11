@@ -1,8 +1,13 @@
-﻿using PL.Call;
+﻿using BO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
-namespace PL.call
+
+namespace PL.Call
+
 {
     public partial class CallInListWindow : Window
     {

@@ -188,7 +188,7 @@ namespace PL
     //        return value;
     //    }
     //}
-    class ConvertDistanceToColor : IValueConverter
+    public class ConvertDistanceToColor : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -211,7 +211,7 @@ namespace PL
             throw new NotImplementedException();
         }
     }
-    class ConvertRoleToColor : IValueConverter
+    public class ConvertRoleToColor : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
