@@ -251,6 +251,10 @@ namespace PL.Call
             //                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             //}
         }
+        private void AddCallButton_Click(object sender, RoutedEventArgs e)
+        {
+            new CallWindow().Show();
+        }
         private void callListObserver()
         {
             Application.Current.Dispatcher.Invoke(() =>

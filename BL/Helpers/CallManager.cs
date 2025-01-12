@@ -411,7 +411,14 @@ internal static class CallManager
             DistanceFromVolunteer = VolunteerManager.CalculateDistance(doCall.Latitude, doCall.Longitude, idLat, idLon),
         };
     }
-    public static bool IsInRisk(DO.Call call) => call!.MaxTimeToClose - _dal.Config.Clock <= _dal.Config.RiskRange;
+    public static bool IsInRisk(DO.Call call)
+    {
+        // Check if the time left to close the call is within the configured risk range
+        // or if the time left is less than or equal to 4 hours (you can adjust this condition as needed).
+        return (call.MaxTimeToClose - _dal.Config.Clock <= _dal.Config.RiskRange) ||
+               (call.MaxTimeToClose - _dal.Config.Clock <= TimeSpan.FromHours(12));
+    }
+
 
     internal static void UpdateExpired()
     {

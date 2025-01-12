@@ -115,7 +115,7 @@ public static class Initialization
             Distance distanceType = Distance.Aerial; // Default distance type
             Role role = Role.Volunteer; // Default role - regular volunteer
             bool active = true; // Volunteer is active by default
-            double maxReading = s_rand.Next(5, 100); // Generate a random max reading between 5 and 100
+            double maxReading = s_rand.Next(10, 100); // Generate a random max reading between 5 and 100
 
             //Create a new Volunteer object and add it to the data source
             s_dal!.Volunteer.Create(new Volunteer(Currid, name, phone, email, distanceType, role, active, password, Address, NLatitude, NLongitude, maxReading));
