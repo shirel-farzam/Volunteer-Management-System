@@ -341,16 +341,6 @@
     <MaxTimeToClose>2025-01-13T01:54:16</MaxTimeToClose>
   </Call>
   <Call>
-    <Id>1037</Id>
-    <Type>InventoryCheck</Type>
-    <Description>Family needs a hot meal in the city center.</Description>
-    <FullAddress>Kiryat HaLeom, Jerusalem, Israel</FullAddress>
-    <Latitude>31.7722</Latitude>
-    <Longitude>35.2034</Longitude>
-    <TimeOpened>2025-01-12T09:48:16</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
-  </Call>
-  <Call>
     <Id>1039</Id>
     <Type>FoodPreparation</Type>
     <Description>Family needs a hot meal in the city center.</Description>

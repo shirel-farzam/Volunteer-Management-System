@@ -346,59 +346,48 @@ public static class Initialization
             s_dal.Call.Create(new Call(0, calltype, ndescription, addresses[i], latitudes[i], longitudes[i], RndomStart, RandomEnd));
         }
     }
-        private static void createAssignment()
+
+    private static void CreateAssignment()
     {
-        // Loop to create 60 assignments
         for (int i = 0; i < 60; i++)
         {
-            // Randomly select a volunteer from the list
-            //int randVolunteer = s_rand.Next(s_dal!.Volunteer.ReadAll().Count); /stage 1
-            //Volunteer volunteerToAssig = s_dal!.Volunteer.ReadAll()[randVolunteer];
-
+            //Assigning a volunteer to a task
             int randVolunteer = s_rand.Next(s_dal!.Volunteer.ReadAll().Count());
-            Volunteer volunteerToAssig = s_dal!.Volunteer.ReadAll().ElementAt(randVolunteer);
-
-            // Randomly select a call from the list, excluding the last 15 calls
-            //int randCAll = s_rand.Next(s_dal!.Call.ReadAll().Count - 15);
-            //Call callToAssig = s_dal.Call.ReadAll()[randCAll]; // stage 1
-            int randCAll = s_rand.Next(s_dal!.Call.ReadAll().Count() - 15);
-            Call callToAssig = s_dal.Call.ReadAll().ElementAt(randCAll);
-
-            // Ensure the selected call has been opened before the current time
-            while (callToAssig.TimeOpened > s_dal!.Config.Clock)
+            Volunteer volunteerToAssign = s_dal.Volunteer.ReadAll().OrderBy(v => s_rand.Next()).First();
+            //call number ID
+            int randCAll = s_rand.Next(s_dal.Call!.ReadAll().Count() - 15);
+            Call callToAssig = s_dal.Call.ReadAll().OrderBy(v => s_rand.Next()).First();
+            while (callToAssig.TimeOpened > s_dal!.Config!.Clock)
             {
-                //randCAll = s_rand.Next(s_dal!.Call.ReadAll().Count - 15);
-                //callToAssig = s_dal.Call.ReadAll()[randCAll]; //stage 1
-                randCAll = s_rand.Next(s_dal!.Call.ReadAll().Count() - 15);
-                callToAssig = s_dal.Call.ReadAll().ElementAt(randCAll);
+                randCAll = s_rand.Next(s_dal.Call!.ReadAll().Count() - 15);
+                callToAssig = s_dal.Call.ReadAll().OrderBy(v => s_rand.Next()).First();
             }
-
-            // Declare variables for the finish type and finish time
             TypeEnd? finish = null;
             DateTime? finishTime = null;
-
-            // Check if the call has a max time to close and if it is not expired
-            if (callToAssig.MaxTimeToClose != null && callToAssig.MaxTimeToClose >= s_dal?.Config.Clock)
+            if (callToAssig.MaxTimeToClose != null && callToAssig.MaxTimeToClose >= s_dal!.Config?.Clock)
             {
                 finish = TypeEnd.ExpiredCancel;
+                finishTime = s_dal.Config.Clock;
             }
             else
             {
-                // Randomly determine the finish type
                 int randFinish = s_rand.Next(0, 4);
                 switch (randFinish)
                 {
                     case 0:
                         finish = TypeEnd.Treated;
-                        finishTime = s_dal!.Config.Clock;
+                        finishTime = s_dal!.Config!.Clock;
                         break;
-                    case 1: finish = TypeEnd.SelfCancel; break;
-                    case 2: finish = TypeEnd.ManagerCancel; break;
+                    case 1:
+                        finish = TypeEnd.SelfCancel;
+                        finishTime = s_dal.Config.Clock;
+                        break;
+                    case 2:
+                        finish = TypeEnd.ManagerCancel;
+                        finishTime = s_dal.Config.Clock; break;
                 }
             }
-
-            // Create the assignment using the selected volunteer and call details
-            s_dal?.Assignment.Create(new Assignment(0, callToAssig.Id, volunteerToAssig.Id, s_dal!.Config.Clock, finishTime, finish));
+            s_dal.Assignment?.Create(new Assignment(0, callToAssig.Id, volunteerToAssign.Id, s_dal!.Config!.Clock, finishTime, finish));
         }
     }
 
@@ -431,7 +420,7 @@ public static class Initialization
 
         Console.WriteLine("Initializing assignments...");
         // Calling method to initialize assignments
-        createAssignment();
+        CreateAssignment();
 
         Console.WriteLine("Initialization complete.");
     }

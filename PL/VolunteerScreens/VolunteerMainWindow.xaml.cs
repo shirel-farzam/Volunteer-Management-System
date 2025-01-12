@@ -87,12 +87,11 @@ namespace PL.VolunteerScreens
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // Update the volunteer details in the database
-            s_bl.Volunteer.Update(CurrentVolunteer.Id, CurrentVolunteer);
-
-            // Notify the user
-            MessageBox.Show("Volunteer details updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
+            //// Update the volunteer details in the database
+            //s_bl.Volunteer.Update(CurrentVolunteer.Id, CurrentVolunteer);
+            // // Notify the user
+            //MessageBox.Show("Volunteer details updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            new CallHistory(CurrentVolunteer.Id).Show();
         }
     }
 }

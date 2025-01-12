@@ -121,42 +121,40 @@ internal class CallImplementation : ICall
 
     public BO.Call Read(int callId)
     {
+        // Define a filter function to get assignments related to the specified call
+        Func<DO.Assignment, bool> func = item => item.CallId == callId;
+        IEnumerable<DO.Assignment> dataOfAssignments = _dal.Assignment.ReadAll(func); // Fetch the related assignments
+
+        // Read the call from the data layer or throw an exception if not found
+        var doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does not exist");
+
+        // Map the data object (DO.Call) to a business object (BO.Call)
+        return new BO.Call
         {
-            // Define a filter function to get assignments related to the specified call
-            Func<DO.Assignment, bool> func = item => item.CallId == callId;
-            IEnumerable<DO.Assignment> dataOfAssignments = _dal.Assignment.ReadAll(func); // Fetch the related assignments
-
-            // Read the call from the data layer or throw an exception if not found
-            var doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does not exist");
-
-            // Map the data object (DO.Call) to a business object (BO.Call)
-            return new()
-            {
-                Id = callId,
-                Type = (BO.CallType)doCall.Type, // Map the call type
-                Description = doCall.Description, // Map the description
-                FullAddress = doCall.FullAddress, // Map the address
-                Latitude = doCall.Latitude, // Map the latitude
-                Longitude = doCall.Longitude, // Map the longitude
-                OpenTime = doCall.TimeOpened, // Map the time the call was opened
-                MaxEndTime = doCall.MaxTimeToClose, // Map the maximum time to close the call
-                Status = CallManager.GetCallStatus(doCall), // Determine the call's status
-                CallAssignments=dataOfAssignments.Any()                                          // Map the list of assignments related to the call
-               ?dataOfAssignments.Select(assign=>new BO.CallAssignmentInList
+            Id = callId,
+            Type = (BO.CallType)doCall.Type, // Map the call type
+            Description = doCall.Description, // Map the description
+            FullAddress = doCall.FullAddress, // Map the address
+            Latitude = doCall.Latitude, // Map the latitude
+            Longitude = doCall.Longitude, // Map the longitude
+            OpenTime = doCall.TimeOpened, // Map the time the call was opened
+            MaxEndTime = doCall.MaxTimeToClose, // Map the maximum time to close the call
+            Status = CallManager.GetCallStatus(doCall), // Determine the call's status
+            CallAssignments = dataOfAssignments.Any()
+                ? dataOfAssignments.Select(assign => new BO.CallAssignmentInList
                 {
                     VolunteerId = assign.VolunteerId, // Map the volunteer ID
-                   VolunteerName = _dal.Volunteer.Read(assign.VolunteerId).FullName, // Map the volunteer's name
+                    VolunteerName = _dal.Volunteer.Read(assign.VolunteerId)?.FullName ?? "Unknown Volunteer", // Map the volunteer's name
                     StartTime = assign.TimeStart, // Map the assignment start time
                     EndTime = assign.TimeEnd, // Map the assignment end time
-                    //CompletionType = (BO.AssignmentCompletionType)assign.TypeEndTreat, // Map the completion type
-                    CompletionType=assign.TypeEndTreat==null? null:( BO.AssignmentCompletionType)assign.TypeEndTreat,
-                }).ToList() // Convert to a list
-                :null,
-            };
-
-            throw new Exception(); // This line is unreachable and seems unnecessary
-        }
+                    CompletionType = assign.TypeEndTreat.HasValue
+                        ? (BO.AssignmentCompletionType)assign.TypeEndTreat.Value
+                        : null, // Map the completion type, handling nulls
+                }).ToList()
+                : null,
+        };
     }
+
 
     public IEnumerable<BO.CallInList> GetCallInLists(BO.CallInListField? filter, object? obj, BO.CallInListField? sortBy)
     {

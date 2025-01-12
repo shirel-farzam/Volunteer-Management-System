@@ -197,20 +197,6 @@
     <MaxReading>99</MaxReading>
   </Volunteer>
   <Volunteer>
-    <Id>214786972</Id>
-    <FullName>Shira Sharabi</FullName>
-    <PhoneNumber>0555678902</PhoneNumber>
-    <Email>shira.sharabi@example.com</Email>
-    <TypeDistance>Aerial</TypeDistance>
-    <Job>Volunteer</Job>
-    <Active>true</Active>
-    <Password>Zaq12wsx</Password>
-    <FullAddress>Hertzel Boulevard 9, Holon, Israel</FullAddress>
-    <Latitude>32.008484</Latitude>
-    <Longitude>34.780119</Longitude>
-    <MaxReading>25</MaxReading>
-  </Volunteer>
-  <Volunteer>
     <Id>326047701</Id>
     <FullName>Ayelet Benisty</FullName>
     <PhoneNumber>0556882236</PhoneNumber>
@@ -223,5 +209,19 @@
     <Latitude>31.2509036</Latitude>
     <Longitude>34.7668511</Longitude>
     <MaxReading>50</MaxReading>
+  </Volunteer>
+  <Volunteer>
+    <Id>214786972</Id>
+    <FullName>Shira Sharabi</FullName>
+    <PhoneNumber>0555678902</PhoneNumber>
+    <Email>shira.sharabi@example.com</Email>
+    <TypeDistance>Aerial</TypeDistance>
+    <Job>Volunteer</Job>
+    <Active>true</Active>
+    <Password>Zaq12wsx</Password>
+    <FullAddress>Hertzel Boulevard 9, Holon, Israel</FullAddress>
+    <Latitude>32.008484</Latitude>
+    <Longitude>34.780119</Longitude>
+    <MaxReading>25</MaxReading>
   </Volunteer>
 </ArrayOfVolunteer>

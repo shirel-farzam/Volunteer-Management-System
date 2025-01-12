@@ -1,27 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BO;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.VolunteerScreens
 {
-    /// <summary>
-    /// Interaction logic for CallHistory.xaml
-    /// </summary>
     public partial class CallHistory : Window
     {
-        public CallHistory()
+        public ObservableCollection<ClosedCallInList> ClosedCallsList { get; set; }
+
+        public CallHistory(int volunteerId)
         {
             InitializeComponent();
+            LoadClosedCalls(volunteerId);
+            DataContext = this;
+        }
+
+        private void LoadClosedCalls(int volunteerId)
+        {
+            try
+            {
+                var closedCalls = BlApi.Factory.Get().Call.GetClosedCallsByVolunteer(volunteerId);
+                ClosedCallsList = new ObservableCollection<ClosedCallInList>(closedCalls);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"שגיאה בטעינת הקריאות: {ex.Message}");
+            }
         }
     }
 }

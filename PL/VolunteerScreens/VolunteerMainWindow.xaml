@@ -19,7 +19,7 @@
         <!-- Top Buttons -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,10">
             <Button Content="New Call" Height="45" Width="150" Margin="0,0,10,0" Background="#507687" Foreground="White" FontWeight="Bold" />
-            <Button Content="My Calls History" Height="45" Width="150" Background="#507687" Foreground="White" FontWeight="Bold" />
+            <Button Content="My Calls History" Height="45" Width="150" Background="#507687" Foreground="White" FontWeight="Bold" Click="Button_Click" />
         </StackPanel>
 
         <!-- Main Content -->

@@ -7,6 +7,19 @@
         mc:Ignorable="d"
         Title="CallHistory" Height="450" Width="800">
     <Grid>
-        
+        <ListView ItemsSource="{Binding ClosedCallsList}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding Id}" />
+                    <GridViewColumn Header="Call Type" DisplayMemberBinding="{Binding CallType}" />
+                    <GridViewColumn Header="Full Address" DisplayMemberBinding="{Binding FullAddress}" />
+                    <GridViewColumn Header="Opening Time" DisplayMemberBinding="{Binding OpeningTime}" />
+                    <GridViewColumn Header="Entry Time" DisplayMemberBinding="{Binding EntryTime}" />
+                    <GridViewColumn Header="Completion Time" DisplayMemberBinding="{Binding CompletionTime}" />
+                    <GridViewColumn Header="Completion Type" DisplayMemberBinding="{Binding CompletionType}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
     </Grid>
 </Window>
