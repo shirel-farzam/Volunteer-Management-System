@@ -11,7 +11,7 @@
         Closed="Window_Closed"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
-    <!-- External Grid -->
+    <!-- External Grid  -->
     <Grid>
         <!-- Row Definitions -->
         <Grid.RowDefinitions>
