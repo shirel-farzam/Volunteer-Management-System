@@ -1,12 +1,115 @@
-﻿<Window x:Class="PL.Call.CallWindow"
+﻿<Window x:Class="PL.CallWindow.CallWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL.Call"
-        mc:Ignorable="d"
-        Title="CallWindow" Height="450" Width="800">
-    <Grid>
+        Title="Call" Height="855" Width="870"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Background="{StaticResource ButtonBlue}">
 
-    </Grid>
+    <Window.Resources>
+        <!-- Style for labels -->
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="12"/>
+            <Setter Property="Foreground" Value="#507687"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <!-- Style for input controls -->
+        <Style x:Key="InputStyle" TargetType="Control">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+        <!-- Style for ComboBox -->
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Background" Value="#FFFAFA"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Margin="10">
+        <!-- Scrollable Grid for form inputs -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" DockPanel.Dock="Top">
+            <Grid Margin="20" Width="706">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+
+                </Grid.RowDefinitions>
+
+                <!-- Header Image -->
+                <Image Source="C:\Users\ayele\source\repos\dotNet5785_-4642_7701\שיראל ואיילת.png"
+                   Width="110" Height="71"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top" 
+                   Margin="349,-12,0,0"
+                   Grid.Column="1" Grid.RowSpan="2" />
+
+                <!-- ID (Read-only) -->
+                <Label Content="ID:" Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Call.Id}" Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}"  
+                     IsReadOnly="{Binding Call.Id, Converter={StaticResource ConvertUpdateToTrueKey}}" />
+
+                <!-- Type -->
+                <Label Content="Type:" Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Call.Type}" Grid.Row="1" Grid.Column="1" Style="{StaticResource InputStyle}" />
+
+                <!-- Description -->
+                <Label Content="Description:" Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Call.Description}" Grid.Row="2" Grid.Column="1" Style="{StaticResource InputStyle}" />
+
+                <!-- FullAddress -->
+                <Label Content="Full Address:" Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Call.FullAddress}" Grid.Row="3" Grid.Column="1" Style="{StaticResource InputStyle}" />
+
+                <!-- Latitude -->
+                <Label Content="Latitude:" Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Call.Latitude}" Grid.Row="4" Grid.Column="1" Style="{StaticResource InputStyle}" />
+
+                <!-- Longitude -->
+                <Label Content="Longitude:" Grid.Row="5" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Call.Longitude}" Grid.Row="5" Grid.Column="1" Style="{StaticResource InputStyle}" />
+
+                <!-- Time Opened -->
+                <Label Content="Time Opened:" Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Call.TimeOpened}" Grid.Row="6" Grid.Column="1" Style="{StaticResource InputStyle}" />
+
+                <!-- Max Time To Close -->
+                <Label Content="Max Time To Close:" Grid.Row="7" Grid.Column="0" Style="{StaticResource LabelStyle}" />
+                <TextBox Text="{Binding Call.MaxTimeToClose}" Grid.Row="7" Grid.Column="1" Style="{StaticResource InputStyle}" />
+
+
+
+
+            </Grid>
+        </ScrollViewer>
+        <Button Content="{Binding ButtonText}" 
+            Click="btnAddUpdate_Click" 
+            DockPanel.Dock="Top" 
+            Background="#F8FAFC" 
+            Foreground="#507687" 
+            FontWeight="Bold" Height="50" RenderTransformOrigin="0.505,0.51" />
+
+        
+    </DockPanel>
 </Window>
