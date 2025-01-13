@@ -21,7 +21,7 @@
 
         <!-- Title -->
         <Label Grid.Row="0" Grid.Column="1"
-               Content="Login System" 
+               Content="Welcome Ezer Mzion!" 
                FontSize="24" 
                FontWeight="Bold" 
                HorizontalAlignment="Center" 

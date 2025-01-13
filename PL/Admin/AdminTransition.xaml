@@ -1,68 +1,101 @@
 ﻿<Window x:Class="PL.Admin.AdminTransition"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:PL.Admin"
-      mc:Ignorable="d" 
-      Title="AdminTransitionPage" d:DesignHeight="765" d:DesignWidth="780" >
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:PL.Admin"
+        mc:Ignorable="d" 
+        Title="AdminTransitionPage"
+        Height="400" 
+        Width="600"
+        WindowState="Normal"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize">
 
-    <Grid Background="{StaticResource PrimaryLight}">
-        <!-- Define 3 Columns -->
+    <Window.Resources>
+        <Style x:Key="TransitionButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ButtonBorder" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource SimulatorBlue}"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Width" Value="280"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="3" Opacity="0.3"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="{StaticResource ButtonBlue}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <!-- Left -->
-            <ColumnDefinition Width="*" />
-            <!-- Center -->
-            <ColumnDefinition Width="*" />
-            <!-- Right -->
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Image -->
-        <Image Source="C:\Users\ayele\source\repos\dotNet5785_-4642_7701\שיראל ואיילת.png"
-               Width="110" Height="71"
-               Stretch="Uniform"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Top"
-               Margin="112,19,0,0"
-               Grid.Column="2" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <!-- Title Label -->
-        <Label Content="Admin Transition Window"
-               FontSize="32"
-               FontWeight="Bold"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Top"
-               Margin="0,30,0,0"
-               Grid.ColumnSpan="3"
-               Foreground="{StaticResource AccentDark}" />
+        <!-- Header with Logo and Title -->
+        <Grid Grid.Row="0" Grid.ColumnSpan="3" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Volunteer Screen Button (Right) -->
-        <Border Background="{StaticResource AccentLight}" CornerRadius="20" Grid.Column="2"
-                HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Go to Volunteer Screen"
-                    Width="250"
-                    Height="70"
-                    Background="Transparent"
-                    Foreground="Black"
-                    FontSize="18"
-                    FontWeight="Bold"
-                    BorderThickness="0"
-                    Click="NavigateToVolunteerScreen_Click" />
-        </Border>
+            <Label Content="Admin Window"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Foreground="{StaticResource DarkBlue}" Margin="155,0,0,0"/>
 
-        <!-- Main Management Screen Button (Left) -->
-        <Border Background="{StaticResource AccentLight}" CornerRadius="20" Grid.Column="0" Grid.ColumnSpan="2"
-                HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1,0,0,0">
-            <Button Content="Go to Main Management Screen"
-                    Width="349"
-                    Height="60"
-                    Background="Transparent"
-                    Foreground="Black"
-                    FontSize="18"
-                    FontWeight="Bold"
-                    BorderThickness="0"
-                    Click="NavigateToManagementScreen_Click" />
-        </Border>
+            <Image Source="C:\Users\ayele\source\repos\dotNet5785_-4642_7701\שיראל ואיילת.png"
+                   Grid.Column="1"
+                   Width="100"
+                   Height="70"
+                   Stretch="Uniform"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Margin="20,0"/>
+        </Grid>
+
+        <!-- Button Container -->
+        <StackPanel Grid.Row="1"
+                    Orientation="Vertical" 
+                    Grid.ColumnSpan="2" 
+                    Margin="180,29,20,0"
+                    VerticalAlignment="Top">
+
+            <!-- Main Management Screen Button -->
+            <Border Style="{StaticResource ButtonBorder}" Margin="0,0,0,10">
+                <Button Content=" Management "
+                        Style="{StaticResource TransitionButton}"
+                        Click="NavigateToManagementScreen_Click"/>
+            </Border>
+
+            <!-- Volunteer Screen Button -->
+            <Border Style="{StaticResource ButtonBorder}" CornerRadius="15" Margin="0,10,0,0">
+                <Button Content=" Volunteer "
+                        Style="{StaticResource TransitionButton}"
+                        Click="NavigateToVolunteerScreen_Click"/>
+            </Border>
+        </StackPanel>
     </Grid>
 </Window>
