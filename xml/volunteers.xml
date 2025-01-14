@@ -1,20 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfVolunteer>
   <Volunteer>
-    <Id>214429151</Id>
-    <FullName>Noa Levy</FullName>
-    <PhoneNumber>0541234567</PhoneNumber>
-    <Email>noa.levy@example.com</Email>
-    <TypeDistance>Aerial</TypeDistance>
-    <Job>Volunteer</Job>
-    <Active>true</Active>
-    <Password>W1nter2024</Password>
-    <FullAddress>Rothschild Boulevard 1, Tel Aviv, Israel</FullAddress>
-    <Latitude>32.0631559</Latitude>
-    <Longitude>34.7688262</Longitude>
-    <MaxReading>80</MaxReading>
-  </Volunteer>
-  <Volunteer>
     <Id>214432767</Id>
     <FullName>Omer Cohen</FullName>
     <PhoneNumber>0532345678</PhoneNumber>
@@ -69,20 +55,6 @@
     <Latitude>31.791658</Latitude>
     <Longitude>34.651074</Longitude>
     <MaxReading>52</MaxReading>
-  </Volunteer>
-  <Volunteer>
-    <Id>214616104</Id>
-    <FullName>Daniel Avrahami</FullName>
-    <PhoneNumber>0546789012</PhoneNumber>
-    <Email>daniel.avrahami@example.com</Email>
-    <TypeDistance>Aerial</TypeDistance>
-    <Job>Volunteer</Job>
-    <Active>true</Active>
-    <Password>GooD1234</Password>
-    <FullAddress>Yigal Alon Street 30, Tel Aviv, Israel</FullAddress>
-    <Latitude>32.109166</Latitude>
-    <Longitude>34.811118</Longitude>
-    <MaxReading>46</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214631426</Id>
@@ -197,20 +169,6 @@
     <MaxReading>77</MaxReading>
   </Volunteer>
   <Volunteer>
-    <Id>214786972</Id>
-    <FullName>Shira Sharabi</FullName>
-    <PhoneNumber>0555678902</PhoneNumber>
-    <Email>shira.sharabi@example.com</Email>
-    <TypeDistance>Aerial</TypeDistance>
-    <Job>Volunteer</Job>
-    <Active>true</Active>
-    <Password>Zaq12wsx</Password>
-    <FullAddress>Hertzel Boulevard 9, Holon, Israel</FullAddress>
-    <Latitude>32.008484</Latitude>
-    <Longitude>34.780119</Longitude>
-    <MaxReading>84</MaxReading>
-  </Volunteer>
-  <Volunteer>
     <Id>326047701</Id>
     <FullName>Ayelet Benisty</FullName>
     <PhoneNumber>0556882236</PhoneNumber>
@@ -223,5 +181,47 @@
     <Latitude>31.2509036</Latitude>
     <Longitude>34.7668511</Longitude>
     <MaxReading>50</MaxReading>
+  </Volunteer>
+  <Volunteer>
+    <Id>214429151</Id>
+    <FullName>Noa Levy</FullName>
+    <PhoneNumber>0541234567</PhoneNumber>
+    <Email>noa.levy@example.com</Email>
+    <TypeDistance>Aerial</TypeDistance>
+    <Job>Volunteer</Job>
+    <Active>false</Active>
+    <Password>W1nter2024</Password>
+    <FullAddress>Rothschild Boulevard 1, Tel Aviv, Israel</FullAddress>
+    <Latitude>32.0631559</Latitude>
+    <Longitude>34.7688262</Longitude>
+    <MaxReading>80</MaxReading>
+  </Volunteer>
+  <Volunteer>
+    <Id>214616104</Id>
+    <FullName>Daniel Avrahami</FullName>
+    <PhoneNumber>0546789012</PhoneNumber>
+    <Email>daniel.avrahami@example.com</Email>
+    <TypeDistance>Aerial</TypeDistance>
+    <Job>Manager</Job>
+    <Active>true</Active>
+    <Password>GooD1234</Password>
+    <FullAddress>Yigal Alon Street 30, Tel Aviv, Israel</FullAddress>
+    <Latitude>32.109166</Latitude>
+    <Longitude>34.811118</Longitude>
+    <MaxReading>46</MaxReading>
+  </Volunteer>
+  <Volunteer>
+    <Id>214786972</Id>
+    <FullName>Shira Sharabi</FullName>
+    <PhoneNumber>0555678902</PhoneNumber>
+    <Email>shira.sharabi@example.com</Email>
+    <TypeDistance>Aerial</TypeDistance>
+    <Job>Volunteer</Job>
+    <Active>true</Active>
+    <Password>Zaq12wsx2</Password>
+    <FullAddress>Hertzel Boulevard 9, Holon, Israel</FullAddress>
+    <Latitude>32.008484</Latitude>
+    <Longitude>34.780119</Longitude>
+    <MaxReading>84</MaxReading>
   </Volunteer>
 </ArrayOfVolunteer>
