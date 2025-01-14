@@ -82,4 +82,11 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
+    internal class ClosedCallInListFieldCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.ClosedCallInListField> s_enums =
+    (Enum.GetValues(typeof(BO.ClosedCallInListField)) as IEnumerable<BO.ClosedCallInListField>)!;
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
 }

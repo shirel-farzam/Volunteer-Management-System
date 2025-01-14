@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Choose Call to Treat" Height="450" Width="800"
-        Background="#F5F5F5"
+        Background="{StaticResource ButtonBlue}"
         FontFamily="Segoe UI">
     <Window.Resources>
         <!-- Styles for controls -->
@@ -69,7 +69,7 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
             <StackPanel Orientation="Vertical" Margin="0,0,20,0">
                 <TextBlock Text="Sort By" Margin="0,0,0,5"/>
-                <ComboBox Width="150" Margin="0,0,10,0" SelectionChanged="SortByComboBox_SelectionChanged">
+                <ComboBox Width="150" Margin="0,0,10,0" SelectionChanged="CallSelector_SelectionChanged">
                     <ComboBoxItem Content="Sort by Call ID"/>
                     <ComboBoxItem Content="Sort by Type"/>
                     <ComboBoxItem Content="Sort by Distance"/>
@@ -79,17 +79,20 @@
             <StackPanel Orientation="Vertical" Margin="0,0,20,0">
                 <TextBlock Text="Filter By Call Type" Margin="0,0,0,5"/>
                 <!-- Changed TextBox to ComboBox for filtering -->
-                <ComboBox Width="200" Margin="0,0,10,0" SelectionChanged="FilterComboBox_SelectionChanged">
+                <ComboBox Width="200" Margin="0,0,10,0" SelectionChanged="Call_Filter">
                     <ComboBoxItem Content="All"/>
                     <ComboBoxItem Content="Food Preparation"/>
                     <ComboBoxItem Content="Food Transport"/>
                     <ComboBoxItem Content="Inventory Check"/>
                 </ComboBox>
+
             </StackPanel>
+
         </StackPanel>
 
         <!-- List of open calls -->
-        <ListView Grid.Row="1"  ><!--SelectionChanged="CallsListView_SelectionChanged">-->
+        <ListView Grid.Row="1"  >
+            <!--SelectionChanged="CallsListView_SelectionChanged">-->
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding Id}" Width="100"/>
@@ -112,6 +115,7 @@
         <!-- Button to select the call for treatment -->
         <Button Grid.Row="3" Content="Select Call for Treatment" 
                 HorizontalAlignment="Right"
-                Click="SelectCallButton_Click"/>
+                Click="BtnChoose_Click"/>
+        <Image  Source="/picture/logo.png" Height="90" Margin="649,-18,11,0" Grid.RowSpan="2" VerticalAlignment="Top"/>
     </Grid>
 </Window>

@@ -8,162 +8,61 @@
         Title="Call History" Height="450" Width="800"
         Background="{StaticResource ButtonBlue}">
 
-    <Window.Resources>
-        <!-- Style for ComboBox -->
-        <Style TargetType="ComboBox">
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#2196F3"/>
-            <Setter Property="BorderThickness" Value="1"/>
-        </Style>
 
-        <!-- Style for Labels -->
-        <Style TargetType="Label">
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="#333333"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
-
-        <!-- Style for Buttons -->
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="#2196F3"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="15,5"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#1976D2"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-
-    <!--External Grid-->
-    <Grid Margin="15">
+    <Grid>
+        <!-- הגדרת שורות לגריד -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <!-- השורה הראשונה עבור תיבת הבחירה -->
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <!-- השורה השנייה עבור ה-DataGrid -->
         </Grid.RowDefinitions>
 
-        <!--Internal, Upper Grid-->
-        <Grid HorizontalAlignment="Stretch" Margin="0,0,0,10" Grid.Row="0">
+        <!-- שורה ראשונה: בחירת סוג הקריאה -->
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Content="Select Call Type:" Grid.Column="0"/>
-            <ComboBox ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}"
-                      SelectionChanged="Call_Filter"
-                      SelectedValue="{Binding TypeCallInList, Mode=TwoWay}"
-                      Background="{StaticResource LightBlue}"
-                      Grid.Column="1"/>
+            <Label Content="Select Call Type:" 
+                   Grid.Column="0" 
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Top" 
+                   Margin="3,0,0,0"/>
 
-            <Label Content="Select sort value:" Grid.Column="2"/>
-            <ComboBox ItemsSource="{Binding Source={StaticResource OpenCallInListCollectionKey}}"
-                      SelectionChanged="CallSelector_SelectionChanged"
-                      SelectedValue="{Binding OpenCallInList, Mode=TwoWay}"
-                       Background="{StaticResource LightBlue}"
-                      Grid.Column="3"/>
+            <ComboBox  ItemsSource="{Binding Source={StaticResource ClosedCallInListFieldCollectionKey}}"  
+                      SelectionChanged="cbVSelector_SelectionChanged" 
+                      SelectedValue="{Binding ClosedCallInList, Mode=TwoWay}" 
+                      Grid.Column="1" Margin="242,0,0,0"/>
+            <ComboBox Margin="135,0,30,0"
+   ItemsSource= "{Binding Source={StaticResource CallTypeCollectionKey}}"
+   SelectionChanged="Call_Filter" 
+   SelectedValue="{Binding TypeCallInList, Mode=TwoWay}" />
+            <Label Content="select sort  value :" 
+                Grid.Column="1" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Center" 
+                Margin="100,0,0,0" Width="135"/>
         </Grid>
 
+        <!-- שורה שנייה: DataGrid להצגת הנתונים -->
         <DataGrid Grid.Row="1" 
-                  ItemsSource="{Binding OpenCallList}" 
-                  AutoGenerateColumns="False"
-                  SelectedItem="{Binding SelectedCall}"
-                  SelectionChanged="DataGrid_SelectionChanged"
-                  Background="White"
-                  BorderBrush="#DDDDDD"
-                  BorderThickness="1"
-                  RowBackground="White"
-                  AlternatingRowBackground="#F8F8F8"
-                  GridLinesVisibility="Horizontal"
-                  HorizontalGridLinesBrush="#EEEEEE">
-
-            <DataGrid.ColumnHeaderStyle>
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="Background" Value="DarkBlue"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontWeight" Value="SemiBold"/>
-                    <Setter Property="Height" Value="40"/>
-                    <Setter Property="Padding" Value="10,0"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                </Style>
-            </DataGrid.ColumnHeaderStyle>
-
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Padding" Value="10,5"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="DataGridCell">
-                                <Border Padding="{TemplateBinding Padding}" 
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        Background="{TemplateBinding Background}">
-                                    <ContentPresenter />
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </DataGrid.CellStyle>
+                  ItemsSource="{Binding ClosedCallList}" 
+                  AutoGenerateColumns="False">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="Auto"/>
-                <DataGridTemplateColumn Header="Call Type" Width="Auto">
+                <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Type}" Header="Type" Width="*"/>
+                <DataGridTextColumn Binding="{Binding FullAddress}" Header="Full Address" Width="*"/>
+                <DataGridTextColumn Binding="{Binding TimeOpen}" Header="Time Open" Width="*"/>
+                <DataGridTextColumn Binding="{Binding StartTreat}" Header="Start Treatment" Width="*"/>
+                <DataGridTextColumn Binding="{Binding TimeClose}" Header="Time Close" Width="*"/>
+
+                <DataGridTemplateColumn Header="Call Type">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding CType}" Padding="5,0">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding CType}" Value="Puncture">
-                                                <Setter Property="Foreground" Value="#F44336"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding CType}" Value="Cables">
-                                                <Setter Property="Foreground" Value="#2196F3"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding CType}" Value="LockedCar">
-                                                <Setter Property="Foreground" Value="#4CAF50"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding FullAddress}" Header="Call Address" Width="*"/>
-                <DataGridTextColumn Binding="{Binding TimeOpen}" Header="Time Opened" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding MaxTimeToClose}" Header="Max Time To Close" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding distanceCallVolunteer}" Header="Distance" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding Status}" Header="Status" Width="Auto"/>
-                <DataGridTemplateColumn Header="Actions" Width="Auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Choose" Click="BtnChoose_Click" Margin="5"/>
+                            <TextBlock Text="{Binding TypeEndTreat}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

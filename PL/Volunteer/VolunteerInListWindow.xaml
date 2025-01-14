@@ -22,10 +22,10 @@
             <RowDefinition Height="Auto"/>
             <!-- Button -->
         </Grid.RowDefinitions>
-        <Image Source="C:\Users\ayele\source\repos\dotNet5785_-4642_7701\שיראל ואיילת.png"
+        <Image  Source="/picture/logo.png"
 Width="77" Height="60"
 HorizontalAlignment="Left"
-VerticalAlignment="Top" Margin="530,498,0,0" Grid.Row="1" Grid.RowSpan="2" RenderTransformOrigin="-0.455,0.5" />
+VerticalAlignment="Top" Margin="695,513,0,0" Grid.Row="1" RenderTransformOrigin="-0.455,0.5" Grid.RowSpan="2" />
         <!-- Internal, Upper Grid -->
         <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>

@@ -19,20 +19,19 @@ namespace PL.VolunteerScreens
         public static readonly DependencyProperty ClosedCallListProperty =
             DependencyProperty.Register("ClosedCallList", typeof(IEnumerable<BO.ClosedCallInList>), typeof(CallHistory), new PropertyMetadata(null));
 
-        public BO.ClosedCallInList? SelectedColsedCall { get; set; }
+        public BO.ClosedCallInList? SelectedClosedCall { get; set; }
 
         public BO.ClosedCallInListField ClosedCallInList { get; set; }
 
-        public int VolunteerId { get; set; }
+        public int IdVolunteer { get; set; }
 
         public BO.CallType? TypeCallInList { get; set; }
 
         public CallHistory(int id)
         {
-            VolunteerId = id;
+            IdVolunteer = id;
             InitializeComponent();
             DataContext = this;
-
         }
 
         private void cbVSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -40,29 +39,27 @@ namespace PL.VolunteerScreens
             queryClosedCallList();
         }
 
+        // מימוש סינון הקריאות לפי סוג הקריאה
         private void Call_Filter(object sender, SelectionChangedEventArgs e)
         {
+            // מבצע עדכון של משתנה פילטר הקריאות
             ClosedCallInList = (BO.ClosedCallInListField)(((ComboBox)sender).SelectedItem);
-            ClosedCallList = s_bl?.Call.GetClosedCallsByVolunteer(VolunteerId, TypeCallInList, ClosedCallInList)!;
+            // שולף את הקריאות המבוקשות לפי הפילטרים שנבחרו
+            queryClosedCallList();
         }
 
-
+        // מתודה לשליפת הקריאות לפי הפילטרים שנבחרו
         private void queryClosedCallList()
-    => ClosedCallList = s_bl?.Call.GetClosedCallsByVolunteer(VolunteerId, TypeCallInList, ClosedCallInList)!;
-
-        private void CallSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-        }
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-           
-        }
-        private void BtnChoose_Click(object sender, RoutedEventArgs e)
-        {
-
+            // שליפת הקריאות לפי המתודות של ה-API הפנימי
+            ClosedCallList = s_bl?.Call.GetClosedCallsByVolunteer(IdVolunteer, TypeCallInList, ClosedCallInList) ?? Enumerable.Empty<BO.ClosedCallInList>();
         }
 
+        // מימוש נוסף למימוש סינון לפי סוג הקריאה
+        private void CallType_Filter(object sender, SelectionChangedEventArgs e)
+        {
+            TypeCallInList = (BO.CallType?)(((ComboBox)sender).SelectedItem);
+            queryClosedCallList();
+        }
     }
-
 }

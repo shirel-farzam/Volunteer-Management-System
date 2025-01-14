@@ -88,7 +88,7 @@ namespace PL
                 else
                 {
                     MessageBox.Show("Welcome, Admin!");
-                    new AdminTransition().Show();
+                    new AdminTransition(Id,this).Show();
                 }
 
             }
