@@ -61,7 +61,7 @@ namespace PL.VolunteerScreens
         /// <summary>
         /// Handles the click event for the "Update" button
         /// </summary>
-        private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+        private void ButtonUpdate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -87,11 +87,32 @@ namespace PL.VolunteerScreens
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //// Update the volunteer details in the database
-            //s_bl.Volunteer.Update(CurrentVolunteer.Id, CurrentVolunteer);
-            //// Notify the user
-            //MessageBox.Show("Volunteer details updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            new CallHistory(CurrentVolunteer.Id).Show();
+            // Display a message box with a Yes/No question
+            var result = MessageBox.Show(
+                "Do you want to open the call history?",
+                "Confirmation",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question
+            );
+
+            // Check if the user clicked "Yes"
+            if (result == MessageBoxResult.Yes)
+            {
+                new CallHistory(CurrentVolunteer.Id,this).Show();
+            }
+            //else
+            //{
+            //    MessageBox.Show("Call history was not opened.", "Notification", MessageBoxButton.OK, MessageBoxImage.Information);
+            //}
         }
+
+        //private void ButtonUpdate_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // Update the volunteer details in the database
+        //    s_bl.Volunteer.Update(CurrentVolunteer.Id, CurrentVolunteer);
+        //    // Notify the user
+        //    MessageBox.Show("Volunteer details updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+        //}
     }
 }

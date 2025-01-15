@@ -19,6 +19,7 @@ namespace PL.Admin
             InitializeComponent();
            Id = id;
             _previousWindow = previousWindow;
+            this.DataContext = this;
         }
 
         public int Id { get; set; }
@@ -40,13 +41,20 @@ namespace PL.Admin
         {
 
            new MainWindow(Id,this).Show();
-            this.Close();
+            this.Hide();
            
         }
-        private void BackButton_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _previousWindow.Show(); // Show the previous window
-            this.Close(); // Close the current window
+            if (_previousWindow != null)
+            {
+                _previousWindow.Show(); // Show the previous window
+                this.Hide(); // Close the current window
+            }
+            else
+            {
+                MessageBox.Show("Previous window is null!");
+            }
         }
 
     }

@@ -166,7 +166,20 @@ namespace PL
         {
 
         }
-        private void BackButton_Click(object sender, RoutedEventArgs e)
+        //private void BackButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (_previousWindow != null)
+        //    {
+        //        _previousWindow.Show(); // Show the previous window
+        //        this.Hide(); // Close the current window
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Previous window is null!");
+        //    }
+        //}
+
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (_previousWindow != null)
             {
@@ -178,7 +191,5 @@ namespace PL
                 MessageBox.Show("Previous window is null!");
             }
         }
-
-
     }
 }

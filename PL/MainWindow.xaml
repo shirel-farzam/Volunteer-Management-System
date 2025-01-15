@@ -229,6 +229,6 @@
                 </ItemsControl>
             </Grid>
         </Border>
-        <Button Style="{StaticResource BackButtonStyle}" Content="Back" Margin="24,35,0,0" Grid.Row="2" />
+        <Button Style="{StaticResource BackButtonStyle}" Content="Back" Margin="24,35,0,0" Grid.Row="2" Click="Button_Click" />
     </Grid>
 </Window>

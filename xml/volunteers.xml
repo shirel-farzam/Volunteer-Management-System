@@ -1,20 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfVolunteer>
   <Volunteer>
-    <Id>214429151</Id>
-    <FullName>Noa Levy</FullName>
-    <PhoneNumber>0541234567</PhoneNumber>
-    <Email>noa.levy@example.com</Email>
-    <TypeDistance>Aerial</TypeDistance>
-    <Job>Volunteer</Job>
-    <Active>true</Active>
-    <Password>W1nter2024</Password>
-    <FullAddress>Rothschild Boulevard 1, Tel Aviv, Israel</FullAddress>
-    <Latitude>32.0631559</Latitude>
-    <Longitude>34.7688262</Longitude>
-    <MaxReading>72</MaxReading>
-  </Volunteer>
-  <Volunteer>
     <Id>214432767</Id>
     <FullName>Omer Cohen</FullName>
     <PhoneNumber>0532345678</PhoneNumber>
@@ -223,5 +209,19 @@
     <Latitude>31.2509036</Latitude>
     <Longitude>34.7668511</Longitude>
     <MaxReading>50</MaxReading>
+  </Volunteer>
+  <Volunteer>
+    <Id>214429151</Id>
+    <FullName>Noa Levy</FullName>
+    <PhoneNumber>0541234567</PhoneNumber>
+    <Email>noa.levy@example.com</Email>
+    <TypeDistance>Aerial</TypeDistance>
+    <Job>Volunteer</Job>
+    <Active>true</Active>
+    <Password>Noa1234</Password>
+    <FullAddress>Rothschild Boulevard 1, Tel Aviv, Israel</FullAddress>
+    <Latitude>32.0631559</Latitude>
+    <Longitude>34.7688262</Longitude>
+    <MaxReading>72</MaxReading>
   </Volunteer>
 </ArrayOfVolunteer>

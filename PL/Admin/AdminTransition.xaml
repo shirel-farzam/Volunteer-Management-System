@@ -97,9 +97,7 @@
                         Click="NavigateToVolunteerScreen_Click"/>
             </Border>
         </StackPanel>
-        <Button Style="{StaticResource BackButtonStyle}" Content="Back" Margin="20,181,0,0" Grid.Row="1" />
-
-
+        <Button Style="{StaticResource BackButtonStyle}" Content="Back" Margin="20,181,0,0" Grid.Row="1" Click="Button_Click" />
 
 
     </Grid>

@@ -9,7 +9,7 @@ namespace PL.VolunteerScreens
     public partial class CallHistory : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
+        private Window _previousWindow;
         public IEnumerable<BO.ClosedCallInList> ClosedCallList
         {
             get { return (IEnumerable<BO.ClosedCallInList>)GetValue(ClosedCallListProperty); }
@@ -27,11 +27,12 @@ namespace PL.VolunteerScreens
 
         public BO.CallType? TypeCallInList { get; set; }
 
-        public CallHistory(int id)
+        public CallHistory(int id, Window previousWindow)
         {
             IdVolunteer = id;
             InitializeComponent();
             DataContext = this;
+            _previousWindow = previousWindow;
         }
 
         private void cbVSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -60,6 +61,19 @@ namespace PL.VolunteerScreens
         {
             TypeCallInList = (BO.CallType?)(((ComboBox)sender).SelectedItem);
             queryClosedCallList();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_previousWindow != null)
+            {
+                _previousWindow.Show(); // Show the previous window
+                this.Hide(); // Close the current window
+            }
+            else
+            {
+                MessageBox.Show("Previous window is null!");
+            }
         }
     }
 }

@@ -14,8 +14,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- השורה הראשונה עבור תיבת הבחירה -->
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
             <!-- השורה השנייה עבור ה-DataGrid -->
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- שורה ראשונה: בחירת סוג הקריאה -->
@@ -68,5 +69,6 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Button Style="{StaticResource BackButtonStyle}" Content="Back" Margin="24,0,0,0" Grid.Row="2" Click="Button_Click" VerticalAlignment="Center" />
     </Grid>
 </Window>

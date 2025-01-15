@@ -105,7 +105,7 @@ Stretch="Uniform" Grid.RowSpan="2" Margin="5,-28,0,0"  />
                     </UniformGrid>
 
                     <!-- Update Button -->
-                    <Button Content="Update" Height="40" Width="100" HorizontalAlignment="Left" Margin="0,15,0,0" Background="#10B981" Foreground="White" FontWeight="Bold" Click="Button_Click" />
+                    <Button Content="Update" Height="40" Width="100" HorizontalAlignment="Left" Margin="0,15,0,0" Background="#10B981" Foreground="White" FontWeight="Bold" Click="ButtonUpdate_Click" />
                 </StackPanel>
             </Border>
 
