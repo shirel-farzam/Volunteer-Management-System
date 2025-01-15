@@ -96,28 +96,63 @@ internal class CallImplementation : ICall
 
     public int[] CountCall()
     {
-        var calls = _dal.Call.ReadAll(); // Read all calls from the data layer
+        //var calls = _dal.Call.ReadAll(); // Read all calls from the data layer
 
-        // Group assignments by their completion type (`TypeEndTreat`) across all calls
-        var groupedCalls = calls
-            .SelectMany(call => _dal.Assignment.ReadAll(ass => ass.CallId == call.Id)) // Get all assignments for each call
-            .GroupBy(ass => (int)ass.TypeEndTreat) // Group assignments by `TypeEndTreat`
-            .ToDictionary(group => group.Key, group => group.Count()); // Convert to dictionary: Key = TypeEndTreat, Value = Count
+        //    // Group assignments by their completion type (`TypeEndTreat`) across all calls
+        //    var groupedCalls = calls
+        //        .SelectMany(call => _dal.Assignment.ReadAll(ass => ass.CallId == call.Id)) // Get all assignments for each call
+        //        .GroupBy(ass => (int)ass.TypeEndTreat) // Group assignments by `TypeEndTreat`
+        //        .ToDictionary(group => group.Key, group => group.Count()); // Convert to dictionary: Key = TypeEndTreat, Value = Count
 
-        // Determine the highest `TypeEndTreat` value for array size
-        int maxTypeEnd = groupedCalls.Keys.Any() ? groupedCalls.Keys.Max() : 0;
+        //    // Determine the highest `TypeEndTreat` value for array size
+        //    int maxTypeEnd = groupedCalls.Keys.Any() ? groupedCalls.Keys.Max() : 0;
 
-        // Initialize the result array with the appropriate size
-        int[] result = new int[maxTypeEnd + 1];
+        //    // Initialize the result array with the appropriate size
+        //    int[] result = new int[maxTypeEnd + 1];
 
-        // Populate the result array with counts for each completion type
-        foreach (var kvp in groupedCalls)
-        {
-            result[kvp.Key] = kvp.Value;
+        //    // Populate the result array with counts for each completion type
+        //    foreach (var kvp in groupedCalls)
+        //    {
+        //        result[kvp.Key] = kvp.Value;
+        //    }
+
+        //    return result; // Return the array with counts
+        //}
+        
+            try
+            {
+                // Fetching calls from the data layer
+                var doCalls = _dal.Call.ReadAll();
+
+                // Converting the calls from DO to BO using your function
+                var boCalls = doCalls.Select(doCall => CallManager.GetViewingCall(doCall.Id)).ToList();
+
+                // Grouping the calls by status and counting occurrences
+                var groupedCalls = boCalls
+                    .GroupBy(call => call.Status)
+                    .ToDictionary(group => (int)group.Key, group => group.Count());
+
+                // Creating the result array with specific order and summing at the last position
+                var quantities = new int[7];
+                quantities[0] = groupedCalls.ContainsKey((int)CallStatus.Open) ? groupedCalls[(int)CallStatus.Open] : 0;
+                quantities[1] = groupedCalls.ContainsKey((int)CallStatus.Closed) ? groupedCalls[(int)CallStatus.Closed] : 0;
+                quantities[2] = groupedCalls.ContainsKey((int)CallStatus.InProgress) ? groupedCalls[(int)CallStatus.InProgress] : 0;
+                quantities[3] = groupedCalls.ContainsKey((int)CallStatus.Expired) ? groupedCalls[(int)CallStatus.Expired] : 0;
+                quantities[4] = groupedCalls.ContainsKey((int)CallStatus.InProgressRisk) ? groupedCalls[(int)CallStatus.InProgressRisk] : 0;
+                quantities[5] = groupedCalls.ContainsKey((int)CallStatus.OpenRisk) ? groupedCalls[(int)CallStatus.OpenRisk] : 0;
+
+                // Summing up all values into the last position
+                quantities[6] = quantities.Take(6).Sum();
+
+                return quantities;
+            }
+            catch (Exception ex)
+            {
+                throw new BlDoesNotExistException("Failed to retrieve call quantities by status.", ex);
+            }
         }
+    
 
-        return result; // Return the array with counts
-    }
 
     public BO.Call Read(int callId)
     {
@@ -132,6 +167,7 @@ internal class CallImplementation : ICall
         return new BO.Call
         {
             Id = callId,
+            
             Type = (BO.CallType)doCall.Type, // Map the call type
             Description = doCall.Description, // Map the description
             FullAddress = doCall.FullAddress, // Map the address

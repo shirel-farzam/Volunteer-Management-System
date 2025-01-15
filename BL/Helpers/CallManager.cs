@@ -6,6 +6,7 @@ using Microsoft.VisualBasic;
 
 using Dal;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Helpers;
 
@@ -185,8 +186,6 @@ internal static class CallManager
     }
 
 
-
-    
     public static BO.CallStatus GetCallStatus(DO.Call doCall)
     {
         if (doCall.MaxTimeToClose < _dal.Config.Clock)
@@ -238,11 +237,66 @@ internal static class CallManager
             StartTime = doAssignment.TimeStart, // The time the volunteer started handling the call
             EndTime = doAssignment.TimeEnd, // The time the handling of the call was completed
             CompletionType = doAssignment.TypeEndTreat.HasValue
-            ? (BO.AssignmentCompletionType?)doAssignment.TypeEndTreat.Value 
+            ? (BO.AssignmentCompletionType?)doAssignment.TypeEndTreat.Value
             : null // Completion status (nullable)
         };
 
     }
+
+    //public static List<BO.CallAssignmentInList> GetCallAssignInList(int volunteerId)
+    //{
+    //    // בדיקת קיום מתנדב
+    //    DO.Volunteer? doVolunteer = _dal.Volunteer.Read(volunteerId)
+    //        ?? throw new BlDoesNotExistException($"Volunteer with ID {volunteerId} does not exist");
+
+    //    // הבאת כל ההקצאות הפתוחות של המתנדב
+    //    var doAssignments = _dal.Assignment.ReadAll()
+    //        .Where(a => a.VolunteerId == volunteerId && a.TimeEnd == null)
+    //        .ToList();
+
+    //    // אם אין הקצאות פתוחות, מחזיר רשימה ריקה
+    //    if (!doAssignments.Any())
+    //    {
+    //        return new List<BO.CallAssignmentInList>();
+    //    }
+
+    //    // ממפה את ההקצאות לאובייקטי BO
+    //    return doAssignments.Select(a => new BO.CallAssignmentInList
+    //    {
+    //        VolunteerId = a.VolunteerId,
+    //        VolunteerName = doVolunteer.FullName, // שם המתנדב
+    //        StartTime = a.TimeStart,
+    //        EndTime = a.TimeEnd,
+    //        CompletionType = a.TypeEndTreat.HasValue
+    //            ? (BO.AssignmentCompletionType?)a.TypeEndTreat.Value
+    //            : null
+    //    }).ToList();
+    //}
+    public static List<BO.CallAssignmentInList> GetCallAssignmentsForCall(int callId)
+    {
+        // For the CallAssignments field in the GetViewingCall function
+
+
+        // Search for all assignments related to the given call
+        var doAssignments = _dal.Assignment.ReadAll().Where(a => a.CallId == callId).ToList();
+
+        // If no assignments are found, return null
+        if ( !doAssignments.Any() || doAssignments == null)
+        {
+            return null; // No assignments found
+        }
+
+        // Use LINQ to convert the assignments into BO.CallAssignInList using the GetCallAssignInList function
+        var callAssignInList = (from doAssignment in doAssignments
+                                let doVolunteer = _dal.Volunteer.Read(doAssignment.VolunteerId)
+                                where doVolunteer != null
+                                select GetCallAssignInList(doAssignment.VolunteerId)) // Calls the conversion function
+                                .ToList();
+
+        // Return the complete list
+        return callAssignInList;
+    }
+
 
     // GetCallInList
     public static BO.CallInList GetCallInList(int Id)
@@ -251,7 +305,7 @@ internal static class CallManager
 
         //Find the appropriate CALL  and  Assignment by volunteer ID
         var doAssignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == Id && a.TimeEnd == null).FirstOrDefault();// לבדוק
-        var doCall = _dal.Call.ReadAll().Where(c => c.Id == doAssignment!.CallId).FirstOrDefault();
+        var doCall = _dal.Call.ReadAll().Where(c => c.Id == /*doAssignment*/Id).FirstOrDefault();
         var GetTotalAssignmentsForCall = _dal.Assignment.ReadAll().Where(a => a.Id == Id);
 
         return new BO.CallInList
@@ -268,10 +322,38 @@ internal static class CallManager
             Status = CalculateCallStatus(doCall), // Current status of the call
             TotalAssignments = GetTotalAssignmentsForCall.Count(a => a.CallId == doAssignment.CallId) // Total number of assignments for the call
 
+
         };
 
     }
 
+    public static BO.Call GetViewingCall(int CallId)
+    {
+        // DO.Volunteer? doVolunteer = _dal.Volunteer.Read(VolunteerId) ?? throw new BlDoesNotExistException("eroor id");// ז
+
+        //Find the appropriate CALL  and  Assignmentn by volunteer ID
+        // var doAssignment = _dal.Assignment.ReadAll().Where(a => a.CallId == CallId /&& a.EndOfTime == null/).FirstOrDefault();
+        var doAssignment = _dal.Assignment.ReadAll(a => a.CallId == CallId).FirstOrDefault();
+        var doCall = _dal.Call.ReadAll().Where(c => c.Id ==/* doAssignment!.*/CallId).FirstOrDefault();
+
+
+        // Create the object
+        return new BO.Call
+        {
+
+            Id = doCall.Id, // Call identifier
+            Type = (BO.CallType)doCall.Type, // Enum conversion
+            Description = doCall.Description,
+            FullAddress = doCall.FullAddress, // Full address of the call
+            Latitude = (double)doCall.Latitude, // Latitude coordinate of the address
+            Longitude = (double)doCall.Longitude, // Longitude coordinate of the address
+            OpenTime = doCall.TimeOpened, // Time when the call was opened
+            MaxEndTime = doCall.MaxTimeToClose, // Maximum completion time for the call
+            Status = CalculateCallStatus(doCall), // Current status of the call
+            CallAssignments = CallManager.GetCallAssignmentsForCall(doCall.Id),
+
+        };
+    }
     // Convert 
     public static DO.Call BOConvertDO_Call(BO.Call BOCall)
     {
