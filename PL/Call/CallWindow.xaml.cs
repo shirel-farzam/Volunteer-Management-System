@@ -136,7 +136,7 @@ namespace PL.CallWindow
         private void AddCall()
         {
             try
-            {
+            { 
                 s_bl.Call.AddCall(Call);
                 Application.Current.Dispatcher.Invoke(() =>
                 {
