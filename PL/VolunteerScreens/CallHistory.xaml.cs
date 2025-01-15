@@ -2,30 +2,77 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PL.VolunteerScreens
 {
     public partial class CallHistory : Window
     {
-        public ObservableCollection<ClosedCallInList> ClosedCallsList { get; set; }
-
-        public CallHistory(int volunteerId)
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private Window _previousWindow;
+        public IEnumerable<BO.ClosedCallInList> ClosedCallList
         {
-            InitializeComponent();
-            LoadClosedCalls(volunteerId);
-            DataContext = this;
+            get { return (IEnumerable<BO.ClosedCallInList>)GetValue(ClosedCallListProperty); }
+            set { SetValue(ClosedCallListProperty, value); }
         }
 
-        private void LoadClosedCalls(int volunteerId)
+        public static readonly DependencyProperty ClosedCallListProperty =
+            DependencyProperty.Register("ClosedCallList", typeof(IEnumerable<BO.ClosedCallInList>), typeof(CallHistory), new PropertyMetadata(null));
+
+        public BO.ClosedCallInList? SelectedClosedCall { get; set; }
+
+        public BO.ClosedCallInListField ClosedCallInList { get; set; }
+
+        public int IdVolunteer { get; set; }
+
+        public BO.CallType? TypeCallInList { get; set; }
+
+        public CallHistory(int id, Window previousWindow)
         {
-            try
+            IdVolunteer = id;
+            InitializeComponent();
+            DataContext = this;
+            _previousWindow = previousWindow;
+        }
+
+        private void cbVSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            queryClosedCallList();
+        }
+
+        // מימוש סינון הקריאות לפי סוג הקריאה
+        private void Call_Filter(object sender, SelectionChangedEventArgs e)
+        {
+            // מבצע עדכון של משתנה פילטר הקריאות
+            ClosedCallInList = (BO.ClosedCallInListField)(((ComboBox)sender).SelectedItem);
+            // שולף את הקריאות המבוקשות לפי הפילטרים שנבחרו
+            queryClosedCallList();
+        }
+
+        // מתודה לשליפת הקריאות לפי הפילטרים שנבחרו
+        private void queryClosedCallList()
+        {
+            // שליפת הקריאות לפי המתודות של ה-API הפנימי
+            ClosedCallList = s_bl?.Call.GetClosedCallsByVolunteer(IdVolunteer, TypeCallInList, ClosedCallInList) ?? Enumerable.Empty<BO.ClosedCallInList>();
+        }
+
+        // מימוש נוסף למימוש סינון לפי סוג הקריאה
+        private void CallType_Filter(object sender, SelectionChangedEventArgs e)
+        {
+            TypeCallInList = (BO.CallType?)(((ComboBox)sender).SelectedItem);
+            queryClosedCallList();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_previousWindow != null)
             {
-                var closedCalls = BlApi.Factory.Get().Call.GetClosedCallsByVolunteer(volunteerId);
-                ClosedCallsList = new ObservableCollection<ClosedCallInList>(closedCalls);
+                _previousWindow.Show(); // Show the previous window
+                this.Hide(); // Close the current window
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"שגיאה בטעינת הקריאות: {ex.Message}");
+                MessageBox.Show("Previous window is null!");
             }
         }
     }

@@ -20,8 +20,10 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,10">
             <Button Content="New Call" Height="45" Width="150" Margin="0,0,10,0" Background="#507687" Foreground="White" FontWeight="Bold" />
             <Button Content="My Calls History" Height="45" Width="150" Background="#507687" Foreground="White" FontWeight="Bold" Click="Button_Click" />
-        </StackPanel>
 
+        </StackPanel>
+        <Image Source="/picture/logo.png" Height="120" Width="160" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
+Stretch="Uniform" Grid.RowSpan="2" Margin="5,-28,0,0"  />
         <!-- Main Content -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -65,7 +67,7 @@
                         <!-- Active -->
                         <Label Content="Active:" FontSize="12" VerticalAlignment="Center" />
                         <CheckBox IsChecked="{Binding CurrentVolunteer.Active}" VerticalAlignment="Center" />
-                        
+
                         <!-- Role (ComboBox for Job) -->
                         <Label Content="Role:" Grid.Row="6" Grid.Column="0" />
                         <ComboBox SelectedValue="{Binding CurrentVolunteer.Job, Mode=TwoWay}" SelectedValuePath="Content"  Grid.Row="6" Grid.Column="1" IsEnabled="False">
@@ -103,7 +105,7 @@
                     </UniformGrid>
 
                     <!-- Update Button -->
-                    <Button Content="Update" Height="40" Width="100" HorizontalAlignment="Left" Margin="0,15,0,0" Background="#10B981" Foreground="White" FontWeight="Bold" Click="Button_Click" />
+                    <Button Content="Update" Height="40" Width="100" HorizontalAlignment="Left" Margin="0,15,0,0" Background="#10B981" Foreground="White" FontWeight="Bold" Click="ButtonUpdate_Click" />
                 </StackPanel>
             </Border>
 

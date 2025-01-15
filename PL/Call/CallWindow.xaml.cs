@@ -75,7 +75,7 @@ namespace PL.CallWindow
         {
             try
             {
-                var assignments = s_bl.Call.GetAssignments(Id);
+                var assignments = s_bl.Call.GetCallAssignments(Id);
                 CallAssignments.Clear();
                 foreach (var assignment in assignments)
                 {

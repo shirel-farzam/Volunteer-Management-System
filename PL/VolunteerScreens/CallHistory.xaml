@@ -5,21 +5,70 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.VolunteerScreens"
         mc:Ignorable="d"
-        Title="CallHistory" Height="450" Width="800">
-    <Grid>
-        <ListView ItemsSource="{Binding ClosedCallsList}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding Id}" />
-                    <GridViewColumn Header="Call Type" DisplayMemberBinding="{Binding CallType}" />
-                    <GridViewColumn Header="Full Address" DisplayMemberBinding="{Binding FullAddress}" />
-                    <GridViewColumn Header="Opening Time" DisplayMemberBinding="{Binding OpeningTime}" />
-                    <GridViewColumn Header="Entry Time" DisplayMemberBinding="{Binding EntryTime}" />
-                    <GridViewColumn Header="Completion Time" DisplayMemberBinding="{Binding CompletionTime}" />
-                    <GridViewColumn Header="Completion Type" DisplayMemberBinding="{Binding CompletionType}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+        Title="Call History" Height="450" Width="800"
+        Background="{StaticResource ButtonBlue}">
 
+
+    <Grid>
+        <!-- הגדרת שורות לגריד -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- השורה הראשונה עבור תיבת הבחירה -->
+            <RowDefinition Height="5*"/>
+            <!-- השורה השנייה עבור ה-DataGrid -->
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- שורה ראשונה: בחירת סוג הקריאה -->
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Select Call Type:" 
+                   Grid.Column="0" 
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Top" 
+                   Margin="3,0,0,0"/>
+
+            <ComboBox  ItemsSource="{Binding Source={StaticResource ClosedCallInListFieldCollectionKey}}"  
+                      SelectionChanged="cbVSelector_SelectionChanged" 
+                      SelectedValue="{Binding ClosedCallInList, Mode=TwoWay}" 
+                      Grid.Column="1" Margin="242,0,0,0"/>
+            <ComboBox Margin="135,0,30,0"
+   ItemsSource= "{Binding Source={StaticResource CallTypeCollectionKey}}"
+   SelectionChanged="Call_Filter" 
+   SelectedValue="{Binding TypeCallInList, Mode=TwoWay}" />
+            <Label Content="select sort  value :" 
+                Grid.Column="1" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Center" 
+                Margin="100,0,0,0" Width="135"/>
+        </Grid>
+
+        <!-- שורה שנייה: DataGrid להצגת הנתונים -->
+        <DataGrid Grid.Row="1" 
+                  ItemsSource="{Binding ClosedCallList}" 
+                  AutoGenerateColumns="False">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Type}" Header="Type" Width="*"/>
+                <DataGridTextColumn Binding="{Binding FullAddress}" Header="Full Address" Width="*"/>
+                <DataGridTextColumn Binding="{Binding TimeOpen}" Header="Time Open" Width="*"/>
+                <DataGridTextColumn Binding="{Binding StartTreat}" Header="Start Treatment" Width="*"/>
+                <DataGridTextColumn Binding="{Binding TimeClose}" Header="Time Close" Width="*"/>
+
+                <DataGridTemplateColumn Header="Call Type">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding TypeEndTreat}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Style="{StaticResource BackButtonStyle}" Content="Back" Margin="24,0,0,0" Grid.Row="2" Click="Button_Click" VerticalAlignment="Center" />
     </Grid>
 </Window>

@@ -53,10 +53,10 @@
 
         <!-- Logo Image -->
         <Image Grid.Row="0" Grid.Column="2"
-               Source="C:\Users\ayele\source\repos\dotNet5785_-4642_7701\שיראל ואיילת.png"
-               Height="130" 
+               Source="Picture/Logo.png"
+               Height="150" 
                VerticalAlignment="Top" 
-               Margin="58,4,17,0" 
+               Margin="0,4,0,0" 
                Stretch="Uniform" Grid.RowSpan="2" />
     </Grid>
 </Window>

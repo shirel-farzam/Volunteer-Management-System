@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using PL.Volunteer;
+using PL.VolunteerScreens;
 using PL.VolunteerWindow;
 
 
@@ -11,18 +12,21 @@ namespace PL.Admin
     /// </summary>
     public partial class AdminTransition : Window
     {
-        public AdminTransition()
+        private Window _previousWindow; // Variable to store a reference to the previous window
+
+        public AdminTransition(int id, Window previousWindow)
         {
             InitializeComponent();
+           Id = id;
+            _previousWindow = previousWindow;
+            this.DataContext = this;
         }
 
-        /// <summary>
-        /// Navigate to the Volunteer Screen
-        /// </summary>
+        public int Id { get; set; }
         private void NavigateToVolunteerScreen_Click(object sender, RoutedEventArgs e)
         {
 
-            new VolunteerWindow.VolunteerWindow().Show();
+            new VolunteerMainWindow(Id).Show();
 
             // יצירת חלון חדש למסך המתנדבים ופתיחתו
             //VolunteerScreenWindow volunteerWindow = new VolunteerScreenWindow(); // ודא שהחלון קיים
@@ -35,10 +39,23 @@ namespace PL.Admin
         /// </summary>
         private void NavigateToManagementScreen_Click(object sender, RoutedEventArgs e)
         {
-           
-           new MainWindow().Show();
-            this.Close();
+
+           new MainWindow(Id,this).Show();
+            this.Hide();
            
         }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_previousWindow != null)
+            {
+                _previousWindow.Show(); // Show the previous window
+                this.Hide(); // Close the current window
+            }
+            else
+            {
+                MessageBox.Show("Previous window is null!");
+            }
+        }
+
     }
 }

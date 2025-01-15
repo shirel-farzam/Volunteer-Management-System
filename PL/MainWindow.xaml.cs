@@ -23,9 +23,17 @@ namespace PL
     public partial class MainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        public MainWindow()
+        private Window _previousWindow; // Variable to store a reference to the previous window
+        public int Id { get; set; }
+
+        public MainWindow(int Manegr,Window previousWindow)
         {
+         
             InitializeComponent();
+            _previousWindow = previousWindow;
+            Id = Manegr;
+            this.DataContext = this;
+
         }
 
         public TimeSpan MaxRange
@@ -45,6 +53,15 @@ namespace PL
         }
         public static readonly DependencyProperty CurrentTimeProperty =
             DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
+
+        public int[] CountCall
+        {
+            get { return (int[])GetValue(CountCallProperty); }
+            set { SetValue(CountCallProperty, value); }
+        }
+        public static readonly DependencyProperty CountCallProperty =
+        DependencyProperty.Register("CountCall", typeof(int[]), typeof(MainWindow));
+
 
         // Event handler when the RiskRange property changes
         private static void OnRiskRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -99,71 +116,7 @@ namespace PL
         {
             s_bl.Admin.initialization();
             MessageBox.Show($"Data Intilization Completed Succsessfully "); // Show confirmation message
-            //var result = MessageBox.Show(
-            //    "Are you sure you want to initialize the database?",
-            //    "Database Initialization",
-            //    MessageBoxButton.YesNo,
-            //    MessageBoxImage.Question
-            //);
-
-            //if (result == MessageBoxResult.Yes)
-            //{
-            //    Mouse.OverrideCursor = Cursors.AppStarting; // Change the cursor to hourglass
-
-            //    try
-            //    {
-            //        var openWindows = Application.Current.Windows.OfType<Window>().Where(w => w != this).ToList();
-            //        foreach (var window in openWindows)
-            //        {
-            //            window.Close(); // Close all other windows
-            //        }
-
-            //        // Perform the database initialization on a separate thread to avoid blocking the UI
-            //        var thread = new System.Threading.Thread(() =>
-            //        {
-            //            try
-            //            {
-            //                s_bl.Admin.initialization(); // Initialize the database
-            //                Application.Current.Dispatcher.Invoke(() =>
-            //                {
-            //                    MessageBox.Show(
-            //                        "The database has been successfully initialized.",
-            //                        "Success",
-            //                        MessageBoxButton.OK,
-            //                        MessageBoxImage.Information
-            //                    );
-            //                });
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                Application.Current.Dispatcher.Invoke(() =>
-            //                {
-            //                    MessageBox.Show(
-            //                        $"An error occurred: {ex.Message}",
-            //                        "Error",
-            //                        MessageBoxButton.OK,
-            //                        MessageBoxImage.Error
-            //                    );
-            //                });
-            //            }
-            //            finally
-            //            {
-            //                Application.Current.Dispatcher.Invoke(() =>
-            //                {
-            //                    Mouse.OverrideCursor = Cursors.Arrow; // Restore the cursor to normal
-            //                });
-            //            }
-            //        });
-
-            //        thread.IsBackground = true;
-            //        thread.Start();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show($"An unexpected error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //        Mouse.OverrideCursor = Cursors.Arrow; // Restore the cursor in case of failure
-            //    }
-            //}
+           
         }
 
         // Handles the "Reset Database" button click
@@ -197,9 +150,9 @@ namespace PL
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
 
-            
             CurrentTime = s_bl.Admin.GetClock();
             MaxRange = s_bl.Admin.GetMaxRange();
+            CountCall = s_bl.Call.CountCall();
 
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
@@ -213,7 +166,30 @@ namespace PL
         {
 
         }
+        //private void BackButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (_previousWindow != null)
+        //    {
+        //        _previousWindow.Show(); // Show the previous window
+        //        this.Hide(); // Close the current window
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Previous window is null!");
+        //    }
+        //}
 
-        
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_previousWindow != null)
+            {
+                _previousWindow.Show(); // Show the previous window
+                this.Hide(); // Close the current window
+            }
+            else
+            {
+                MessageBox.Show("Previous window is null!");
+            }
+        }
     }
 }
