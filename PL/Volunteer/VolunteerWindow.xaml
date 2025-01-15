@@ -65,7 +65,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- Header Image -->
-                <Image Source="C:\Users\ayele\source\repos\dotNet5785_-4642_7701\שיראל ואיילת.png"
+                <Image Source="/picture/logo.png"
                    Width="110" Height="71"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top" 
