@@ -62,8 +62,7 @@
                                 <!-- Text -->
                                 <TextBlock Text="Back" VerticalAlignment="Center" HorizontalAlignment="Center" 
                                            Foreground="{StaticResource ButtonBlue}" FontWeight="Bold" />
-                            </Grid>
-                        </ControlTemplate>
+                            </Grid>                        </ControlTemplate>
                     </Setter.Value>
                 </Setter>
             </Style>
