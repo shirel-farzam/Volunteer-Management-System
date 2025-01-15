@@ -58,6 +58,11 @@ internal class AdminImplementation : IAdmin
         AdminManager.MaxRange = AdminManager.MaxRange;
 
     }
+    public void SetClock(DateTime newTime)
+    {
+        AdminManager.UpdateClock (newTime);
+        
+    }
     #region Stage 5
 
     public void AddClockObserver(Action clockObserver) =>

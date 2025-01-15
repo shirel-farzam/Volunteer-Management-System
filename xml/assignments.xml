@@ -520,4 +520,20 @@
     <TimeEnd>2025-01-15T18:35:20</TimeEnd>
     <TypeEndTreat>ExpiredCancel</TypeEndTreat>
   </Assignment>
+  <Assignment>
+    <Id>1065</Id>
+    <CallId>1029</CallId>
+    <VolunteerId>0</VolunteerId>
+    <TimeStart>2025-01-15T22:34:32</TimeStart>
+    <TimeEnd>2025-01-15T22:34:32</TimeEnd>
+    <TypeEndTreat>ExpiredCancel</TypeEndTreat>
+  </Assignment>
+  <Assignment>
+    <Id>1066</Id>
+    <CallId>1036</CallId>
+    <VolunteerId>0</VolunteerId>
+    <TimeStart>2025-01-15T22:34:32</TimeStart>
+    <TimeEnd>2025-01-15T22:34:32</TimeEnd>
+    <TypeEndTreat>ExpiredCancel</TypeEndTreat>
+  </Assignment>
 </ArrayOfAssignment>
