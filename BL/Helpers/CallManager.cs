@@ -221,14 +221,40 @@ internal static class CallManager
     }
 
 
-    // GetCallAssignInList
+    //GetCallAssignInList
+    //public static BO.CallAssignmentInList GetCallAssignInList(int Id)
+    //{
+    //    DO.Volunteer? doVolunteer = _dal.Volunteer.Read(Id) ?? throw new BlDoesNotExistException("eroor id");// ז
+
+    //    //Find the appropriate CALL  and  Assignment by volunteer ID
+    //    var doAssignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == Id && a.TimeEnd == null).FirstOrDefault();
+    //    var doCall = _dal.Call.ReadAll().Where(c => c.Id == doAssignment!.CallId).FirstOrDefault();
+
+    //    return new BO.CallAssignmentInList
+    //    {
+    //        VolunteerId = doAssignment.VolunteerId, // The ID of the volunteer
+    //        VolunteerName = doVolunteer.FullName, // The name of the volunteer (helper method can be used)
+    //        StartTime = doAssignment.TimeStart, // The time the volunteer started handling the call
+    //        EndTime = doAssignment.TimeEnd, // The time the handling of the call was completed
+    //        CompletionType = doAssignment.TypeEndTreat.HasValue
+    //        ? (BO.AssignmentCompletionType?)doAssignment.TypeEndTreat.Value
+    //        : null // Completion status (nullable)
+    //    };
+    //}
     public static BO.CallAssignmentInList GetCallAssignInList(int Id)
     {
         DO.Volunteer? doVolunteer = _dal.Volunteer.Read(Id) ?? throw new BlDoesNotExistException("eroor id");// ז
 
-        //Find the appropriate CALL  and  Assignment by volunteer ID
-        var doAssignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == Id && a.TimeEnd == null).FirstOrDefault();
-        var doCall = _dal.Call.ReadAll().Where(c => c.Id == doAssignment!.CallId).FirstOrDefault();
+        //Find the appropriate CALL  and  Assignmentn by volunteer ID
+        var doAssignment = _dal.Assignment.ReadAll().Where(a => a./*CallId*/  VolunteerId == Id /*&& a.TimeEnd == null*/).FirstOrDefault();
+        //var doCall = _dal.Call.ReadAll().Where(c => c.Id == doAssignment!.CallId).FirstOrDefault();
+
+
+        if (doAssignment == null)
+        {
+            return null;
+        }
+
 
         return new BO.CallAssignmentInList
         {
@@ -236,12 +262,50 @@ internal static class CallManager
             VolunteerName = doVolunteer.FullName, // The name of the volunteer (helper method can be used)
             StartTime = doAssignment.TimeStart, // The time the volunteer started handling the call
             EndTime = doAssignment.TimeEnd, // The time the handling of the call was completed
-            CompletionType = doAssignment.TypeEndTreat.HasValue
-            ? (BO.AssignmentCompletionType?)doAssignment.TypeEndTreat.Value
-            : null // Completion status (nullable)
+            CompletionType = (BO.AssignmentCompletionType?)doAssignment.TypeEndTreat // Completion status (nullable)
         };
 
+
     }
+    //}
+    //public static BO.CallAssignmentInList GetCallAssignInList(int Id)
+    //{
+    //    // קריאה למתנדב לפי מזהה
+    //    DO.Volunteer? doVolunteer = _dal.Volunteer.Read(Id) ?? throw new BlDoesNotExistException("Volunteer with the specified ID does not exist.");
+
+    //    // חיפוש השמה מתאימה לפי מזהה מתנדב
+    //    var doAssignment = _dal.Assignment.ReadAll()
+    //        .Where(a => a.VolunteerId == Id && a.TimeEnd == null)
+    //        .FirstOrDefault();
+
+    //    if (doAssignment == null)
+    //    {
+    //        throw new BlDoesNotExistException("No active assignment found for the specified volunteer.");
+    //    }
+
+    //    // חיפוש שיחה מתאימה לפי מזהה השיחה מההשמה
+    //    var doCall = _dal.Call.ReadAll()
+    //        .Where(c => c.Id == doAssignment.CallId)
+    //        .FirstOrDefault();
+
+    //    if (doCall == null)
+    //    {
+    //        throw new BlDoesNotExistException("No call found for the specified assignment.");
+    //    }
+
+    //    // החזרת האובייקט עם הנתונים
+    //    return new BO.CallAssignmentInList
+    //    {
+    //        VolunteerId = doAssignment.VolunteerId, // מזהה המתנדב
+    //        VolunteerName = doVolunteer.FullName, // שם המתנדב
+    //        StartTime = doAssignment.TimeStart, // זמן התחלת הטיפול
+    //        EndTime = doAssignment.TimeEnd, // זמן סיום הטיפול
+    //        CompletionType = doAssignment.TypeEndTreat.HasValue
+    //            ? (BO.AssignmentCompletionType?)doAssignment.TypeEndTreat.Value
+    //            : null // סטטוס השלמת הטיפול (nullable)
+    //    };
+    //}
+
 
     //public static List<BO.CallAssignmentInList> GetCallAssignInList(int volunteerId)
     //{

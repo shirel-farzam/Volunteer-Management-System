@@ -11,7 +11,7 @@ namespace PL
     public partial class LoginSystem : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
+       
         public Role role { get; set; }
         public int Id
         {
@@ -71,6 +71,7 @@ namespace PL
         {
             InitializeComponent();
             DataContext = this;
+           
         }
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
@@ -112,9 +113,6 @@ namespace PL
 
 
         }
-
-        
-
 
     }
 

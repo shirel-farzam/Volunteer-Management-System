@@ -28,8 +28,9 @@ namespace PL
 
         public MainWindow(int Manegr,Window previousWindow)
         {
+         
             InitializeComponent();
-            _previousWindow= this;
+            _previousWindow = previousWindow;
             Id = Manegr;
             this.DataContext = this;
 
@@ -149,7 +150,6 @@ namespace PL
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
 
-            
             CurrentTime = s_bl.Admin.GetClock();
             MaxRange = s_bl.Admin.GetMaxRange();
             CountCall = s_bl.Call.CountCall();
@@ -168,8 +168,15 @@ namespace PL
         }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            _previousWindow.Show(); // Show the previous window
-            this.Close(); // Close the current window
+            if (_previousWindow != null)
+            {
+                _previousWindow.Show(); // Show the previous window
+                this.Hide(); // Close the current window
+            }
+            else
+            {
+                MessageBox.Show("Previous window is null!");
+            }
         }
 
 
