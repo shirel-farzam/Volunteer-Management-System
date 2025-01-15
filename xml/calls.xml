@@ -7,8 +7,8 @@
     <FullAddress>King David St 12, Jerusalem, Israel</FullAddress>
     <Latitude>31.7769</Latitude>
     <Longitude>35.2134</Longitude>
-    <TimeOpened>2025-01-11T20:14:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T03:54:16</MaxTimeToClose>
+    <TimeOpened>2025-01-13T02:28:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T09:25:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1001</Id>
@@ -17,8 +17,8 @@
     <FullAddress>Keren Hayesod St 15, Jerusalem, Israel</FullAddress>
     <Latitude>31.7747</Latitude>
     <Longitude>35.2153</Longitude>
-    <TimeOpened>2025-01-12T11:30:16</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
+    <TimeOpened>2025-01-12T14:50:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T09:28:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1002</Id>
@@ -27,8 +27,8 @@
     <FullAddress>HaRav Kook St 20, Jerusalem, Israel</FullAddress>
     <Latitude>31.783</Latitude>
     <Longitude>35.2135</Longitude>
-    <TimeOpened>2025-01-12T04:19:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T15:21:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T20:38:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T09:33:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1003</Id>
@@ -37,7 +37,7 @@
     <FullAddress>Strauss St 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7739</Latitude>
     <Longitude>35.211</Longitude>
-    <TimeOpened>2025-01-12T11:10:16</TimeOpened>
+    <TimeOpened>2025-01-12T15:05:19</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
@@ -47,8 +47,8 @@
     <FullAddress>Radak St 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7762</Latitude>
     <Longitude>35.2123</Longitude>
-    <TimeOpened>2025-01-12T10:58:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T15:58:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T11:35:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T09:43:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1005</Id>
@@ -57,8 +57,8 @@
     <FullAddress>Bezalel St 35, Jerusalem, Israel</FullAddress>
     <Latitude>31.7743</Latitude>
     <Longitude>35.2201</Longitude>
-    <TimeOpened>2025-01-11T19:23:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T16:50:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T15:43:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1006</Id>
@@ -67,8 +67,8 @@
     <FullAddress>Shmuel HaNagid St 18, Jerusalem, Israel</FullAddress>
     <Latitude>31.7748</Latitude>
     <Longitude>35.212</Longitude>
-    <TimeOpened>2025-01-12T09:33:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T10:13:16</MaxTimeToClose>
+    <TimeOpened>2025-01-13T08:21:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T17:02:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1007</Id>
@@ -77,8 +77,8 @@
     <FullAddress>David HaMelech St 6, Jerusalem, Israel</FullAddress>
     <Latitude>31.7796</Latitude>
     <Longitude>35.2145</Longitude>
-    <TimeOpened>2025-01-12T05:33:16</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
+    <TimeOpened>2025-01-12T11:32:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T11:17:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1008</Id>
@@ -87,7 +87,7 @@
     <FullAddress>Shivtei Israel St 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.774</Latitude>
     <Longitude>35.2159</Longitude>
-    <TimeOpened>2025-01-12T05:38:16</TimeOpened>
+    <TimeOpened>2025-01-12T11:45:19</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
@@ -97,8 +97,8 @@
     <FullAddress>HaMesila Park, Jerusalem, Israel</FullAddress>
     <Latitude>31.7711</Latitude>
     <Longitude>35.2206</Longitude>
-    <TimeOpened>2025-01-12T01:52:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T15:18:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T20:26:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1010</Id>
@@ -107,8 +107,8 @@
     <FullAddress>Rabbi Akiva St 8, Jerusalem, Israel</FullAddress>
     <Latitude>31.7741</Latitude>
     <Longitude>35.2221</Longitude>
-    <TimeOpened>2025-01-12T02:24:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T04:39:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T20:55:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T05:23:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1011</Id>
@@ -117,8 +117,8 @@
     <FullAddress>Haneviim St 50, Jerusalem, Israel</FullAddress>
     <Latitude>31.7764</Latitude>
     <Longitude>35.2113</Longitude>
-    <TimeOpened>2025-01-12T14:47:16</TimeOpened>
-    <MaxTimeToClose>2025-01-13T12:36:16</MaxTimeToClose>
+    <TimeOpened>2025-01-13T06:03:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1012</Id>
@@ -127,8 +127,8 @@
     <FullAddress>Yemin Moshe St 8, Jerusalem, Israel</FullAddress>
     <Latitude>31.781</Latitude>
     <Longitude>35.2176</Longitude>
-    <TimeOpened>2025-01-12T04:33:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T15:32:16</MaxTimeToClose>
+    <TimeOpened>2025-01-13T06:00:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T21:11:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1013</Id>
@@ -137,7 +137,7 @@
     <FullAddress>Yoel Moshe Salomon St 22, Jerusalem, Israel</FullAddress>
     <Latitude>31.7768</Latitude>
     <Longitude>35.2138</Longitude>
-    <TimeOpened>2025-01-12T07:48:16</TimeOpened>
+    <TimeOpened>2025-01-13T03:03:19</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
@@ -147,8 +147,8 @@
     <FullAddress>HaOren St 7, Jerusalem, Israel</FullAddress>
     <Latitude>31.7819</Latitude>
     <Longitude>35.2109</Longitude>
-    <TimeOpened>2025-01-12T13:23:16</TimeOpened>
-    <MaxTimeToClose>2025-01-13T03:46:16</MaxTimeToClose>
+    <TimeOpened>2025-01-13T04:29:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1015</Id>
@@ -157,7 +157,17 @@
     <FullAddress>Beit Hakerem St 25, Jerusalem, Israel</FullAddress>
     <Latitude>31.7795</Latitude>
     <Longitude>35.2118</Longitude>
-    <TimeOpened>2025-01-12T01:10:16</TimeOpened>
+    <TimeOpened>2025-01-12T21:32:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1016</Id>
+    <Type>FoodTransport</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Givat Shaul St 10, Jerusalem, Israel</FullAddress>
+    <Latitude>31.778</Latitude>
+    <Longitude>35.2082</Longitude>
+    <TimeOpened>2025-01-12T12:28:19</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
@@ -167,7 +177,7 @@
     <FullAddress>Shlomo Zalman Shragai St 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7825</Latitude>
     <Longitude>35.2047</Longitude>
-    <TimeOpened>2025-01-12T01:23:16</TimeOpened>
+    <TimeOpened>2025-01-13T06:23:19</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
@@ -177,7 +187,7 @@
     <FullAddress>Emek Refaim St 12, Jerusalem, Israel</FullAddress>
     <Latitude>31.7814</Latitude>
     <Longitude>35.2165</Longitude>
-    <TimeOpened>2025-01-11T20:06:16</TimeOpened>
+    <TimeOpened>2025-01-12T11:22:19</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
@@ -187,7 +197,7 @@
     <FullAddress>Azza St 40, Jerusalem, Israel</FullAddress>
     <Latitude>31.7817</Latitude>
     <Longitude>35.2147</Longitude>
-    <TimeOpened>2025-01-11T23:55:16</TimeOpened>
+    <TimeOpened>2025-01-12T21:29:19</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
@@ -197,8 +207,8 @@
     <FullAddress>Derech Har HaTsofim 20, Jerusalem, Israel</FullAddress>
     <Latitude>31.7822</Latitude>
     <Longitude>35.2202</Longitude>
-    <TimeOpened>2025-01-12T14:43:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T15:06:16</MaxTimeToClose>
+    <TimeOpened>2025-01-13T01:28:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T08:14:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1021</Id>
@@ -207,8 +217,8 @@
     <FullAddress>Mount Scopus Campus, Jerusalem, Israel</FullAddress>
     <Latitude>31.7789</Latitude>
     <Longitude>35.2423</Longitude>
-    <TimeOpened>2025-01-12T06:05:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T09:04:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T12:25:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1022</Id>
@@ -217,8 +227,8 @@
     <FullAddress>Nablus Rd 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7758</Latitude>
     <Longitude>35.2349</Longitude>
-    <TimeOpened>2025-01-12T07:59:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T11:32:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T15:12:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T03:25:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1023</Id>
@@ -227,7 +237,7 @@
     <FullAddress>Hebron Rd 50, Jerusalem, Israel</FullAddress>
     <Latitude>31.7726</Latitude>
     <Longitude>35.2128</Longitude>
-    <TimeOpened>2025-01-12T14:32:16</TimeOpened>
+    <TimeOpened>2025-01-13T02:10:19</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
@@ -237,8 +247,8 @@
     <FullAddress>HaPalmach St 20, Jerusalem, Israel</FullAddress>
     <Latitude>31.7703</Latitude>
     <Longitude>35.2131</Longitude>
-    <TimeOpened>2025-01-12T01:15:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T21:59:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T21:44:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T01:27:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1025</Id>
@@ -247,8 +257,18 @@
     <FullAddress>Lincoln St 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7831</Latitude>
     <Longitude>35.2169</Longitude>
-    <TimeOpened>2025-01-12T08:36:16</TimeOpened>
-    <MaxTimeToClose>2025-01-13T00:17:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T17:19:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1026</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Duvdevani St 10, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7813</Latitude>
+    <Longitude>35.2074</Longitude>
+    <TimeOpened>2025-01-13T00:06:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1027</Id>
@@ -257,8 +277,18 @@
     <FullAddress>Diskin St 12, Jerusalem, Israel</FullAddress>
     <Latitude>31.7792</Latitude>
     <Longitude>35.2117</Longitude>
-    <TimeOpened>2025-01-12T13:42:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T16:21:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T15:19:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T09:30:19</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1028</Id>
+    <Type>FoodTransport</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Alkalai St 15, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7764</Latitude>
+    <Longitude>35.2105</Longitude>
+    <TimeOpened>2025-01-12T17:42:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T06:32:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1029</Id>
@@ -267,8 +297,8 @@
     <FullAddress>Ramban St 20, Jerusalem, Israel</FullAddress>
     <Latitude>31.7805</Latitude>
     <Longitude>35.2139</Longitude>
-    <TimeOpened>2025-01-12T07:22:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T18:40:16</MaxTimeToClose>
+    <TimeOpened>2025-01-13T06:06:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T09:55:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1030</Id>
@@ -277,8 +307,8 @@
     <FullAddress>Mordechai Ben Hillel St 12, Jerusalem, Israel</FullAddress>
     <Latitude>31.7753</Latitude>
     <Longitude>35.2208</Longitude>
-    <TimeOpened>2025-01-12T06:41:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T15:41:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T10:22:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T02:15:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1031</Id>
@@ -287,8 +317,8 @@
     <FullAddress>HaRav Herzog St 60, Jerusalem, Israel</FullAddress>
     <Latitude>31.7755</Latitude>
     <Longitude>35.2126</Longitude>
-    <TimeOpened>2025-01-12T05:59:16</TimeOpened>
-    <MaxTimeToClose>2025-01-13T03:26:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T15:52:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1032</Id>
@@ -297,8 +327,8 @@
     <FullAddress>Gershon Agron St 12, Jerusalem, Israel</FullAddress>
     <Latitude>31.7793</Latitude>
     <Longitude>35.2204</Longitude>
-    <TimeOpened>2025-01-12T09:02:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T16:51:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T23:19:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T06:06:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1033</Id>
@@ -307,8 +337,8 @@
     <FullAddress>Givon St 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7761</Latitude>
     <Longitude>35.2133</Longitude>
-    <TimeOpened>2025-01-11T19:22:16</TimeOpened>
-    <MaxTimeToClose>2025-01-11T23:04:16</MaxTimeToClose>
+    <TimeOpened>2025-01-13T09:12:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T19:31:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1034</Id>
@@ -317,8 +347,8 @@
     <FullAddress>Golda Meir Blvd 80, Jerusalem, Israel</FullAddress>
     <Latitude>31.7708</Latitude>
     <Longitude>35.2146</Longitude>
-    <TimeOpened>2025-01-12T10:46:16</TimeOpened>
-    <MaxTimeToClose>2025-01-13T02:35:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T22:25:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1035</Id>
@@ -327,8 +357,8 @@
     <FullAddress>Lev Ram Blvd 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7716</Latitude>
     <Longitude>35.2041</Longitude>
-    <TimeOpened>2025-01-11T19:51:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T19:24:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T10:01:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T04:04:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1036</Id>
@@ -337,8 +367,28 @@
     <FullAddress>Harav Shach St 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7777</Latitude>
     <Longitude>35.2039</Longitude>
-    <TimeOpened>2025-01-12T02:24:16</TimeOpened>
-    <MaxTimeToClose>2025-01-13T01:54:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T13:09:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1037</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Kiryat HaLeom, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7722</Latitude>
+    <Longitude>35.2034</Longitude>
+    <TimeOpened>2025-01-13T05:25:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T11:17:19</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1038</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Shaarei Tsedek St 3, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7803</Latitude>
+    <Longitude>35.2239</Longitude>
+    <TimeOpened>2025-01-12T13:19:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1039</Id>
@@ -347,8 +397,8 @@
     <FullAddress>Givat Mordechai St 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7801</Latitude>
     <Longitude>35.2144</Longitude>
-    <TimeOpened>2025-01-12T01:57:16</TimeOpened>
-    <MaxTimeToClose>2025-01-13T01:42:16</MaxTimeToClose>
+    <TimeOpened>2025-01-13T02:29:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1040</Id>
@@ -357,8 +407,8 @@
     <FullAddress>Bayit Vegan St 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7796</Latitude>
     <Longitude>35.2223</Longitude>
-    <TimeOpened>2025-01-11T21:11:16</TimeOpened>
-    <MaxTimeToClose>2025-01-11T23:32:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T19:02:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T06:41:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1041</Id>
@@ -367,8 +417,8 @@
     <FullAddress>Sanhedria St 12, Jerusalem, Israel</FullAddress>
     <Latitude>31.7748</Latitude>
     <Longitude>35.2174</Longitude>
-    <TimeOpened>2025-01-12T05:11:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T18:09:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T23:25:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1042</Id>
@@ -377,8 +427,8 @@
     <FullAddress>Bar Ilan St 20, Jerusalem, Israel</FullAddress>
     <Latitude>31.7794</Latitude>
     <Longitude>35.23</Longitude>
-    <TimeOpened>2025-01-11T21:15:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T00:54:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T19:49:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1043</Id>
@@ -387,7 +437,7 @@
     <FullAddress>Shmuel Hanavi St 45, Jerusalem, Israel</FullAddress>
     <Latitude>31.7759</Latitude>
     <Longitude>35.2332</Longitude>
-    <TimeOpened>2025-01-12T03:37:16</TimeOpened>
+    <TimeOpened>2025-01-12T14:22:19</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
@@ -397,8 +447,8 @@
     <FullAddress>Malha Rd 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7816</Latitude>
     <Longitude>35.2122</Longitude>
-    <TimeOpened>2025-01-11T20:32:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T17:15:16</MaxTimeToClose>
+    <TimeOpened>2025-01-12T20:51:19</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1045</Id>
@@ -407,8 +457,8 @@
     <FullAddress>Pisgat Ze'ev Blvd 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7809</Latitude>
     <Longitude>35.2305</Longitude>
-    <TimeOpened>2025-01-11T21:01:16</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
+    <TimeOpened>2025-01-13T06:05:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T13:58:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1046</Id>
@@ -417,8 +467,8 @@
     <FullAddress>Teddy Stadium, Jerusalem, Israel</FullAddress>
     <Latitude>31.773</Latitude>
     <Longitude>35.2249</Longitude>
-    <TimeOpened>2025-01-11T22:37:16</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
+    <TimeOpened>2025-01-13T09:05:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T12:28:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1047</Id>
@@ -427,8 +477,18 @@
     <FullAddress>Zahal St 7, Jerusalem, Israel</FullAddress>
     <Latitude>31.7792</Latitude>
     <Longitude>35.2251</Longitude>
-    <TimeOpened>2025-01-12T06:30:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T09:49:16</MaxTimeToClose>
+    <TimeOpened>2025-01-13T07:46:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T21:54:19</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1048</Id>
+    <Type>FoodPreparation</Type>
+    <Description>Family needs a hot meal in the city center.</Description>
+    <FullAddress>Ha'Arazim Blvd 5, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7749</Latitude>
+    <Longitude>35.2168</Longitude>
+    <TimeOpened>2025-01-13T06:49:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T23:47:19</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1049</Id>
@@ -437,27 +497,7 @@
     <FullAddress>Ramot Forest, Jerusalem, Israel</FullAddress>
     <Latitude>31.7731</Latitude>
     <Longitude>35.2214</Longitude>
-    <TimeOpened>2025-01-11T21:23:16</TimeOpened>
-    <MaxTimeToClose>2025-01-12T08:17:16</MaxTimeToClose>
-  </Call>
-  <Call>
-    <Id>1026</Id>
-    <Type>InventoryCheck</Type>
-    <Description>Family needs a hot meal in the city center.</Description>
-    <FullAddress>Duvdevani St 10, Jerusalem, Israel</FullAddress>
-    <Latitude>31.7593756</Latitude>
-    <Longitude>35.19016</Longitude>
-    <TimeOpened>2025-01-12T08:47:16</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
-  </Call>
-  <Call>
-    <Id>1028</Id>
-    <Type>FoodTransport</Type>
-    <Description>Family needs a hot meal in the city center.</Description>
-    <FullAddress>Alkalai St 15, Jerusalem, Israel</FullAddress>
-    <Latitude>31.7703978</Latitude>
-    <Longitude>35.2184919</Longitude>
-    <TimeOpened>2025-01-12T00:49:16</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
+    <TimeOpened>2025-01-13T09:23:19</TimeOpened>
+    <MaxTimeToClose>2025-01-13T23:41:19</MaxTimeToClose>
   </Call>
 </ArrayOfCall>

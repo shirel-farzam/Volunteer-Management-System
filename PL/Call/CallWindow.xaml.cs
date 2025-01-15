@@ -14,21 +14,24 @@ namespace PL.CallWindow
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
         public string ButtonText { get; set; }
+
         public int Id { get; set; }
 
         public BO.Call Call
         {
-            get { return (BO.Call)GetValue(CurrentCallProperty); }  
+            get { return (BO.Call)GetValue(CurrentCallProperty); }
             set
             {
                 SetValue(CurrentCallProperty, value);
-                OnPropertyChanged(nameof(Volunteer));
+                OnPropertyChanged(nameof(Call));
             }
         }
 
         public static readonly DependencyProperty CurrentCallProperty =
-            DependencyProperty.Register("Call", typeof(BO.Volunteer), typeof(CallWindow),
+            DependencyProperty.Register("Call", typeof(BO.Call), typeof(CallWindow),
                 new PropertyMetadata(null));
+
+        public ObservableCollection<BO.CallAssignmentInList> CallAssignments { get; set; } = new ObservableCollection<BO.CallAssignmentInList >();
 
         public IEnumerable<BO.Distance> DistanceTypes =>
             Enum.GetValues(typeof(BO.Distance)).Cast<BO.Distance>();
@@ -41,27 +44,47 @@ namespace PL.CallWindow
             Id = id;
             ButtonText = Id == 0 ? "Add" : "Update";
             DataContext = this;
-
             InitializeComponent();
-
             try
             {
-                Call = (Id != 0)
-                    ? s_bl.Call.Read(Id)
-                    : new BO.Call()
+                if (Id != 0)
+                {
+                    Call = s_bl.Call.Read(Id);
+                    LoadCallAssignments();
+                }
+                else
+                {
+                    Call = new BO.Call
                     {
                         Id = 0,
                         Type = CallType.None,
                         Description = string.Empty,
                         FullAddress = string.Empty,
                         Latitude = null,
-                        Longitude = null,
-                       // MaxTimeToClose = null,   
+                        Longitude = null
                     };
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void LoadCallAssignments()
+        {
+            try
+            {
+                var assignments = s_bl.Call.GetAssignments(Id);
+                CallAssignments.Clear();
+                foreach (var assignment in assignments)
+                {
+                    CallAssignments.Add(assignment);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading assignments: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -72,6 +95,7 @@ namespace PL.CallWindow
                 int id = Call!.Id;
                 Call = null;
                 Call = s_bl.Call.Read(id);
+                LoadCallAssignments();
             }
             catch (Exception ex)
             {
@@ -97,9 +121,11 @@ namespace PL.CallWindow
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
+            if (!ValidateCallFields()) return;
+
             if (Id == 0)
             {
-                AddVolunteer();
+                AddCall();
             }
             else
             {
@@ -107,18 +133,15 @@ namespace PL.CallWindow
             }
         }
 
-        private void AddVolunteer()
+        private void AddCall()
         {
             try
             {
-                var call = Call;
-                s_bl.Call.AddCall(call);
-                refresh();
-
+                s_bl.Call.AddCall(Call);
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     MessageBox.Show("Call added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    this.Close();
+                    Close();
                 });
             }
             catch (Exception ex)
@@ -134,15 +157,17 @@ namespace PL.CallWindow
         {
             try
             {
-                var call = Call;
+                if (!CanUpdateCall())
+                {
+                    MessageBox.Show("Cannot update call in its current status.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
-                s_bl.Call.Update(Call.Id, call);
-
+                s_bl.Call.Update(Call);
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    refresh();
                     MessageBox.Show("Call updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    this.Close();
+                    Close();
                 });
             }
             catch (Exception ex)
@@ -154,9 +179,27 @@ namespace PL.CallWindow
             }
         }
 
-        private void refresh()
+        private bool ValidateCallFields()
         {
-            s_bl.Volunteer.ReadAll(null, null);
+            if (string.IsNullOrWhiteSpace(Call.Description))
+            {
+                MessageBox.Show("Description cannot be empty.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Call.FullAddress))
+            {
+                MessageBox.Show("Address cannot be empty.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CanUpdateCall()
+        {
+            return Call.Status is CallStatus.Open or CallStatus.OpenRisk ||
+                   (Call.Status is CallStatus.InProgress or CallStatus.InProgressRisk && Call.MaxEndTime != null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -180,6 +223,11 @@ namespace PL.CallWindow
             {
                 Console.WriteLine($"Selected Role: {selectedRole}");
             }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

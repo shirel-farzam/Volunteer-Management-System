@@ -157,7 +157,7 @@ namespace PL.Call
         private void CallsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (SelectedCallStatus != null)
-                new CallWindow().Show();
+                new CallWindow.CallWindow().Show();
         }
 
         private void CancelAssignment_Click(object sender, RoutedEventArgs e)
@@ -253,7 +253,7 @@ namespace PL.Call
         }
         private void AddCallButton_Click(object sender, RoutedEventArgs e)
         {
-            new CallWindow().Show();
+            new CallWindow.CallWindow().Show();
         }
         private void callListObserver()
         {

@@ -98,6 +98,7 @@ namespace PL
         private void InitializeDatabase_Click(object sender, RoutedEventArgs e)
         {
             s_bl.Admin.initialization();
+            MessageBox.Show($"Data Intilization Completed Succsessfully "); // Show confirmation message
             //var result = MessageBox.Show(
             //    "Are you sure you want to initialize the database?",
             //    "Database Initialization",
@@ -170,6 +171,7 @@ namespace PL
         {
             
             s_bl.Admin.Reset();
+            MessageBox.Show($"Data Rest Completed Succsessfully "); // Show confirmation message
         }
 
         private void btnVolunteer_Click(object sender, RoutedEventArgs e)
