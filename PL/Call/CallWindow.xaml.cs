@@ -75,8 +75,7 @@ namespace PL.CallWindow
         {
             try
             {
-                var assignments = s_bl.Call.GetCallAssignments(Id);
-                CallAssignments.Clear();
+                var assignments = s_bl.Call.();
                 foreach (var assignment in assignments)
                 {
                     CallAssignments.Add(assignment);
@@ -88,7 +87,7 @@ namespace PL.CallWindow
             }
         }
 
-        private void VolunteerObserver()
+        private void CallObserver()
         {
             try
             {
@@ -99,7 +98,7 @@ namespace PL.CallWindow
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error reloading volunteer: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error reloading call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -107,7 +106,7 @@ namespace PL.CallWindow
         {
             if (Call != null && Call.Id != 0)
             {
-                s_bl.Volunteer.AddObserver(Call.Id, VolunteerObserver);
+                s_bl.Call.AddObserver(Call.Id, CallObserver);
             }
         }
 
@@ -115,7 +114,7 @@ namespace PL.CallWindow
         {
             if (Call != null && Call.Id != 0)
             {
-                s_bl.Volunteer.RemoveObserver(Call.Id, VolunteerObserver);
+                s_bl.Call.RemoveObserver(Call.Id, CallObserver);
             }
         }
 
@@ -183,13 +182,13 @@ namespace PL.CallWindow
         {
             if (string.IsNullOrWhiteSpace(Call.Description))
             {
-                MessageBox.Show("Description cannot be empty.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Description cannot be empty.", "Call Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(Call.FullAddress))
             {
-                MessageBox.Show("Address cannot be empty.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Address cannot be empty.", "Call Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
