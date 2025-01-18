@@ -1,22 +1,52 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!-- Color Resources -->
-    <Color x:Key="ColorLightPurple1">#F5EFFF</Color>
-    <Color x:Key="ColorLightPurple2">#E5D9F2</Color>
-    <Color x:Key="ColorLightPurple3">#CDC1FF</Color>
-    <Color x:Key="ColorLightPurple4">#A294F9</Color>
 
-    <!-- My Color-->
+    <!-- Base Color Palette -->
     <SolidColorBrush x:Key="ButtonBlue" Color="#D9EAFD" />
-    <SolidColorBrush x:Key="DarkBlue" Color="#7C93C3" />
     <SolidColorBrush x:Key="LightBlue" Color="#BCCCDC" />
     <SolidColorBrush x:Key="SimulatorBlue" Color="#A5BFCC" />
+    <SolidColorBrush x:Key="Primary" Color="#5A9FCE" />
+    <SolidColorBrush x:Key="AccentLight" Color="#E0E7F0" />
 
+    <!-- Additional Light Blue Shades -->
+    <SolidColorBrush x:Key="SoftBlue" Color="#B3D8F4" />
+    <SolidColorBrush x:Key="PaleBlue" Color="#D4E8F9" />
+    <SolidColorBrush x:Key="SkyBlue" Color="#A3C8F1" />
+    <SolidColorBrush x:Key="AzureBlue" Color="#A7D8FF" />
+    <SolidColorBrush x:Key="LightSkyBlue" Color="#B7D7FF" />
 
-    <SolidColorBrush x:Key="PrimaryLight" Color="#FFF2E1" />
-    <SolidColorBrush x:Key="Primary" Color="#EAD8C0" />
-    <SolidColorBrush x:Key="AccentLight" Color="#D1BB9E" />
-    <SolidColorBrush x:Key="AccentDark" Color="#A79277" />
+    <!-- Additional Blue Shades -->
+    <SolidColorBrush x:Key="Blue1" Color="#A7C6ED" />
+    <SolidColorBrush x:Key="Blue2" Color="#A3C5E5" />
+    <SolidColorBrush x:Key="Blue3" Color="#7CA1C5" />
+    <SolidColorBrush x:Key="Blue4" Color="#2C476A" />
+    <SolidColorBrush x:Key="Blue5" Color="#8BAAC5" />
+    <SolidColorBrush x:Key="Blue6" Color="#5D86B1" />
 
+    <!-- Neutral Colors -->
+    <SolidColorBrush x:Key="LightGray" Color="#F5F5F5" />
+    <SolidColorBrush x:Key="MediumGray" Color="#CCCCCC" />
+    <SolidColorBrush x:Key="DarkGray" Color="#707070" />
+    <SolidColorBrush x:Key="White" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="Black" Color="#000000" />
 
+    <!-- Accent Colors -->
+    <SolidColorBrush x:Key="HighlightBlue" Color="#87CEFA" />
+    <SolidColorBrush x:Key="AccentPrimary" Color="#5A9FCE" />
+    <SolidColorBrush x:Key="AccentSecondary" Color="#A0C4E4" />
+    <SolidColorBrush x:Key="SoftHighlight" Color="#F0F8FF" />
+    <SolidColorBrush x:Key="LightHighlight" Color="#DDEAF7" />
+
+    <!-- Background Colors -->
+    
+    <SolidColorBrush x:Key="BackgroundPrimary" Color="#F0F8FF" />
+    <SolidColorBrush x:Key="BackgroundSecondary" Color="#E0F0FF" />
+    <SolidColorBrush x:Key="BackgroundTertiary" Color="#DDEAF7" />
+
+    <!-- Button Colors -->
+    <SolidColorBrush x:Key="ButtonBackground" Color="#5A9FCE" />
+    <SolidColorBrush x:Key="ButtonHover" Color="#87CEEB" />
+    <SolidColorBrush x:Key="ButtonPressed" Color="#4682B4" />
+    <SolidColorBrush x:Key="ButtonForeground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="DarkBlue" Color="#00008B" />
 </ResourceDictionary>

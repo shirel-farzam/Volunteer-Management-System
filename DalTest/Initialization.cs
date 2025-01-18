@@ -87,7 +87,7 @@ public static class Initialization
     "W1nter2024",
     "M@rk3tX9",
     "Go!4ItNow",
-    "H@ppyD@ys",
+    "H@ppyD@y1s",
     "S#1lverKey",
     "GooD1234",
     "Tricky5",

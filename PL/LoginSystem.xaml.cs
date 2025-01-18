@@ -5,6 +5,7 @@ using PL.VolunteerWindow;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace PL
 {
@@ -66,12 +67,23 @@ namespace PL
             }
             return null;
         }
+        private void LoginSystem_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SetDayMode(); // הפעלת מצב יום לאחר טעינת החלון
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while setting the mode: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         public LoginSystem()
         {
             InitializeComponent();
             DataContext = this;
-           
+            
         }
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
@@ -113,7 +125,40 @@ namespace PL
 
 
         }
+        private bool isDayMode = true;
 
+        private void SwitchMode_Click(object sender, RoutedEventArgs e)
+        {
+            if (isDayMode)
+            {
+                SetNightMode();
+            }
+            else
+            {
+                SetDayMode();
+            }
+
+            // הפוך את הערך של המצב
+            isDayMode = !isDayMode;
+        }
+
+
+        private void SetDayMode()
+        {
+            Uri dayModeUri = new Uri("Themes/ColorLight.xaml", UriKind.Relative);
+            Application.Current.Resources.MergedDictionaries.Clear();  // מוחק את המשאבים הקיימים
+            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = dayModeUri });
+
+        }
+
+        private void SetNightMode()
+        {
+            Uri nightModeUri = new Uri("Themes/DarkColor.xaml", UriKind.Relative);
+            Application.Current.Resources.MergedDictionaries.Clear();  // מוחק את המשאבים הקיימים
+            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = nightModeUri });
+        }
     }
 
 }
+
+

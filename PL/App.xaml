@@ -3,12 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PL"
              StartupUri="LoginSystem.xaml">
+    
     <Application.Resources>
         <ResourceDictionary>
 
             <ResourceDictionary.MergedDictionaries>
                 <!-- Link to the Colors.xaml file -->
                 <ResourceDictionary Source="Themes/ColorLight.xaml" />
+                <ResourceDictionary Source="Themes/DarkColor.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!--<Image x:Key="Logo" Source="Picture/Logo.png" />-->
             <!-- Additional resources -->

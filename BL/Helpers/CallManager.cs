@@ -524,7 +524,6 @@ internal static class CallManager
         };
     }
 
-
     internal static BO.ClosedCallInList ConvertDOCallToBOCloseCallInList(DO.Call doCall, CallAssignmentInList lastAssignment)
     {
         return new BO.ClosedCallInList
