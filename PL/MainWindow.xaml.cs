@@ -114,18 +114,66 @@ namespace PL
         // Handles the "Initialize Database" button click
         private void InitializeDatabase_Click(object sender, RoutedEventArgs e)
         {
-            s_bl.Admin.initialization();
-            MessageBox.Show($"Data Intilization Completed Succsessfully "); // Show confirmation message
-           
+            // Display confirmation dialog
+            var result = MessageBox.Show(
+                "Are you sure you want to initialize the database? This action may overwrite existing data.",
+                "Initialize Database Confirmation",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning
+            );
+
+            // Check the user's response
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    s_bl.Admin.initialization();
+                    MessageBox.Show("Data initialization completed successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error initializing database: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                // User selected "No", do nothing
+                MessageBox.Show("Data initialization canceled.", "Canceled", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
+
 
         // Handles the "Reset Database" button click
         private void ResetDatabase_Click(object sender, RoutedEventArgs e)
         {
-            
-            s_bl.Admin.Reset();
-            MessageBox.Show($"Data Rest Completed Succsessfully "); // Show confirmation message
+            // Display confirmation dialog
+            var result = MessageBox.Show(
+                "Are you sure you want to reset the database? This action cannot be undone.",
+                "Reset Database Confirmation",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning
+            );
+
+            // Check the user's response
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    s_bl.Admin.Reset();
+                    MessageBox.Show("Data reset completed successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error resetting database: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                // User selected "No", do nothing
+                MessageBox.Show("Data reset canceled.", "Canceled", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
+
 
         private void btnVolunteer_Click(object sender, RoutedEventArgs e)
         {
@@ -149,6 +197,8 @@ namespace PL
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            DateTime now = DateTime.Now;
+            s_bl.Admin.SetClock(now);
 
             CurrentTime = s_bl.Admin.GetClock();
             MaxRange = s_bl.Admin.GetMaxRange();

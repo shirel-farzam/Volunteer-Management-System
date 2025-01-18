@@ -50,7 +50,7 @@ namespace PL.CallWindow
                 if (Id != 0)
                 {
                     Call = s_bl.Call.Read(Id);
-                    LoadCallAssignments();
+                    //LoadCallAssignments();
                 }
                 else
                 {
@@ -71,20 +71,28 @@ namespace PL.CallWindow
             }
         }
 
-        private void LoadCallAssignments()
+        //private void LoadCallAssignments()
+        //{
+        //    try
+        //    {
+        //        var assignments = s_bl.Call.GetCallInLists(Id);
+        //        CallAssignments.Clear();
+        //        foreach (var assignment in assignments)
+        //        {
+        //            CallAssignments.Add(assignment);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error loading assignments: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                var assignments = s_bl.Call.();
-                foreach (var assignment in assignments)
-                {
-                    CallAssignments.Add(assignment);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading assignments: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //if (Volunteer != null && Volunteer.Id != 0)
+            //{
+            //    s_bl.Volunteer.AddObserver(.Id, VolunteerObserver);
+            //}
         }
 
         private void CallObserver()
@@ -94,7 +102,7 @@ namespace PL.CallWindow
                 int id = Call!.Id;
                 Call = null;
                 Call = s_bl.Call.Read(id);
-                LoadCallAssignments();
+               //Window_Loaded();
             }
             catch (Exception ex)
             {
@@ -102,13 +110,13 @@ namespace PL.CallWindow
             }
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (Call != null && Call.Id != 0)
-            {
-                s_bl.Call.AddObserver(Call.Id, CallObserver);
-            }
-        }
+        //private void Window_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    if (Call != null && Call.Id != 0)
+        //    {
+        //        s_bl.Volunteer.AddObserver(Call.Id, VolunteerObserver);
+        //    }
+        //}
 
         private void Window_Closed(object sender, EventArgs e)
         {

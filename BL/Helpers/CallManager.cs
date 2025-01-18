@@ -361,7 +361,6 @@ internal static class CallManager
         return callAssignInList;
     }
 
-
     // GetCallInList
     public static BO.CallInList GetCallInList(int Id)
     {

@@ -22,6 +22,7 @@ public interface IAdmin
     void initialization();
 
     void Reset();
+    void SetClock(DateTime newTime);
     #region Stage 5
     void AddConfigObserver(Action configObserver);
     void RemoveConfigObserver(Action configObserver);
