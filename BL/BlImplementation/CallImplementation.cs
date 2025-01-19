@@ -478,60 +478,60 @@ internal class CallImplementation : ICall
     //    return closedCallInLists;
 
     //}
-    public IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, BO.CallType? type = null, BO.ClosedCallInListField? sortField = null)
-    {
-        // קריאה ל-API
-        IEnumerable<DO.Call> previousCalls = _dal.Call.ReadAll(null);
-        List<BO.ClosedCallInList> Calls = new List<BO.ClosedCallInList>();
+    //public IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, BO.CallType? type = null, BO.ClosedCallInListField? sortField = null)
+    //{
+    //    // קריאה ל-API
+    //    IEnumerable<DO.Call> previousCalls = _dal.Call.ReadAll(null);
+    //    List<BO.ClosedCallInList> Calls = new List<BO.ClosedCallInList>();
 
-        Calls.AddRange(from item in previousCalls
-                       let DataCall = Read(item.Id)
-                       where DataCall.Status == BO.CallStatus.Closed && DataCall.CallAssignments?.Any() == true
-                       let lastAssignment = DataCall.CallAssignments.OrderBy(c => c.StartTime).Last()
-                       select CallManager.ConvertDOCallToBOCloseCallInList(item, lastAssignment));
+    //    Calls.AddRange(from item in previousCalls
+    //                   let DataCall = Read(item.Id)
+    //                   where DataCall.Status == BO.CallStatus.Closed && DataCall.CallAssignments?.Any() == true
+    //                   let lastAssignment = DataCall.CallAssignments.OrderBy(c => c.StartTime).Last()
+    //                   select CallManager.ConvertDOCallToBOCloseCallInList(item, lastAssignment));
 
-        // סינון לפי VolunteerId
-        IEnumerable<BO.ClosedCallInList> closedCallInLists = Calls.Where(call => call.Id == volunteerId);
+    //    // סינון לפי VolunteerId
+    //    IEnumerable<BO.ClosedCallInList> closedCallInLists = Calls.Where(call => call.Id == volunteerId);
 
-        // סינון לפי סוג קריאה
-        if (type != null)
-        {
-            closedCallInLists = closedCallInLists.Where(c => c.CallType == type);
-        }
+    //    // סינון לפי סוג קריאה
+    //    if (type != null)
+    //    {
+    //        closedCallInLists = closedCallInLists.Where(c => c.CallType == type);
+    //    }
 
-        // מיון
-        if (sortField == null)
-        {
-            sortField = BO.ClosedCallInListField.Id; // ברירת מחדל
-        }
+    //    // מיון
+    //    if (sortField == null)
+    //    {
+    //        sortField = BO.ClosedCallInListField.Id; // ברירת מחדל
+    //    }
 
-        switch (sortField)
-        {
-            case BO.ClosedCallInListField.Id:
-                closedCallInLists = closedCallInLists.OrderBy(item => item.Id);
-                break;
-            case BO.ClosedCallInListField.CallType:
-                closedCallInLists = closedCallInLists.OrderBy(item => item.CallType);
-                break;
-            case BO.ClosedCallInListField.FullAddress:
-                closedCallInLists = closedCallInLists.OrderBy(item => item.FullAddress);
-                break;
-            case BO.ClosedCallInListField.OpeningTime:
-                closedCallInLists = closedCallInLists.OrderBy(item => item.OpeningTime);
-                break;
-            case BO.ClosedCallInListField.EntryTime:
-                closedCallInLists = closedCallInLists.OrderBy(item => item.EntryTime);
-                break;
-            case BO.ClosedCallInListField.CompletionTime:
-                closedCallInLists = closedCallInLists.OrderBy(item => item.CompletionTime);
-                break;
-            case BO.ClosedCallInListField.CompletionType:
-                closedCallInLists = closedCallInLists.OrderBy(item => item.CompletionType);
-                break;
-        }
+    //    switch (sortField)
+    //    {
+    //        case BO.ClosedCallInListField.Id:
+    //            closedCallInLists = closedCallInLists.OrderBy(item => item.Id);
+    //            break;
+    //        case BO.ClosedCallInListField.CallType:
+    //            closedCallInLists = closedCallInLists.OrderBy(item => item.CallType);
+    //            break;
+    //        case BO.ClosedCallInListField.FullAddress:
+    //            closedCallInLists = closedCallInLists.OrderBy(item => item.FullAddress);
+    //            break;
+    //        case BO.ClosedCallInListField.OpeningTime:
+    //            closedCallInLists = closedCallInLists.OrderBy(item => item.OpeningTime);
+    //            break;
+    //        case BO.ClosedCallInListField.EntryTime:
+    //            closedCallInLists = closedCallInLists.OrderBy(item => item.EntryTime);
+    //            break;
+    //        case BO.ClosedCallInListField.CompletionTime:
+    //            closedCallInLists = closedCallInLists.OrderBy(item => item.CompletionTime);
+    //            break;
+    //        case BO.ClosedCallInListField.CompletionType:
+    //            closedCallInLists = closedCallInLists.OrderBy(item => item.CompletionType);
+    //            break;
+    //    }
 
-        return closedCallInLists.ToList();
-    }
+    //    return closedCallInLists.ToList();
+    //}
 
     public IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? type = null, BO.OpenCallInListField? sortField = null)
     {
@@ -654,7 +654,58 @@ internal class CallImplementation : ICall
             throw new BO.BlDeleteNotPossibleException("cannot delete in DO");
         }
     }
+    public IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int id, BO.CallType? type, BO.ClosedCallInListField? sortBy)
+    {
+        // Retrieve all calls from the DAL
+        var allCalls = _dal.Call.ReadAll();
 
+        // Retrieve all assignments from the DAL
+        var allAssignments = _dal.Assignment.ReadAll();
+
+        // Filter by volunteer ID and closed status (calls that have an end treatment type)
+        IEnumerable<BO.ClosedCallInList> filteredCalls = from call in allCalls
+                                                         join assignment in allAssignments
+                                                         on call.Id equals assignment.CallId
+                                                         where assignment.VolunteerId == id && assignment.TypeEndTreat != null
+                                                         select new BO.ClosedCallInList
+                                                         {
+                                                             Id = call.Id,
+                                                             CallType = (BO.CallType)call.Type,
+                                                             FullAddress = call.FullAddress,
+                                                             OpeningTime = call.TimeOpened,
+                                                             EntryTime = assignment.TimeStart,
+                                                             CompletionTime = assignment.TimeEnd,
+                                                             CompletionType = (BO.AssignmentCompletionType)assignment.TypeEndTreat
+                                                         };
+
+        // Filter by call type if provided
+        if (type.HasValue)
+        {
+            filteredCalls = filteredCalls.Where(c => c.CallType == type.Value);
+        }
+
+        // Sort by the requested field or by default (call ID)
+        if (sortBy.HasValue)
+        {
+            filteredCalls = sortBy.Value switch
+            {
+                BO.ClosedCallInListField.Id => filteredCalls.OrderBy(c => c.Id),
+                BO.ClosedCallInListField.CallType => filteredCalls.OrderBy(c => c.CallType),
+                BO.ClosedCallInListField.FullAddress => filteredCalls.OrderBy(c => c.FullAddress),
+                BO.ClosedCallInListField.OpeningTime => filteredCalls.OrderBy(c => c.OpeningTime),
+                BO.ClosedCallInListField.EntryTime => filteredCalls.OrderBy(c => c.EntryTime),
+                BO.ClosedCallInListField.CompletionTime => filteredCalls.OrderBy(c => c.CompletionTime),
+                BO.ClosedCallInListField.CompletionType => filteredCalls.OrderBy(c => c.CompletionType),
+                _ => filteredCalls.OrderBy(c => c.Id)
+            };
+        }
+        else
+        {
+            filteredCalls = filteredCalls.OrderBy(c => c.Id);
+        }
+
+        return filteredCalls;
+    }
     public void CloseTreat(int idVol, int idAssig)
     {
         {
