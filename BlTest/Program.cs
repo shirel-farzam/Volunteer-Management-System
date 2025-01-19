@@ -656,7 +656,7 @@ Call Options:
                         }
 
                         // Ask the user for the call type
-                        Console.Write("Enter call type or null (Puncture, Cables, LockedCar or leave blank): ");
+                        Console.Write("Enter call type or null (FoodPreparation, FoodTransport,InventoryCheck): ");
                         string callTypeInput = Console.ReadLine();
                         BO.CallType? callType = null;
                         if (!string.IsNullOrEmpty(callTypeInput) && Enum.TryParse(callTypeInput, out BO.CallType parsedCallType))
@@ -665,7 +665,7 @@ Call Options:
                         }
 
                         // Ask the user for the sorting field
-                        Console.Write("Enter sorting field  or null(Id, CType, FullAddress, TimeOpen, StartTreat, TimeClose, TypeEndTreat or leave blank): ");
+                        Console.Write("Enter sorting field  or null(Id, CallType, FullAddress, TimeOpen, StartTreat, TimeClose, TypeEndTreat or leave blank): ");
                         string sortByInput = Console.ReadLine();
                         BO.ClosedCallInListField? sortByClose = null;
                         if (!string.IsNullOrEmpty(sortByInput) && Enum.TryParse(sortByInput, out BO.ClosedCallInListField parsedSortBy))
@@ -705,7 +705,7 @@ Call Options:
                         }
 
                         // Ask the user for the call type
-                        Console.Write("Enter call type or null (Puncture, Cables, LockedCar or leave blank): ");
+                        Console.Write("Enter call type or null (FoodPreparation, FoodTransport,InventoryCheck): ");
                         string callTypeInput = Console.ReadLine();
                         BO.CallType? callType = null;
                         if (!string.IsNullOrEmpty(callTypeInput) && Enum.TryParse(callTypeInput, out BO.CallType parsedCallType))
@@ -714,7 +714,7 @@ Call Options:
                         }
 
                         // Ask the user for the sorting field
-                        Console.Write("Enter sorting field  or null(Id, CType, FullAddress, TimeOpen, StartTreat, TimeClose, TypeEndTreat or leave blank): ");
+                        Console.Write("Enter sorting field  or null(Id, CallType, FullAddress, TimeOpen, StartTreat, TimeClose, TypeEndTreat or leave blank): ");
                         string sortByInput = Console.ReadLine();
                         BO.OpenCallInListField? sortByClose = null;
                         if (!string.IsNullOrEmpty(sortByInput) && Enum.TryParse(sortByInput, out BO.ClosedCallInListField parsedSortBy))

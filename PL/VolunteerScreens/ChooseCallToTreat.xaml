@@ -6,7 +6,9 @@
         mc:Ignorable="d"
         Title="Choose Call to Treat" Height="450" Width="1000"
         Background="{StaticResource ButtonBlue}"
-        FontFamily="Segoe UI">
+        FontFamily="Segoe UI"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+
     <Window.Resources>
         <!-- Styles for controls -->
         <Style TargetType="ComboBox">
@@ -69,42 +71,42 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
             <StackPanel Orientation="Vertical" Margin="0,0,20,0">
                 <TextBlock Text="Sort By" Margin="0,0,0,5"/>
-                <ComboBox Width="150" Margin="0,0,10,0" SelectionChanged="CallSelector_SelectionChanged">
-                    <ComboBoxItem Content="Sort by Call ID"/>
-                    <ComboBoxItem Content="Sort by Type"/>
-                    <ComboBoxItem Content="Sort by Distance"/>
-                </ComboBox>
+                <ComboBox Width="200" 
+               ItemsSource="{Binding Source={StaticResource OpenCallInListCollectionKey}}" 
+               SelectionChanged="CallSelector_Filter" 
+               SelectedValue="{Binding OpenCallInList, Mode=TwoWay}" >
+               </ComboBox>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="0,0,20,0">
                 <TextBlock Text="Filter By Call Type" Margin="0,0,0,5"/>
-                <!-- Changed TextBox to ComboBox for filtering -->
-                <ComboBox Width="200" Margin="0,0,10,0" SelectionChanged="Call_Filter">
-                    <ComboBoxItem Content="All"/>
-                    <ComboBoxItem Content="Food Preparation"/>
-                    <ComboBoxItem Content="Food Transport"/>
-                    <ComboBoxItem Content="Inventory Check"/>
-                </ComboBox>
+                <ComboBox Width="200"
+              ItemsSource="{Binding Source={StaticResource TypeOfCallsCollectionKey}}" 
+              SelectedValue="{Binding TypeCallInList, Mode=TwoWay}"
+              SelectionChanged="Call_Filter">
 
+                </ComboBox>
             </StackPanel>
 
         </StackPanel>
 
         <!-- List of open calls -->
-        <ListView Grid.Row="1"  >
-            <!--SelectionChanged="CallsListView_SelectionChanged">-->
+        <ListView ItemsSource="{Binding OpenCallList}" SelectionChanged="CallSelector_Filter" Margin="10,8,25,50" Grid.Row="1" Background="#00000000" Grid.RowSpan="2">
+
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding Id}" Width="100"/>
                     <GridViewColumn Header="Call Type" DisplayMemberBinding="{Binding CallType}" Width="150"/>
-                    <GridViewColumn Header="Address" DisplayMemberBinding="{Binding FullAddress}" Width="200"/>
+                    <GridViewColumn Header="Address" DisplayMemberBinding="{Binding FullAddress}" Width="150"/>
                     <GridViewColumn Header="Distance (km)" DisplayMemberBinding="{Binding DistanceFromVolunteer}" Width="100"/>
                     <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" Width="150"/>
                     <GridViewColumn Header="Opening Time" DisplayMemberBinding="{Binding OpeningTime}" Width="120"/>
-                    <GridViewColumn Header="Max Completion Time" DisplayMemberBinding="{Binding MaxCompletionTime}" Width="120"/>
+                    <GridViewColumn Header="Max Completion Time" DisplayMemberBinding="{Binding MaxCompletionTime}" Width="150"/>
+
                 </GridView>
             </ListView.View>
         </ListView>
+
 
         <!-- Details of the selected call -->
         <Border Grid.Row="2" Background="#E3F2FD" CornerRadius="4" Padding="10" Margin="0,10">
@@ -116,6 +118,6 @@
         <Button Grid.Row="3" Content="Select Call for Treatment" 
                 HorizontalAlignment="Right"
                 Click="BtnChoose_Click"/>
-        <Image  Source="/picture/logo.png" Height="90" Margin="649,-18,11,0" Grid.RowSpan="2" VerticalAlignment="Top"/>
+        <Image  Source="/picture/logo.png" Height="90" Margin="777,-26,47,0" Grid.RowSpan="2" VerticalAlignment="Top"/>
     </Grid>
 </Window>

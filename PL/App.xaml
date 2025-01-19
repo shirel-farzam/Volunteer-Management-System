@@ -17,7 +17,7 @@
             <local:VolunteerInListFieldCollection x:Key="VolunteerInListFieldCollectionKey" />
             <local:ClosedCallInListFieldCollection x:Key="ClosedCallInListFieldCollectionKey" />
             <local:OpenCallInListCollection x:Key="OpenCallInListCollectionKey" />
-            <local:CallTypeCollection x:Key="CallTypeCollectionKey" />
+            <local:TypeOfCallsCollection x:Key="TypeOfCallsCollectionKey" />
             <local:ConvertRoleToColor x:Key="ConvertRoleToColorKey" />
             <local:ConvertDistanceToColor x:Key="ConvertDistanceToColorKey" />
             <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />

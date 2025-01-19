@@ -500,4 +500,84 @@
     <TimeOpened>2025-01-16T10:01:52</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
+  <Call>
+    <Id>1050</Id>
+    <Type>FoodPreparation</Type>
+    <Description>k</Description>
+    <FullAddress>Ein Gedi 40, Beer Sheva, Israel</FullAddress>
+    <Latitude>31.4523959</Latitude>
+    <Longitude>35.3848241</Longitude>
+    <TimeOpened>2025-01-19T18:36:31.2515534+02:00</TimeOpened>
+    <MaxTimeToClose>2025-01-20T18:36:31</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1051</Id>
+    <Type>FoodTransport</Type>
+    <Description>Transfer Food</Description>
+    <FullAddress>Ein Gedi 37, Beer Sheva, Israel</FullAddress>
+    <Latitude>31.250263</Latitude>
+    <Longitude>34.7693364</Longitude>
+    <TimeOpened>2025-01-19T18:42:56.5979488+02:00</TimeOpened>
+    <MaxTimeToClose>2025-01-20T18:42:56</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1052</Id>
+    <Type>FoodTransport</Type>
+    <Description>Transfer Food</Description>
+    <FullAddress>Ein Gedi 37, Beer Sheva, Israel</FullAddress>
+    <Latitude>31.250263</Latitude>
+    <Longitude>34.7693364</Longitude>
+    <TimeOpened>2025-01-19T18:42:56.5979488+02:00</TimeOpened>
+    <MaxTimeToClose>2025-01-20T18:42:56</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1053</Id>
+    <Type>FoodTransport</Type>
+    <Description>Transfer food</Description>
+    <FullAddress>Ein Gedi 37, Beer Sheva, Israel</FullAddress>
+    <Latitude>31.250263</Latitude>
+    <Longitude>34.7693364</Longitude>
+    <TimeOpened>2025-01-19T18:50:51.9270692+02:00</TimeOpened>
+    <MaxTimeToClose>2025-01-20T18:50:51</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1054</Id>
+    <Type>FoodPreparation</Type>
+    <Description>97pyihukjh98 t8o</Description>
+    <FullAddress>Jerusalem</FullAddress>
+    <Latitude>31.7788242</Latitude>
+    <Longitude>35.2257626</Longitude>
+    <TimeOpened>2025-01-19T23:07:27.568255+02:00</TimeOpened>
+    <MaxTimeToClose>2025-01-20T23:07:27</MaxTimeToClose>
+  </Call>
+  <Call>
+    <Id>1055</Id>
+    <Type>FoodPreparation</Type>
+    <Description>986itugjbt 98b 9oy</Description>
+    <FullAddress>Jerusalem</FullAddress>
+    <Latitude>31.7788242</Latitude>
+    <Longitude>35.2257626</Longitude>
+    <TimeOpened>2025-01-19T23:26:03.3077409+02:00</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1056</Id>
+    <Type>FoodTransport</Type>
+    <Description />
+    <FullAddress>Hifa</FullAddress>
+    <Latitude>43.87895165</Latitude>
+    <Longitude>18.314780719485064</Longitude>
+    <TimeOpened>2025-01-19T23:38:53.8325669+02:00</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1057</Id>
+    <Type>FoodPreparation</Type>
+    <Description />
+    <FullAddress>Eilat</FullAddress>
+    <Latitude>29.554030599999997</Latitude>
+    <Longitude>34.94527476661743</Longitude>
+    <TimeOpened>2025-01-19T23:45:42.9122419+02:00</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
 </ArrayOfCall>

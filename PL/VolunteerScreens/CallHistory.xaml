@@ -55,11 +55,11 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="*"/>
-                <DataGridTextColumn Binding="{Binding Type}" Header="Type" Width="*"/>
+                <DataGridTextColumn Binding="{Binding CallType}" Header="Type" Width="*"/>
                 <DataGridTextColumn Binding="{Binding FullAddress}" Header="Full Address" Width="*"/>
-                <DataGridTextColumn Binding="{Binding TimeOpen}" Header="Time Open" Width="*"/>
-                <DataGridTextColumn Binding="{Binding StartTreat}" Header="Start Treatment" Width="*"/>
-                <DataGridTextColumn Binding="{Binding TimeClose}" Header="Time Close" Width="*"/>
+                <DataGridTextColumn Binding="{Binding OpeningTime}" Header="Time Open" Width="*"/>
+                <DataGridTextColumn Binding="{Binding EntryTime}" Header="Start Treatment" Width="*"/>
+                <DataGridTextColumn Binding="{Binding CompletionTime}" Header="Time Close" Width="*"/>
 
                 <DataGridTemplateColumn Header="Call Type">
                     <DataGridTemplateColumn.CellTemplate>

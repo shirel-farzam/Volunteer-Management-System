@@ -182,6 +182,57 @@ namespace PL.VolunteerScreens
             new ChooseCallToTreat(CurrentVolunteer.Id).Show();
         }
 
-       
+        // Event handler for "End Current Call" button
+        private void EndCurrentCall_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult mbResult = MessageBox.Show("Are you sure you want to close this call?", "Reset Confirmation",
+                                           MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (mbResult == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    s_bl.Call.CloseTreat(ManagerId, CurrentVolunteer.CurrentCall.Id);
+                    MessageBox.Show($"Call was successfully Closed!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                }
+                catch (BO.BlDeleteNotPossibleException ex)
+                {
+                    MessageBox.Show(ex.Message, "Close Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Close Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+            }
+
+
+        }
+
+        // Event handler for "Cancel Call" button
+        private void CancelCall_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult mbResult = MessageBox.Show("Are you sure you want to cancel this call?", "Reset Confirmation",
+                                          MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (mbResult == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    s_bl.Call.CancelTreat(ManagerId, CurrentVolunteer.CurrentCall.Id);
+                    MessageBox.Show($"Call was successfully Canceld!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                }
+                catch (BO.BlDeleteNotPossibleException ex)
+                {
+                    MessageBox.Show(ex.Message, "Cancel Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Cancel Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+            }
+
+        }
+
+
     }
 }

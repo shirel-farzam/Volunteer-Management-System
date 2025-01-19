@@ -56,7 +56,7 @@ namespace PL.CallWindow
                         FullAddress = string.Empty,
                         OpenTime = DateTime.Now,
                         MaxEndTime = null,
-                        Status = CallStatus.Closed,
+                        Status = CallStatus.Open,
 
                     };
             }
@@ -113,9 +113,9 @@ namespace PL.CallWindow
         {
             try
             {
-                var call = Call;
-                s_bl.Call.AddCall(call);
-                refresh();
+                
+                s_bl.Call.AddCall(Call);
+              //  refresh();
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -130,6 +130,7 @@ namespace PL.CallWindow
                     MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 });
             }
+            Close();
         }
 
         private void UpdateCall()

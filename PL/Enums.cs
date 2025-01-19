@@ -75,10 +75,10 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
-    internal class CallTypeCollection : IEnumerable
+    internal class TypeOfCallsCollection : IEnumerable
     {
-        static readonly IEnumerable<BO.CallType> s_enums =
-    (Enum.GetValues(typeof(BO.CallType)) as IEnumerable<BO.CallType>)!;
+        static readonly IEnumerable<BO.TypeOfCalls> s_enums =
+    (Enum.GetValues(typeof(BO.TypeOfCalls)) as IEnumerable<BO.TypeOfCalls>)!;
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
@@ -89,4 +89,5 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
+   
 }

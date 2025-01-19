@@ -75,7 +75,7 @@
                 <!-- ID (Read-only) -->
                 <Label Content="ID:" Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelStyle}" />
                 <TextBox Text="{Binding Call.Id}" Grid.Row="0" Grid.Column="1" Style="{StaticResource InputStyle}"  
-                     IsReadOnly="{Binding Call.Id, Converter={StaticResource ConvertUpdateToTrueKey}}" />
+                     IsReadOnly="True"/>
 
                 <!-- Type -->
                 <Label Content="Type"  Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelStyle}" />
@@ -100,7 +100,7 @@
 
                 <!-- OpenTime -->
                 <Label Content="Open Time:" Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-                <TextBox Text="{Binding Call.OpenTime}" Grid.Row="4" Grid.Column="1" Style="{StaticResource InputStyle}" />
+                <TextBox Text="{Binding Call.OpenTime}" IsReadOnly="True" Grid.Row="4" Grid.Column="1" Style="{StaticResource InputStyle}" />
 
                 <!-- MaxEndTime -->
                 <Label Content="Max End Time:" Grid.Row="5" Grid.Column="0" Style="{StaticResource LabelStyle}" />
@@ -108,21 +108,9 @@
 
                 <!-- Status -->
                 <Label Content="Status:" Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-               
-                <ComboBox SelectedValue="{Binding Call.Status, Mode=TwoWay}" 
-       SelectedValuePath="Content" 
-       Grid.Row="6" 
-       Grid.Column="1" 
-       Style="{StaticResource ComboBoxStyle}" Margin="10,0,0,0">
-                    <ComboBoxItem Content="Open" />
-                    <ComboBoxItem Content="InProgress" />
-                    <ComboBoxItem Content="Closed" />
-                    <ComboBoxItem Content="Expired" />
-                    <ComboBoxItem Content="OpenRisk" />
-                    <ComboBoxItem Content="InProgressRisk" />
-                    <ComboBoxItem Content="None" />
-                </ComboBox>
-                <Button Content="{Binding ButtonText}" 
+                <TextBox Text="{Binding Call.Status}" IsReadOnly="True" Grid.Row="6" 
+                      Grid.Column="1"  Margin="3,17,211,25" Height="21.95" Width="209.6"/>
+                 <Button Content="{Binding ButtonText}" 
     Click="btnAddUpdate_Click" 
     Margin="0,20,0,0"
     DockPanel.Dock="Bottom" 

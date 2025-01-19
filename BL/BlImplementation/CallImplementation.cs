@@ -46,47 +46,76 @@ internal class CallImplementation : ICall
     //        throw new BO.BlWrongInputException("Failed to add the new call.", ex);
     //    }
     //}
-
     public void AddCall(BO.Call boCall)
     {
-        // we need add 
-        boCall.Latitude = Tools.GetLatitude(boCall.FullAddress);
-        boCall.Longitude = Tools.GetLongitude(boCall.FullAddress);
-
-        //boCall.Status = CallManager.CalculateCallStatus();
-        //boCall.CallAssignments = null; // for first time not have CallAssignments
-
-        CallManager.IsValideCall(boCall);
-        CallManager.IsLogicCall(boCall);
-
-        //var doCall = CallManager.BOConvertDO_Call(boCall.Id);
-        //DO.Call doCall = CallManager.BOConvertDO_Call(boCall); // Converts the business object to a data object
+        double[] coordinate = VolunteerManager.GetCoordinatesFromAddress(boCall.FullAddress);
+        double latitude = coordinate[0];
+        double longitude = coordinate[1];
+        boCall.Latitude = latitude;
+        boCall.Longitude = longitude;
         try
         {
-            DO.Call doCall = new DO.Call(
-        boCall.Id,
-        (DO.CallType)boCall.Type,
-       boCall.Description,
-       boCall.FullAddress,
-      boCall.Latitude ?? 0.0,
-    boCall.Longitude ?? 0.0,          // Longitude
-
-       boCall.OpenTime,            // OpeningTime
-       boCall.MaxEndTime
-
-   );
-
-
+            CallManager.IsLogicCall(boCall);
+            DO.Call doCall = new
+                (
+                boCall.Id,
+                (DO.CallType)boCall.Type,
+                boCall.Description,
+                boCall.FullAddress,
+                latitude,
+                longitude,
+                boCall.OpenTime,
+                boCall.MaxEndTime
+                );
             _dal.Call.Create(doCall);
-            CallManager.Observers.NotifyListUpdated(); //stage 5   
-
         }
-        catch (DO.DalAlreadyExistsException ex)
+        catch (DO.DalXMLFileLoadCreateException ex)
         {
             throw new BO.BlAlreadyExistsException($"Call with ID={boCall.Id} already exists", ex);
         }
-
+        CallManager.Observers.NotifyListUpdated();  //stage 5 
     }
+
+   // public void AddCall(BO.Call boCall)
+   // {
+   //     // we need add 
+   //     boCall.Latitude = Tools.GetLatitude(boCall.FullAddress);
+   //     boCall.Longitude = Tools.GetLongitude(boCall.FullAddress);
+
+   //     //boCall.Status = CallManager.CalculateCallStatus();
+   //     //boCall.CallAssignments = null; // for first time not have CallAssignments
+
+   //     CallManager.IsValideCall(boCall);
+   //     CallManager.IsLogicCall(boCall);
+
+   //     //var doCall = CallManager.BOConvertDO_Call(boCall.Id);
+   //     //DO.Call doCall = CallManager.BOConvertDO_Call(boCall); // Converts the business object to a data object
+   //     try
+   //     {
+   //         DO.Call doCall = new DO.Call(
+   //     boCall.Id,
+   //     (DO.CallType)boCall.Type,
+   //    boCall.Description,
+   //    boCall.FullAddress,
+   //   boCall.Latitude ?? 0.0,
+   // boCall.Longitude ?? 0.0,          // Longitude
+
+   //    boCall.OpenTime,            // OpeningTime
+   //    boCall.MaxEndTime
+
+   //);
+
+
+   //         _dal.Call.Create(doCall);
+   //         CallManager.Observers.NotifyListUpdated(); //stage 5   
+
+   //     }
+   //     catch (DO.DalAlreadyExistsException ex)
+   //     {
+   //         throw new BO.BlAlreadyExistsException($"Call with ID={boCall.Id} already exists", ex);
+   //     }
+
+   // }
 
 
     // Assigns a volunteer to treat a specific call and creates an assignment record.
@@ -535,16 +564,28 @@ internal class CallImplementation : ICall
 
     public IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? type = null, BO.OpenCallInListField? sortField = null)
     {
-
+        var boVolunteer=_dal.Volunteer.Read(volunteerId);
         IEnumerable<DO.Call> previousCalls = _dal.Call.ReadAll(null);
-        List<BO.OpenCallInList>? Calls = new List<BO.OpenCallInList>();
+        IEnumerable<BO.OpenCallInList>? openCallInLists = new List<BO.OpenCallInList>();
 
-        Calls.AddRange(from item in previousCalls
-                       let DataCall = Read(item.Id)
-                       where DataCall.Status == BO.CallStatus.Open || DataCall.Status == BO.CallStatus.OpenRisk
-                       let lastAssugnment = DataCall.CallAssignments.OrderBy(c => c.StartTime).Last()
-                       select CallManager.ConvertDOCallToBOOpenCallInList(item, volunteerId));
-        IEnumerable<BO.OpenCallInList>? openCallInLists = Calls.Where(call => call.Id == volunteerId);
+        openCallInLists = from item in previousCalls
+                let DataCall = Read(item.Id)
+                where DataCall.Status == BO.CallStatus.Open || DataCall.Status == BO.CallStatus.OpenRisk
+                //let lastAssugnment = DataCall.CallAssignments.OrderBy(c => c.StartTime).Last()
+                select /*CallManager.ConvertDOCallToBOOpenCallInList(item, volunteerId);*/
+                        new BO.OpenCallInList
+                        {
+                            Id = DataCall.Id,
+                            CallType = (BO.CallType)DataCall.Type,
+                            Description = DataCall.Description,
+                            FullAddress = DataCall.FullAddress,
+                            OpeningTime = DataCall.OpenTime,
+                            MaxCompletionTime = DataCall.MaxEndTime,
+                            DistanceFromVolunteer = VolunteerManager.CalculateDistance((double)DataCall.Latitude, (double)DataCall.Longitude, (double)boVolunteer.Latitude, (double)boVolunteer.Longitude)
+                        };
+        ;
+
+        //openCallInLists = openCallInLists.Where(call => call.Id == volunteerId);
         if (type != null)
         {
             openCallInLists.Where(c => c.CallType == type).Select(c => c);
@@ -575,6 +616,21 @@ internal class CallImplementation : ICall
                 break;
 
         }
+        // הגדרת שדה ברירת מחדל למיון
+        //sortField ??= BO.OpenCallInListField.Id;
+
+        //// מיון לפי השדה המבוקש
+        //openCallInLists = sortField switch
+        //{
+        //    BO.OpenCallInListField.Id => openCallInLists.OrderBy(item => item.Id),
+        //    BO.OpenCallInListField.CallType => openCallInLists.OrderBy(item => item.CallType),
+        //    BO.OpenCallInListField.FullAddress => openCallInLists.OrderBy(item => item.FullAddress),
+        //    BO.OpenCallInListField.OpeningTime => openCallInLists.OrderBy(item => item.OpeningTime),
+        //    BO.OpenCallInListField.MaxCompletionTime => openCallInLists.OrderBy(item => item.MaxCompletionTime),
+        //    BO.OpenCallInListField.DistanceFromVolunteer => openCallInLists.OrderBy(item => item.DistanceFromVolunteer),
+        //    _ => openCallInLists
+        //};
+
         return openCallInLists;
 
     }
