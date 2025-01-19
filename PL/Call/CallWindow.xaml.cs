@@ -57,7 +57,7 @@ namespace PL.CallWindow
                         OpenTime = DateTime.Now,
                         MaxEndTime = null,
                         Status = CallStatus.Closed,
-                       
+
                     };
             }
             catch (Exception ex)
@@ -182,6 +182,6 @@ namespace PL.CallWindow
             {
                 Console.WriteLine($"Selected Role: {selectedRole}");
             }
-        }
-    }
+        }
+    }
 }

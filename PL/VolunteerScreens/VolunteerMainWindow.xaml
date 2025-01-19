@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.VolunteerScreens"
         mc:Ignorable="d"
-        Title="Volunteer Main Window" Height="600" Width="900" Background="#F4F7FC">
+        Title="Volunteer Main Window" Height="650" Width="1100" Background="#F4F7FC">
 
     <Grid Margin="20">
         <!-- Main Layout -->
@@ -18,12 +18,11 @@
 
         <!-- Top Buttons -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,10">
-            <Button Content="New Call" Height="45" Width="150" Margin="0,0,10,0" Background="#507687" Foreground="White" FontWeight="Bold" />
-            <Button Content="My Calls History" Height="45" Width="150" Background="#507687" Foreground="White" FontWeight="Bold" Click="Button_Click" />
-
+            <Button Content="Choose Call" Height="45" Width="150" Margin="0,0,10,0" Background="{StaticResource ButtonBlue}" Foreground="Black" FontWeight="Bold" Click="Button_Click" />
+            <Button Content="My Calls History" Height="45" Width="150" Background="{StaticResource ButtonBlue}" Foreground="Black" FontWeight="Bold" Click="BtHistory_Click" />
         </StackPanel>
-        <Image Source="/picture/logo.png" Height="120" Width="160" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
-Stretch="Uniform" Grid.RowSpan="2" Margin="5,-28,0,0"  />
+        <Image Source="/picture/logo.png" Height="77" Width="93" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
+Stretch="Uniform" Margin="5,-28,0,0"  />
         <!-- Main Content -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -34,7 +33,7 @@ Stretch="Uniform" Grid.RowSpan="2" Margin="5,-28,0,0"  />
             </Grid.ColumnDefinitions>
 
             <!-- Volunteer Details Form -->
-            <Border Grid.Column="0" CornerRadius="10" BorderThickness="1" BorderBrush="#CBD5E1" Padding="15" Background="White" Margin="0,0,10,0">
+            <Border Grid.Column="0" CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource AccentLight}" Padding="15" Background="White" Margin="0,0,10,0">
                 <StackPanel>
                     <TextBlock Text="Volunteer Details" FontSize="18" FontWeight="Bold" Foreground="#334155" Margin="0,0,0,15" />
 
@@ -42,7 +41,7 @@ Stretch="Uniform" Grid.RowSpan="2" Margin="5,-28,0,0"  />
                     <UniformGrid Columns="2" Rows="0" Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Top" >
                         <!-- ID -->
                         <Label Content="ID:" FontSize="12" VerticalAlignment="Center" />
-                        <TextBox Text="{Binding CurrentVolunteer.Id}" FontSize="12" IsEnabled="False" />
+                        <TextBox Text="{Binding CurrentVolunteer.Id}" FontSize="12" IsEnabled="False" Foreground="Gray"/>
 
                         <!-- Full Name -->
                         <Label Content="Full Name:" FontSize="12" VerticalAlignment="Center" />
@@ -105,53 +104,77 @@ Stretch="Uniform" Grid.RowSpan="2" Margin="5,-28,0,0"  />
                     </UniformGrid>
 
                     <!-- Update Button -->
-                    <Button Content="Update" Height="40" Width="100" HorizontalAlignment="Left" Margin="0,15,0,0" Background="#10B981" Foreground="White" FontWeight="Bold" Click="ButtonUpdate_Click" />
+                    <Button Content="Update" Height="40" Width="100" HorizontalAlignment="Left" Margin="0,15,0,0" Background="{StaticResource Primary}" Foreground="White" FontWeight="Bold" Click="btnAddUpdate_Click" />
                 </StackPanel>
             </Border>
 
             <!-- Call Details -->
-            <Border CornerRadius="10" BorderThickness="1" BorderBrush="#CBD5E1" Padding="15" Background="White" Grid.ColumnSpan="2" Margin="573,0,0,60">
+            <Border CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource AccentLight}" Padding="15" Background="White" Grid.ColumnSpan="2" Margin="573,0,0,0">
                 <StackPanel>
                     <TextBlock Text="Current Call Details" FontSize="18" FontWeight="Bold" Foreground="#334155" Margin="0,0,0,15" />
 
                     <!-- Call Fields -->
                     <StackPanel Margin="0,10">
-                        <TextBlock Text="Description:" FontWeight="Bold" Foreground="#334155" />
-                        <TextBlock Text="{Binding Volunteer.CurrentCall.Description}" Margin="10,0,0,10" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Text="Call ID:" FontWeight="Bold" Foreground="#334155" />
-                        <TextBlock Text="{Binding Volunteer.CurrentCall.CallId}" Margin="10,0,0,10" />
+                            <!-- Description -->
+                            <TextBlock Text="Description:" FontWeight="Bold" Foreground="#334155" Grid.Row="0" Grid.Column="0" Margin="0,0,10,20"/>
+                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.Description}" Grid.Row="0" Grid.Column="1" Margin="0,0,0,20"/>
 
-                        <TextBlock Text="Call Type:" FontWeight="Bold" Foreground="#334155" />
-                        <TextBlock Text="{Binding Volunteer.CurrentCall.CallType}" Margin="10,0,0,10" />
+                            <!-- Call ID -->
+                            <TextBlock Text="Call ID:" FontWeight="Bold" Foreground="#334155" Grid.Row="1" Grid.Column="0" Margin="0,0,10,20"/>
+                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.CallId}" Grid.Row="1" Grid.Column="1" Margin="0,0,0,20"/>
 
-                        <TextBlock Text="Full Address:" FontWeight="Bold" Foreground="#334155" />
-                        <TextBlock Text="{Binding Volunteer.CurrentCall.FullAddress}" Margin="10,0,0,10" />
+                            <!-- Call Type -->
+                            <TextBlock Text="Call Type:" FontWeight="Bold" Foreground="#334155" Grid.Row="2" Grid.Column="0" Margin="0,0,10,20"/>
+                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.CallType}" Grid.Row="2" Grid.Column="1" Margin="0,0,0,20"/>
 
-                        <TextBlock Text="Open Time:" FontWeight="Bold" Foreground="#334155" />
-                        <TextBlock Text="{Binding Volunteer.CurrentCall.OpenTime, StringFormat=G}" Margin="10,0,0,10" />
+                            <!-- Full Address -->
+                            <TextBlock Text="Full Address:" FontWeight="Bold" Foreground="#334155" Grid.Row="3" Grid.Column="0" Margin="0,0,10,20"/>
+                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.FullAddress}" Grid.Row="3" Grid.Column="1" Margin="0,0,0,20"/>
 
-                        <TextBlock Text="Max Completion Time:" FontWeight="Bold" Foreground="#334155" />
-                        <TextBlock Text="{Binding Volunteer.CurrentCall.MaxCompletionTime, StringFormat=G}" Margin="10,0,0,10" />
+                            <!-- Open Time -->
+                            <TextBlock Text="Open Time:" FontWeight="Bold" Foreground="#334155" Grid.Row="4" Grid.Column="0" Margin="0,0,10,20"/>
+                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.OpenTime, StringFormat=G}" Grid.Row="4" Grid.Column="1" Margin="0,0,0,20"/>
 
-                        <TextBlock Text="Enter Time:" FontWeight="Bold" Foreground="#334155" />
-                        <TextBlock Text="{Binding Volunteer.CurrentCall.EnterTime, StringFormat=G}" Margin="10,0,0,10" />
+                            <!-- Max Completion Time -->
+                            <TextBlock Text="Max Completion Time:" FontWeight="Bold" Foreground="#334155" Grid.Row="5" Grid.Column="0" Margin="0,0,10,20"/>
+                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.MaxCompletionTime, StringFormat=G}" Grid.Row="5" Grid.Column="1" Margin="0,0,0,20"/>
 
-                        <TextBlock Text="Distance from Volunteer:" FontWeight="Bold" Foreground="#334155" />
-                        <TextBlock Text="{Binding Volunteer.CurrentCall.DistanceFromVolunteer}" Margin="10,0,0,10" />
+                            <!-- Enter Time -->
+                            <TextBlock Text="Enter Time:" FontWeight="Bold" Foreground="#334155" Grid.Row="6" Grid.Column="0" Margin="0,0,10,20"/>
+                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.EnterTime, StringFormat=G}" Grid.Row="6" Grid.Column="1" Margin="0,0,0,20"/>
 
-                        <TextBlock Text="Status:" FontWeight="Bold" Foreground="#334155" />
-                        <TextBlock Text="{Binding Volunteer.CurrentCall.Status}" Margin="10,0,0,10" />
+                            <!-- Distance from Volunteer -->
+                            <TextBlock Text="Distance from Volunteer:" FontWeight="Bold" Foreground="#334155" Grid.Row="7" Grid.Column="0" Margin="0,0,10,20"/>
+                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.DistanceFromVolunteer}" Grid.Row="7" Grid.Column="1" Margin="0,0,0,20"/>
+
+                            <!-- Status -->
+                            <TextBlock Text="Status:" FontWeight="Bold" Foreground="#334155" Grid.Row="8" Grid.Column="0" Margin="0,0,10,20"/>
+                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.Status}" Grid.Row="8" Grid.Column="1" Margin="0,0,0,20"/>
+                        </Grid>
                     </StackPanel>
-
-
                 </StackPanel>
-
             </Border>
             <!-- Action Buttons -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="7,434,0,5" Width="264" Grid.Column="1">
-                <Button Content="End Current Call" Height="38" Width="126" Background="#86EFAC" Foreground="White" FontWeight="Bold" Margin="0,0,10,0" />
-                <Button Content="Cancel Call" Height="40" Width="129" Background="#4ADE80" Foreground="White" FontWeight="Bold" />
+                <Button Content="End Current Call" Height="38" Width="126" Background="{StaticResource SoftBlue}" Foreground="White" FontWeight="Bold" Margin="0,0,10,0" />
+                <Button Content="Cancel Call" Height="38" Width="124" Background="{StaticResource SoftBlue}" Foreground="White" FontWeight="Bold" />
             </StackPanel>
 
         </Grid>

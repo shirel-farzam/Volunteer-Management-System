@@ -92,8 +92,8 @@ internal static class CallManager
         {
             throw new BlWrongInputException("Invalid address of Volunteer");// 
         }
-        double? LatitudeVolunteer = Tools.GetLatitudeAsync(doVolunteer.FullAddress).Result;
-        double? LongitudeVolunteer = Tools.GetLongitudeAsync(doVolunteer.FullAddress).Result;
+        double? LatitudeVolunteer = Tools.GetLatitude(doVolunteer.FullAddress);
+        double? LongitudeVolunteer = Tools.GetLongitude(doVolunteer.FullAddress);
 
 
         return new BO.CallInProgress
@@ -425,21 +425,23 @@ internal static class CallManager
             throw new ArgumentNullException(nameof(BOCall), "The provided BO.Call object cannot be null.");
         }
 
-        // המרה של BO.Call ל-DO.Call
+        // Convert BO.Call to DO.Call
         var DOCall = new DO.Call
         {
             Id = BOCall.Id,
-            Type = (DO.CallType)BOCall.Type, 
+            // Convert CallType if necessary using Enum.Parse or Cast
+            Type = (DO.CallType)Enum.Parse(typeof(DO.CallType), BOCall.Type.ToString()),  // Use Enum.Parse if CallType is an Enum
             Description = BOCall.Description,
             FullAddress = BOCall.FullAddress,
-            Latitude = BOCall.Latitude ?? 0, 
-            Longitude = BOCall.Longitude ?? 0, 
+            Latitude = BOCall.Latitude ?? 0, // Convert to 0 if Latitude is null
+            Longitude = BOCall.Longitude ?? 0, // Convert to 0 if Longitude is null
             TimeOpened = BOCall.OpenTime,
             MaxTimeToClose = BOCall.MaxEndTime
         };
 
         return DOCall;
     }
+
 
     public static TimeSpan? CalculateTimeRemaining(DateTime? maxEndTime)
     {
@@ -523,7 +525,6 @@ internal static class CallManager
             TotalAssignments = assignmentsForCall.Count()
         };
     }
-
 
     internal static BO.ClosedCallInList ConvertDOCallToBOCloseCallInList(DO.Call doCall, CallAssignmentInList lastAssignment)
     {

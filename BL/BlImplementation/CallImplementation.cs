@@ -20,22 +20,74 @@ internal class CallImplementation : ICall
     private readonly DalApi.IDal _dal = DalApi.Factory.Get; // Dependency to access the data access layer (DAL)
 
     // Adds a new call to the system after validating it and converting it to the appropriate format.
+    //public void AddCall(BO.Call boCall)
+    //{
+    //    if (boCall == null)
+    //    {
+    //        throw new ArgumentNullException(nameof(boCall), "The provided call cannot be null.");
+    //    }
+
+    //    CallManager.IsValideCall(boCall); // Validates the call's properties
+    //    CallManager.IsLogicCall(boCall); // Ensures the call follows logical business rules
+
+    //    DO.Call doCall = CallManager.BOConvertDO_Call(boCall); // Converts the business object to a data object
+
+    //    try
+    //    {
+    //        _dal.Call.Create(doCall); // Adds the call to the DAL
+    //        CallManager.Observers.NotifyListUpdated(); // Notify observers about the updated list
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // Log the exception (optional, if you have logging in place)
+    //        // Logger.LogError("Failed to add the new call.", ex);
+
+    //        // Throws a custom exception to handle the error gracefully
+    //        throw new BO.BlWrongInputException("Failed to add the new call.", ex);
+    //    }
+    //}
+
     public void AddCall(BO.Call boCall)
     {
-        CallManager.IsValideCall(boCall); // Validates the call's properties
-        CallManager.IsLogicCall(boCall); // Ensures the call follows logical business rules
-        DO.Call doCall = CallManager.BOConvertDO_Call(boCall); // Converts the business object to a data object
+        // we need add 
+        boCall.Latitude = Tools.GetLatitude(boCall.FullAddress);
+        boCall.Longitude = Tools.GetLongitude(boCall.FullAddress);
+
+        //boCall.Status = CallManager.CalculateCallStatus();
+        //boCall.CallAssignments = null; // for first time not have CallAssignments
+
+        CallManager.IsValideCall(boCall);
+        CallManager.IsLogicCall(boCall);
+
+        //var doCall = CallManager.BOConvertDO_Call(boCall.Id);
+        //DO.Call doCall = CallManager.BOConvertDO_Call(boCall); // Converts the business object to a data object
         try
         {
-            _dal.Call.Create(doCall); // Adds the call to the DAL
-           CallManager.Observers.NotifyListUpdated(); //stage 5   
+            DO.Call doCall = new DO.Call(
+        boCall.Id,
+        (DO.CallType)boCall.Type,
+       boCall.Description,
+       boCall.FullAddress,
+      boCall.Latitude ?? 0.0,
+    boCall.Longitude ?? 0.0,          // Longitude
+
+       boCall.OpenTime,            // OpeningTime
+       boCall.MaxEndTime
+
+   );
+
+
+            _dal.Call.Create(doCall);
+            CallManager.Observers.NotifyListUpdated(); //stage 5   
+
         }
-        catch (Exception ex)
+        catch (DO.DalAlreadyExistsException ex)
         {
-            // Handles exceptions if adding the call fails
-            throw new BO.BlWrongInputException("Failed to add the new call.", ex);
+            throw new BO.BlAlreadyExistsException($"Call with ID={boCall.Id} already exists", ex);
         }
+
     }
+
 
     // Assigns a volunteer to treat a specific call and creates an assignment record.
     public void ChooseCallForTreat(int volunteerId, int callId)
@@ -118,40 +170,40 @@ internal class CallImplementation : ICall
 
         //    return result; // Return the array with counts
         //}
-        
-            try
-            {
-                // Fetching calls from the data layer
-                var doCalls = _dal.Call.ReadAll();
 
-                // Converting the calls from DO to BO using your function
-                var boCalls = doCalls.Select(doCall => CallManager.GetViewingCall(doCall.Id)).ToList();
+        try
+        {
+            // Fetching calls from the data layer
+            var doCalls = _dal.Call.ReadAll();
 
-                // Grouping the calls by status and counting occurrences
-                var groupedCalls = boCalls
-                    .GroupBy(call => call.Status)
-                    .ToDictionary(group => (int)group.Key, group => group.Count());
+            // Converting the calls from DO to BO using your function
+            var boCalls = doCalls.Select(doCall => CallManager.GetViewingCall(doCall.Id)).ToList();
 
-                // Creating the result array with specific order and summing at the last position
-                var quantities = new int[7];
-                quantities[0] = groupedCalls.ContainsKey((int)CallStatus.Open) ? groupedCalls[(int)CallStatus.Open] : 0;
-                quantities[1] = groupedCalls.ContainsKey((int)CallStatus.Closed) ? groupedCalls[(int)CallStatus.Closed] : 0;
-                quantities[2] = groupedCalls.ContainsKey((int)CallStatus.InProgress) ? groupedCalls[(int)CallStatus.InProgress] : 0;
-                quantities[3] = groupedCalls.ContainsKey((int)CallStatus.Expired) ? groupedCalls[(int)CallStatus.Expired] : 0;
-                quantities[4] = groupedCalls.ContainsKey((int)CallStatus.InProgressRisk) ? groupedCalls[(int)CallStatus.InProgressRisk] : 0;
-                quantities[5] = groupedCalls.ContainsKey((int)CallStatus.OpenRisk) ? groupedCalls[(int)CallStatus.OpenRisk] : 0;
+            // Grouping the calls by status and counting occurrences
+            var groupedCalls = boCalls
+                .GroupBy(call => call.Status)
+                .ToDictionary(group => (int)group.Key, group => group.Count());
 
-                // Summing up all values into the last position
-                quantities[6] = quantities.Take(6).Sum();
+            // Creating the result array with specific order and summing at the last position
+            var quantities = new int[7];
+            quantities[0] = groupedCalls.ContainsKey((int)CallStatus.Open) ? groupedCalls[(int)CallStatus.Open] : 0;
+            quantities[1] = groupedCalls.ContainsKey((int)CallStatus.Closed) ? groupedCalls[(int)CallStatus.Closed] : 0;
+            quantities[2] = groupedCalls.ContainsKey((int)CallStatus.InProgress) ? groupedCalls[(int)CallStatus.InProgress] : 0;
+            quantities[3] = groupedCalls.ContainsKey((int)CallStatus.Expired) ? groupedCalls[(int)CallStatus.Expired] : 0;
+            quantities[4] = groupedCalls.ContainsKey((int)CallStatus.InProgressRisk) ? groupedCalls[(int)CallStatus.InProgressRisk] : 0;
+            quantities[5] = groupedCalls.ContainsKey((int)CallStatus.OpenRisk) ? groupedCalls[(int)CallStatus.OpenRisk] : 0;
 
-                return quantities;
-            }
-            catch (Exception ex)
-            {
-                throw new BlDoesNotExistException("Failed to retrieve call quantities by status.", ex);
-            }
+            // Summing up all values into the last position
+            quantities[6] = quantities.Take(6).Sum();
+
+            return quantities;
         }
-    
+        catch (Exception ex)
+        {
+            throw new BlDoesNotExistException("Failed to retrieve call quantities by status.", ex);
+        }
+    }
+
 
 
     public BO.Call Read(int callId)
@@ -167,7 +219,7 @@ internal class CallImplementation : ICall
         return new BO.Call
         {
             Id = callId,
-            
+
             Type = (BO.CallType)doCall.Type, // Map the call type
             Description = doCall.Description, // Map the description
             FullAddress = doCall.FullAddress, // Map the address
@@ -310,55 +362,177 @@ internal class CallImplementation : ICall
 
         return boCallsInList;
     }
+    //public IEnumerable<BO.OpenCallInList> GetOpenCall(int id, BO.CallType? type, BO.OpenCallInList? sortBy)
+    //{
+    //    if (type == BO.CallType.None)
+    //        type = null;
+    //    DO.Volunteer volunteer = _dal.Volunteer.Read(id);
+    //    if (volunteer == null)
+    //        throw new BO.BlDoesNotExistException($"Volunteer with ID={id} does not exist");
 
+    //    // Retrieve all calls from the BO
+    //    IEnumerable<BO.CallInList> allCalls = GetCallInLists(null, null, null);
+
+    //    // Retrieve all assignments from the DAL
+    //    var calls = _dal.Call.ReadAll();
+    //    double lonVol = (double)volunteer.Longitude;
+    //    double latVol = (double)volunteer.Latitude;
+
+    //    // Filter for only "Open" or "Risk Open" status
+    //    IEnumerable<BO.OpenCallInList> filteredCalls = from call in allCalls
+    //                                                   where (call.Status == BO.CallStatus.Open || call.Status == BO.CallStatus.OpenRisk)
+    //                                                   let boCall = Read(call.CallId)
+    //                                                   select new BO.OpenCallInList
+    //                                                   {
+    //                                                       Id = call.CallId,
+    //                                                       CallType = call.Type,
+    //                                                       Description = boCall.Description,
+    //                                                       FullAddress = boCall.FullAddress,
+    //                                                       OpeningTime = call.OpeningTime,
+    //                                                       MaxCompletionTime = boCall.MaxEndTime,
+    //                                                       Status = boCall.Status,
+    //                                                       DistanceFromVolunteer = volunteer?.FullAddress != null ?
+    //                                                      VolunteerManager.CalculateDistance(latVol, lonVol, (double)boCall.Latitude, (double)boCall.Longitude)/* : 0*/  // Calculate the distance between the volunteer and the call
+
+
+    //                                                  };
+    //    filteredCalls = from call in filteredCalls
+    //                    where (volunteer.MaxReading == null || volunteer.MaxReading > call.DistanceFromVolunteer)
+    //                    select call;
+
+
+    //    // Filter by call type if provided
+    //    if (type.HasValue)
+    //    {
+    //        filteredCalls = filteredCalls.Where(c => c.CallType == type.Value);
+    //    }
+
+    //    // Sort by the requested field or by default (call ID)
+    //    if (sortBy.HasValue)
+    //    {
+    //        filteredCalls = sortBy.Value switch
+    //        {
+    //            BO.OpenCallInListField.Id => filteredCalls.OrderBy(c => c.Id),
+    //            BO.OpenCallInListField.CallType => filteredCalls.OrderBy(c => c.CallType),
+    //            //BO.EOpenCallInList.Description => filteredCalls.OrderBy(c => c.Description),
+    //            BO.OpenCallInListField.FullAddress => filteredCalls.OrderBy(c => c.FullAddress),
+    //            BO.OpenCallInListField.OpeningTime => filteredCalls.OrderBy(c => c.OpeningTime),
+    //            BO.OpenCallInListField.MaxCompletionTime => filteredCalls.OrderBy(c => c.MaxCompletionTime),
+    //            BO.OpenCallInListField.DistanceFromVolunteer => filteredCalls.OrderBy(c => c.DistanceFromVolunteer),
+
+    //            _ => filteredCalls.OrderBy(c => c.Id)
+    //        };
+    //    }
+    //    else
+    //    {
+    //        filteredCalls = filteredCalls.OrderBy(c => c.Id);
+    //    }
+
+    //    return filteredCalls;
+    //}
+    //public IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, BO.CallType? type = null, BO.ClosedCallInListField? sortField = null)
+    //{
+
+    //    IEnumerable<DO.Call> previousCalls = _dal.Call.ReadAll(null);
+    //    List<BO.ClosedCallInList>? Calls = new List<BO.ClosedCallInList>();
+
+    //    Calls.AddRange(from item in previousCalls
+    //                   let DataCall = Read(item.Id)
+    //                   where DataCall.Status == BO.CallStatus.Closed && DataCall.CallAssignments?.Any() == true
+    //                   let lastAssugnment = DataCall.CallAssignments.OrderBy(c => c.StartTime).Last()
+    //                   select CallManager.ConvertDOCallToBOCloseCallInList(item, lastAssugnment));
+    //    IEnumerable<BO.ClosedCallInList>? closedCallInLists = Calls.Where(call => call.Id == volunteerId);
+    //    if (type != null)
+    //    {
+    //        closedCallInLists.Where(c => c.CallType == type).Select(c => c);
+    //    }
+    //    if (sortField == null)
+    //    {
+    //        sortField = BO.ClosedCallInListField.Id;
+    //    }
+    //    switch (sortField)
+    //    {
+    //        case BO.ClosedCallInListField.Id:
+    //            closedCallInLists.OrderBy(item => item.Id);
+    //            break;
+    //        case BO.ClosedCallInListField.CallType:
+    //            closedCallInLists.OrderBy(item => item.CallType);
+    //            break;
+    //        case BO.ClosedCallInListField.FullAddress:
+    //            closedCallInLists.OrderBy(item => item.FullAddress);
+    //            break;
+    //        case BO.ClosedCallInListField.OpeningTime:
+    //            closedCallInLists.OrderBy(item => item.OpeningTime);
+    //            break;
+    //        case BO.ClosedCallInListField.EntryTime:
+    //            closedCallInLists.OrderBy(item => item.EntryTime);
+    //            break;
+    //        case BO.ClosedCallInListField.CompletionTime:
+    //            closedCallInLists.OrderBy(item => item.CompletionTime);
+    //            break;
+    //        case BO.ClosedCallInListField.CompletionType:
+    //            closedCallInLists.OrderBy(item => item.CompletionType);
+    //            break;
+
+    //    }
+    //    return closedCallInLists;
+
+    //}
     public IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, BO.CallType? type = null, BO.ClosedCallInListField? sortField = null)
     {
-
+        // קריאה ל-API
         IEnumerable<DO.Call> previousCalls = _dal.Call.ReadAll(null);
-        List<BO.ClosedCallInList>? Calls = new List<BO.ClosedCallInList>();
+        List<BO.ClosedCallInList> Calls = new List<BO.ClosedCallInList>();
 
         Calls.AddRange(from item in previousCalls
                        let DataCall = Read(item.Id)
                        where DataCall.Status == BO.CallStatus.Closed && DataCall.CallAssignments?.Any() == true
-                       let lastAssugnment = DataCall.CallAssignments.OrderBy(c => c.StartTime).Last()
-                       select CallManager.ConvertDOCallToBOCloseCallInList(item, lastAssugnment));
-        IEnumerable<BO.ClosedCallInList>? closedCallInLists = Calls.Where(call => call.Id == volunteerId);
+                       let lastAssignment = DataCall.CallAssignments.OrderBy(c => c.StartTime).Last()
+                       select CallManager.ConvertDOCallToBOCloseCallInList(item, lastAssignment));
+
+        // סינון לפי VolunteerId
+        IEnumerable<BO.ClosedCallInList> closedCallInLists = Calls.Where(call => call.Id == volunteerId);
+
+        // סינון לפי סוג קריאה
         if (type != null)
         {
-            closedCallInLists.Where(c => c.CallType == type).Select(c => c);
+            closedCallInLists = closedCallInLists.Where(c => c.CallType == type);
         }
+
+        // מיון
         if (sortField == null)
         {
-            sortField = BO.ClosedCallInListField.Id;
+            sortField = BO.ClosedCallInListField.Id; // ברירת מחדל
         }
+
         switch (sortField)
         {
             case BO.ClosedCallInListField.Id:
-                closedCallInLists.OrderBy(item => item.Id);
+                closedCallInLists = closedCallInLists.OrderBy(item => item.Id);
                 break;
             case BO.ClosedCallInListField.CallType:
-                closedCallInLists.OrderBy(item => item.CallType);
+                closedCallInLists = closedCallInLists.OrderBy(item => item.CallType);
                 break;
             case BO.ClosedCallInListField.FullAddress:
-                closedCallInLists.OrderBy(item => item.FullAddress);
+                closedCallInLists = closedCallInLists.OrderBy(item => item.FullAddress);
                 break;
             case BO.ClosedCallInListField.OpeningTime:
-                closedCallInLists.OrderBy(item => item.OpeningTime);
+                closedCallInLists = closedCallInLists.OrderBy(item => item.OpeningTime);
                 break;
             case BO.ClosedCallInListField.EntryTime:
-                closedCallInLists.OrderBy(item => item.EntryTime);
+                closedCallInLists = closedCallInLists.OrderBy(item => item.EntryTime);
                 break;
             case BO.ClosedCallInListField.CompletionTime:
-                closedCallInLists.OrderBy(item => item.CompletionTime);
+                closedCallInLists = closedCallInLists.OrderBy(item => item.CompletionTime);
                 break;
             case BO.ClosedCallInListField.CompletionType:
-                closedCallInLists.OrderBy(item => item.CompletionType);
+                closedCallInLists = closedCallInLists.OrderBy(item => item.CompletionType);
                 break;
-
         }
-        return closedCallInLists;
 
+        return closedCallInLists.ToList();
     }
+
     public IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? type = null, BO.OpenCallInListField? sortField = null)
     {
 
@@ -548,7 +722,7 @@ internal class CallImplementation : ICall
             // Update the call in the data layer.
             _dal.Call.Update(doCall);
             CallManager.Observers.NotifyItemUpdated(doCall.Id);  //stage 5
-           CallManager.Observers.NotifyListUpdated();  //stage 5
+            CallManager.Observers.NotifyListUpdated();  //stage 5
         }
         catch (DO.DalDeletionImpossible ex)
         {

@@ -26,7 +26,7 @@ namespace PL.Admin
         private void NavigateToVolunteerScreen_Click(object sender, RoutedEventArgs e)
         {
 
-            new VolunteerMainWindow(Id).Show();
+            new VolunteerMainWindow(Id,Id).Show();
 
             // יצירת חלון חדש למסך המתנדבים ופתיחתו
             //VolunteerScreenWindow volunteerWindow = new VolunteerScreenWindow(); // ודא שהחלון קיים

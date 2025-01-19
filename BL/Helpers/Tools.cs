@@ -107,20 +107,15 @@ internal static class Tools
     /// </summary>
     /// <param name="address">The address to process.</param>
     /// <returns>The latitude, or null if the address is invalid or not found.</returns>
-    public static async Task<double> GetLatitudeAsync(string address)
+    public static double GetLatitude(string address)
     {
-        var coordinates = await GetCoordinatesAsync(address);
+        var coordinates = GetCoordinatesAsync(address).GetAwaiter().GetResult();
         return coordinates?.Latitude ?? 0;
     }
 
-    /// <summary>
-    /// Gets the longitude of a given address.
-    /// </summary>
-    /// <param name="address">The address to process.</param>
-    /// <returns>The longitude, or null if the address is invalid or not found.</returns>
-    public static async Task<double> GetLongitudeAsync(string address)
+    public static double GetLongitude(string address)
     {
-        var coordinates = await GetCoordinatesAsync(address);
+        var coordinates = GetCoordinatesAsync(address).GetAwaiter().GetResult();
         return coordinates?.Longitude ?? 0;
     }
 

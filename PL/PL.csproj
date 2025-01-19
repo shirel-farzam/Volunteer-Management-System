@@ -16,6 +16,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Page Remove="Themes\ColorLight.xaml" />
+    <Page Remove="Themes\DarkColor.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="picture\1-19668aa5.ico" />
   </ItemGroup>
 
@@ -27,6 +32,11 @@
     <Resource Include="picture\logo.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Themes\ColorLight.xaml" />
+    <Resource Include="Themes\DarkColor.xaml" />
   </ItemGroup>
 
   <ItemGroup>

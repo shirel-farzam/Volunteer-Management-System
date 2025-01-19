@@ -16,6 +16,7 @@ namespace PL.VolunteerScreens
             set { SetValue(ClosedCallListProperty, value); }
         }
 
+
         public static readonly DependencyProperty ClosedCallListProperty =
             DependencyProperty.Register("ClosedCallList", typeof(IEnumerable<BO.ClosedCallInList>), typeof(CallHistory), new PropertyMetadata(null));
 
@@ -33,6 +34,7 @@ namespace PL.VolunteerScreens
             InitializeComponent();
             DataContext = this;
             _previousWindow = previousWindow;
+            queryClosedCallList();
         }
 
         private void cbVSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -54,6 +56,18 @@ namespace PL.VolunteerScreens
         {
             // שליפת הקריאות לפי המתודות של ה-API הפנימי
             ClosedCallList = s_bl?.Call.GetClosedCallsByVolunteer(IdVolunteer, TypeCallInList, ClosedCallInList) ?? Enumerable.Empty<BO.ClosedCallInList>();
+            if (ClosedCallList.Any())
+            {
+                Console.WriteLine("Data found:");
+                foreach (var call in ClosedCallList)
+                {
+                    Console.WriteLine($"Id: {call.Id}, Type: {call.CallType}, Address: {call.FullAddress}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No data found!");
+            }
         }
 
         // מימוש נוסף למימוש סינון לפי סוג הקריאה
