@@ -65,13 +65,39 @@ namespace PL.VolunteerScreens
             InitializeComponent();
         }
 
+        //private void Call_Filter(object sender, SelectionChangedEventArgs e)
+        //{
+        //    // עדכון פילטר הסינון
+        //    OpenCallInList = (BO.OpenCallInListField)(((ComboBox)sender).SelectedItem);
+
+        //    // שליפת הקריאות עם הפילטר החדש
+        //    OpenCallList = s_bl?.Call.GetOpenCallsForVolunteer(VolunteerId, TypeCallInList, OpenCallInList)!;
+        //}
         private void Call_Filter(object sender, SelectionChangedEventArgs e)
         {
-            // עדכון פילטר הסינון
-            OpenCallInList = (BO.OpenCallInListField)(((ComboBox)sender).SelectedItem);
+            // קבלת הפריט הנבחר מתוך הקומבו-בוקס
+            var comboBox = sender as ComboBox;
+            var selectedItem = comboBox?.SelectedItem as ComboBoxItem;
 
-            // שליפת הקריאות עם הפילטר החדש
-            OpenCallList = s_bl?.Call.GetOpenCallsForVolunteer(VolunteerId, TypeCallInList, OpenCallInList)!;
+            if (selectedItem != null)
+            {
+                // גישה לתוכן של ComboBoxItem
+                var selectedValue = selectedItem.Content.ToString();
+
+                // המרת התוכן ל-BO.OpenCallInListField
+                if (Enum.TryParse(selectedValue, out BO.OpenCallInListField selectedField))
+                {
+                    // עדכון הפילטר
+                    OpenCallInList = selectedField;
+
+                    // שליפת הקריאות עם הפילטר החדש
+                    OpenCallList = s_bl?.Call.GetOpenCallsForVolunteer(VolunteerId, TypeCallInList, OpenCallInList)!;
+                }
+                else
+                {
+                    MessageBox.Show("Invalid selection. Please select a valid field.");
+                }
+            }
         }
 
         private void CallSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
