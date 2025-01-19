@@ -47,9 +47,9 @@
                 Margin="100,0,0,0" Width="135"/>
         </Grid>
 
-        <!-- שורה שנייה: DataGrid להצגת הנתונים -->
+        
         <DataGrid Grid.Row="1" 
-                ItemsSource="{Binding ClosedCallList, UpdateSourceTrigger=PropertyChanged}"
+                ItemsSource="{Binding ClosedCallList}"
 
                   AutoGenerateColumns="False">
 

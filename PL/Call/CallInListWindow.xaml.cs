@@ -15,7 +15,7 @@ namespace PL.Call
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         private BO.CallStatus _selectedCallStatus = BO.CallStatus.None;
-
+        public BO.CallInList? SelectedCallforupdate { get; set; }
         public BO.CallStatus SelectedCallStatus
         {
             get => _selectedCallStatus;
@@ -156,9 +156,10 @@ namespace PL.Call
 
         private void CallsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (SelectedCallStatus != null)
-                new CallWindow.CallWindow().Show();
+            if (SelectedCallforupdate != null)
+                new CallWindow.CallWindow(SelectedCallforupdate.CallId).Show();
         }
+
 
         private void CancelAssignment_Click(object sender, RoutedEventArgs e)
         {

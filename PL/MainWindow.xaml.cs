@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL
 {
@@ -32,7 +33,7 @@ namespace PL
             InitializeComponent();
             _previousWindow = previousWindow;
             Id = Manegr;
-            this.DataContext = this;
+            DataContext = this;
 
         }
 
@@ -207,6 +208,8 @@ namespace PL
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
 
+            InitializeClock();
+
         }
         private void ListCall_Click(object sender, RoutedEventArgs e)
         {
@@ -228,6 +231,22 @@ namespace PL
         //        MessageBox.Show("Previous window is null!");
         //    }
         //}
+        private DispatcherTimer _timer;
+
+        private void InitializeClock()
+        {
+            _timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1) // עדכון כל שנייה
+            };
+            _timer.Tick += (sender, args) =>
+            {
+                var hebrewCulture = new System.Globalization.CultureInfo("he-IL");
+                hebrewCulture.DateTimeFormat.Calendar = new System.Globalization.HebrewCalendar();
+                CurrentTime = DateTime.Now; // עדכון הזמן
+            };
+            _timer.Start();
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

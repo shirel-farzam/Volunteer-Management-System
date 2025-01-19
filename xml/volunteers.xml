@@ -224,4 +224,18 @@
     <Longitude>34.651074</Longitude>
     <MaxReading>59</MaxReading>
   </Volunteer>
+  <Volunteer>
+    <Id>214994642</Id>
+    <FullName>shirel f</FullName>
+    <PhoneNumber>0532322340</PhoneNumber>
+    <Email>shirel.f@gmail.com</Email>
+    <TypeDistance>Aerial</TypeDistance>
+    <Job>Manager</Job>
+    <Active>true</Active>
+    <Password>Shirek1234</Password>
+    <FullAddress>Marva 14, Jerusalem, Israel</FullAddress>
+    <Latitude>31.7332333</Latitude>
+    <Longitude>35.1808346</Longitude>
+    <MaxReading>48</MaxReading>
+  </Volunteer>
 </ArrayOfVolunteer>

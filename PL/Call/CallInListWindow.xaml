@@ -39,7 +39,7 @@
                       SelectionChanged="OnFilterSelectionChanged"/>
         </Grid>
 
-        <ListView Grid.Row="1" Margin="20,10,20,10" FontFamily="Times New Roman" ItemsSource="{Binding Path=CallInList}" SelectedItem="{Binding SelectedCall}" MouseDoubleClick="CallsDataGrid_MouseDoubleClick">
+        <ListView Grid.Row="1" Margin="20,10,20,10" FontFamily="Times New Roman" ItemsSource="{Binding Path=CallInList}" SelectedItem="{Binding SelectedCallforupdate }" MouseDoubleClick="CallsDataGrid_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding CallId}">

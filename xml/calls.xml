@@ -321,16 +321,6 @@
     <MaxTimeToClose>2025-01-16T03:47:52</MaxTimeToClose>
   </Call>
   <Call>
-    <Id>1032</Id>
-    <Type>FoodTransport</Type>
-    <Description>Family needs a hot meal in the city center.</Description>
-    <FullAddress>Gershon Agron St 12, Jerusalem, Israel</FullAddress>
-    <Latitude>31.7793</Latitude>
-    <Longitude>35.2204</Longitude>
-    <TimeOpened>2025-01-16T10:01:52</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
-  </Call>
-  <Call>
     <Id>1033</Id>
     <Type>FoodPreparation</Type>
     <Description>Family needs a hot meal in the city center.</Description>
@@ -411,16 +401,6 @@
     <MaxTimeToClose>2025-01-16T13:00:52</MaxTimeToClose>
   </Call>
   <Call>
-    <Id>1041</Id>
-    <Type>InventoryCheck</Type>
-    <Description>Family needs a hot meal in the city center.</Description>
-    <FullAddress>Sanhedria St 12, Jerusalem, Israel</FullAddress>
-    <Latitude>31.7748</Latitude>
-    <Longitude>35.2174</Longitude>
-    <TimeOpened>2025-01-16T10:54:52</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
-  </Call>
-  <Call>
     <Id>1042</Id>
     <Type>FoodPreparation</Type>
     <Description>Family needs a hot meal in the city center.</Description>
@@ -498,6 +478,26 @@
     <Latitude>31.7731</Latitude>
     <Longitude>35.2214</Longitude>
     <TimeOpened>2025-01-16T04:41:52</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1041</Id>
+    <Type>InventoryCheck</Type>
+    <Description>Family need food</Description>
+    <FullAddress>Sanhedria St 12, Jerusalem, Israel</FullAddress>
+    <Latitude>31.802587</Latitude>
+    <Longitude>35.2175385</Longitude>
+    <TimeOpened>2025-01-16T10:54:52</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
+  </Call>
+  <Call>
+    <Id>1032</Id>
+    <Type>FoodTransport</Type>
+    <Description>Family needs a hot meal </Description>
+    <FullAddress>Gershon Agron St 12, Jerusalem, Israel</FullAddress>
+    <Latitude>31.759595</Latitude>
+    <Longitude>35.215315</Longitude>
+    <TimeOpened>2025-01-16T10:01:52</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
 </ArrayOfCall>
