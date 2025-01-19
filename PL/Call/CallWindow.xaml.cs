@@ -14,7 +14,6 @@ namespace PL.CallWindow
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
         public string ButtonText { get; set; }
-
         public int Id { get; set; }
 
         public BO.Call Call
@@ -31,8 +30,6 @@ namespace PL.CallWindow
             DependencyProperty.Register("Call", typeof(BO.Call), typeof(CallWindow),
                 new PropertyMetadata(null));
 
-        public ObservableCollection<BO.CallAssignmentInList> CallAssignments { get; set; } = new ObservableCollection<BO.CallAssignmentInList >();
-
         public IEnumerable<BO.Distance> DistanceTypes =>
             Enum.GetValues(typeof(BO.Distance)).Cast<BO.Distance>();
 
@@ -44,55 +41,29 @@ namespace PL.CallWindow
             Id = id;
             ButtonText = Id == 0 ? "Add" : "Update";
             DataContext = this;
+
             InitializeComponent();
+
             try
             {
-                if (Id != 0)
-                {
-                    Call = s_bl.Call.Read(Id);
-                    //LoadCallAssignments();
-                }
-                else
-                {
-                    Call = new BO.Call
+                Call = (Id != 0)
+                    ? s_bl.Call.Read(Id)
+                    : new BO.Call()
                     {
                         Id = 0,
                         Type = CallType.None,
                         Description = string.Empty,
                         FullAddress = string.Empty,
-                        Latitude = null,
-                        Longitude = null
+                        OpenTime = DateTime.Now,
+                        MaxEndTime = null,
+                        Status = CallStatus.Closed,
+                       
                     };
-                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        //private void LoadCallAssignments()
-        //{
-        //    try
-        //    {
-        //        var assignments = s_bl.Call.GetCallInLists(Id);
-        //        CallAssignments.Clear();
-        //        foreach (var assignment in assignments)
-        //        {
-        //            CallAssignments.Add(assignment);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Error loading assignments: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //if (Volunteer != null && Volunteer.Id != 0)
-            //{
-            //    s_bl.Volunteer.AddObserver(.Id, VolunteerObserver);
-            //}
         }
 
         private void CallObserver()
@@ -102,21 +73,21 @@ namespace PL.CallWindow
                 int id = Call!.Id;
                 Call = null;
                 Call = s_bl.Call.Read(id);
-               //Window_Loaded();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error reloading call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error reloading Call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        //private void Window_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    if (Call != null && Call.Id != 0)
-        //    {
-        //        s_bl.Volunteer.AddObserver(Call.Id, VolunteerObserver);
-        //    }
-        //}
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Call != null && Call.Id != 0)
+            {
+                s_bl.Call.AddObserver(Call.Id, CallObserver);
+
+            }
+        }
 
         private void Window_Closed(object sender, EventArgs e)
         {
@@ -128,8 +99,6 @@ namespace PL.CallWindow
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidateCallFields()) return;
-
             if (Id == 0)
             {
                 AddCall();
@@ -143,12 +112,15 @@ namespace PL.CallWindow
         private void AddCall()
         {
             try
-            { 
-                s_bl.Call.AddCall(Call);
+            {
+                var call = Call;
+                s_bl.Call.AddCall(call);
+                refresh();
+
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     MessageBox.Show("Call added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Close();
+                    this.Close();
                 });
             }
             catch (Exception ex)
@@ -164,17 +136,15 @@ namespace PL.CallWindow
         {
             try
             {
-                if (!CanUpdateCall())
-                {
-                    MessageBox.Show("Cannot update call in its current status.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
+                var call = Call;
 
-                s_bl.Call.Update(Call);
+                s_bl.Call.Update(call);
+
                 Application.Current.Dispatcher.Invoke(() =>
                 {
+                    refresh();
                     MessageBox.Show("Call updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Close();
+                    this.Close();
                 });
             }
             catch (Exception ex)
@@ -186,27 +156,9 @@ namespace PL.CallWindow
             }
         }
 
-        private bool ValidateCallFields()
+        private void refresh()
         {
-            if (string.IsNullOrWhiteSpace(Call.Description))
-            {
-                MessageBox.Show("Description cannot be empty.", "Call Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(Call.FullAddress))
-            {
-                MessageBox.Show("Address cannot be empty.", "Call Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool CanUpdateCall()
-        {
-            return Call.Status is CallStatus.Open or CallStatus.OpenRisk ||
-                   (Call.Status is CallStatus.InProgress or CallStatus.InProgressRisk && Call.MaxEndTime != null);
+            s_bl.Call.Read(0);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -230,11 +182,6 @@ namespace PL.CallWindow
             {
                 Console.WriteLine($"Selected Role: {selectedRole}");
             }
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-    }
+        }
+    }
 }
