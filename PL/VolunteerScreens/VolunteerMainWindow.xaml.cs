@@ -1,6 +1,7 @@
 ﻿using PL.Volunteer;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,8 +22,6 @@ namespace PL.VolunteerScreens
     public partial class VolunteerMainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        public int ManagerId { get; set; }
-
 
         public BO.Volunteer? CurrentVolunteer
         {
@@ -35,15 +34,9 @@ namespace PL.VolunteerScreens
         /// </summary>
         public static readonly DependencyProperty CurrentVolunteerProperty =
             DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerMainWindow), new PropertyMetadata(null));
+        public int ManagerId { get; set; }
 
-        string ButtonText
-        {
-            get => (string)GetValue(ButtonTextProperty);
-            init => SetValue(ButtonTextProperty, value);
-        }
-        public static readonly DependencyProperty ButtonTextProperty =
-         DependencyProperty.Register(nameof(ButtonText), typeof(string), typeof(VolunteerMainWindow));
-
+        
         public BO.Call? Call
         {
             get { return (BO.Call?)GetValue(CallProperty); }
@@ -58,18 +51,17 @@ namespace PL.VolunteerScreens
 
         public VolunteerMainWindow(int id = 0, int manId = 0)
         {
-            ButtonText = id == 0 ? "Add" : "Update";
+            
             InitializeComponent();
-            //CurrentVolunteer = s_bl.Volunteer.Read(id);
-            ////Call = null;
-            //if (CurrentVolunteer.CurrentCall != null)
-            //{
-
-            //    Call = s_bl.Call.Read(CurrentVolunteer.CurrentCall.CallId);
-            //}
+            ManagerId = manId;
+            DataContext = this;
             try
             {
-                CurrentVolunteer = (id != 0) ? s_bl.Volunteer.Read(id)! : new BO.Volunteer() { Id = 0, FullName = "", PhoneNumber = "", Email = "", TypeDistance = BO.Distance.Aerial, Job = BO.Role.Volunteer, Active = false };
+                CurrentVolunteer = s_bl.Volunteer.Read(ManagerId); /*(id != 0) ? s_bl.Volunteer.Read(id)! : new BO.Volunteer() { Id = 0, FullName = "", PhoneNumber = "", Email = "", TypeDistance = BO.Distance.Aerial, Job = BO.Role.Volunteer, Active = false };*/
+                if (CurrentVolunteer.CurrentCall != null)
+                    Call = s_bl.Call.Read(CurrentVolunteer.CurrentCall.CallId);
+                else 
+                    Call = null;
             }
             catch (BO.BlDoesNotExistException ex)
             {
@@ -81,54 +73,43 @@ namespace PL.VolunteerScreens
             {
                 MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
-            ManagerId = manId;
-            s_bl.Volunteer.AddObserver(CurrentVolunteer!.Id, VolunteerObserver);
-
-                        
-                DataContext = this;
-
+            
+            s_bl.Volunteer.AddObserver(ManagerId, VolunteerObserver);
+            if (Call != null)
+                s_bl.Call.AddObserver(ManagerId, CallObserver);
+           
             }
+        private void CallObserver()
+        => QueryCall();
+        private void QueryCall()
+        {
+            QueryVolunteer();
+            if(Call != null)
+            {
+                if(CurrentVolunteer.CurrentCall==null||CurrentVolunteer.CurrentCall.CallId!=Call.Id)
+                    s_bl.Call.RemoveObserver(Call.Id, CallObserver);
+                if (CurrentVolunteer.CurrentCall != null && Call!=null && CurrentVolunteer.CurrentCall.CallId != Call.Id)
+                    s_bl.Call.AddObserver(CurrentVolunteer.CurrentCall.CallId, CallObserver);
+            }
+            else
+                Call = null;
+            if(CurrentVolunteer.CurrentCall!=null)
+                Call=s_bl.Call.Read(CurrentVolunteer.CurrentCall.CallId);   
+
+        }
+        private void QueryVolunteer()
+        {
+            CurrentVolunteer = s_bl.Volunteer.Read(ManagerId);
+        }
         private void VolunteerObserver()
         {
-            int id = CurrentVolunteer!.Id;
-            CurrentVolunteer = null;
-            CurrentVolunteer = s_bl.Volunteer.Read(id);
+            //int id = CurrentVolunteer!.Id;
+            //CurrentVolunteer = null;
+            //CurrentVolunteer = s_bl.Volunteer.Read(id);
+            QueryCall();
         }
-
-        
-
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
-            //if (ButtonText == "Add")
-            //    try
-            //    {
-            //        s_bl.Volunteer.AddVolunteer(CurrentVolunteer!);
-            //        MessageBox.Show($"Volunteer {CurrentVolunteer?.Id} was successfully added!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            //        this.Close();
-            //    }
-            //    catch (BO.BlAlreadyExistsException ex)
-            //    {
-            //        MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            //    }
-            //else
-            //    try
-            //    {
-            //        s_bl.Volunteer.Update(ManagerId, CurrentVolunteer!);
-            //        MessageBox.Show($"Volunteer {CurrentVolunteer?.Id} was successfully updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            //        this.Close();
-            //    }
-            //    catch (BO.BlDoesNotExistException ex)
-            //    {
-            //        MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            //    }
             try
             {
                 s_bl.Volunteer.Update(CurrentVolunteer.Id, CurrentVolunteer!);
@@ -171,15 +152,19 @@ namespace PL.VolunteerScreens
         {
             if (CurrentVolunteer!.Id != 0)
                 s_bl.Volunteer.AddObserver(CurrentVolunteer!.Id, VolunteerObserver);
+            if(Call!=null)
+                s_bl.Call.AddObserver(Call.Id, CallObserver);
         }
         private void Window_Closed(object sender, EventArgs e)
         {
             s_bl.Volunteer.RemoveObserver(CurrentVolunteer!.Id, VolunteerObserver);
+            if (Call != null)
+                s_bl.Call.RemoveObserver(Call.Id, CallObserver);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            new ChooseCallToTreat(CurrentVolunteer.Id).Show();
+            new ChooseCallToTreat(ManagerId,this).Show();
         }
 
         // Event handler for "End Current Call" button

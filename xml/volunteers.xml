@@ -57,34 +57,6 @@
     <MaxReading>31</MaxReading>
   </Volunteer>
   <Volunteer>
-    <Id>214631426</Id>
-    <FullName>Tamar Malka</FullName>
-    <PhoneNumber>0527890123</PhoneNumber>
-    <Email>tamar.malka@example.com</Email>
-    <TypeDistance>Aerial</TypeDistance>
-    <Job>Volunteer</Job>
-    <Active>true</Active>
-    <Password>Tricky5</Password>
-    <FullAddress>Independence Square 8, Hadera, Israel</FullAddress>
-    <Latitude>32.43645</Latitude>
-    <Longitude>34.91956</Longitude>
-    <MaxReading>27</MaxReading>
-  </Volunteer>
-  <Volunteer>
-    <Id>214664260</Id>
-    <FullName>Yael Adi</FullName>
-    <PhoneNumber>0548901234</PhoneNumber>
-    <Email>yael.adi@example.com</Email>
-    <TypeDistance>Aerial</TypeDistance>
-    <Job>Volunteer</Job>
-    <Active>true</Active>
-    <Password>R3liable</Password>
-    <FullAddress>David HaMelech Street 12, Eilat, Israel</FullAddress>
-    <Latitude>29.55805</Latitude>
-    <Longitude>34.94821</Longitude>
-    <MaxReading>11</MaxReading>
-  </Volunteer>
-  <Volunteer>
     <Id>214675688</Id>
     <FullName>Ron Hazan</FullName>
     <PhoneNumber>0549012345</PhoneNumber>
@@ -125,20 +97,6 @@
     <Latitude>32.096611</Latitude>
     <Longitude>34.779417</Longitude>
     <MaxReading>21</MaxReading>
-  </Volunteer>
-  <Volunteer>
-    <Id>214763252</Id>
-    <FullName>Yuval Levy</FullName>
-    <PhoneNumber>0502345679</PhoneNumber>
-    <Email>yuval.levy@example.com</Email>
-    <TypeDistance>Aerial</TypeDistance>
-    <Job>Volunteer</Job>
-    <Active>true</Active>
-    <Password>S@lute1</Password>
-    <FullAddress>Allenby Street 35, Tel Aviv, Israel</FullAddress>
-    <Latitude>32.062991</Latitude>
-    <Longitude>34.772842</Longitude>
-    <MaxReading>92</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214773020</Id>
@@ -237,5 +195,33 @@
     <Latitude>31.7332333</Latitude>
     <Longitude>35.1808346</Longitude>
     <MaxReading>48</MaxReading>
+  </Volunteer>
+  <Volunteer>
+    <Id>214664260</Id>
+    <FullName>Yael Adi</FullName>
+    <PhoneNumber>0548901222</PhoneNumber>
+    <Email>yael.adi@example.com</Email>
+    <TypeDistance>Walking</TypeDistance>
+    <Job>Manager</Job>
+    <Active>true</Active>
+    <Password>R3liable</Password>
+    <FullAddress>David HaMelech Street 12, Eilat, Israel</FullAddress>
+    <Latitude>29.55805</Latitude>
+    <Longitude>34.94821</Longitude>
+    <MaxReading>66</MaxReading>
+  </Volunteer>
+  <Volunteer>
+    <Id>214631426</Id>
+    <FullName>Tamar Malka</FullName>
+    <PhoneNumber>0527890123</PhoneNumber>
+    <Email>tamar.malka@example.com</Email>
+    <TypeDistance>Aerial</TypeDistance>
+    <Job>Volunteer</Job>
+    <Active>false</Active>
+    <Password>Tricky5</Password>
+    <FullAddress>Independence Square 8, Hadera, Israel</FullAddress>
+    <Latitude>32.43645</Latitude>
+    <Longitude>34.91956</Longitude>
+    <MaxReading>27</MaxReading>
   </Volunteer>
 </ArrayOfVolunteer>

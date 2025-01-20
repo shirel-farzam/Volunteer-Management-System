@@ -19,33 +19,6 @@ internal class CallImplementation : ICall
 
     private readonly DalApi.IDal _dal = DalApi.Factory.Get; // Dependency to access the data access layer (DAL)
 
-    // Adds a new call to the system after validating it and converting it to the appropriate format.
-    //public void AddCall(BO.Call boCall)
-    //{
-    //    if (boCall == null)
-    //    {
-    //        throw new ArgumentNullException(nameof(boCall), "The provided call cannot be null.");
-    //    }
-
-    //    CallManager.IsValideCall(boCall); // Validates the call's properties
-    //    CallManager.IsLogicCall(boCall); // Ensures the call follows logical business rules
-
-    //    DO.Call doCall = CallManager.BOConvertDO_Call(boCall); // Converts the business object to a data object
-
-    //    try
-    //    {
-    //        _dal.Call.Create(doCall); // Adds the call to the DAL
-    //        CallManager.Observers.NotifyListUpdated(); // Notify observers about the updated list
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // Log the exception (optional, if you have logging in place)
-    //        // Logger.LogError("Failed to add the new call.", ex);
-
-    //        // Throws a custom exception to handle the error gracefully
-    //        throw new BO.BlWrongInputException("Failed to add the new call.", ex);
-    //    }
-    //}
     public void AddCall(BO.Call boCall)
     {
         double[] coordinate = VolunteerManager.GetCoordinatesFromAddress(boCall.FullAddress);
@@ -130,7 +103,7 @@ internal class CallImplementation : ICall
                          ?? throw new BO.BlNullPropertyException($"There is no call with this ID {callId}");
 
         // Ensures the call is not open or expired before assigning a volunteer
-        if (bocall.Status == BO.CallStatus.Open || bocall.Status == BO.CallStatus.Expired)
+        if (bocall.Status != BO.CallStatus.Open || bocall.Status == BO.CallStatus.OpenRisk)
             throw new BO.BlAlreadyExistsException($"The call is open or expired. Call ID is={callId}");
 
         // Creates a new assignment record for the volunteer and call
@@ -147,7 +120,8 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Assignment.Create(assignmentToCreate); // Adds the assignment to the DAL
-            CallManager.Observers.NotifyListUpdated(); //stage 5   
+            CallManager.Observers.NotifyListUpdated(); //stage 5
+            CallManager.Observers.NotifyItemUpdated(volunteerId);
         }
         catch (DO.DalDeletionImpossible)
         {
@@ -616,24 +590,11 @@ internal class CallImplementation : ICall
                 break;
 
         }
-        // הגדרת שדה ברירת מחדל למיון
-        //sortField ??= BO.OpenCallInListField.Id;
-
-        //// מיון לפי השדה המבוקש
-        //openCallInLists = sortField switch
-        //{
-        //    BO.OpenCallInListField.Id => openCallInLists.OrderBy(item => item.Id),
-        //    BO.OpenCallInListField.CallType => openCallInLists.OrderBy(item => item.CallType),
-        //    BO.OpenCallInListField.FullAddress => openCallInLists.OrderBy(item => item.FullAddress),
-        //    BO.OpenCallInListField.OpeningTime => openCallInLists.OrderBy(item => item.OpeningTime),
-        //    BO.OpenCallInListField.MaxCompletionTime => openCallInLists.OrderBy(item => item.MaxCompletionTime),
-        //    BO.OpenCallInListField.DistanceFromVolunteer => openCallInLists.OrderBy(item => item.DistanceFromVolunteer),
-        //    _ => openCallInLists
-        //};
 
         return openCallInLists;
 
     }
+
     public void UpdateTreatmentCancellation(int volunteerId, int assignmentId)
     {
 
@@ -703,6 +664,8 @@ internal class CallImplementation : ICall
             _dal.Assignment.Update(assigmnetToUP);
             CallManager.Observers.NotifyItemUpdated(assigmnetToUP.Id);  //stage 5
             CallManager.Observers.NotifyListUpdated();  //stage 5
+            VolunteerManager.Observers.NotifyListUpdated();
+            VolunteerManager.Observers.NotifyItemUpdated(idVol);
 
         }
         catch (DO.DalAlreadyExistsException ex)
@@ -770,8 +733,8 @@ internal class CallImplementation : ICall
             {
                 throw new BO.BlWrongInputException("the volunteer is not treat in this assignment");
             }
-            BO.Call bocall = Read(assigmnetToClose.CallId);
-            if (assigmnetToClose.TypeEndTreat != null || (bocall.Status != BO.CallStatus.Open && bocall.Status != BO.CallStatus.OpenRisk) || assigmnetToClose.TimeEnd != null)
+           // BO.Call bocall = Read(assigmnetToClose.CallId);
+            if (assigmnetToClose.TypeEndTreat != null || assigmnetToClose.TimeEnd != null)
                 throw new BO.BlDeleteNotPossibleException("The assignment not open");
 
             DO.Assignment assignmentToUP = new DO.Assignment
@@ -788,6 +751,8 @@ internal class CallImplementation : ICall
                 _dal.Assignment.Update(assignmentToUP);
                 CallManager.Observers.NotifyItemUpdated(assignmentToUP.Id);  //stage 5
                 CallManager.Observers.NotifyListUpdated();  //stage 5
+                VolunteerManager.Observers.NotifyListUpdated();
+                VolunteerManager.Observers.NotifyItemUpdated(idVol);
 
             }
             catch (DO.DalAlreadyExistsException ex)

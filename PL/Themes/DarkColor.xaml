@@ -6,7 +6,7 @@
     <SolidColorBrush x:Key="ButtonBackground" Color="#4DA1A9" />
 
     <SolidColorBrush x:Key="BackgroundDark" Color="#121212" />
-    <SolidColorBrush x:Key="ForegroundLight" Color="#E0E0E0" />
+    <SolidColorBrush x:Key="ButtonBlue" Color="#E0E0E0" />
     <SolidColorBrush x:Key="DarkBlue" Color="#00008B" />
 
     <SolidColorBrush x:Key="CardDark" Color="#1E1E1E" />

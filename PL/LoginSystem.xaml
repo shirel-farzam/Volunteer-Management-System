@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Login System" Height="450" Width="800" MinHeight="450" MinWidth="800"  Loaded="LoginSystem_Loaded">
 
-    
+
     <Grid Background="{DynamicResource BackgroundPrimary}">
         <!-- Define Rows and Columns -->
         <Grid.RowDefinitions>
@@ -31,7 +31,7 @@
                Foreground="{StaticResource DarkGray}"/>
 
         <!-- Input Section -->
-        <StackPanel Grid.Row="1" Grid.Column="1" Width="300" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Width="300" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="3" Margin="230,2,0,0" Grid.Row="1">
             <!-- ID Label and TextBox -->
             <Label Content="Enter ID:" FontSize="16" Margin="0,0,0,5" Foreground="{StaticResource DarkGray}"/>
             <TextBox Text="{Binding Id, Mode=TwoWay}" 
@@ -67,5 +67,54 @@
                 Background="{DynamicResource AccentSecondary}" 
                 Foreground="{StaticResource White}" 
                 Click="SwitchMode_Click"/>
+
+        <!-- Button that prompts the user -->
+        <Button Content="  Password &#xD;&#xA;Instructions: "
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            FontSize="12" 
+            Padding="10,5"
+            Click="ShowInstructions_Click" 
+            Grid.Column="2" 
+            Background="#2C476A"
+            Foreground="White"
+            Margin="29,137,0,0" 
+            
+            Grid.Row="1" Width="90" Height="50" />
+
+        <!-- Circle -->
+        <Ellipse Fill="Red"
+             Stroke="Black"
+             StrokeThickness="2"
+             HorizontalAlignment="Left"
+             VerticalAlignment="Top"
+             Width="120"
+             Height="90"
+             Margin="9,122,0,0"
+             Visibility="Collapsed" 
+             RenderTransformOrigin="1.207,1.56" 
+             Grid.Column="2" 
+             Grid.Row="1" />
+
+        <!-- Text Inside the Speech Bubble -->
+        <TextBlock Foreground="White"
+               FontWeight="Bold"
+               TextWrapping="Wrap"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               TextAlignment="Center"
+               FontSize="10"
+               Margin="251,143,0,0"
+               Grid.Column="1" 
+               Grid.Row="1" 
+               Height="60" 
+               Width="150" 
+               Visibility="Collapsed" 
+               Grid.ColumnSpan="2">
+               <Run Text="5 Characters "/><LineBreak/>
+               <Run Text="1 Capittle Letter "/><LineBreak/>
+               <Run Text="1 Number"/>
+        </TextBlock>
     </Grid>
+
 </Window>

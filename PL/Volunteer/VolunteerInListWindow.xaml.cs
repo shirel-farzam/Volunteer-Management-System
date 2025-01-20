@@ -15,9 +15,10 @@
         {
             private VolunteerInListField _selectedFilter = VolunteerInListField.None;  // Default to None (no filter)
             public BO.VolunteerInList? SelectedVolunteer { get; set; }
+        private Window _previousWindow; // Variable to store a reference to the previous window
 
-            // SelectedFilter property
-            public VolunteerInListField SelectedFilter
+        // SelectedFilter property
+        public VolunteerInListField SelectedFilter
             {
                 get { return _selectedFilter; }
                 set
@@ -45,12 +46,13 @@
                     new PropertyMetadata(null));
 
             // Constructor
-            public VolunteerInListWindow()
+            public VolunteerInListWindow(Window previousWindow)
             {
                 InitializeComponent();
                 DataContext = this;
                 UpdateVolunteerList();  // Load the volunteer list without any filter initially
-            }
+            _previousWindow = previousWindow;
+        }
 
             // Handle ComboBox selection change event to update the filter
             private void OnFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -177,6 +179,18 @@
                     UpdateVolunteerList();  // Refresh the volunteer list when notified of changes
                 });
             }
-
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_previousWindow != null)
+            {
+                _previousWindow.Show(); // Show the previous window
+                this.Hide(); // Close the current window
+            }
+            else
+            {
+                MessageBox.Show("Previous window is null!");
+            }
         }
+
+    }
     }

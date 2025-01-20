@@ -16,7 +16,6 @@ namespace PL.VolunteerScreens
             set { SetValue(ClosedCallListProperty, value); }
         }
 
-
         public static readonly DependencyProperty ClosedCallListProperty =
             DependencyProperty.Register("ClosedCallList", typeof(IEnumerable<BO.ClosedCallInList>), typeof(CallHistory), new PropertyMetadata(null));
 
@@ -70,7 +69,6 @@ namespace PL.VolunteerScreens
             }
         }
 
-        // מימוש נוסף למימוש סינון לפי סוג הקריאה
         private void CallType_Filter(object sender, SelectionChangedEventArgs e)
         {
             TypeCallInList = (BO.CallType?)(((ComboBox)sender).SelectedItem);

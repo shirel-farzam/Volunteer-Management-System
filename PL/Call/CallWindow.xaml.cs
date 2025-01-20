@@ -12,10 +12,8 @@ namespace PL.CallWindow
     public partial class CallWindow : Window, INotifyPropertyChanged
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
         public string ButtonText { get; set; }
         public int Id { get; set; }
-
         public BO.Call Call
         {
             get { return (BO.Call)GetValue(CurrentCallProperty); }
@@ -30,6 +28,14 @@ namespace PL.CallWindow
             DependencyProperty.Register("Call", typeof(BO.Call), typeof(CallWindow),
                 new PropertyMetadata(null));
 
+        BO.CallStatus Status
+        {
+            get => (BO.CallStatus)GetValue(CallStatusProperty);
+            init => SetValue(CallStatusProperty, value);
+        }
+        public static readonly DependencyProperty CallStatusProperty =
+         DependencyProperty.Register(nameof(CallStatus), typeof(BO.CallStatus), typeof(CallWindow));
+
         public IEnumerable<BO.Distance> DistanceTypes =>
             Enum.GetValues(typeof(BO.Distance)).Cast<BO.Distance>();
 
@@ -41,42 +47,33 @@ namespace PL.CallWindow
             Id = id;
             ButtonText = Id == 0 ? "Add" : "Update";
             DataContext = this;
-
-            InitializeComponent();
-
             try
             {
-                Call = (Id != 0)
-                    ? s_bl.Call.Read(Id)
-                    : new BO.Call()
-                    {
-                        Id = 0,
-                        Type = CallType.None,
-                        Description = string.Empty,
-                        FullAddress = string.Empty,
-                        OpenTime = DateTime.Now,
-                        MaxEndTime = null,
-                        Status = CallStatus.Open,
-
-                    };
+                Call = (id != 0) ? s_bl.Call.Read(id)! : new BO.Call() { Id = 0, Type = BO.CallType.None, Description = "", FullAddress = "", Latitude = 0, Longitude = 0, OpenTime = DateTime.Now };
+                Status = id == 0 ? BO.CallStatus.Open : Call.Status;
+            }
+            catch (BO.BlDoesNotExistException ex)
+            {
+                Call = null;
+                MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
+
+            s_bl.Call.AddObserver(Call!.Id, CallObserver);
+            InitializeComponent();
         }
 
         private void CallObserver()
         {
-            try
             {
                 int id = Call!.Id;
                 Call = null;
                 Call = s_bl.Call.Read(id);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error reloading Call: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
             }
         }
 
@@ -99,68 +96,39 @@ namespace PL.CallWindow
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
-            if (Id == 0)
-            {
-                AddCall();
-            }
-            else
-            {
-                UpdateCall();
-            }
-        }
+            
+                if (ButtonText == "Add")
+                    try
+                    {
+                        s_bl.Call.AddCall(Call!);
+                        MessageBox.Show($"Call was successfully added!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.Close();
+                    }
+                    catch (BO.BlAlreadyExistsException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
+                else
+                    try
+                    {
+                        s_bl.Call.Update(Call!);
+                        MessageBox.Show($"Call {Call?.Id} was successfully updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.Close();
+                    }
+                    catch (BO.BlDoesNotExistException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
 
-        private void AddCall()
-        {
-            try
-            {
-                
-                s_bl.Call.AddCall(Call);
-              //  refresh();
-
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    MessageBox.Show("Call added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    this.Close();
-                });
             }
-            catch (Exception ex)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                });
-            }
-            Close();
-        }
-
-        private void UpdateCall()
-        {
-            try
-            {
-                var call = Call;
-
-                s_bl.Call.Update(call);
-
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    refresh();
-                    MessageBox.Show("Call updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    this.Close();
-                });
-            }
-            catch (Exception ex)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                });
-            }
-        }
-
-        private void refresh()
-        {
-            s_bl.Call.Read(0);
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -176,7 +144,6 @@ namespace PL.CallWindow
                 Console.WriteLine($"Selected DistanceType: {selectedDistanceType}");
             }
         }
-
         private void cbRoles_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0 && e.AddedItems[0] is BO.Role selectedRole)

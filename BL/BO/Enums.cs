@@ -33,10 +33,10 @@
     // Enum for Call Type  Combined for all Call Types
     public enum CallType
     {
-        None,       // No call is being handled
-        Emergency,  // Emergency call
-        NonEmergency,  // Non-emergency call
-        FollowUp    // Follow-up call
+        None,      
+        FoodPreparation,  // Food preparation
+        FoodTransport,    // Food transport
+        InventoryCheck  // Inventory check
     }
 
     // Enum for Assignment Completion Type 
@@ -122,8 +122,10 @@
     }
     public enum TypeOfCalls
     {
-        FoodPreparation,  // Food preparation
-        FoodTransport,    // Food transport
-        InventoryCheck,   // Inventory check
+      
+       
+        Emergency,  // Emergency call
+        NonEmergency,  // Non-emergency call
+        FollowUp    // Follow-up call
     }
 }

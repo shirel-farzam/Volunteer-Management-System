@@ -25,7 +25,7 @@
         <Image  Source="/picture/logo.png"
 Width="77" Height="60"
 HorizontalAlignment="Left"
-VerticalAlignment="Top" Margin="695,513,0,0" Grid.Row="1" RenderTransformOrigin="-0.455,0.5" Grid.RowSpan="2" />
+VerticalAlignment="Top" Margin="675,490,0,0" Grid.Row="1" RenderTransformOrigin="-0.455,0.5" Grid.RowSpan="2" />
         <!-- Internal, Upper Grid -->
         <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
@@ -77,18 +77,22 @@ VerticalAlignment="Top" Margin="695,513,0,0" Grid.Row="1" RenderTransformOrigin=
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Header="Active" DisplayMemberBinding="{Binding Active}">
+                    <GridViewColumn Header="Active">
                         <GridViewColumn.HeaderTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding}" FontWeight="Bold" FontSize="14" Foreground="#009990" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                <TextBlock Text="Active" FontWeight="Bold" FontSize="14" 
+                       Foreground="#009990" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                             </DataTemplate>
                         </GridViewColumn.HeaderTemplate>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Active}" Foreground="Black" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                <CheckBox IsChecked="{Binding Active, Mode=TwoWay}" IsEnabled="False"
+                      HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
+
+
 
                     <GridViewColumn Header="Total Calls Handled" DisplayMemberBinding="{Binding TotalCallsHandled}">
                         <GridViewColumn.HeaderTemplate>
@@ -172,6 +176,7 @@ VerticalAlignment="Top" Margin="695,513,0,0" Grid.Row="1" RenderTransformOrigin=
         <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Height="50" Width="100" Margin="0,10,0,10" 
                 Background="#2E5077" Foreground="Black" Click="AddVolunteerButton_Click" />
+        <Button Style="{StaticResource BackButtonStyle}" Content="Back" Margin="24,35,0,0" Grid.Row="2" Click="Button_Click" />
     </Grid>
 
 </Window>

@@ -5,13 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.VolunteerScreens"
         mc:Ignorable="d"
-        Title="Call History" Height="450" Width="800"
+        Title="Call History" Height="450" Width="1000"
         Background="{StaticResource ButtonBlue}">
 
 
     <Grid>
-        <!-- הגדרת שורות לגריד -->
-        <Grid.RowDefinitions>
+         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- השורה הראשונה עבור תיבת הבחירה -->
             <RowDefinition Height="5*"/>
@@ -37,6 +36,7 @@
                       SelectedValue="{Binding ClosedCallInList, Mode=TwoWay}" 
                       Grid.Column="1" Margin="242,0,0,0"/>
             <ComboBox Margin="135,0,30,0"
+                      
    ItemsSource= "{Binding Source={StaticResource CallTypeCollectionKey}}"
    SelectionChanged="Call_Filter" 
    SelectedValue="{Binding TypeCallInList, Mode=TwoWay}" />
@@ -49,26 +49,19 @@
 
         
         <DataGrid Grid.Row="1" 
-                ItemsSource="{Binding ClosedCallList}"
+               ItemsSource="{Binding Path=ClosedCallList}"
 
                   AutoGenerateColumns="False">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="*"/>
                 <DataGridTextColumn Binding="{Binding CallType}" Header="Type" Width="*"/>
-                <DataGridTextColumn Binding="{Binding FullAddress}" Header="Full Address" Width="*"/>
+                <DataGridTextColumn Binding="{Binding FullAddress}" Header="Full Address" Width="2*"/>
                 <DataGridTextColumn Binding="{Binding OpeningTime}" Header="Time Open" Width="*"/>
                 <DataGridTextColumn Binding="{Binding EntryTime}" Header="Start Treatment" Width="*"/>
                 <DataGridTextColumn Binding="{Binding CompletionTime}" Header="Time Close" Width="*"/>
-
-                <DataGridTemplateColumn Header="Call Type">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding TypeEndTreat}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding CompletionType}" Header="Call Type" Width="*"/>
+                </DataGrid.Columns>
         </DataGrid>
         <Button Style="{StaticResource BackButtonStyle}" Content="Back" Margin="24,0,0,0" Grid.Row="2" Click="Button_Click" VerticalAlignment="Center" />
     </Grid>

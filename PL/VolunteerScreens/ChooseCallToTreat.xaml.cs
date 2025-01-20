@@ -22,6 +22,7 @@ namespace PL.VolunteerScreens
     {
         // Static reference to the BL API
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private Window _previousWindow; // Variable to store a reference to the previous window
 
         // Property to store the selected field to sort by
         public BO.OpenCallInListField? OpenCallInList { get; set; } = BO.OpenCallInListField.Id;
@@ -47,9 +48,10 @@ namespace PL.VolunteerScreens
         public BO.CallType? TypeCallInList { get; set; }
 
         // Constructor for initializing the window and setting the volunteer ID
-        public ChooseCallToTreat(int id)
+        public ChooseCallToTreat(int id, Window previousWindow)
         {
             VolunteerId = id;
+            _previousWindow = previousWindow;
             InitializeComponent();
             DataContext = this; // Set the data context for binding
         }
@@ -95,26 +97,59 @@ namespace PL.VolunteerScreens
         }
 
         // Event handler for choosing a call for treatment
+        //private void BtnChoose_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        // Try to choose the selected call for treatment
+        //        s_bl.Call.ChooseCallForTreat(VolunteerId, SelectedCall.Id);
+        //        // Show a success message
+        //        MessageBox.Show($"Call {SelectedCall.Id} was successfully Chosen!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        //        this.Close(); // Close the window
+        //    }
+        //    catch (BO.BlAlreadyExistsException ex)
+        //    {
+        //        // Show a failure message if the call is already chosen
+        //        MessageBox.Show(ex.Message, "Choose Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        //        this.Close(); // Close the window
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Show a generic failure message
+        //        MessageBox.Show(ex.Message, "Choose Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        //    }
+        //}
         private void BtnChoose_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (sender is Button button && button.DataContext is BO.OpenCallInList call)
             {
-                // Try to choose the selected call for treatment
-                s_bl.Call.ChooseCallForTreat(VolunteerId, SelectedCall.Id);
-                // Show a success message
-                MessageBox.Show($"Call {SelectedCall.Id} was successfully Chosen!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                this.Close(); // Close the window
+                try
+                {
+                    s_bl.Call.ChooseCallForTreat(VolunteerId, call.Id);
+                    MessageBox.Show($"Call {call.Id} was successfully chosen!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
             }
-            catch (BO.BlAlreadyExistsException ex)
+            else
             {
-                // Show a failure message if the call is already chosen
-                MessageBox.Show(ex.Message, "Choose Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                this.Close(); // Close the window
+                MessageBox.Show("No valid call found for this action.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            catch (Exception ex)
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_previousWindow != null)
             {
-                // Show a generic failure message
-                MessageBox.Show(ex.Message, "Choose Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                _previousWindow.Show(); // Show the previous window
+                this.Hide(); // Close the current window
+            }
+            else
+            {
+                MessageBox.Show("Previous window is null!");
             }
         }
     }

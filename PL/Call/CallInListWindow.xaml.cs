@@ -169,7 +169,7 @@ namespace PL.Call
                 {
                     int callId = selectedCall.CallId;
 
-                    // Retrieve call data and cancel assignment logic
+                    // Retrieve call data
                     var call = s_bl.Call.Read(callId);
                     if (call == null)
                     {
@@ -195,8 +195,18 @@ namespace PL.Call
                     currentAssignment.CompletionType = BO.AssignmentCompletionType.Canceled;
                     s_bl.Call.Update(call);
 
-                    MessageBox.Show($"Assignment for call {callId} has been canceled and email sent to volunteer {volunteer.FullName}.",
-                                     "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //// Send cancellation email
+                    //bool emailSent = SendCancellationEmail(volunteer.Email, callId, volunteer.FullName);
+                    //if (emailSent)
+                    //{
+                    //    MessageBox.Show($"Assignment for call {callId} has been canceled and email sent to volunteer {volunteer.FullName}.",
+                    //                     "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show($"Assignment for call {callId} has been canceled, but the email could not be sent.",
+                    //                     "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    //}
                 }
                 else
                 {
@@ -208,6 +218,39 @@ namespace PL.Call
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        //private bool SendCancellationEmail(string email, int callId, string volunteerName)
+        //{
+        //    try
+        //    {
+        //        var message = new System.Net.Mail.MailMessage
+        //        {
+        //            From = new System.Net.Mail.MailAddress("miniproject@walla.co.il"),
+        //            Subject = "Cancellation of Your Assignment",
+        //            Body = $"Dear {volunteerName},<br><br>Your assignment for call {callId} has been canceled.<br><br>Thank you for your understanding.<br><br>Best regards,<br>Your Team",
+        //            IsBodyHtml = true // אם אתה רוצה להשתמש ב־HTML בפורמט המייל
+        //        };
+
+        //        message.To.Add(email);
+
+        //        // שימוש בשרת SMTP של Walla
+        //        var smtpClient = new System.Net.Mail.SmtpClient("smtp.walla.co.il", 465)
+        //        {
+        //            Credentials = new System.Net.NetworkCredential("miniproject@walla.co.il", "Ayelet929"),
+        //            EnableSsl = true
+        //        };
+
+        //        smtpClient.Send(message);
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Failed to send email: {ex.Message}");
+        //        return false;
+        //    }
+        //}
+
+
         private bool CanDeleteCall(BO.CallInList call)
         {
             // בדוק אם הקריאה בסטטוס Open וטרם הוקצתה למתנדב

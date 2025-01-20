@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL
 {
@@ -21,7 +23,7 @@ namespace PL
         }
 
         public static readonly DependencyProperty IdProperty =
-            DependencyProperty.Register("Id", typeof(int), typeof(LoginSystem), new PropertyMetadata(0));
+            DependencyProperty.Register("Id", typeof(int), typeof(LoginSystem), new PropertyMetadata(null));
 
         public string Password
         {
@@ -89,8 +91,6 @@ namespace PL
         {
             try
             {
-                // הנחת עבודה: s_bl הוא האובייקט שמטפל בלוגיקה העסקית
-                // הפונקציה Login מחזירה Role (Volunteer או Admin)
                 Role role = s_bl.Volunteer.Login(Id, Password);
 
                 if (role == Role.Volunteer)
@@ -107,19 +107,19 @@ namespace PL
             }
             catch (BO.BlNullPropertyException ex)
             {
-                // טיפול במקרה שבו ה-ID לא קיים
+                
                 MessageBox.Show("The ID you entered does not exist. Please try again.", "Login Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (BO.BlWrongInputException ex)
             {
-                // טיפול במקרה שבו הסיסמה שגויה
+               
                 
                 MessageBox.Show("The password you entered is incorrect. Please try again.", "Login Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Password = string.Empty;
             }
             catch (Exception ex)
             {
-                // טיפול במקרה של שגיאה כללית
+               
                 MessageBox.Show($"An unexpected error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
@@ -137,10 +137,33 @@ namespace PL
             {
                 SetDayMode();
             }
-
-            // הפוך את הערך של המצב
             isDayMode = !isDayMode;
         }
+
+        private DispatcherTimer _timer;
+
+        private void ShowInstructions_Click(object sender, RoutedEventArgs e)
+        {
+            // Hide the Button immediately after click
+            ((Button)sender).Visibility = Visibility.Collapsed;
+
+            // Find the Grid's children
+            var parentGrid = (Grid)((Button)sender).Parent;
+
+            // Display the Ellipse and TextBlock
+            foreach (var child in parentGrid.Children)
+            {
+                if (child is Ellipse ellipse)
+                {
+                    ellipse.Visibility = Visibility.Visible;
+                }
+                else if (child is TextBlock textBlock)
+                {
+                    textBlock.Visibility = Visibility.Visible;
+                }
+            }
+        }
+
 
 
         private void SetDayMode()

@@ -12,7 +12,7 @@ namespace PL.VolunteerWindow
     public partial class VolunteerWindow : Window, INotifyPropertyChanged
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
+        
         public string ButtonText { get; set; }
         public int Id { get; set; }
 
@@ -71,6 +71,7 @@ namespace PL.VolunteerWindow
             {
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
         }
 
         private void VolunteerObserver()
@@ -86,7 +87,7 @@ namespace PL.VolunteerWindow
                 MessageBox.Show($"Error reloading volunteer: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
+       
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (Volunteer != null && Volunteer.Id != 0)

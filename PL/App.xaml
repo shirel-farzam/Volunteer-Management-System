@@ -18,10 +18,16 @@
             <local:ClosedCallInListFieldCollection x:Key="ClosedCallInListFieldCollectionKey" />
             <local:OpenCallInListCollection x:Key="OpenCallInListCollectionKey" />
             <local:TypeOfCallsCollection x:Key="TypeOfCallsCollectionKey" />
+            <local:CallTypeCollection x:Key="CallTypeCollectionKey" />
+            <local:RoleCollection x:Key="RoleCollectionKey" />
+            <local:DistanceCollection x:Key="DistanceCollectionKey" />
             <local:ConvertRoleToColor x:Key="ConvertRoleToColorKey" />
             <local:ConvertDistanceToColor x:Key="ConvertDistanceToColorKey" />
+            <local:ConvertCallTypeToColor x:Key="ConvertCallTypeToColorKey" />
+            <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
             <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
             <local:CallStatusCollection x:Key="CallStatusCollectionKey" />
+            
 
             <!-- Style for rounded buttons -->
             <Style TargetType="Button" x:Key="RoundedButtonStyle">

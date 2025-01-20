@@ -4,50 +4,74 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Choose Call to Treat" Height="450" Width="1000"
-        Background="{StaticResource ButtonBlue}"
+        Title="Choose Call to Treat" Height="750" Width="1070"
+        Background="#D9EAFD"
         FontFamily="Segoe UI"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
 
     <Window.Resources>
-        <!-- Styles for controls -->
+        <!-- Enhanced Styles for controls -->
         <Style TargetType="ComboBox">
             <Setter Property="Height" Value="30"/>
             <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#2196F3"/>
+            <Setter Property="BorderBrush" Value="#4BA3E3"/>
             <Setter Property="Padding" Value="8,4"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#2196F3"/>
+                </Trigger>
+                <Trigger Property="IsDropDownOpen" Value="True">
+                    <Setter Property="BorderBrush" Value="#1976D2"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style TargetType="TextBox">
             <Setter Property="Height" Value="30"/>
             <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#2196F3"/>
+            <Setter Property="BorderBrush" Value="#4BA3E3"/>
             <Setter Property="Padding" Value="8,4"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#2196F3"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#1976D2"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style TargetType="ListView">
             <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="BorderBrush" Value="#B3E0FF"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Margin" Value="0,10"/>
         </Style>
 
         <Style TargetType="GridViewColumnHeader">
-            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Background" Value="#4BA3E3"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Height" Value="35"/>
             <Setter Property="Padding" Value="8,0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2196F3"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style TargetType="Button">
-            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Background" Value="#4BA3E3"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Height" Value="35"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="15,0"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2196F3"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="#1976D2"/>
                 </Trigger>
             </Style.Triggers>
@@ -55,7 +79,18 @@
 
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="0,5"/>
-            <Setter Property="Foreground" Value="#424242"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+        </Style>
+
+        <Style TargetType="ListViewItem">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E3F2FD"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F5F9FF"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </Window.Resources>
 
@@ -70,54 +105,76 @@
         <!-- Sorting and Filtering Controls -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
             <StackPanel Orientation="Vertical" Margin="0,0,20,0">
-                <TextBlock Text="Sort By" Margin="0,0,0,5"/>
+                <TextBlock Text="Sort By" Margin="0,0,0,5" FontWeight="SemiBold"/>
                 <ComboBox Width="200" 
-               ItemsSource="{Binding Source={StaticResource OpenCallInListCollectionKey}}" 
-               SelectionChanged="CallSelector_Filter" 
-               SelectedValue="{Binding OpenCallInList, Mode=TwoWay}" >
-               </ComboBox>
+                         ItemsSource="{Binding Source={StaticResource OpenCallInListCollectionKey}}" 
+                         SelectionChanged="CallSelector_Filter" 
+                         SelectedValue="{Binding OpenCallInList, Mode=TwoWay}" 
+                         Height="33"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="0,0,20,0">
-                <TextBlock Text="Filter By Call Type" Margin="0,0,0,5"/>
+                <TextBlock Text="Filter By Call Type" Margin="0,0,0,5" FontWeight="SemiBold"/>
                 <ComboBox Width="200"
-              ItemsSource="{Binding Source={StaticResource TypeOfCallsCollectionKey}}" 
-              SelectedValue="{Binding TypeCallInList, Mode=TwoWay}"
-              SelectionChanged="Call_Filter">
-
-                </ComboBox>
+                         ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" 
+                         SelectedValue="{Binding TypeCallInList, Mode=TwoWay}"
+                         SelectionChanged="Call_Filter" 
+                         Height="33"/>
             </StackPanel>
-
         </StackPanel>
 
         <!-- List of open calls -->
-        <ListView ItemsSource="{Binding OpenCallList}" SelectionChanged="CallSelector_Filter" Margin="10,8,25,50" Grid.Row="1" Background="#00000000" Grid.RowSpan="2">
-
+        <ListView ItemsSource="{Binding OpenCallList}" 
+                  SelectedItem="{Binding SelectedCall, Mode=TwoWay}"  
+                  SelectionChanged="CallSelector_Filter" 
+                  Margin="5,8,0,90" 
+                  Grid.Row="1" 
+                  Background="White">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Call ID" DisplayMemberBinding="{Binding Id}" Width="100"/>
-                    <GridViewColumn Header="Call Type" DisplayMemberBinding="{Binding CallType}" Width="150"/>
+                    <GridViewColumn Header="Call Type" Width="150">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding CallType}"
+                       Background="{Binding CallType, Converter={StaticResource ConvertCallTypeToColorKey}}"
+                       Padding="5"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="Address" DisplayMemberBinding="{Binding FullAddress}" Width="150"/>
                     <GridViewColumn Header="Distance (km)" DisplayMemberBinding="{Binding DistanceFromVolunteer}" Width="100"/>
                     <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" Width="150"/>
                     <GridViewColumn Header="Opening Time" DisplayMemberBinding="{Binding OpeningTime}" Width="120"/>
                     <GridViewColumn Header="Max Completion Time" DisplayMemberBinding="{Binding MaxCompletionTime}" Width="150"/>
-
+                    <GridViewColumn Header="Actions" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Choose" Click="BtnChoose_Click"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
 
-
+        <!-- תיאור הקריאה שנבחרה --><!--
+        <TextBlock Text="{Binding SelectedCall.Description}" 
+               Visibility="{Binding SelectedCall, Converter={StaticResource NullToVisibilityConverter}}" 
+               Margin="0,10,0,0" 
+               Grid.Row="2" 
+               FontSize="16" 
+               Foreground="Black" 
+               TextWrapping="Wrap" />-->
+        <Button Style="{StaticResource BackButtonStyle}" Content="Back" Margin="17,544,0,0" Grid.Row="1" Click="Button_Click" Height="76" Width="128" />
         <!-- Details of the selected call -->
-        <Border Grid.Row="2" Background="#E3F2FD" CornerRadius="4" Padding="10" Margin="0,10">
-            <TextBlock Text="Details of the selected call will appear here" 
-                      TextWrapping="Wrap"/>
-        </Border>
 
-        <!-- Button to select the call for treatment -->
-        <Button Grid.Row="3" Content="Select Call for Treatment" 
-                HorizontalAlignment="Right"
-                Click="BtnChoose_Click"/>
-        <Image  Source="/picture/logo.png" Height="90" Margin="777,-26,47,0" Grid.RowSpan="2" VerticalAlignment="Top"/>
+        <Image Source="/picture/logo.png" 
+               Height="90" 
+               Margin="777,-26,47,0" 
+               Grid.RowSpan="2" 
+               VerticalAlignment="Top"/>
     </Grid>
 </Window>
