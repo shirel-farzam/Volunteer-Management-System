@@ -33,10 +33,10 @@
     // Enum for Call Type  Combined for all Call Types
     public enum CallType
     {
-        None,      
         FoodPreparation,  // Food preparation
         FoodTransport,    // Food transport
-        InventoryCheck  // Inventory check
+        InventoryCheck,
+        None
     }
 
     // Enum for Assignment Completion Type 
@@ -51,7 +51,7 @@
     // Enum for Call Status (סטטוס הקריאה)
     public enum CallStatus
     {
-        Open,           // The call is open (not yet handled)
+        Open,           // The call is open (not  handle now )
         InProgress,     // The call is being handled by a volunteer
         Closed,         // The call has been completed
         Expired,        // The call has expired (not handled in time)
@@ -122,8 +122,7 @@
     }
     public enum TypeOfCalls
     {
-      
-       
+     
         Emergency,  // Emergency call
         NonEmergency,  // Non-emergency call
         FollowUp    // Follow-up call

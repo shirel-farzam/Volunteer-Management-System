@@ -75,13 +75,13 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
-    internal class TypeOfCallsCollection : IEnumerable
-    {
-        static readonly IEnumerable<BO.TypeOfCalls> s_enums =
-    (Enum.GetValues(typeof(BO.TypeOfCalls)) as IEnumerable<BO.TypeOfCalls>)!;
+    //internal class TypeOfCallsCollection : IEnumerable
+    //{
+    //    static readonly IEnumerable<BO.TypeOfCalls> s_enums =
+    //(Enum.GetValues(typeof(BO.TypeOfCalls)) as IEnumerable<BO.TypeOfCalls>)!;
 
-        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
-    }
+    //    public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    //}
     internal class CallTypeCollection : IEnumerable
     {
         static readonly IEnumerable<BO.CallType> s_enums =
@@ -107,6 +107,13 @@ namespace PL
     {
         static readonly IEnumerable<BO.Role> s_enums =
     (Enum.GetValues(typeof(BO.Role)) as IEnumerable<BO.Role>)!;
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
+    internal class CallInListFieldCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.CallInListField> s_enums =
+    (Enum.GetValues(typeof(BO.CallInListField)) as IEnumerable<BO.CallInListField>)!;
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }

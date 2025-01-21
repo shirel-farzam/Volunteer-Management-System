@@ -2,6 +2,7 @@
 using DalApi;
 using Dal;
 using DO;
+using System.Diagnostics;
 
 public static class Initialization
 {
@@ -127,7 +128,9 @@ public static class Initialization
         s_dal!.Volunteer.Create(new Volunteer(326047701, "Ayelet Benisty", "0556882236", "admin@example.com", Distance.Aerial, Role.Manager, true, "Zaq12wsx","Ein Gedi 37,Beer sheva, Israel", 31.2509036, 34.7668511,50));
     }
 
-
+    static int p = 0;
+        static int T = 0;
+       static int I = 0;
     private static void CreateCalls()
     {
         // Array of descriptions for different types of calls
@@ -282,25 +285,31 @@ public static class Initialization
             // Declare the variable once
             CallType calltype;
             string ndescription;
-            int p = 0, T = 0, I = 0;
+          
 
             // Assign a call type and description based on the value of i
             if (i % 3 == 0)
             {
                 calltype = CallType.FoodPreparation;
+                if (p >= DescriptionsP.Length)
+                    p = 0;
                 ndescription = DescriptionsP[p];
                 p++;
             }
             else if (i % 4 == 0)
             {
                 calltype = CallType.FoodTransport;
-                ndescription = DescriptionsP[T];
+                if (T >= DescriptionsL.Length)
+                    T = 0;
+                ndescription = DescriptionsL[T];
                 T++;
             }
             else
             {
                 calltype = CallType.InventoryCheck;
-                ndescription = DescriptionsP[I];
+                if (I >= DescriptionsC.Length)
+                    I = 0;
+                ndescription = DescriptionsC[I];
                 I++;
             }
 

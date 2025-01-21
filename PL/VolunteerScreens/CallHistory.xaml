@@ -55,13 +55,33 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="*"/>
-                <DataGridTextColumn Binding="{Binding CallType}" Header="Type" Width="*"/>
+                <DataGridTemplateColumn Header="Type" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding CallType}"
+                           Background="{Binding CallType, Converter={StaticResource ConvertCallTypeToColorKey}}"
+                           Padding="5"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Binding="{Binding FullAddress}" Header="Full Address" Width="2*"/>
                 <DataGridTextColumn Binding="{Binding OpeningTime}" Header="Time Open" Width="*"/>
                 <DataGridTextColumn Binding="{Binding EntryTime}" Header="Start Treatment" Width="*"/>
                 <DataGridTextColumn Binding="{Binding CompletionTime}" Header="Time Close" Width="*"/>
-                <DataGridTextColumn Binding="{Binding CompletionType}" Header="Call Type" Width="*"/>
-                </DataGrid.Columns>
+                <DataGridTemplateColumn Header="Call Type" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding CompletionType}"
+                                       Background="{Binding CompletionType, Converter={StaticResource ConvertTypeCAllToColorKey}}"
+                                       Padding="5"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
         </DataGrid>
         <Button Style="{StaticResource BackButtonStyle}" Content="Back" Margin="24,0,0,0" Grid.Row="2" Click="Button_Click" VerticalAlignment="Center" />
     </Grid>

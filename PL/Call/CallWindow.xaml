@@ -99,20 +99,20 @@
 
                 <!-- MaxEndTime -->
                 <Label Content="Max End Time:" Grid.Row="5" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-                <DatePicker Text="{Binding Call.MaxEndTime}" Grid.Row="5" Grid.Column="1" Style="{StaticResource InputStyle}" />
+                <TextBox Text="{Binding Call.MaxEndTime}" Grid.Row="5" Grid.Column="1" Style="{StaticResource InputStyle}" />
 
                 <!-- Status -->
                 <Label Content="Status:" Grid.Row="6" Grid.Column="0" Style="{StaticResource LabelStyle}" />
-                <TextBox Text="{Binding Call.Status}" IsReadOnly="True" Grid.Row="6" 
+                <TextBox Text="{Binding Call.Status}" IsReadOnly="{Binding Call.Id, Converter={StaticResource ConvertUpdateToTrueKey}}"  Grid.Row="6" 
                       Grid.Column="1"  Margin="3,17,211,25" Height="21.95" Width="209.6"/>
                 <Button Content="{Binding ButtonText}" 
-    Click="btnAddUpdate_Click" 
-    Margin="0,20,0,0"
-    DockPanel.Dock="Bottom" 
-    Height="40" 
-    Background="#F8FAFC" 
-    Foreground="#507687" 
-    FontWeight="Bold" Grid.ColumnSpan="2" Grid.Row="13" />
+                Click="btnAddUpdate_Click" 
+                Margin="0,20,0,0"
+                DockPanel.Dock="Bottom" 
+                Height="40" 
+                Background="#F8FAFC" 
+                Foreground="#507687" 
+                FontWeight="Bold" Grid.ColumnSpan="2" Grid.Row="13" />
 
             </Grid>
         </ScrollViewer>

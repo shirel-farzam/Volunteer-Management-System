@@ -16,15 +16,18 @@
             <!-- Additional resources -->
             <local:VolunteerInListFieldCollection x:Key="VolunteerInListFieldCollectionKey" />
             <local:ClosedCallInListFieldCollection x:Key="ClosedCallInListFieldCollectionKey" />
+            <local:CallInListFieldCollection x:Key="CallInListFieldCollectionKey" />
             <local:OpenCallInListCollection x:Key="OpenCallInListCollectionKey" />
-            <local:TypeOfCallsCollection x:Key="TypeOfCallsCollectionKey" />
+            <!--<local:TypeOfCallsCollection x:Key="TypeOfCallsCollectionKey" />-->
             <local:CallTypeCollection x:Key="CallTypeCollectionKey" />
             <local:RoleCollection x:Key="RoleCollectionKey" />
             <local:DistanceCollection x:Key="DistanceCollectionKey" />
             <local:ConvertRoleToColor x:Key="ConvertRoleToColorKey" />
+            <local:ConvertTypeCAllToColor x:Key="ConvertTypeCAllToColorKey" />
             <local:ConvertDistanceToColor x:Key="ConvertDistanceToColorKey" />
             <local:ConvertCallTypeToColor x:Key="ConvertCallTypeToColorKey" />
             <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+            <local:InverseNullToVisibilityConverter x:Key="InverseNullToVisibilityConverter" />
             <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
             <local:CallStatusCollection x:Key="CallStatusCollectionKey" />
             

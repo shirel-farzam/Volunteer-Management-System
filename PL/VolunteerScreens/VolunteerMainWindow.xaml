@@ -109,7 +109,9 @@ Stretch="Uniform" Margin="5,-28,0,0"  />
             </Border>
 
             <!-- Call Details -->
-            <Border CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource AccentLight}" Padding="15" Background="White" Grid.ColumnSpan="2" Margin="573,0,0,0">
+            <Border CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource AccentLight}" Padding="15" Background="White" Grid.ColumnSpan="2" Margin="573,0,0,0"
+                      Visibility="{Binding CurrentVolunteer.CurrentCall, Converter={StaticResource NullToVisibilityConverter}}">
+                
                 <StackPanel>
                     <TextBlock Text="Current Call Details" FontSize="18" FontWeight="Bold" Foreground="#334155" Margin="0,0,0,15" />
 
@@ -168,14 +170,20 @@ Stretch="Uniform" Margin="5,-28,0,0"  />
                             <TextBlock Text="Status:" FontWeight="Bold" Foreground="#334155" Grid.Row="8" Grid.Column="0" Margin="0,0,10,20"/>
                             <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.Status}" Grid.Row="8" Grid.Column="1" Margin="0,0,0,20"/>
                         </Grid>
+                        
                     </StackPanel>
                 </StackPanel>
             </Border>
             <!-- Action Buttons -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="7,434,0,5" Width="264" Grid.Column="1">
-                <Button Content="End Current Call" Height="38" Width="126" Background="{StaticResource SoftBlue}" Foreground="White" FontWeight="Bold" Margin="0,0,10,0" Click="EndCurrentCall_Click" />
-                <Button Content="Cancel Call" Height="38" Width="124" Background="{StaticResource SoftBlue}" Foreground="White" FontWeight="Bold" Click="CancelCall_Click" />
+                <Button Content="End Current Call" Height="38" Width="126" Background="{StaticResource SoftBlue}" Foreground="White" FontWeight="Bold" Margin="0,0,10,0"
+                        Click="EndCurrentCall_Click"  Visibility="{Binding CurrentVolunteer.CurrentCall, Converter={StaticResource NullToVisibilityConverter}}" />
+                <Button Content="Cancel Call" Height="38" Width="124" Background="{StaticResource SoftBlue}" Foreground="White" FontWeight="Bold" Click="CancelCall_Click"
+                        Visibility="{Binding CurrentVolunteer.CurrentCall, Converter={StaticResource NullToVisibilityConverter}}" />
+                <TextBlock Text="No Call Open" FontSize="18" FontWeight="Bold" Foreground="#334155" HorizontalAlignment="Center" VerticalAlignment="Center"
+               Visibility="{Binding CurrentVolunteer.CurrentCall, Converter={StaticResource InverseNullToVisibilityConverter}}" />
             </StackPanel>
+            
 
         </Grid>
     </Grid>

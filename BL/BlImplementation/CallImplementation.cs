@@ -1,7 +1,6 @@
 ﻿namespace BlImplementation;
 using BlApi;
 using BO;
-using DO;
 using Helpers;
 
 internal class CallImplementation : ICall
@@ -122,6 +121,8 @@ internal class CallImplementation : ICall
             _dal.Assignment.Create(assignmentToCreate); // Adds the assignment to the DAL
             CallManager.Observers.NotifyListUpdated(); //stage 5
             CallManager.Observers.NotifyItemUpdated(volunteerId);
+            //VolunteerManager.Observers.NotifyListUpdated();
+            //VolunteerManager.Observers.NotifyItemUpdated(assignmentToCreate.CallId);
         }
         catch (DO.DalDeletionImpossible)
         {
@@ -247,122 +248,208 @@ internal class CallImplementation : ICall
     }
 
 
+    //public IEnumerable<BO.CallInList> GetCallInLists(BO.CallInListField? filter, object? obj, BO.CallInListField? sortBy)
+    //{
+    //    // Fetch all calls from the data layer, throw an exception if no calls exist in the database
+    //    IEnumerable<DO.Call> calls = _dal.Call.ReadAll() ?? throw new BO.BlNullPropertyException("There are no calls in the database");
+
+    //    // Convert the data-layer calls (DO.Call) to business-layer call lists (BO.CallInList)
+    //    IEnumerable<BO.CallInList> boCallsInList = _dal.Call.ReadAll()
+    //        .Select(call => CallManager.ConvertDOCallToBOCallInList(call));
+
+    //    // Apply filtering logic if a filter and a filter object are provided
+    //    if (filter != null && obj != null)
+    //    {
+    //        switch (filter)
+    //        {
+    //            case BO.CallInListField.Id:
+    //                // Filter by ID
+    //                boCallsInList = boCallsInList.Where(item => item.Id == (int)obj);
+    //                break;
+
+    //            case BO.CallInListField.CallId:
+    //                // Filter by CallId
+    //                boCallsInList = boCallsInList.Where(item => item.CallId == (int)obj);
+    //                break;
+
+    //            case BO.CallInListField.Type:
+    //                // Filter by call type
+    //                boCallsInList = boCallsInList.Where(item => item.Type == (BO.CallType)obj);
+    //                break;
+
+    //            case BO.CallInListField.OpeningTime:
+    //                // Filter by opening time
+    //                boCallsInList = boCallsInList.Where(item => item.OpeningTime == (DateTime)obj);
+    //                break;
+
+    //            case BO.CallInListField.TimeToFinish:
+    //                // Filter by time to finish
+    //                boCallsInList = boCallsInList.Where(item => item.TimeToFinish == (TimeSpan)obj);
+    //                break;
+
+    //            case BO.CallInListField.LastVolunteerName:
+    //                // Filter by last volunteer name
+    //                boCallsInList = boCallsInList.Where(item => item.LastVolunteerName == (string)obj);
+    //                break;
+
+    //            case BO.CallInListField.TreatmentDuration:
+    //                // Filter by treatment duration
+    //                boCallsInList = boCallsInList.Where(item => item.TreatmentDuration == (TimeSpan)obj);
+    //                break;
+
+    //            case BO.CallInListField.Status:
+    //                // Filter by call status
+    //                boCallsInList = boCallsInList.Where(item => item.Status == (BO.CallStatus)obj);
+    //                break;
+
+    //            case BO.CallInListField.TotalAssignments:
+    //                // Filter by total assignments
+    //                boCallsInList = boCallsInList.Where(item => item.TotalAssignments == (int)obj);
+    //                break;
+    //        }
+    //    }
+
+    //    // Default sorting field if no sort field is provided
+    //    if (sortBy == null)
+    //        sortBy = BO.CallInListField.CallId;
+
+    //    // Apply sorting based on the specified sort field
+    //    switch (sortBy)
+    //    {
+    //        case BO.CallInListField.Id:
+    //            // Sort by ID, prioritizing null values
+    //            boCallsInList = boCallsInList.OrderBy(item => item.Id.HasValue ? 0 : 1)
+    //                                         .ThenBy(item => item.Id)
+    //                                         .ToList();
+    //            break;
+
+    //        case BO.CallInListField.CallId:
+    //            // Sort by CallId
+    //            boCallsInList = boCallsInList.OrderBy(item => item.CallId).ToList();
+    //            break;
+
+    //        case BO.CallInListField.Type:
+    //            // Sort by call type
+    //            boCallsInList = boCallsInList.OrderBy(item => item.Type).ToList();
+    //            break;
+
+    //        case BO.CallInListField.OpeningTime:
+    //            // Sort by opening time
+    //            boCallsInList = boCallsInList.OrderBy(item => item.OpeningTime).ToList();
+    //            break;
+
+    //        case BO.CallInListField.TimeToFinish:
+    //            // Sort by time to finish
+    //            boCallsInList = boCallsInList.OrderBy(item => item.TimeToFinish).ToList();
+    //            break;
+
+    //        case BO.CallInListField.LastVolunteerName:
+    //            // Sort by last volunteer name
+    //            boCallsInList = boCallsInList.OrderBy(item => item.LastVolunteerName).ToList();
+    //            break;
+
+    //        case BO.CallInListField.TreatmentDuration:
+    //            // Sort by treatment duration
+    //            boCallsInList = boCallsInList.OrderBy(item => item.TreatmentDuration).ToList();
+    //            break;
+
+    //        case BO.CallInListField.Status:
+    //            // Sort by call status
+    //            boCallsInList = boCallsInList.OrderBy(item => item.Status).ToList();
+    //            break;
+
+    //        case BO.CallInListField.TotalAssignments:
+    //            // Sort by total assignments
+    //            boCallsInList = boCallsInList.OrderBy(item => item.TotalAssignments).ToList();
+    //            break;
+    //    }
+
+    //    return boCallsInList;
+    //}
     public IEnumerable<BO.CallInList> GetCallInLists(BO.CallInListField? filter, object? obj, BO.CallInListField? sortBy)
     {
-        // Fetch all calls from the data layer, throw an exception if no calls exist in the database
+        // Retrieve all calls from the database, or throw an exception if none exist.
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll() ?? throw new BO.BlNullPropertyException("There are no calls in the database");
 
-        // Convert the data-layer calls (DO.Call) to business-layer call lists (BO.CallInList)
-        IEnumerable<BO.CallInList> boCallsInList = _dal.Call.ReadAll()
-            .Select(call => CallManager.ConvertDOCallToBOCallInList(call));
+        // Convert all DO calls to BO calls in list.
+        IEnumerable<BO.CallInList> boCallsInList = _dal.Call.ReadAll().Select(call => CallManager.ConvertDOCallToBOCallInList(call)).ToList();
 
-        // Apply filtering logic if a filter and a filter object are provided
+        // Apply filter if specified.
         if (filter != null && obj != null)
         {
             switch (filter)
             {
                 case BO.CallInListField.Id:
-                    // Filter by ID
                     boCallsInList = boCallsInList.Where(item => item.Id == (int)obj);
                     break;
-
                 case BO.CallInListField.CallId:
-                    // Filter by CallId
                     boCallsInList = boCallsInList.Where(item => item.CallId == (int)obj);
                     break;
-
                 case BO.CallInListField.Type:
-                    // Filter by call type
                     boCallsInList = boCallsInList.Where(item => item.Type == (BO.CallType)obj);
                     break;
-
                 case BO.CallInListField.OpeningTime:
-                    // Filter by opening time
                     boCallsInList = boCallsInList.Where(item => item.OpeningTime == (DateTime)obj);
                     break;
-
                 case BO.CallInListField.TimeToFinish:
-                    // Filter by time to finish
                     boCallsInList = boCallsInList.Where(item => item.TimeToFinish == (TimeSpan)obj);
                     break;
-
                 case BO.CallInListField.LastVolunteerName:
-                    // Filter by last volunteer name
                     boCallsInList = boCallsInList.Where(item => item.LastVolunteerName == (string)obj);
                     break;
-
                 case BO.CallInListField.TreatmentDuration:
-                    // Filter by treatment duration
                     boCallsInList = boCallsInList.Where(item => item.TreatmentDuration == (TimeSpan)obj);
                     break;
-
                 case BO.CallInListField.Status:
-                    // Filter by call status
+                    if ((BO.CallStatus)obj == BO.CallStatus.None)
+                        break;
                     boCallsInList = boCallsInList.Where(item => item.Status == (BO.CallStatus)obj);
                     break;
-
                 case BO.CallInListField.TotalAssignments:
-                    // Filter by total assignments
                     boCallsInList = boCallsInList.Where(item => item.TotalAssignments == (int)obj);
                     break;
             }
         }
 
-        // Default sorting field if no sort field is provided
+        // Default sort by CallId if no sorting is specified.
         if (sortBy == null)
             sortBy = BO.CallInListField.CallId;
 
-        // Apply sorting based on the specified sort field
+        // Apply sorting based on the specified field.
         switch (sortBy)
         {
             case BO.CallInListField.Id:
-                // Sort by ID, prioritizing null values
                 boCallsInList = boCallsInList.OrderBy(item => item.Id.HasValue ? 0 : 1)
                                              .ThenBy(item => item.Id)
                                              .ToList();
                 break;
-
             case BO.CallInListField.CallId:
-                // Sort by CallId
                 boCallsInList = boCallsInList.OrderBy(item => item.CallId).ToList();
                 break;
-
             case BO.CallInListField.Type:
-                // Sort by call type
                 boCallsInList = boCallsInList.OrderBy(item => item.Type).ToList();
                 break;
-
             case BO.CallInListField.OpeningTime:
-                // Sort by opening time
                 boCallsInList = boCallsInList.OrderBy(item => item.OpeningTime).ToList();
                 break;
-
             case BO.CallInListField.TimeToFinish:
-                // Sort by time to finish
                 boCallsInList = boCallsInList.OrderBy(item => item.TimeToFinish).ToList();
                 break;
-
             case BO.CallInListField.LastVolunteerName:
-                // Sort by last volunteer name
                 boCallsInList = boCallsInList.OrderBy(item => item.LastVolunteerName).ToList();
                 break;
-
             case BO.CallInListField.TreatmentDuration:
-                // Sort by treatment duration
                 boCallsInList = boCallsInList.OrderBy(item => item.TreatmentDuration).ToList();
                 break;
-
             case BO.CallInListField.Status:
-                // Sort by call status
                 boCallsInList = boCallsInList.OrderBy(item => item.Status).ToList();
                 break;
-
             case BO.CallInListField.TotalAssignments:
-                // Sort by total assignments
                 boCallsInList = boCallsInList.OrderBy(item => item.TotalAssignments).ToList();
                 break;
         }
 
+        // Return the filtered and sorted list of calls.
         return boCallsInList;
     }
     //public IEnumerable<BO.OpenCallInList> GetOpenCall(int id, BO.CallType? type, BO.OpenCallInList? sortBy)
@@ -647,7 +734,7 @@ internal class CallImplementation : ICall
                 ismanager = true;
             else throw new BO.BlDeleteNotPossibleException("the volunteer is not manager or not in this call");
         }
-        if (assigmnetToCancel.TypeEndTreat != null || (_dal.Call.Read(assigmnetToCancel.CallId).MaxTimeToClose > AdminManager.Now) | assigmnetToCancel.TimeEnd != null)
+        if (assigmnetToCancel.TypeEndTreat != null /*|| (_dal.Call.Read(assigmnetToCancel.CallId).MaxTimeToClose > AdminManager.Now) */||assigmnetToCancel.TimeEnd != null)
             throw new BO.BlDeleteNotPossibleException("The assignment not open or expaired");
 
         DO.Assignment assigmnetToUP = new DO.Assignment
@@ -662,7 +749,7 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Assignment.Update(assigmnetToUP);
-            CallManager.Observers.NotifyItemUpdated(assigmnetToUP.Id);  //stage 5
+            CallManager.Observers.NotifyItemUpdated(assigmnetToUP.CallId);  //stage 5
             CallManager.Observers.NotifyListUpdated();  //stage 5
             VolunteerManager.Observers.NotifyListUpdated();
             VolunteerManager.Observers.NotifyItemUpdated(idVol);

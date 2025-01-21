@@ -33,8 +33,20 @@ namespace PL
         }
     }
 
-   
 
+    public class InverseNullToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            // If the value is null, return Visible; otherwise, return Collapsed
+            return value == null ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException("ConvertBack is not implemented.");
+        }
+    }
     public class ConvertDistanceToColor : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -105,6 +117,30 @@ namespace PL
             throw new NotImplementedException();
         }
     }
+    public class ConvertTypeCAllToColor : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is AssignmentCompletionType type)
+            {
+                return type switch
+                {
+                    AssignmentCompletionType.AdminCanceled => Brushes.Red, // אדום
+                    AssignmentCompletionType.Expired => Brushes.LightYellow, // צהוב בהיר
+                    AssignmentCompletionType.Canceled => Brushes.LightBlue, // כחול בהיר
+                    AssignmentCompletionType.Completed => Brushes.MediumPurple,
+                    _ => Brushes.Gray // ברירת מחדל
+                };
+            }
+            return Brushes.Gray; // במקרה של ערך לא מזוהה
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class ConvertUpdateToTrue : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

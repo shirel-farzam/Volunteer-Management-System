@@ -190,7 +190,7 @@ internal static class CallManager
     {
         if (doCall.MaxTimeToClose < _dal.Config.Clock)
             return BO.CallStatus.Expired;
-        var lastAssignment = _dal.Assignment.ReadAll(ass => ass.CallId == doCall.Id).OrderByDescending(a => a.TimeStart).FirstOrDefault();
+        var lastAssignment = _dal.Assignment.ReadAll(ass => ass.CallId == doCall.Id).OrderByDescending(a => a.Id).FirstOrDefault();
 
         if (lastAssignment == null)
         {
@@ -208,7 +208,13 @@ internal static class CallManager
                 return BO.CallStatus.InProgressRisk;
             else return BO.CallStatus.InProgress;
         }
-        return BO.CallStatus.Closed;//default
+        if (lastAssignment.TypeEndTreat.ToString() == "ExpiredCancel")
+        {
+            return BO.CallStatus.Expired;
+        }
+        if (IsInRisk(doCall!))
+            return BO.CallStatus.OpenRisk;
+         return BO.CallStatus.Open;
     }
 
 
@@ -510,6 +516,7 @@ internal static class CallManager
         var treatmentDuration = lastAssignmentsForCall != null && lastAssignmentsForCall.TimeEnd != null
                                 ? lastAssignmentsForCall.TimeEnd - lastAssignmentsForCall.TimeStart
                                 : null;
+        BO.CallStatus status = GetCallStatus(doCall);
 
         // החזר את האובייקט CallInList
         return new BO.CallInList
@@ -518,12 +525,16 @@ internal static class CallManager
             CallId = doCall.Id,
             Type = (BO.CallType)doCall.Type,
             OpeningTime = doCall.TimeOpened,
-            TimeToFinish = doCall.MaxTimeToClose != null ? doCall.MaxTimeToClose - _dal.Config.Clock : null,
-            LastVolunteerName = volunteerName,
-            TreatmentDuration = treatmentDuration,
+            TimeToFinish = (doCall.MaxTimeToClose != null && doCall.MaxTimeToClose >= _dal.Config.Clock) ? doCall.MaxTimeToClose - _dal.Config.Clock : null,
+            LastVolunteerName = (lastAssignmentsForCall != null)
+    ? _dal.Volunteer.Read(lastAssignmentsForCall.VolunteerId)?.FullName
+    : null,
+            TreatmentDuration = status == BO.CallStatus.Closed ? lastAssignmentsForCall.TimeEnd - doCall.TimeOpened : null,
+
             Status = CallManager.GetCallStatus(doCall),
-            TotalAssignments = assignmentsForCall.Count()
+            TotalAssignments = (assignmentsForCall == null) ? 0 : assignmentsForCall.Count()
         };
+
     }
 
     internal static BO.ClosedCallInList ConvertDOCallToBOCloseCallInList(DO.Call doCall, CallAssignmentInList lastAssignment)

@@ -7,42 +7,30 @@ using System.Windows.Input;
 using System.Windows;
 using System.ComponentModel;
 using DO;
+using PL.CallWindow;
 
 namespace PL.Call
-
 {
     public partial class CallInListWindow : Window, INotifyPropertyChanged
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        private BO.CallStatus _selectedCallStatus = BO.CallStatus.None;
-        public BO.CallInList? SelectedCallforupdate { get; set; }
-        public BO.CallStatus SelectedCallStatus
-        {
-            get => _selectedCallStatus;
-            set
-            {
-                if (_selectedCallStatus != value)
-                {
-                    _selectedCallStatus = value;
-                    OnPropertyChanged(nameof(SelectedCallStatus));
-                    RefreshCallList(); // רענן את רשימת הקריאות
-                }
-            }
-        }
-
-        private IEnumerable<BO.CallInList> _callInList;
+        private Window _previousWindow; // Variable to store a reference to the previous window
         public IEnumerable<BO.CallInList> CallInList
         {
-            get => _callInList;
-            set
-            {
-                if (_callInList != value)
-                {
-                    _callInList = value;
-                    OnPropertyChanged(nameof(CallInList)); // עדכן את ה-UI אם הרשימה השתנתה
-                }
-            }
+            get { return (IEnumerable<BO.CallInList>)GetValue(CallListProperty); }
+            set { SetValue(CallListProperty, value); }
         }
+
+        public static readonly DependencyProperty CallListProperty =
+            DependencyProperty.Register("CallInList", typeof(IEnumerable<BO.CallInList>), typeof(CallInListWindow), new PropertyMetadata(null));
+
+        public BO.CallInList? SelectedCallforupdate { get; set; }
+
+        public BO.CallStatus? SelectedCallStatus { get; set; }
+
+        public BO.CallInListField CallInListField { get; set; } = BO.CallInListField.Id;
+
+        public int Id { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -50,276 +38,112 @@ namespace PL.Call
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public CallInListWindow()
+        public CallInListWindow(int id = 0, Window previousWindow=null)
         {
+            Id = id;
             InitializeComponent();
             DataContext = this;
-            RefreshCallList();
+            _previousWindow = previousWindow;
         }
-        private void RefreshCallList()
+
+        private void CallSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
-                CallInList = queryCallList();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to load call list: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            QueryCallList();
         }
 
         private void OnFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Update the SelectedCallStatus when ComboBox selection changes
-            if (sender is ComboBox comboBox && comboBox.SelectedItem is BO.CallStatus selectedFilter)
-            {
-                SelectedCallStatus = selectedFilter;
-                RefreshCallList();
-            }
+            CallInListField = (BO.CallInListField)(((ComboBox)sender).SelectedItem);
+            CallInList = s_bl?.Call.GetCallInLists(BO.CallInListField.Status, SelectedCallStatus, CallInListField)!;
         }
 
-        // Function to filter the list of calls
-        private IEnumerable<BO.CallInList> queryCallList()
+        private void QueryCallList()
         {
-            IEnumerable<BO.CallInList> calls;
+            CallInList = (CallInListField == BO.CallInListField.Id)
+                ? s_bl?.Call.GetCallInLists(null, null, null)!
+                : s_bl?.Call.GetCallInLists(BO.CallInListField.Status, SelectedCallStatus, CallInListField)!;
+        }
+        private void CallListObserver() => QueryCallList();
 
-            switch (SelectedCallStatus)
-            {
-                case CallStatus.Open:
-                    // קריאות פתוחות, ממויינות לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
-                              .Where(c => c.Status == CallStatus.Open)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
-                    break;
-
-                case CallStatus.InProgress:
-                    // קריאות בטיפול, ממויינות לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
-                              .Where(c => c.Status == CallStatus.InProgress)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
-                    break;
-
-                case CallStatus.Closed:
-                    // קריאות סגורות, ממויינות לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
-                              .Where(c => c.Status == CallStatus.Closed)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
-                    break;
-
-                case CallStatus.Expired:
-                    // קריאות שפג תוקפן, ממויינות לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
-                              .Where(c => c.Status == CallStatus.Expired)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
-                    break;
-
-                case CallStatus.OpenRisk:
-                    // קריאות פתוחות בסיכון, ממויינות לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
-                              .Where(c => c.Status == CallStatus.OpenRisk)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
-                    break;
-
-                case CallStatus.InProgressRisk:
-                    // קריאות בטיפול בסיכון, ממויינות לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(CallInListField.Status, null, CallInListField.Status)
-                              .Where(c => c.Status == CallStatus.InProgressRisk)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
-                    break;
-
-                default:
-                    // ללא סינון לפי סטטוס
-                    calls = BlApi.Factory.Get().Call.GetCallInLists(null, null, null)
-                              .OrderBy(c => c.Status)
-                              .ThenBy(c => c.CallId);
-                    break;
-            }
-
-            return calls;
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            s_bl.Call.AddObserver(CallListObserver);
         }
 
-
-
-
-        // Filter the calls when the filter button is clicked
-        private void FilterCalls_Click(object sender, RoutedEventArgs e)
+        private void Window_Closed(object sender, EventArgs e)
         {
-            // Update the CallList property with filtered results
-            CallInList = queryCallList();
+            s_bl.Call.RemoveObserver(CallListObserver);
         }
 
         private void CallsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (SelectedCallforupdate != null)
+            if (SelectedCallforupdate?.CallId != null)
+            {
                 new CallWindow.CallWindow(SelectedCallforupdate.CallId).Show();
-        }
-
-
-        private void CancelAssignment_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender is Button button && button.DataContext is BO.CallInList selectedCall)
-                {
-                    int callId = selectedCall.CallId;
-
-                    // Retrieve call data
-                    var call = s_bl.Call.Read(callId);
-                    if (call == null)
-                    {
-                        MessageBox.Show("Call not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-
-                    var currentAssignment = call.CallAssignments?.FirstOrDefault(a => a.CompletionType == null);
-                    if (currentAssignment == null)
-                    {
-                        MessageBox.Show("No active assignment found for this call.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-
-                    var volunteer = s_bl.Volunteer.Read(currentAssignment.VolunteerId);
-                    if (volunteer == null)
-                    {
-                        MessageBox.Show("Volunteer not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-
-                    // Cancel the assignment
-                    currentAssignment.CompletionType = BO.AssignmentCompletionType.Canceled;
-                    s_bl.Call.Update(call);
-
-                    //// Send cancellation email
-                    //bool emailSent = SendCancellationEmail(volunteer.Email, callId, volunteer.FullName);
-                    //if (emailSent)
-                    //{
-                    //    MessageBox.Show($"Assignment for call {callId} has been canceled and email sent to volunteer {volunteer.FullName}.",
-                    //                     "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show($"Assignment for call {callId} has been canceled, but the email could not be sent.",
-                    //                     "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    //}
-                }
-                else
-                {
-                    MessageBox.Show("Unable to retrieve call information.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("No call selected for editing.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
-        //private bool SendCancellationEmail(string email, int callId, string volunteerName)
-        //{
-        //    try
-        //    {
-        //        var message = new System.Net.Mail.MailMessage
-        //        {
-        //            From = new System.Net.Mail.MailAddress("miniproject@walla.co.il"),
-        //            Subject = "Cancellation of Your Assignment",
-        //            Body = $"Dear {volunteerName},<br><br>Your assignment for call {callId} has been canceled.<br><br>Thank you for your understanding.<br><br>Best regards,<br>Your Team",
-        //            IsBodyHtml = true // אם אתה רוצה להשתמש ב־HTML בפורמט המייל
-        //        };
-
-        //        message.To.Add(email);
-
-        //        // שימוש בשרת SMTP של Walla
-        //        var smtpClient = new System.Net.Mail.SmtpClient("smtp.walla.co.il", 465)
-        //        {
-        //            Credentials = new System.Net.NetworkCredential("miniproject@walla.co.il", "Ayelet929"),
-        //            EnableSsl = true
-        //        };
-
-        //        smtpClient.Send(message);
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Failed to send email: {ex.Message}");
-        //        return false;
-        //    }
-        //}
-
-
-        private bool CanDeleteCall(BO.CallInList call)
-        {
-            // בדוק אם הקריאה בסטטוס Open וטרם הוקצתה למתנדב
-            return call.Status == BO.CallStatus.Open;
-        }
-
-        private void DeleteCall_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender is Button button && button.DataContext is BO.CallInList selectedCall)
-                {
-                    // בדוק אם ניתן למחוק את הקריאה
-                    if (CanDeleteCall(selectedCall))
-                    {
-                        // מחיקת הקריאה מהמאגר
-                        s_bl.Call.DeleteCall(selectedCall.CallId);
-
-                        RefreshCallList();
-
-                        MessageBox.Show($"Call {selectedCall.CallId} has been deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("This call cannot be deleted. It must be Open and not assigned to any volunteer.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            //try
-            //{
-            //    var bl = BlApi.Factory.Get().Call;
-            //    bl.DeleteCall(selectedCall.CallId); // Delete the volunteer
-            //    RefreshCallList();  // Refresh the list
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show($"An error occurred while deleting the volunteer: {ex.Message}",
-            //                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-        }
         private void AddCallButton_Click(object sender, RoutedEventArgs e)
         {
             new CallWindow.CallWindow().Show();
         }
-        private void callListObserver()
+
+        private void DeleteCall_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            MessageBoxResult mbResult = MessageBox.Show("Are you sure you want to delete this call?", "Reset Confirmation",
+                                                        MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (mbResult == MessageBoxResult.Yes)
             {
-                RefreshCallList();  // Refresh the list when notified of changes
-            });
-        }
-        // Add observer on window load
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            BlApi.Factory.Get().Call.AddObserver(callListObserver);
+                try
+                {
+                    s_bl.Call.DeleteCall(SelectedCallforupdate.CallId);
+                }
+                catch (BO.BlDeleteNotPossibleException ex)
+                {
+                    MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+            }
         }
 
-        // Remove observer on window close
-        private void Window_Closed(object sender, EventArgs e)
+        private void CancelAssignment_Click(object sender, RoutedEventArgs e)
         {
-            BlApi.Factory.Get().Call.RemoveObserver(callListObserver);
+            MessageBoxResult mbResult = MessageBox.Show("Are you sure you want to cancel this assignment?", "Reset Confirmation",
+                                                        MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (mbResult == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    s_bl.Call.CancelTreat(Id, (int)SelectedCallforupdate.Id);
+                }
+                catch (BO.BlDeleteNotPossibleException ex)
+                {
+                    MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+            }
         }
-
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_previousWindow != null)
+            {
+                _previousWindow.Show(); // Show the previous window
+                this.Hide(); // Close the current window
+            }
+            else
+            {
+                MessageBox.Show("Previous window is null!");
+            }
+        }
     }
-
 }
-
-

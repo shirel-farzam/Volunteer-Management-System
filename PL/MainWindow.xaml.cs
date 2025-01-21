@@ -213,7 +213,7 @@ namespace PL
         }
         private void ListCall_Click(object sender, RoutedEventArgs e)
         {
-              new  CallInListWindow().Show(); 
+              new  CallInListWindow(Id,this).Show(); 
         }
         private void StartSimulator_Click(object sender, RoutedEventArgs e)
         {
