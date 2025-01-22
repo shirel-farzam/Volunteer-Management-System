@@ -151,6 +151,7 @@ internal class VolunteerManager
         try
         {
             CheckId(boVolunteer.Id);
+
             CheckPhonnumber(boVolunteer.PhoneNumber);
             CheckEmail(boVolunteer.Email);
             CheckPassword(boVolunteer.Password);

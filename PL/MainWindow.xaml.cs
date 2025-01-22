@@ -179,7 +179,7 @@ namespace PL
         private void btnVolunteer_Click(object sender, RoutedEventArgs e)
         {
             //s_bl.Admin.initialization();
-            new VolunteerInListWindow(this).Show();
+            new VolunteerInListWindow(Id,this).Show();
         }
         private void clockObserver()
         {
@@ -260,5 +260,8 @@ namespace PL
                 MessageBox.Show("Previous window is null!");
             }
         }
+       
+
+
     }
 }

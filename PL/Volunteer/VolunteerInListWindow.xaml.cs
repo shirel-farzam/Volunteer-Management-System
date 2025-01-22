@@ -1,186 +1,200 @@
-﻿    using BO;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Windows;
-    using System.ComponentModel;
-    using System.Windows.Controls;
-    using DalTest;
-    using PL.VolunteerWindow;
-    using System.Windows.Input;
+﻿using BO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
-    namespace PL.Volunteer
+namespace PL.Volunteer
+{
+    /// <summary>
+    /// Interaction logic for VolunteerListWindow.xaml
+    /// </summary>
+    public partial class VolunteerInListWindow : Window
     {
-        public partial class VolunteerInListWindow : Window, INotifyPropertyChanged
+        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+        public IEnumerable<BO.VolunteerInList> VolunteerInList
         {
-            private VolunteerInListField _selectedFilter = VolunteerInListField.None;  // Default to None (no filter)
-            public BO.VolunteerInList? SelectedVolunteer { get; set; }
+            get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolunteerInListProperty); }
+            set { SetValue(VolunteerInListProperty, value); }
+        }
+
+        public static readonly DependencyProperty VolunteerInListProperty =
+        DependencyProperty.Register("VolunteerInList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerInListWindow), new PropertyMetadata(null));
+
+        public BO.VolunteerInList? SelectedVolunteer { get; set; }
+        public BO.CallType? VolunteerFilter { get; set; }
+        public BO.VolunteerInListField VolunteerSort { get; set; } = BO.VolunteerInListField.Id;
+
+        public int Id { get; set; }
         private Window _previousWindow; // Variable to store a reference to the previous window
-
-        // SelectedFilter property
-        public VolunteerInListField SelectedFilter
-            {
-                get { return _selectedFilter; }
-                set
-                {
-                    if (_selectedFilter != value)
-                    {
-                        _selectedFilter = value;
-                        OnPropertyChanged(nameof(SelectedFilter));  // Notify the UI of the property change
-                        UpdateVolunteerList();  // Update the list when the filter changes
-                    }
-                }
-            }
-
-            // VolunteerInList property (DependencyProperty)
-            public IEnumerable<BO.VolunteerInList> VolunteerInList
-            {
-                get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolunteerInListFieldListProperty); }
-                set { SetValue(VolunteerInListFieldListProperty, value); }
-            }
-
-            public static readonly DependencyProperty VolunteerInListFieldListProperty =
-                DependencyProperty.Register(
-                    "VolunteerInList",typeof(IEnumerable<BO.VolunteerInList>),
-                    typeof(VolunteerInListWindow),
-                    new PropertyMetadata(null));
-
-            // Constructor
-            public VolunteerInListWindow(Window previousWindow)
-            {
-                InitializeComponent();
-                DataContext = this;
-                UpdateVolunteerList();  // Load the volunteer list without any filter initially
+        public VolunteerInListWindow(int bossdId, Window previousWindow)
+        {
+            InitializeComponent();
+            Id = bossdId;
+            DataContext = this;
+            //UpdateVolunteerList();  // Load the volunteer list without any filter initially
             _previousWindow = previousWindow;
         }
 
-            // Handle ComboBox selection change event to update the filter
-            private void OnFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
-            {
-                // Handle selection change and update the SelectedFilter property
-                if (sender is ComboBox comboBox && comboBox.SelectedItem is VolunteerInListField selectedFilter)
-                {
-                    SelectedFilter = selectedFilter; // Update the SelectedFilter property
-                }
-            }
+        private void OnFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            QueryVolunteerList();
+        }
 
-            // Update the volunteer list based on the selected filter
-            private void UpdateVolunteerList()
+        private void Volunteer_Sort(object sender, SelectionChangedEventArgs e) { QueryVolunteerList(); }
+        //{
+        //    VolunteerSort = (BO.VolunteerInListField)(((ComboBox)sender).SelectedItem);
+        //    VolunteerInList = s_bl?.Volunteer.ReadAll(null, VolunteerSort, VolunteerFilter)!;
+
+        //}
+        //private void Volunteer_Sort(object sender, SelectionChangedEventArgs e)
+        //{
+        //    // בדוק אם sender הוא ComboBox
+        //    if (sender is ComboBox comboBox)
+        //    {
+        //        // בדוק אם SelectedItem אינו null
+        //        if (comboBox.SelectedItem is BO.VolunteerInListField selectedSort)
+        //        {
+        //            VolunteerSort = selectedSort;
+
+        //            // בדוק אם הסביבה s_bl מאופסת כראוי
+        //            if (s_bl?.Volunteer != null)
+        //            {
+        //                VolunteerInList = s_bl.Volunteer.ReadAll(null, VolunteerSort, VolunteerFilter) ?? Enumerable.Empty<BO.VolunteerInList>();
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show("The business logic object (s_bl) is not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("No valid sort field was selected.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("The sender is not a valid ComboBox.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+        //    }
+        //}
+
+        //private void Volunteer_Filter(object sender, SelectionChangedEventArgs e)
+        //{
+        //    //VolunteerFilter = (BO.CallType)(((ComboBox)sender).SelectedItem);
+        //    //VolunteerInList = s_bl?.Volunteer.ReadAll(null, VolunteerSort, VolunteerFilter)!;
+        //    VolunteerFilter = (BO.CallType)(((ComboBox)sender).SelectedItem);
+        //    VolunteerInList = s_bl?.Volunteer.ReadAll(null, VolunteerSort)!;
+
+        //}
+        private void Volunteer_Filter(object sender, SelectionChangedEventArgs e)
+        {
+            if (((ComboBox)sender).SelectedItem is BO.CallType selectedFilter)
+            {
+                VolunteerFilter = selectedFilter;
+                VolunteerInList = s_bl?.Volunteer.ReadAll(null, VolunteerSort, VolunteerFilter) ?? Enumerable.Empty<BO.VolunteerInList>();
+            }
+        }
+
+
+        //private void QueryVolunteerList()
+        //{
+        //VolunteerInList = (VolunteerSort == BO.VolunteerInListField.Id) ?
+        //    s_bl?.Volunteer.ReadAll(null, null)! :
+        //    s_bl?.Volunteer.ReadAll(null,VolunteerSort ,VolunteerFilter)!;
+        //}
+        private void QueryVolunteerList()
+         => VolunteerInList = (VolunteerSort == BO.VolunteerInListField.Id) ?
+         s_bl?.Volunteer.ReadAll(null, null)! : s_bl?.Volunteer.ReadAll(null, VolunteerSort,VolunteerFilter)!;
+
+
+        private void VolunteerListObserver() => QueryVolunteerList();
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // טוען את הנתונים כאשר החלון נטען
+            //QueryVolunteerList();
+
+            // מוסיף את הצופה למעקב אחרי שינויים ברשימה
+            s_bl.Volunteer.AddObserver(VolunteerListObserver);
+        }
+
+
+        private void Window_Closed(object sender, EventArgs e)
+            => s_bl.Volunteer.RemoveObserver(VolunteerListObserver);
+
+        private void lsvVolunteerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (SelectedVolunteer != null)
+                new VolunteerWindow.VolunteerWindow(SelectedVolunteer.Id).Show();
+        }
+
+        private void AddVolunteerButton_Click(object sender, RoutedEventArgs e)
+        {
+            new VolunteerWindow.VolunteerWindow().Show();
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult mbResult = MessageBox.Show("Are you sure you want to delete this volunteer?", "Reset Confirmation",
+                                                        MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (mbResult == MessageBoxResult.Yes)
             {
                 try
                 {
-                    IEnumerable<BO.VolunteerInList> volunteers = queryVolunteerList();
-                    VolunteerInList = volunteers;
+                    s_bl.Volunteer.DeleteVolunteer(SelectedVolunteer.Id);
+                }
+                catch (BO.BlDeleteNotPossibleException ex)
+                {
+                    MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    this.Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"An error occurred while loading the volunteer list: {ex.Message}",
-                                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }
+        }
 
-            // Filtering logic based on the selected filter
-            private IEnumerable<BO.VolunteerInList> queryVolunteerList()
+        private bool isFiltered = false;
+
+        private void btnFilter_Click(object sender, RoutedEventArgs e)
+        {
+            try
             {
-                IEnumerable<BO.VolunteerInList> volunteers;
-
-                switch (SelectedFilter)
+                if (isFiltered)
                 {
-                    case VolunteerInListField.Id:
-                        volunteers = BlApi.Factory.Get().Volunteer.ReadAll(null, VolunteerInListField.Id).OrderBy(v => v.Id);
-                        break;
-                    case VolunteerInListField.FullName:
-                        volunteers = BlApi.Factory.Get().Volunteer.ReadAll(null, VolunteerInListField.FullName).OrderBy(v => v.FullName);
-                        break;
-                    case VolunteerInListField.Active:
-                        volunteers = BlApi.Factory.Get().Volunteer.ReadAll(true, VolunteerInListField.Active).Where(v => v.Active);
-                        break;
-                case VolunteerInListField.CurrentCallType:
-                    volunteers = BlApi.Factory.Get().Volunteer.ReadAll(true, VolunteerInListField.CurrentCallType).OrderBy(v => v.CurrentCallType);
-                    break;
-                case VolunteerInListField.None:  // No filter (default)
-                        volunteers = BlApi.Factory.Get().Volunteer.ReadAll(null, null);
-                        break;
-                    default:
-                        volunteers = BlApi.Factory.Get().Volunteer.ReadAll(null, null);
-                        break;
+                    // If list is filtered, reset filter and show the full list
+                    VolunteerInList = s_bl?.Volunteer.ReadAll(null, VolunteerSort)!;
+                    isFiltered = false;
+                    ((Button)sender).Content = "Filter active volunteer";
                 }
-
-                return volunteers;
-            }
-
-            // INotifyPropertyChanged implementation
-            public event PropertyChangedEventHandler? PropertyChanged;
-
-            protected virtual void OnPropertyChanged(string propertyName)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-
-            // Add Volunteer button click event
-            private void AddVolunteerButton_Click(object sender, RoutedEventArgs e)
-            {
-                new VolunteerWindow.VolunteerWindow().Show();
-            }
-
-            // Double-click on volunteer list to view details
-            private void lsvVolunteerList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-            {
-                if (SelectedVolunteer != null)
-                    new VolunteerWindow.VolunteerWindow(SelectedVolunteer.Id).Show();
-            }
-
-            // Delete Volunteer by ID
-            private void DeleteVolunteer(int volunteerId)
-            {
-                try
+                else
                 {
-                    var bl = BlApi.Factory.Get().Volunteer;
-                    bl.DeleteVolunteer(volunteerId); // Delete the volunteer
-                    UpdateVolunteerList();  // Refresh the list
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"An error occurred while deleting the volunteer: {ex.Message}",
-                                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    // If list is not filtered, filter for active volunteers
+                    VolunteerInList = s_bl?.Volunteer.ReadAll(true, VolunteerSort)!;
+                    isFiltered = true;
+                    ((Button)sender).Content = "Show all volunteers";
                 }
             }
-
-            // Delete button click event
-            private void DeleteButton_Click(object sender, RoutedEventArgs e)
+            catch (Exception ex)
             {
-                if (sender is Button button && button.Tag is int volunteerId)
-                {
-                    var result = MessageBox.Show("Are you sure you want to delete this volunteer?",
-                        "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        DeleteVolunteer(volunteerId); // Call the delete method
-                    }
-                }
+                MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
+        }
 
-            private void Window_Loaded(object sender, RoutedEventArgs e)
-            {
-                BlApi.Factory.Get().Volunteer.AddObserver(volunteerListObserver);
-            }
-
-            private void Window_Closed(object sender, EventArgs e)
-            {
-                BlApi.Factory.Get().Volunteer.RemoveObserver(volunteerListObserver);
-            }
-
-            // Observer method to refresh volunteer list
-            private void volunteerListObserver()
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    UpdateVolunteerList();  // Refresh the volunteer list when notified of changes
-                });
-            }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+
             if (_previousWindow != null)
             {
                 _previousWindow.Show(); // Show the previous window
@@ -191,6 +205,50 @@
                 MessageBox.Show("Previous window is null!");
             }
         }
+    }
+}
+//}
+//    /// <summary>
+//    /// Interaction logic for VolunteerListWindow.xaml
+//    /// </summary>
+//    public partial class VolunteerListWindow : Window
+//    {
+//        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-    }
-    }
+//        public IEnumerable<BO.VolunteerInList> VolunteerList
+//        {
+//            get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolunteerListProperty); }
+//            set { SetValue(VolunteerListProperty, value); }
+//        }
+
+//        public static readonly DependencyProperty VolunteerListProperty =
+//        DependencyProperty.Register("VolunteerList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerListWindow), new PropertyMetadata(null));
+
+//        public BO.VolunteerInList? SelectedVolunteer { get; set; }
+
+//        public BO.EVolunteerInList VolunteerInList { get; set; } = BO.EVolunteerInList.Id;
+//        public int Id { get; set; }
+//        public VolunteerListWindow(int bossdId)
+//        {
+//            Id = bossdId;
+//            InitializeComponent();
+//        }
+
+//        private void VolunteerSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+//        { QueryVolunteerList(); }
+
+//        private void VolunteerFilter(object sender, SelectionChangedEventArgs e)
+//        {
+//            VolunteerInList = (BO.EVolunteerInList)(((ComboBox)sender).SelectedItem);
+//            VolunteerList = s_bl?.Volunteers.GetVolunteerList(null, VolunteerInList)!;
+//        }
+
+//        private void QueryVolunteerList()
+//        => VolunteerList = (VolunteerInList == BO.EVolunteerInList.Id) ?
+//        s_bl?.Volunteers.GetVolunteerList(null, null)! : s_bl?.Volunteers.GetVolunteerList(null, VolunteerInList)!;
+
+ 
+   
+//    }
+//}
+

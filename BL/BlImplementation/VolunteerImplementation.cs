@@ -1,12 +1,11 @@
 ﻿namespace BlImplementation;
 using BlApi;
 using BO;
-using DalApi;
-using DO;
+
 using Helpers;
 using System.Collections.Generic;
 
-internal class VolunteerImplementation : BlApi.IVolunteer
+internal class VolunteerImplementation : IVolunteer
 {
     #region Stage 5
     public void AddObserver(Action listObserver) =>
@@ -32,9 +31,7 @@ internal class VolunteerImplementation : BlApi.IVolunteer
 
         return (BO.Role)volunteer.Job; // Return volunteer's role
     }
-
-    // Retrieves a filtered and sorted list of volunteers
-    public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField = null)
+    public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField = null, CallType? callType = null)
     {
         IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll()
             ?? throw new BO.BlNullPropertyException("No volunteers in the database");
@@ -43,11 +40,18 @@ internal class VolunteerImplementation : BlApi.IVolunteer
         var boVolunteersInList = volunteers
             .Select(VolunteerManager.ConvertDOToBOInList);
 
-        // Apply filter and sorting if specified
+        // Apply filter for active status if specified
         var filteredVolunteers = isActive.HasValue
             ? boVolunteersInList.Where(v => v.Active == isActive)
             : boVolunteersInList;
 
+        // Apply filter for call type if specified
+        if (callType.HasValue && callType != CallType.None)
+        {
+            filteredVolunteers = filteredVolunteers.Where(v => v.CurrentCallType == callType);
+        }
+
+        // Apply sorting if specified
         var sortedVolunteers = sortField.HasValue
             ? filteredVolunteers.OrderBy(v => sortField switch
             {
@@ -65,6 +69,39 @@ internal class VolunteerImplementation : BlApi.IVolunteer
 
         return sortedVolunteers;
     }
+
+    // Retrieves a filtered and sorted list of volunteers
+    //public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField = null)
+    //{
+    //    IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll()
+    //        ?? throw new BO.BlNullPropertyException("No volunteers in the database");
+
+    //    // Convert DO.Volunteer to BO.VolunteerInList
+    //    var boVolunteersInList = volunteers
+    //        .Select(VolunteerManager.ConvertDOToBOInList);
+
+    //    // Apply filter and sorting if specified
+    //    var filteredVolunteers = isActive.HasValue
+    //        ? boVolunteersInList.Where(v => v.Active == isActive)
+    //        : boVolunteersInList;
+
+    //    var sortedVolunteers = sortField.HasValue
+    //        ? filteredVolunteers.OrderBy(v => sortField switch
+    //        {
+    //            BO.VolunteerInListField.Id => (object)v.Id,
+    //            BO.VolunteerInListField.FullName => v.FullName,
+    //            BO.VolunteerInListField.Active => v.Active,
+    //            BO.VolunteerInListField.TotalCallsHandled => v.TotalCallsHandled,
+    //            BO.VolunteerInListField.TotalCallsCanceled => v.TotalCallsCanceled,
+    //            BO.VolunteerInListField.TotalCallsExpired => v.TotalCallsExpired,
+    //            BO.VolunteerInListField.CurrentCallId => v.CurrentCallId ?? 0,
+    //            BO.VolunteerInListField.CurrentCallType => v.CurrentCallType.ToString(),
+    //            _ => v.Id
+    //        })
+    //        : filteredVolunteers.OrderBy(v => v.Id); // Default sort by ID
+
+    //    return sortedVolunteers;
+    //}
 
     // Retrieves detailed information about a specific volunteer
     public BO.Volunteer Read(int volunteerId)

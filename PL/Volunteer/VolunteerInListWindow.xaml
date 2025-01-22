@@ -29,21 +29,47 @@ VerticalAlignment="Top" Margin="675,490,0,0" Grid.Row="1" RenderTransformOrigin=
         <!-- Internal, Upper Grid -->
         <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="57*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="27*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="24*"/>
+                <ColumnDefinition Width="0*"/>
+                <ColumnDefinition Width="0*"/>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0*"/>
+                <ColumnDefinition Width="12*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Content="Filter By:" Grid.Column="0" 
-                   HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Center"/>
+            <Label Content="Sort By:" Grid.Column="0" 
+                   HorizontalAlignment="Left" Margin="60,9,0,0" VerticalAlignment="Top"/>
 
             <!-- ComboBox with binding to Enum values for filtering -->
-            <ComboBox VerticalAlignment="Center" 
-                      Margin="190,0,140,0" 
-                      Grid.ColumnSpan="2" 
-                      ItemsSource="{Binding Source={StaticResource VolunteerInListFieldCollectionKey}}"
-                      HorizontalAlignment="Stretch" 
-                      SelectedValue="{Binding Path=VolunteerInListField, Mode=TwoWay}"
-                      SelectionChanged="OnFilterSelectionChanged" />
+            <ComboBox VerticalAlignment="Top" 
+                      Margin="125,12,0,0" 
+                      ItemsSource="{Binding Source={StaticResource VolunteerInListFieldCollectionKey}}" 
+SelectedValue="{Binding Path=VolunteerSort, Mode=TwoWay}" 
+SelectionChanged="Volunteer_Sort" HorizontalAlignment="Left" Width="170" Height="25" Grid.ColumnSpan="3" />
+            <Label Content="Filter By:" 
+       Grid.Column="4" 
+       HorizontalAlignment="Left" 
+       Margin="0,14,0,0" 
+       VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+
+            <!-- ComboBox for filtering  -->
+            <ComboBox VerticalAlignment="Top" 
+          Margin="15,14,0,0" 
+          ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" 
+SelectedValue="{Binding Path=VolunteerFilter, Mode=TwoWay}"
+SelectionChanged="Volunteer_Filter" Height="25" Grid.ColumnSpan="3" Grid.Column="5" />
+
         </Grid>
 
         <ListView Grid.Row="1" Margin="20,10,20,10" FontFamily="Times New Roman" ItemsSource="{Binding Path=VolunteerInList}" SelectedItem="{Binding SelectedVolunteer}"
@@ -91,8 +117,6 @@ VerticalAlignment="Top" Margin="675,490,0,0" Grid.Row="1" RenderTransformOrigin=
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-
-
 
                     <GridViewColumn Header="Total Calls Handled" DisplayMemberBinding="{Binding TotalCallsHandled}">
                         <GridViewColumn.HeaderTemplate>
