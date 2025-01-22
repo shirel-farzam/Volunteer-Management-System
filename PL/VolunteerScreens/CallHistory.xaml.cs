@@ -41,19 +41,18 @@ namespace PL.VolunteerScreens
             queryClosedCallList();
         }
 
-        // מימוש סינון הקריאות לפי סוג הקריאה
+        // Filter
         private void Call_Filter(object sender, SelectionChangedEventArgs e)
         {
-            // מבצע עדכון של משתנה פילטר הקריאות
+            // Update Filter
             ClosedCallInList = (BO.ClosedCallInListField)(((ComboBox)sender).SelectedItem);
-            // שולף את הקריאות המבוקשות לפי הפילטרים שנבחרו
+            
             queryClosedCallList();
         }
 
-        // מתודה לשליפת הקריאות לפי הפילטרים שנבחרו
         private void queryClosedCallList()
         {
-            // שליפת הקריאות לפי המתודות של ה-API הפנימי
+           
             ClosedCallList = s_bl?.Call.GetClosedCallsByVolunteer(IdVolunteer, TypeCallInList, ClosedCallInList) ?? Enumerable.Empty<BO.ClosedCallInList>();
             if (ClosedCallList.Any())
             {
