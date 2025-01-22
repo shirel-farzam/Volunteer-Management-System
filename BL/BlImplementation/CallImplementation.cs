@@ -133,20 +133,26 @@ internal class CallImplementation : ICall
     {
         try
         {
-            // Check if the call can be deleted (only calls with "Open" status can be deleted)
-            if (Read(callId).Status == BO.CallStatus.Open)
+            // Try to fetch the call and check its status
+            var call = Read(callId);
+            if (call.Status != BO.CallStatus.Open)
             {
-                _dal.Call.Delete(callId); // Delete the call from the data layer
-                CallManager.Observers.NotifyListUpdated(); //stage 5   
-                return;
+                throw new BO.BlDeleteNotPossibleException($"Call with ID={callId} cannot be deleted because its status is '{call.Status}' and not 'Open'.");
             }
-            // Throw exception if the call cannot be deleted
-            throw new BO.BlDeleteNotPossibleException($"Call with id={callId} cannot be deleted");
+
+            // Delete the call
+            _dal.Call.Delete(callId);
+            CallManager.Observers.NotifyListUpdated(); // Notify observers
         }
-        catch (DO.DalAlreadyExistsException ex)
+        catch (DO.DalDoesNotExistException ex) // Correct exception name
         {
-            // Handle the case where the call does not exist in the data layer
-            throw new BO.BlDoesNotExistException($"Call with id={callId} does not exist");
+            // Handle case where the call does not exist in the data layer
+            throw new BO.BlDoesNotExistException($"Call with ID={callId} does not exist.", ex);
+        }
+        catch (Exception ex)
+        {
+            // General exception handling for unexpected cases
+            throw new BO.BLException("An error occurred while trying to delete the call.", ex);
         }
     }
 
@@ -452,74 +458,7 @@ internal class CallImplementation : ICall
         // Return the filtered and sorted list of calls.
         return boCallsInList;
     }
-    //public IEnumerable<BO.OpenCallInList> GetOpenCall(int id, BO.CallType? type, BO.OpenCallInList? sortBy)
-    //{
-    //    if (type == BO.CallType.None)
-    //        type = null;
-    //    DO.Volunteer volunteer = _dal.Volunteer.Read(id);
-    //    if (volunteer == null)
-    //        throw new BO.BlDoesNotExistException($"Volunteer with ID={id} does not exist");
-
-    //    // Retrieve all calls from the BO
-    //    IEnumerable<BO.CallInList> allCalls = GetCallInLists(null, null, null);
-
-    //    // Retrieve all assignments from the DAL
-    //    var calls = _dal.Call.ReadAll();
-    //    double lonVol = (double)volunteer.Longitude;
-    //    double latVol = (double)volunteer.Latitude;
-
-    //    // Filter for only "Open" or "Risk Open" status
-    //    IEnumerable<BO.OpenCallInList> filteredCalls = from call in allCalls
-    //                                                   where (call.Status == BO.CallStatus.Open || call.Status == BO.CallStatus.OpenRisk)
-    //                                                   let boCall = Read(call.CallId)
-    //                                                   select new BO.OpenCallInList
-    //                                                   {
-    //                                                       Id = call.CallId,
-    //                                                       CallType = call.Type,
-    //                                                       Description = boCall.Description,
-    //                                                       FullAddress = boCall.FullAddress,
-    //                                                       OpeningTime = call.OpeningTime,
-    //                                                       MaxCompletionTime = boCall.MaxEndTime,
-    //                                                       Status = boCall.Status,
-    //                                                       DistanceFromVolunteer = volunteer?.FullAddress != null ?
-    //                                                      VolunteerManager.CalculateDistance(latVol, lonVol, (double)boCall.Latitude, (double)boCall.Longitude)/* : 0*/  // Calculate the distance between the volunteer and the call
-
-
-    //                                                  };
-    //    filteredCalls = from call in filteredCalls
-    //                    where (volunteer.MaxReading == null || volunteer.MaxReading > call.DistanceFromVolunteer)
-    //                    select call;
-
-
-    //    // Filter by call type if provided
-    //    if (type.HasValue)
-    //    {
-    //        filteredCalls = filteredCalls.Where(c => c.CallType == type.Value);
-    //    }
-
-    //    // Sort by the requested field or by default (call ID)
-    //    if (sortBy.HasValue)
-    //    {
-    //        filteredCalls = sortBy.Value switch
-    //        {
-    //            BO.OpenCallInListField.Id => filteredCalls.OrderBy(c => c.Id),
-    //            BO.OpenCallInListField.CallType => filteredCalls.OrderBy(c => c.CallType),
-    //            //BO.EOpenCallInList.Description => filteredCalls.OrderBy(c => c.Description),
-    //            BO.OpenCallInListField.FullAddress => filteredCalls.OrderBy(c => c.FullAddress),
-    //            BO.OpenCallInListField.OpeningTime => filteredCalls.OrderBy(c => c.OpeningTime),
-    //            BO.OpenCallInListField.MaxCompletionTime => filteredCalls.OrderBy(c => c.MaxCompletionTime),
-    //            BO.OpenCallInListField.DistanceFromVolunteer => filteredCalls.OrderBy(c => c.DistanceFromVolunteer),
-
-    //            _ => filteredCalls.OrderBy(c => c.Id)
-    //        };
-    //    }
-    //    else
-    //    {
-    //        filteredCalls = filteredCalls.OrderBy(c => c.Id);
-    //    }
-
-    //    return filteredCalls;
-    //}
+   
     //public IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int volunteerId, BO.CallType? type = null, BO.ClosedCallInListField? sortField = null)
     //{
 

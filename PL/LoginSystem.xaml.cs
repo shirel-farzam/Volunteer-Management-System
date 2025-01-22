@@ -14,7 +14,8 @@ namespace PL
     public partial class LoginSystem : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-       
+        private static bool _isAdminLoggedIn = false;
+
         public Role role { get; set; }
         public int Id
         {
@@ -83,8 +84,10 @@ namespace PL
 
         public LoginSystem()
         {
+           
             InitializeComponent();
-            DataContext = this;
+                DataContext = this;
+          
             
         }
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -100,10 +103,20 @@ namespace PL
                 }
                 else
                 {
-                    MessageBox.Show("Welcome, Admin!");
-                    new AdminTransition(Id,this).Show();
-                }
+                    //// בדיקה אם כבר יש מנהל מחובר
+                    //if (_isAdminLoggedIn)
+                    //{
+                    //    MessageBox.Show("An admin is already logged in. Only one admin can log in at a time.", "Login Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    //    return;
+                    //}
 
+                    // סימון מנהל כמחובר
+                    _isAdminLoggedIn = true;
+
+                    MessageBox.Show("Welcome, Admin!");
+                    new AdminTransition(Id, this).Show();
+                }
+        
             }
             catch (BO.BlNullPropertyException ex)
             {
@@ -139,7 +152,11 @@ namespace PL
             }
             isDayMode = !isDayMode;
         }
-
+        // שחרור מנהל בעת יציאה
+        //public static void ReleaseAdmin()
+        //{
+        //    _isAdminLoggedIn = false;
+        //}
         private DispatcherTimer _timer;
 
         private void ShowInstructions_Click(object sender, RoutedEventArgs e)

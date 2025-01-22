@@ -76,7 +76,7 @@
             Padding="10,5"
             Click="ShowInstructions_Click" 
             Grid.Column="2" 
-            Background="#2C476A"
+            Background="{DynamicResource Password}"
             Foreground="White"
             Margin="29,137,0,0" 
             

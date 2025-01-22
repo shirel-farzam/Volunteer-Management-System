@@ -30,8 +30,8 @@
             <local:InverseNullToVisibilityConverter x:Key="InverseNullToVisibilityConverter" />
             <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
             <local:CallStatusCollection x:Key="CallStatusCollectionKey" />
-            
 
+            
             <!-- Style for rounded buttons -->
             <Style TargetType="Button" x:Key="RoundedButtonStyle">
                 <Setter Property="Template">
@@ -76,6 +76,52 @@
                             </Grid>                        </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+            </Style>
+            <!--Trigger color of button-->
+            <Style TargetType="Button" x:Key="ButtonHoverStyle" BasedOn="{StaticResource RoundedButtonStyle}">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource ButtonHover}" />
+                        <Setter Property="BorderBrush" Value="{StaticResource ButtonPressed}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+             
+            <!-- Data Trigger: Change Text Color based on a specific condition -->
+            <Style TargetType="TextBlock" x:Key="DataTriggerStyle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=SomeProperty}" Value="True">
+                        <Setter Property="Foreground" Value="{StaticResource DarkBlue}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+
+            <!-- Event Trigger: Button click animation -->
+            <Style x:Key="ButtonClickAnimationStyle" TargetType="Button">
+                <Style.Triggers>
+                    <EventTrigger RoutedEvent="Button.Click">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0.5" Duration="0:0:0.3" AutoReverse="True" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <!-- MultiTrigger: Change TextBlock properties when multiple conditions are met -->
+            <Style TargetType="Label" x:Key="MultiTriggerStyle">
+                <Style.Triggers>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsMouseOver" Value="True" />
+                            <Condition Property="IsEnabled" Value="True" />
+                        </MultiTrigger.Conditions>
+                        <Setter Property="Foreground" Value="{StaticResource ButtonBackground}" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                    </MultiTrigger>
+                </Style.Triggers>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

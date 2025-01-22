@@ -87,4 +87,6 @@ public interface ICall  : IObservable
     /// <param name="volunteerId">The ID of the volunteer to whom the call is being assigned.</param>
     /// <param name="callId">The ID of the call being assigned to the volunteer.</param>
     public void ChooseCallForTreat(int volunteerId, int callId);
+
+    //public bool CanDelete(int callId);
 }

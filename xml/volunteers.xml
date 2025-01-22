@@ -224,4 +224,18 @@
     <Longitude>34.7668511</Longitude>
     <MaxReading>50</MaxReading>
   </Volunteer>
+  <Volunteer>
+    <Id>337336366</Id>
+    <FullName>Adi Benisty</FullName>
+    <PhoneNumber>0544969446</PhoneNumber>
+    <Email>Adi@gmail.com</Email>
+    <TypeDistance>Aerial</TypeDistance>
+    <Job>Manager</Job>
+    <Active>true</Active>
+    <Password>Adi1234</Password>
+    <FullAddress>Ein Gedi 40, Beer Sheva, Israel</FullAddress>
+    <Latitude>31.4523959</Latitude>
+    <Longitude>35.3848241</Longitude>
+    <MaxReading>35</MaxReading>
+  </Volunteer>
 </ArrayOfVolunteer>

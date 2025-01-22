@@ -536,4 +536,12 @@
     <TimeEnd>2025-01-22T13:30:18</TimeEnd>
     <TypeEndTreat>ExpiredCancel</TypeEndTreat>
   </Assignment>
+  <Assignment>
+    <Id>1067</Id>
+    <CallId>1044</CallId>
+    <VolunteerId>326047701</VolunteerId>
+    <TimeStart>2025-01-22T18:45:23</TimeStart>
+    <TimeEnd xsi:nil="true" />
+    <TypeEndTreat xsi:nil="true" />
+  </Assignment>
 </ArrayOfAssignment>

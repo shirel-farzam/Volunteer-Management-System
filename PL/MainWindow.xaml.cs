@@ -26,6 +26,7 @@ namespace PL
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         private Window _previousWindow; // Variable to store a reference to the previous window
         public int Id { get; set; }
+       // public static int OpenWindowCount { get; private set; } = 0;
 
         public MainWindow(int Manegr,Window previousWindow)
         {
@@ -34,6 +35,14 @@ namespace PL
             _previousWindow = previousWindow;
             Id = Manegr;
             DataContext = this;
+            //OpenWindowCount++; // העלאת המונה כאשר החלון נפתח
+            //if (OpenWindowCount != 0)
+            //{
+            //    MessageBox.Show("A manager window is already open. Only one instance is allowed.",
+            //                    "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //    throw new InvalidOperationException("Cannot open another manager window.");
+            //}
+
 
         }
 
@@ -189,9 +198,9 @@ namespace PL
         {
             MaxRange = s_bl.Admin.GetMaxRange();
         }
-
         private void Window_Closed(object sender, EventArgs e)
         {
+           // OpenWindowCount--; // הפחתת המונה כאשר החלון נסגר
             s_bl.Admin.RemoveClockObserver(clockObserver);
             s_bl.Admin.RemoveConfigObserver(configObserver);
 

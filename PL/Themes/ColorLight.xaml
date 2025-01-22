@@ -49,4 +49,7 @@
     <SolidColorBrush x:Key="ButtonPressed" Color="#4682B4" />
     <SolidColorBrush x:Key="ButtonForeground" Color="#FFFFFF" />
     <SolidColorBrush x:Key="DarkBlue" Color="#00008B" />
+    <SolidColorBrush x:Key="RiskRange" Color="#A2D2DF" />
+    <SolidColorBrush x:Key="Simulator" Color="#4DA1A9" />
+    <SolidColorBrush x:Key="Password" Color="#2C476A" />
 </ResourceDictionary>
