@@ -1,4 +1,6 @@
-﻿namespace BlApi;
+﻿
+
+namespace BlApi;
 
 public interface ICall  : IObservable
 {
@@ -7,8 +9,9 @@ public interface ICall  : IObservable
     /// </summary>
     /// <returns>An array of integers representing the count of calls, possibly categorized.</returns>
     public int[] CountCall();
-
+  
     /// <summary>
+    /// 
     /// Retrieves a list of calls filtered and sorted based on provided parameters.
     /// </summary>
     /// <param name="filter">Optional filter field for calls (e.g., by call type, status, etc.).</param>

@@ -27,7 +27,7 @@
        Stretch="Uniform"
        HorizontalAlignment="Left"
        VerticalAlignment="Top" Margin="770,9,0,0" />
-        
+
         <!-- System Clock Section -->
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
@@ -81,7 +81,7 @@
             VerticalAlignment="Center">
                 <TextBox Text="{Binding MaxRange, Mode=TwoWay}"
                  FontSize="16"
-                 Style="{StaticResource DataTriggerStyle}"
+                
                  BorderBrush="Transparent"
                  Background="Transparent"
                  HorizontalContentAlignment="Center"
