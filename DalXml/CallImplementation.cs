@@ -3,6 +3,7 @@ using DalApi;
 using DO;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Implementation of the ICall interface for managing Call entities in the DAL.
@@ -13,6 +14,7 @@ internal class CallImplementation : ICall
     /// Creates a new Call entity and assigns it a unique ID.
     /// </summary>
     /// <param name="item">The Call entity to create.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Call item)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -28,6 +30,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="id">The ID of the Call to delete.</param>
     /// <exception cref="DalDoesNotExistException">Thrown if the Call with the specified ID does not exist.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -40,6 +43,7 @@ internal class CallImplementation : ICall
     /// <summary>
     /// Deletes all Call entities from the storage.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         XMLTools.SaveListToXMLSerializer(new List<Call>(), Config.s_calls_xml);
@@ -50,6 +54,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="filter">The filter function to apply.</param>
     /// <returns>The first Call entity matching the filter, or null if none are found.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Call? Read(Func<Call, bool> filter)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -61,6 +66,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="id">The ID of the Call to read.</param>
     /// <returns>The Call entity with the specified ID, or null if it does not exist.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Call? Read(int id)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -72,6 +78,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="filter">The optional filter function to apply.</param>
     /// <returns>A collection of all Call entities that match the filter, or all entities if no filter is provided.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);
@@ -83,6 +90,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="item">The updated Call entity.</param>
     /// <exception cref="DalDoesNotExistException">Thrown if the Call with the specified ID does not exist.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Call item)
     {
         List<Call> calls = XMLTools.LoadListFromXMLSerializer<Call>(Config.s_calls_xml);

@@ -1,6 +1,7 @@
 ﻿using Dal;
 using DalApi;
 using DO;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
 /// <summary>
@@ -13,6 +14,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="v">The XElement to convert.</param>
     /// <returns>A Volunteer object created from the XElement.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     static Volunteer GetVolunteer(XElement v)
     {
         Volunteer volunteer = new Volunteer
@@ -43,6 +45,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="item">The Volunteer entity to create.</param>
     /// <exception cref="DalAlreadyExistsException">Thrown if a Volunteer with the same ID already exists.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Volunteer item)
     {
         XElement volunteersRoot = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
@@ -59,6 +62,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="v">The Volunteer object to convert.</param>
     /// <returns>An XElement representing the Volunteer object.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     private static XElement CreateVolunteerElement(Volunteer v)
     {
         return new XElement("Volunteer",
@@ -82,6 +86,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="id">The ID of the Volunteer to delete.</param>
     /// <exception cref="DalDoesNotExistException">Thrown if the Volunteer with the specified ID does not exist.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         XElement volunteersRoot = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
@@ -97,6 +102,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <summary>
     /// Deletes all Volunteer entities.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         XElement volunteersRoot = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
@@ -109,6 +115,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="id">The ID of the Volunteer to read.</param>
     /// <returns>The Volunteer entity with the specified ID, or null if it does not exist.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Volunteer? Read(int id)
     {
         XElement? volunteerElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml)
@@ -123,6 +130,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="filter">The filter function to apply.</param>
     /// <returns>The first Volunteer entity that matches the filter, or null if none match.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Volunteer? Read(Func<Volunteer, bool> filter)
     {
         return XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml)
@@ -136,6 +144,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="filter">The optional filter function to apply.</param>
     /// <returns>An enumerable collection of Volunteer entities that match the filter, or all entities if no filter is provided.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null)
     {
         var volunteers = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml)
@@ -150,6 +159,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="item">The updated Volunteer entity.</param>
     /// <exception cref="DalDoesNotExistException">Thrown if the Volunteer with the specified ID does not exist.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Volunteer item)
     {
         XElement volunteersRoot = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);

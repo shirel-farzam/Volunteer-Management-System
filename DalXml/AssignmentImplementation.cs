@@ -4,6 +4,7 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Implementation of the IAssignment interface for managing Assignment entities in the DAL.
@@ -14,6 +15,7 @@ internal class AssignmentImplementation : IAssignment
     /// Creates a new Assignment entity and assigns it a unique ID.
     /// </summary>
     /// <param name="item">The Assignment entity to create.</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Assignment item)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -29,6 +31,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="id">The ID of the Assignment to delete.</param>
     /// <exception cref="DalDoesNotExistException">Thrown if the Assignment with the specified ID does not exist.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -41,6 +44,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Deletes all Assignment entities from the storage.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         XMLTools.SaveListToXMLSerializer(new List<Assignment>(), Config.s_assignments_xml);
@@ -51,6 +55,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="filter">The filter function to apply.</param>
     /// <returns>The first Assignment entity matching the filter, or null if none are found.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Assignment? Read(Func<Assignment, bool> filter)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -62,6 +67,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="id">The ID of the Assignment to read.</param>
     /// <returns>The Assignment entity with the specified ID, or null if it does not exist.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Assignment? Read(int id)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -73,6 +79,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="filter">The optional filter function to apply.</param>
     /// <returns>A collection of all Assignment entities that match the filter, or all entities if no filter is provided.</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -84,6 +91,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="item">The updated Assignment entity.</param>
     /// <exception cref="DalDoesNotExistException">Thrown if the Assignment with the specified ID does not exist.</exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Assignment item)
     {
         List<Assignment> assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);

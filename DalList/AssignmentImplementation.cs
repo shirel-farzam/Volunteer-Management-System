@@ -8,8 +8,8 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Creates a new assignment by generating a new ID and adding it to the data source.
     /// </summary>
-    /// 
-
+    
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Assignment item)
     {
         // Generate a new ID for the assignment
@@ -23,7 +23,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Deletes an assignment by its ID from the data source.
     /// </summary>
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         // Find the assignment by its ID
@@ -38,6 +38,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Deletes all assignments from the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         // Clear the entire list of assignments
@@ -47,6 +48,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Retrieves an assignment by its ID.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Assignment? Read(int id)
     {
         // Search for an assignment by ID
@@ -56,6 +58,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Retrieves the first assignment that matches the provided filter function.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Assignment? Read(Func<Assignment, bool> filter)
     {
         // Finds the first assignment that matches the filter function and returns it
@@ -65,6 +68,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Retrieves all assignments that match the provided filter function.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
     {
         // If no filter is provided, return all assignments
@@ -77,6 +81,7 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// Updates an existing assignment in the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Assignment item)
     {
         // Find the index of the assignment by its ID
