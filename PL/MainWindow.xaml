@@ -81,7 +81,7 @@
             VerticalAlignment="Center">
                 <TextBox Text="{Binding MaxRange, Mode=TwoWay}"
                  FontSize="16"
-                 Style="{StaticResource DataTriggerStyle}"
+                
                  BorderBrush="Transparent"
                  Background="Transparent"
                  HorizontalContentAlignment="Center"
