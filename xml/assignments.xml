@@ -541,6 +541,14 @@
     <CallId>1044</CallId>
     <VolunteerId>326047701</VolunteerId>
     <TimeStart>2025-01-22T18:45:23</TimeStart>
+    <TimeEnd>2025-01-23T10:53:27</TimeEnd>
+    <TypeEndTreat>Treated</TypeEndTreat>
+  </Assignment>
+  <Assignment>
+    <Id>1068</Id>
+    <CallId>1034</CallId>
+    <VolunteerId>326047701</VolunteerId>
+    <TimeStart>2025-01-23T10:53:27</TimeStart>
     <TimeEnd xsi:nil="true" />
     <TypeEndTreat xsi:nil="true" />
   </Assignment>

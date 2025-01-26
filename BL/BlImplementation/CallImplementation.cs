@@ -41,7 +41,8 @@ internal class CallImplementation : ICall
                 boCall.OpenTime,
                 boCall.MaxEndTime
                 );
-            _dal.Call.Create(doCall);
+            lock (AdminManager.BlMutex) // stage 7
+                _dal.Call.Create(doCall);
         }
         catch (DO.DalXMLFileLoadCreateException ex)
         {
@@ -95,8 +96,9 @@ internal class CallImplementation : ICall
     // Assigns a volunteer to treat a specific call and creates an assignment record.
     public void ChooseCallForTreat(int volunteerId, int callId)
     {
-        // Reads the volunteer from the data layer or throws an exception if not found
-        DO.Volunteer vol = _dal.Volunteer.Read(volunteerId)
+        DO.Volunteer vol;
+        lock (AdminManager.BlMutex) // stage 7
+            vol = _dal.Volunteer.Read(volunteerId)
                            ?? throw new BO.BlNullPropertyException($"There is no volunteer with this ID {volunteerId}");
 
         // Reads the call from the business logic or throws an exception if not found
@@ -120,7 +122,9 @@ internal class CallImplementation : ICall
 
         try
         {
-            _dal.Assignment.Create(assignmentToCreate); // Adds the assignment to the DAL
+            lock (AdminManager.BlMutex) {// stage 7
+                _dal.Assignment.Create(assignmentToCreate);
+        } // Adds the assignment to the DAL
             CallManager.Observers.NotifyListUpdated(); //stage 5
             CallManager.Observers.NotifyItemUpdated(volunteerId);
             //VolunteerManager.Observers.NotifyListUpdated();
@@ -145,7 +149,10 @@ internal class CallImplementation : ICall
             }
 
             // Delete the call
-            _dal.Call.Delete(callId);
+            lock (AdminManager.BlMutex)
+            { // stage 7
+                _dal.Call.Delete(callId);
+            }
             CallManager.Observers.NotifyListUpdated(); // Notify observers
         }
         catch (DO.DalDoesNotExistException ex) // Correct exception name
@@ -187,10 +194,11 @@ internal class CallImplementation : ICall
 
         try
         {
-            lock (AdminManager.BlMutex) //stage 7
-            {
-                // Fetching calls from the data layer
-                var doCalls = _dal.Call.ReadAll();
+            IEnumerable<DO.Call>? doCalls;
+            lock (AdminManager.BlMutex) { //stage 7
+                                          // Fetching calls from the data layer
+                doCalls = _dal.Call.ReadAll();
+            }
 
                 // Converting the calls from DO to BO using your function
                 var boCalls = doCalls.Select(doCall => CallManager.GetViewingCall(doCall.Id)).ToList();
@@ -213,7 +221,6 @@ internal class CallImplementation : ICall
                 quantities[6] = quantities.Take(6).Sum();
 
                 return quantities;
-            }
                 
         }
         catch (Exception ex)
@@ -229,11 +236,14 @@ internal class CallImplementation : ICall
 
         // Define a filter function to get assignments related to the specified call
         Func<DO.Assignment, bool> func = item => item.CallId == callId;
-        IEnumerable<DO.Assignment> dataOfAssignments = _dal.Assignment.ReadAll(func); // Fetch the related assignments
+        IEnumerable<DO.Assignment> dataOfAssignments;
+        lock (AdminManager.BlMutex) // stage 7
+            dataOfAssignments = _dal.Assignment.ReadAll(func); // Fetch the related assignments
 
         // Read the call from the data layer or throw an exception if not found
-
-        var doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does not exist");
+        DO.Call? doCall;
+        lock (AdminManager.BlMutex) // stage 7
+            doCall = _dal.Call.Read(callId) ?? throw new BO.BlDoesNotExistException($"Call with ID={callId} does not exist");
 
         // Map the data object (DO.Call) to a business object (BO.Call)
         return new BO.Call
@@ -580,8 +590,9 @@ internal class CallImplementation : ICall
 
     public IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteer(int volunteerId, BO.CallType? type = null, BO.OpenCallInListField? sortField = null)
     {
-        
-        var boVolunteer = _dal.Volunteer.Read(volunteerId);
+        DO.Volunteer boVolunteer;
+        lock (AdminManager.BlMutex) // stage 7
+            boVolunteer = _dal.Volunteer.Read(volunteerId);
         IEnumerable<DO.Call> previousCalls = _dal.Call.ReadAll(null);
         IEnumerable<BO.OpenCallInList>? openCallInLists = new List<BO.OpenCallInList>();
     
@@ -641,11 +652,11 @@ internal class CallImplementation : ICall
     public void UpdateTreatmentCancellation(int volunteerId, int assignmentId)
     {
         AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
-
+        DO.Assignment assigmnetToCancel;
         // עטיפת קריאות ה DAL ב lock
         lock (AdminManager.BlMutex) // stage 7
-        {
-            DO.Assignment assigmnetToCancel = _dal.Assignment.Read(assignmentId) ?? throw new BO.BlDeleteNotPossibleException("there is no assignment with this ID");
+        
+            assigmnetToCancel = _dal.Assignment.Read(assignmentId) ?? throw new BO.BlDeleteNotPossibleException("there is no assignment with this ID");
             bool ismanager = false;
 
             if (assigmnetToCancel.VolunteerId != volunteerId)
@@ -667,10 +678,12 @@ internal class CallImplementation : ICall
                 TimeEnd = AdminManager.Now,
                 TypeEndTreat = ismanager ? DO.TypeEnd.ManagerCancel : DO.TypeEnd.SelfCancel,
             };
-
+        lock (AdminManager.BlMutex)
+        {// stage 7
             // ביצוע העדכון ב DAL בתוך ה lock
             _dal.Assignment.Update(assigmnetToUP);
         }
+        
 
         // הוצאת ה Notifications מחוץ ל lock
         CallManager.Observers.NotifyItemUpdated(assignmentId);  //stage 5
@@ -680,10 +693,9 @@ internal class CallImplementation : ICall
     public void CancelTreat(int idVol, int idAssig)
     {
         AdminManager.ThrowOnSimulatorIsRunning();  // stage 7
-
+        DO.Assignment assigmnetToCancel;
         lock (AdminManager.BlMutex) // stage 7
-        {
-            DO.Assignment assigmnetToCancel = _dal.Assignment.Read(idAssig) ?? throw new BO.BlDeleteNotPossibleException("there is no assignment with this ID");
+            assigmnetToCancel = _dal.Assignment.Read(idAssig) ?? throw new BO.BlDeleteNotPossibleException("there is no assignment with this ID");
             bool ismanager = false;
 
             if (assigmnetToCancel.VolunteerId != idVol)
@@ -705,10 +717,12 @@ internal class CallImplementation : ICall
                 TimeEnd = AdminManager.Now,
                 TypeEndTreat = ismanager ? DO.TypeEnd.ManagerCancel : DO.TypeEnd.SelfCancel,
             };
-
+        lock (AdminManager.BlMutex)
+        {// stage 7
             // עדכון ה- Assignment ב- DAL בתוך ה- lock
             _dal.Assignment.Update(assigmnetToUP);
         }
+        
 
         // Notifications מחוץ ל- lock
         CallManager.Observers.NotifyItemUpdated(idAssig);  // stage 5
@@ -722,14 +736,14 @@ internal class CallImplementation : ICall
         AdminManager.ThrowOnSimulatorIsRunning();  // stage 7
 
         IEnumerable<BO.ClosedCallInList> filteredCalls;
-
+        IEnumerable<DO.Call> allCalls;
         lock (AdminManager.BlMutex) // stage 7
-        {
+        
             // Retrieve all calls from the DAL within the lock
-            var allCalls = _dal.Call.ReadAll();
-
+            allCalls = _dal.Call.ReadAll();
+       IEnumerable<DO.Assignment>? allAssignments;
             // Retrieve all assignments from the DAL within the lock
-            var allAssignments = _dal.Assignment.ReadAll();
+        allAssignments = _dal.Assignment.ReadAll();
 
             // Filter by volunteer ID and closed status (calls that have an end treatment type)
             filteredCalls = from call in allCalls
@@ -746,7 +760,7 @@ internal class CallImplementation : ICall
                                 CompletionTime = assignment.TimeEnd,
                                 CompletionType = (BO.AssignmentCompletionType)assignment.TypeEndTreat
                             };
-        }
+        
 
         // Filter by call type if provided
         if (type.HasValue)
@@ -780,10 +794,10 @@ internal class CallImplementation : ICall
     public void CloseTreat(int idVol, int idAssig)
     {
         AdminManager.ThrowOnSimulatorIsRunning();  // stage 7
-
+        DO.Assignment assigmnetToClose;
         lock (AdminManager.BlMutex) // stage 7
-        {
-            DO.Assignment assigmnetToClose = _dal.Assignment.Read(idAssig) ?? throw new BO.BlDeleteNotPossibleException("there is no assignment with this ID");
+        
+            assigmnetToClose = _dal.Assignment.Read(idAssig) ?? throw new BO.BlDeleteNotPossibleException("there is no assignment with this ID");
             if (assigmnetToClose.VolunteerId != idVol)
             {
                 throw new BO.BlWrongInputException("the volunteer is not treat in this assignment");
@@ -809,8 +823,7 @@ internal class CallImplementation : ICall
             {
                 throw new BO.BlDeleteNotPossibleException("cannot update in DO");
             }
-        }
-
+        
         // Notifications outside the lock
         CallManager.Observers.NotifyItemUpdated(idAssig);  // stage 5
         CallManager.Observers.NotifyListUpdated();  // stage 5
@@ -849,7 +862,8 @@ internal class CallImplementation : ICall
         try
         {
             // Update the call in the data layer.
-            _dal.Call.Update(doCall);
+            lock (AdminManager.BlMutex) // stage 7
+                _dal.Call.Update(doCall);
             CallManager.Observers.NotifyItemUpdated(doCall.Id);  //stage 5
             CallManager.Observers.NotifyListUpdated();  //stage 5
         }
@@ -861,4 +875,3 @@ internal class CallImplementation : ICall
     }
 
 }
-
