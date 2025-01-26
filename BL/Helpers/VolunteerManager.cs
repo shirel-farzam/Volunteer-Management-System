@@ -39,9 +39,9 @@ internal class VolunteerManager
 
     internal static BO.CallInProgress GetCallIn(DO.Volunteer doVolunteer)
     {
-        lock (AdminManager.BlMutex) // stage 7
         {
-            var calls = s_dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
+            lock (AdminManager.BlMutex) // stage 7
+                var calls = s_dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
             DO.Assignment? currentAssignment = calls.Find(ass => ass.TimeEnd == null);
             if (currentAssignment == null) return null;
 
