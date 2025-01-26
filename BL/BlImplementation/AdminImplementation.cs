@@ -61,7 +61,8 @@ internal class AdminImplementation : IAdmin
     public void Reset()
     {
         AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
-        _dal.ResetDB(); // Reset the database
+        lock (AdminManager.BlMutex) // stage 7  lock (AdminManager.BlMutex) // stage 7
+            _dal.ResetDB(); // Reset the database
         AdminManager.UpdateClock(AdminManager.Now); // Update the clock to the current time
         AdminManager.MaxRange = AdminManager.MaxRange;
 
