@@ -1,12 +1,14 @@
 ﻿namespace Dal;
 using DO;
 using DalApi;
+using System.Runtime.CompilerServices;
 
 internal class CallImplementation : ICall
 {
     /// <summary>
     /// Creates a new call by generating a new ID, adding it to the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Call item)
     {
         // Generate a new ID for the call
@@ -20,6 +22,7 @@ internal class CallImplementation : ICall
     /// <summary>
     /// Deletes a call by its ID from the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         // Find the call by its ID
@@ -34,6 +37,7 @@ internal class CallImplementation : ICall
     /// <summary>
     /// Deletes all calls from the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void DeleteAll()
     {
         // Clear the entire list of calls
@@ -43,6 +47,7 @@ internal class CallImplementation : ICall
     /// <summary>
     /// Retrieves a call by its ID.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Call? Read(int id)
     {
         // Find a call by its ID
@@ -52,6 +57,7 @@ internal class CallImplementation : ICall
     /// <summary>
     /// Retrieves the first call that matches the provided filter function.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Call? Read(Func<Call, bool> filter)
     {
         // Finds the first call that matches the filter function and returns it
@@ -61,6 +67,7 @@ internal class CallImplementation : ICall
     /// <summary>
     /// Retrieves all calls that match the provided filter function.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Call> ReadAll(Func<Call, bool>? filter = null)
     {
         // If no filter is provided, return all calls
@@ -73,6 +80,7 @@ internal class CallImplementation : ICall
     /// <summary>
     /// Updates an existing call in the data source.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Call item)
     {
         // Find the index of the call by its ID.

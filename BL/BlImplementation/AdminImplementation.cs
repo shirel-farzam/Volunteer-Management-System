@@ -20,21 +20,27 @@ internal class AdminImplementation : IAdmin
     }
 
     // Method to move the system clock forward by a specified time unit
-    public void ForwardClock(BO.TimeUnit unit) => AdminManager.UpdateClock(unit switch
+    public void ForwardClock(BO.TimeUnit unit)
     {
-        BO.TimeUnit.MINUTE => AdminManager.Now.AddMinutes(1), // Add one minute
-        BO.TimeUnit.HOUR => AdminManager.Now.AddHours(1), // Add one hour
-        BO.TimeUnit.DAY => AdminManager.Now.AddDays(1), // Add one day
-        BO.TimeUnit.MONTH => AdminManager.Now.AddMonths(1), // Add one month
-        BO.TimeUnit.YEAR => AdminManager.Now.AddYears(1), // Add one year
-        _ => DateTime.MinValue // Default value in case of an invalid unit
-    });
+        AdminManager.ThrowOnSimulatorIsRunning(); //stage 7
+
+        AdminManager.UpdateClock(unit switch
+        {
+            BO.TimeUnit.MINUTE => AdminManager.Now.AddMinutes(1), // Add one minute
+            BO.TimeUnit.HOUR => AdminManager.Now.AddHours(1), // Add one hour
+            BO.TimeUnit.DAY => AdminManager.Now.AddDays(1), // Add one day
+            BO.TimeUnit.MONTH => AdminManager.Now.AddMonths(1), // Add one month
+            BO.TimeUnit.YEAR => AdminManager.Now.AddYears(1), // Add one year
+            _ => DateTime.MinValue // Default value in case of an invalid unit
+        });
+    }
 
     // Method to get the current clock time
     public DateTime GetClock() => AdminManager.Now;
     // Method to retrieve the maximum allowed range for a configuration parameter
     public TimeSpan GetMaxRange()
     {
+
         return AdminManager.MaxRange;
         //  return _dal.Config.RiskRange;
     }
@@ -43,6 +49,7 @@ internal class AdminImplementation : IAdmin
     // Method to reinitialize the system
     public void initialization()
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         DalTest.Initialization.Do();
         AdminManager.UpdateClock(AdminManager.Now);
         AdminManager.MaxRange = AdminManager.MaxRange;
@@ -53,6 +60,7 @@ internal class AdminImplementation : IAdmin
     // Method to reset the system
     public void Reset()
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         _dal.ResetDB(); // Reset the database
         AdminManager.UpdateClock(AdminManager.Now); // Update the clock to the current time
         AdminManager.MaxRange = AdminManager.MaxRange;
@@ -78,5 +86,12 @@ internal class AdminImplementation : IAdmin
         AdminManager.ConfigUpdatedObservers -= configObserver;
 
     #endregion Stage 5
+    public void StartSimulator(int interval)  //stage 7
+    {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.Start(interval); //stage 7
+    }
+    public void StopSimulator()
+        => AdminManager.Stop(); //stage 7
 
 }

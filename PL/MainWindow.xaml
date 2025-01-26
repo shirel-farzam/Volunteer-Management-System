@@ -27,7 +27,7 @@
        Stretch="Uniform"
        HorizontalAlignment="Left"
        VerticalAlignment="Top" Margin="770,9,0,0" />
-        
+
         <!-- System Clock Section -->
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>

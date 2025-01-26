@@ -1,4 +1,6 @@
-﻿namespace Dal;
+﻿using System.Runtime.CompilerServices;
+
+namespace Dal;
 
 /// <summary>
 /// Static class for managing configuration settings and constants for the DAL layer.
@@ -30,7 +32,10 @@ internal static class Config
     /// </summary>
     internal static int NextCallId
     {
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextCallId");
+
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextCallId", value);
     }
 
@@ -39,7 +44,10 @@ internal static class Config
     /// </summary>
     internal static int NextAssignmentId
     {
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         get => XMLTools.GetAndIncreaseConfigIntVal(s_data_config_xml, "NextAssignmentID");
+
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         private set => XMLTools.SetConfigIntVal(s_data_config_xml, "NextAssignmentID", value);
     }
 
@@ -52,7 +60,10 @@ internal static class Config
     /// </summary>
     internal static DateTime Clock
     {
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         get => XMLTools.GetConfigDateVal(s_data_config_xml, "Clock");
+
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         set => XMLTools.SetConfigDateVal(s_data_config_xml, "Clock", value);
     }
 
@@ -61,13 +72,17 @@ internal static class Config
     /// </summary>
     internal static TimeSpan RiskRange
     {
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7
         get => XMLTools.GetConfigTimeSpanVal(s_data_config_xml, "RiskRange");
+        
+        [MethodImpl(MethodImplOptions.Synchronized)] //stage 7 
         set => XMLTools.SetConfigTimeSpanVal(s_data_config_xml, "RiskRange", value);
     }
 
     /// <summary>
     /// Resets the configuration to default values.
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     internal static void Reset()
     {
         // Reset IDs

@@ -93,5 +93,15 @@ namespace BO
         public BlWrongInputException(string message, Exception innerException)
                 : base(message, innerException) { }
     }
+    public class BLTemporaryNotAvailableException : Exception
+    {
+        // Constructor that takes a message describing the exception.
+        public BLTemporaryNotAvailableException(string? message) : base(message) { }
+
+        // Constructor that takes a message and an inner exception.
+        public BLTemporaryNotAvailableException(string message, Exception innerException)
+                : base(message, innerException) { }
+    }
+
 
 }
