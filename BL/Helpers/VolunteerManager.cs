@@ -40,12 +40,14 @@ internal class VolunteerManager
     internal static BO.CallInProgress GetCallIn(DO.Volunteer doVolunteer)
     {
         {
+            List<DO.Assignment>? calls;
             lock (AdminManager.BlMutex) // stage 7
-                var calls = s_dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
+                calls=s_dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
             DO.Assignment? currentAssignment = calls.Find(ass => ass.TimeEnd == null);
             if (currentAssignment == null) return null;
-
-            DO.Call? currentCall = s_dal.Call.Read(currentAssignment.CallId);
+            DO.Call? currentCall;
+            lock (AdminManager.BlMutex) // stage 7
+                currentCall=s_dal.Call.Read(currentAssignment.CallId);
             if (currentCall == null) return null;
 
             double[] coordinates = GetCoordinatesFromAddress(doVolunteer.FullAddress);
