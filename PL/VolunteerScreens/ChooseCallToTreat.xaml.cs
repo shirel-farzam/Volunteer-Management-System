@@ -66,8 +66,14 @@ namespace PL.VolunteerScreens
         // Event handler to filter the call list by the selected call type
         private void CallSelector_Filter(object sender, SelectionChangedEventArgs e)
         {
+
             QueryCallList();
+            //if (SelectedCall != null)
+            //{
+            //    MessageBox.Show(SelectedCall.Description, $"Description {SelectedCall.Id}", MessageBoxButton.OK);
+            //}
         }
+
 
         // Method to query the list of open calls based on selected filters
         private void QueryCallList()

@@ -209,14 +209,14 @@ internal static class AdminManager //stage 4
         //for example, Periodic students' updates:
         //Go through all students to update properties that are affected by the clock update
         //(students becomes not active after 5 years etc.)
-        if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
-            _periodicTask = Task.Run(() => VolunteerManager.PeriodicVolunteerUpdates(oldClock, newClock));
-                            //
+        //if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
+        //    _periodicTask = Task.Run(() => VolunteerManager.PeriodicVolunteerUpdates(oldClock, newClock));
+        //                    //
 
         //StudentManager.PeriodicStudentsUpdates(oldClock, newClock); //stage 4
-        if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
-            _periodicTask = Task.Run(() => VolunteerManager.PeriodicVolunteerUpdates(oldClock, newClock));
-        //etc ...
+        //if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
+        //    _periodicTask = Task.Run(() => VolunteerManager.PeriodicVolunteerUpdates(oldClock, newClock));
+        ////etc ...
 
         //Calling all the observers of clock update
         ClockUpdatedObservers?.Invoke(); //prepared for stage 5
@@ -286,8 +286,8 @@ internal static class AdminManager //stage 4
             //TO_DO:
             //Add calls here to any logic simulation that was required in stage 7
             //for example: course registration simulation
-            if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
-                _simulateTask = Task.Run(() => VolunteerManager.SimulateCallRegistrationAndGrade());
+            //if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
+            //    _simulateTask = Task.Run(() => VolunteerManager.SimulateCallRegistrationAndGrade());
 
             //etc...
 
