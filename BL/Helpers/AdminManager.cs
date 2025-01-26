@@ -124,12 +124,15 @@
 //}
 
 using System.Runtime.CompilerServices;
+using BO;
 
 namespace Helpers;
 
 /// <summary>
 /// Internal BL manager for all Application's Clock logic policies
 /// </summary>
+
+
 internal static class AdminManager //stage 4
 {
     #region Stage 4
@@ -145,9 +148,18 @@ internal static class AdminManager //stage 4
     /// <summary>
     /// Property for providing/setting current configuration variable value for any BL class that may need it
     /// </summary>
-    internal static int MaxRange
+    //    internal static int MaxRange
+    //    {
+    //        get => (int)s_dal.Config.RiskRange.TotalMinutes;
+    //        set
+    //        {
+    //s_dal.Config.RiskRange = TimeSpan.FromSeconds(value);
+    //            ConfigUpdatedObservers?.Invoke(); // stage 5
+    //        }
+    //    }
+    internal static TimeSpan MaxRange
     {
-        get => (int)s_dal.Config.RiskRange.TotalMinutes;
+        get => s_dal.Config.RiskRange;
         set
         {
             s_dal.Config.RiskRange = value;
@@ -197,6 +209,9 @@ internal static class AdminManager //stage 4
         //for example, Periodic students' updates:
         //Go through all students to update properties that are affected by the clock update
         //(students becomes not active after 5 years etc.)
+        if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7
+            _periodicTask = Task.Run(() => VolunteerManager.PeriodicVolunteerUpdates(oldClock, newClock));
+                            //
 
         //StudentManager.PeriodicStudentsUpdates(oldClock, newClock); //stage 4
         if (_periodicTask is null || _periodicTask.IsCompleted) //stage 7

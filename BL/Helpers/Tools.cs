@@ -45,7 +45,7 @@ internal static class Tools
         }
 
         // Validate the PhoneNumber field.
-        VolunteerManager.CheckPhonnumber(boVolunteer.PhoneNumber);
+        VolunteerManager.CheckPhoneNumber(boVolunteer.PhoneNumber);
 
 
         // Validate the Email field.
@@ -212,7 +212,6 @@ internal static class Tools
     public static BO.CallType CurrentCallType(int Id)
     {
 
-        // בדיקת האם יש קריאה בטיפול
         var assignment = _dal.Assignment.ReadAll()
             .FirstOrDefault(a => a.VolunteerId == Id && a.TypeEndTreat == null);
 
