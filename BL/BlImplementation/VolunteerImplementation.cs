@@ -33,29 +33,8 @@ internal class VolunteerImplementation : IVolunteer
     //}
     public BO.Role Login(int username, string password)
     {
-        try
-        {
             // Call the original implementation of Login
             return VolunteerManager.LoginInternal(username, password);
-        }
-        catch (BO.BlNullPropertyException ex)
-        {
-            // Handle case where the volunteer does not exist
-            Console.WriteLine($"Login failed: {ex.Message}");
-            throw; // Re-throw exception if necessary
-        }
-        catch (BO.BlWrongInputException ex)
-        {
-            // Handle case of incorrect password
-            Console.WriteLine($"Login failed: {ex.Message}");
-            throw; // Re-throw exception if necessary
-        }
-        catch (Exception ex)
-        {
-            // Handle unexpected exceptions
-            Console.WriteLine($"An unexpected error occurred: {ex.Message}");
-            throw; // Re-throw exception if necessary
-        }
     }
     //public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField = null, CallType? callType = null)
     //{
@@ -100,24 +79,9 @@ internal class VolunteerImplementation : IVolunteer
     //}
     public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField = null, CallType? callType = null)
     {
-        try
-        {
             // Call the internal implementation
             return VolunteerManager.ReadAllInternal(isActive, sortField, callType);
-        }
-        catch (BO.BlNullPropertyException ex)
-        {
-            // Handle the case of no volunteers in the database
-            Console.WriteLine($"Error: {ex.Message}");
-            throw; // Optionally re-throw the exception
-        }
-        catch (Exception ex)
-        {
-            // Handle unexpected exceptions
-            Console.WriteLine($"Unexpected error: {ex.Message}");
-            throw; // Optionally re-throw the exception
-
-        } }
+    }
     // Retrieves a filtered and sorted list of volunteers
     //public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField = null)
     //{
@@ -197,7 +161,7 @@ internal class VolunteerImplementation : IVolunteer
     //public void Update(int volunteerId, BO.Volunteer boVolunteer)
     //{
 
-    //        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7?
+    //    AdminManager.ThrowOnSimulatorIsRunning();  //stage 7?
     //    DO.Volunteer?  doVolunteer;
     //    lock (AdminManager.BlMutex)
     //        doVolunteer = _dal.Volunteer.Read(volunteerId)
@@ -250,29 +214,8 @@ internal class VolunteerImplementation : IVolunteer
     //    }
     public void Update(int volunteerId, BO.Volunteer boVolunteer)
     {
-        try
-        {
             // Call the internal implementation
             VolunteerManager.UpdateInternal(volunteerId, boVolunteer);
-        }
-        catch (BO.BlWrongInputException ex)
-        {
-            // Handle specific input errors
-            Console.WriteLine($"Input error: {ex.Message}");
-            throw; // Optionally re-throw the exception
-        }
-        catch (BO.BlAlreadyExistsException ex)
-        {
-            // Handle duplicate volunteer errors
-            Console.WriteLine($"Duplication error: {ex.Message}");
-            throw; // Optionally re-throw the exception
-        }
-        catch (Exception ex)
-        {
-            // Handle unexpected exceptions
-            Console.WriteLine($"Unexpected error: {ex.Message}");
-            throw; // Optionally re-throw the exception
-        }
     }
     // Deletes a volunteer if there are no active assignments
     //public void DeleteVolunteer(int volunteerId)
@@ -304,29 +247,8 @@ internal class VolunteerImplementation : IVolunteer
     // Adds a new volunteer with validations
     public void DeleteVolunteer(int volunteerId)
     {
-        try
-        {
             // Call the internal implementation
             VolunteerManager.DeleteVolunteerInternal(volunteerId);
-        }
-        catch (BO.BlWrongInputException ex)
-        {
-            // Handle specific input errors
-            Console.WriteLine($"Input error: {ex.Message}");
-            throw; // Optionally re-throw the exception
-        }
-        catch (BO.BlDeleteNotPossibleException ex)
-        {
-            // Handle deletion errors
-            Console.WriteLine($"Deletion error: {ex.Message}");
-            throw; // Optionally re-throw the exception
-        }
-        catch (Exception ex)
-        {
-            // Handle unexpected exceptions
-            Console.WriteLine($"Unexpected error: {ex.Message}");
-            throw; // Optionally re-throw the exception
-        }
     }
     //public void AddVolunteer(BO.Volunteer boVolunteer)
     //{
@@ -369,24 +291,8 @@ internal class VolunteerImplementation : IVolunteer
     //}
     public void AddVolunteer(BO.Volunteer boVolunteer)
     {
-        try
-        {
             // Call the internal implementation
             VolunteerManager.AddVolunteerInternal(boVolunteer);
-        }
-        catch (BO.BlAlreadyExistsException ex)
-        {
-            // Handle duplicate volunteer errors
-            Console.WriteLine($"Duplication error: {ex.Message}");
-            throw; // Optionally re-throw the exception
-        }
-        catch (Exception ex)
-        {
-            // Handle unexpected exceptions
-            Console.WriteLine($"Unexpected error: {ex.Message}");
-            throw; // Optionally re-throw the exception
-        }
     }
-
 
 }

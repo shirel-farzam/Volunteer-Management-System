@@ -20,22 +20,22 @@ internal class VolunteerManager
         lock (AdminManager.BlMutex) // stage 7
             calls = s_dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
 
-            int totalCallsHandled = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.Treated);
-            int totalCallsCanceled = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.SelfCancel);
-            int totalCallsExpired = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.ExpiredCancel);
-            int? currentCallId = calls.FirstOrDefault(ass => ass.TimeEnd == null)?.Id;
+        int totalCallsHandled = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.Treated);
+        int totalCallsCanceled = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.SelfCancel);
+        int totalCallsExpired = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.ExpiredCancel);
+        int? currentCallId = calls.FirstOrDefault(ass => ass.TimeEnd == null)?.Id;
 
-            return new BO.VolunteerInList
-            {
-                Id = doVolunteer.Id,
-                FullName = doVolunteer.FullName,
-                Active = doVolunteer.Active,
-                TotalCallsHandled = totalCallsHandled,
-                TotalCallsCanceled = totalCallsCanceled,
-                TotalCallsExpired = totalCallsExpired,
-                CurrentCallId = currentCallId
-            };
-        }
+        return new BO.VolunteerInList
+        {
+            Id = doVolunteer.Id,
+            FullName = doVolunteer.FullName,
+            Active = doVolunteer.Active,
+            TotalCallsHandled = totalCallsHandled,
+            TotalCallsCanceled = totalCallsCanceled,
+            TotalCallsExpired = totalCallsExpired,
+            CurrentCallId = currentCallId
+        };
+    }
 
 
     internal static BO.CallInProgress GetCallIn(DO.Volunteer doVolunteer)
@@ -43,12 +43,12 @@ internal class VolunteerManager
         {
             List<DO.Assignment>? calls;
             lock (AdminManager.BlMutex) // stage 7
-                calls=s_dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
+                calls = s_dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
             DO.Assignment? currentAssignment = calls.Find(ass => ass.TimeEnd == null);
             if (currentAssignment == null) return null;
             DO.Call? currentCall;
             lock (AdminManager.BlMutex) // stage 7
-                currentCall=s_dal.Call.Read(currentAssignment.CallId);
+                currentCall = s_dal.Call.Read(currentAssignment.CallId);
             if (currentCall == null) return null;
 
             double[] coordinates = GetCoordinatesFromAddress(doVolunteer.FullAddress);
@@ -261,36 +261,65 @@ internal class VolunteerManager
 
     internal static void SimulateVolunteerRegistrationAndGrade() //stage 7
     {
-        Task.Run(() =>
+
+        Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
+        // var volunteerlist = GetVolunteerListHelp(true, null).ToList();
+
+        //רשימת מתנדבים פעילים
+        List<BO.VolunteerInList> activeVolunteers;
+        lock (AdminManager.BlMutex)
+            activeVolunteers = ReadAllInternal(true, null, null).ToList();
+
+        Random random = new Random(); // יצירת מופע Random מחוץ ללולאה
+        foreach (var volunteer in activeVolunteers)
         {
-            try
+            bool hasUpdated = false;
+            // אם למתנדב אין קריאה בטיפולו
+            if (volunteer.CurrentCallId == null)
             {
-                //רשימת מתנדבים פעילים
-                List<BO.VolunteerInList> activeVolunteers;
-                lock (AdminManager.BlMutex)
-                activeVolunteers = ReadAllInternal(true, null, null) .ToList();
-                
-                Random random = new Random(); // יצירת מופע Random מחוץ ללולאה
-                foreach (var volunteer in activeVolunteers)
+                // הסתברות לבחירה רנדומלית של קריאה
+                if (random.Next(0, 100) < 20) // הסתברות של 20%
                 {
-                    bool hasUpdated = false;
-                    // אם למתנדב אין קריאה בטיפולו
-                    if (volunteer.CurrentCallId == null)
+                    var ChooseOpenCallInList = CallManager.GetOpenCallsForVolunteerInternal(volunteer.Id, null, null).ToList();
+
+                    if (ChooseOpenCallInList != null && ChooseOpenCallInList.Count > 0)
                     {
-                        // הסתברות לבחירה רנדומלית של קריאה
-                        if (random.Next(0, 100) < 20) // הסתברות של 20%
+                        //choose random call for volunteer
+                        var randomIndex = s_rand.Next(ChooseOpenCallInList.Count);
+                        var chosenCall = ChooseOpenCallInList[randomIndex];
+
+                        CallManager.ChooseCallForTreatInternal(volunteer.Id, chosenCall.Id);
+                    }
+                }
+
+                else if (volunteer.CurrentCallId != null)    //there is call in treat
+                {
+                    var callin = ReadInternal(volunteer.Id).CurrentCall!;
+                    if ((AdminManager.Now - callin.OpeningTime) >= TimeSpan.FromHours(3))
+                    {
+                        CallManager.ChooseCallForTreatInternal(volunteer.Id, callin.CallId);
+                    }
+                    else
+                    {
+                        int probability1 = s_rand.Next(1, 101); // מספר אקראי בין 1 ל-100
+
+                        if (probability1 <= 10) // הסתברות של 10%
                         {
-                            var ChooseOpenCallInList = CallManager.GetOpenCallHelp(volunteer.Id, null, null).ToList();
+                            // ביטול הטיפול
+                            CallManager.CancelTreatInternal(volunteer.Id, callin.Id);
+                        }
+                    }
+                }
 
-
-
-
+            }
+        }
     }
-    
     // Internal method for the original logic
     public static BO.Role LoginInternal(int username, string password)
     {
-        var volunteer = s_dal.Volunteer.Read(username)
+        DO.Volunteer volunteer;
+        lock (AdminManager.BlMutex) // stage 7
+             volunteer = s_dal.Volunteer.Read(username)
             ?? throw new BO.BlNullPropertyException("The volunteer does not exist");
         VolunteerManager.CheckPassword(password); // Validate password format
         if (volunteer.Password != password)
@@ -299,7 +328,7 @@ internal class VolunteerManager
         return (BO.Role)volunteer.Job; // Return volunteer's role
     }
     // The internal implementation of the ReadAll logic
-    public static IEnumerable<BO.VolunteerInList> ReadAllInternal(bool? isActive, BO.VolunteerInListField? sortField,BO. CallType? callType)
+    public static IEnumerable<BO.VolunteerInList> ReadAllInternal(bool? isActive, BO.VolunteerInListField? sortField, BO.CallType? callType)
     {
         IEnumerable<DO.Volunteer> volunteers;
         lock (AdminManager.BlMutex) // stage 7
@@ -381,21 +410,15 @@ internal class VolunteerManager
     // Internal implementation of the Update logic
     public static void UpdateInternal(int volunteerId, BO.Volunteer boVolunteer)
     {
-        AdminManager.ThrowOnSimulatorIsRunning(); // stage 7?
-
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7?
         DO.Volunteer? doVolunteer;
         lock (AdminManager.BlMutex)
-        {
             doVolunteer = s_dal.Volunteer.Read(volunteerId)
                 ?? throw new BO.BlWrongInputException($"Volunteer with ID={volunteerId} does not exist");
-        }
-
         DO.Volunteer? manager;
         lock (AdminManager.BlMutex)
-        {
             manager = s_dal.Volunteer.Read(boVolunteer.Id)
                 ?? throw new BO.BlWrongInputException($"Manager with ID={boVolunteer.Id} does not exist");
-        }
 
         if (manager.Job != DO.Role.Manager && volunteerId != boVolunteer.Id)
             throw new BO.BlWrongInputException("Only a manager can update details");
@@ -428,12 +451,10 @@ internal class VolunteerManager
         try
         {
             lock (AdminManager.BlMutex)
-            {
                 s_dal.Volunteer.Update(volunteerUpdate);
-            }
+            VolunteerManager.Observers.NotifyItemUpdated(volunteerUpdate.Id);  //stage 5
+            VolunteerManager.Observers.NotifyListUpdated();  //stage 5
 
-            VolunteerManager.Observers.NotifyItemUpdated(volunteerUpdate.Id); // stage 5
-            VolunteerManager.Observers.NotifyListUpdated(); // stage 5
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -447,11 +468,9 @@ internal class VolunteerManager
         DO.Volunteer? doVolunteer;
         IEnumerable<DO.Assignment> assignments;
 
-        AdminManager.ThrowOnSimulatorIsRunning(); // stage 7?
-
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7??
         lock (AdminManager.BlMutex) // stage 7
             doVolunteer = s_dal.Volunteer.Read(volunteerId);
-
         lock (AdminManager.BlMutex) // stage 7
             assignments = s_dal.Assignment.ReadAll(ass => ass.VolunteerId == volunteerId);
 
@@ -462,8 +481,7 @@ internal class VolunteerManager
         {
             lock (AdminManager.BlMutex) // stage 7
                 s_dal.Volunteer.Delete(volunteerId);
-
-            VolunteerManager.Observers.NotifyListUpdated(); // stage 5
+            VolunteerManager.Observers.NotifyListUpdated();  //stage 5
         }
         catch (DO.DalDeletionImpossible ex)
         {
@@ -471,13 +489,12 @@ internal class VolunteerManager
         }
     }
 
-    // Internal implementation of the AddVolunteer logic
+        // Internal implementation of the AddVolunteer logic
     public static void AddVolunteerInternal(BO.Volunteer boVolunteer)
-    {
+    {  
         lock (AdminManager.BlMutex) // stage 7
         {
-            AdminManager.ThrowOnSimulatorIsRunning(); // stage 7
-
+            AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
             var coordinates = VolunteerManager.GetCoordinatesFromAddress(boVolunteer.FullAddress);
             boVolunteer.Latitude = coordinates[0];
             boVolunteer.Longitude = coordinates[1];
@@ -504,8 +521,7 @@ internal class VolunteerManager
             {
                 lock (AdminManager.BlMutex) // stage 7
                     s_dal.Volunteer.Create(doVolunteer);
-
-                VolunteerManager.Observers.NotifyListUpdated(); // stage 5
+                VolunteerManager.Observers.NotifyListUpdated(); //stage 5
             }
             catch (DO.DalAlreadyExistsException ex)
             {

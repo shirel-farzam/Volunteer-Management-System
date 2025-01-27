@@ -15,7 +15,6 @@ internal static class CallManager
 {
     private static IDal _dal = DalApi.Factory.Get; //stage 4
     internal static ObserverManager Observers = new(); //stage 5 
-
     internal static void IsLogicCall(BO.Call boCall)
     {
         // Ensure MaxEndTime is greater than OpenTime.
@@ -37,7 +36,6 @@ internal static class CallManager
         }
         
     }
-
     internal static void IsValideCall(BO.Call boCall)
     {
 
@@ -161,7 +159,6 @@ internal static class CallManager
             return EarthRadiusKm * c;
         }
     }
-
     private static double DegreesToRadians(double degrees)
     {
         return degrees * (Math.PI / 180);
@@ -203,7 +200,6 @@ internal static class CallManager
         return BO.CallStatus.Closed; //default
 
     }
-
 
     public static BO.CallStatus GetCallStatus(DO.Call doCall)
     {
@@ -465,28 +461,28 @@ internal static class CallManager
     }
 
     // Convert 
-    public static DO.Call BOConvertDO_Call(BO.Call BOCall)
-    {
-        if (BOCall == null)
-        {
-            throw new ArgumentNullException(nameof(BOCall), "The provided BO.Call object cannot be null.");
-        }
+    //public static DO.Call BOConvertDO_Call(BO.Call BOCall)
+    //{
+    //    if (BOCall == null)
+    //    {
+    //        throw new ArgumentNullException(nameof(BOCall), "The provided BO.Call object cannot be null.");
+    //    }
 
-        // Convert BO.Call to DO.Call
-        var DOCall = new DO.Call
-        {
-            Id = BOCall.Id,
-            Type = (DO.CallType)Enum.Parse(typeof(DO.CallType), BOCall.Type.ToString()), // Use Enum.Parse if CallType is an Enum
-            Description = BOCall.Description,
-            FullAddress = BOCall.FullAddress,
-            Latitude = (BOCall.Latitude ?? 0), // Convert to 0 if Latitude is null
-            Longitude = (BOCall.Longitude ?? 0), // Convert to 0 if Longitude is null
-            TimeOpened = BOCall.OpenTime,
-            MaxTimeToClose = BOCall.MaxEndTime
-        };
+    //    // Convert BO.Call to DO.Call
+    //    var DOCall = new DO.Call
+    //    {
+    //        Id = BOCall.Id,
+    //        Type = (DO.CallType)Enum.Parse(typeof(DO.CallType), BOCall.Type.ToString()), // Use Enum.Parse if CallType is an Enum
+    //        Description = BOCall.Description,
+    //        FullAddress = BOCall.FullAddress,
+    //        Latitude = (BOCall.Latitude ?? 0), // Convert to 0 if Latitude is null
+    //        Longitude = (BOCall.Longitude ?? 0), // Convert to 0 if Longitude is null
+    //        TimeOpened = BOCall.OpenTime,
+    //        MaxTimeToClose = BOCall.MaxEndTime
+    //    };
 
-        return DOCall;
-    }
+    //    return DOCall;
+    //}
 
     public static TimeSpan? CalculateTimeRemaining(DateTime? maxEndTime)
     {
@@ -594,36 +590,36 @@ internal static class CallManager
 
     }
 
-    internal static BO.ClosedCallInList ConvertDOCallToBOCloseCallInList(DO.Call doCall, CallAssignmentInList lastAssignment)
-    {
-        return new BO.ClosedCallInList
-        {
-            Id = doCall.Id,
-            CallType = (BO.CallType)doCall.Type,
-            FullAddress = doCall.FullAddress,
-            OpeningTime = doCall.TimeOpened,
-            EntryTime = lastAssignment.StartTime,
-            CompletionTime = lastAssignment.EndTime,
-            CompletionType = lastAssignment.CompletionType
-        };
-    }
+    //internal static BO.ClosedCallInList ConvertDOCallToBOCloseCallInList(DO.Call doCall, CallAssignmentInList lastAssignment)
+    //{
+    //    return new BO.ClosedCallInList
+    //    {
+    //        Id = doCall.Id,
+    //        CallType = (BO.CallType)doCall.Type,
+    //        FullAddress = doCall.FullAddress,
+    //        OpeningTime = doCall.TimeOpened,
+    //        EntryTime = lastAssignment.StartTime,
+    //        CompletionTime = lastAssignment.EndTime,
+    //        CompletionType = lastAssignment.CompletionType
+    //    };
+    //}
 
-    internal static BO.OpenCallInList ConvertDOCallToBOOpenCallInList(DO.Call doCall, int id)
-    {
-        var vol = _dal.Volunteer.Read(id);
-        double idLat = vol.Latitude ?? 0;
-        double idLon = vol.Longitude ?? 0;
-        return new BO.OpenCallInList
-        {
-            Id = doCall.Id,
-            CallType = (BO.CallType)doCall.Type,
-            Description = doCall.Description,
-            FullAddress = doCall.FullAddress,
-            OpeningTime = doCall.TimeOpened,
-            MaxCompletionTime = doCall.MaxTimeToClose,
-            DistanceFromVolunteer = VolunteerManager.CalculateDistance(doCall.Latitude, doCall.Longitude, idLat, idLon),
-        };
-    }
+    //internal static BO.OpenCallInList ConvertDOCallToBOOpenCallInList(DO.Call doCall, int id)
+    //{
+    //    var vol = _dal.Volunteer.Read(id);
+    //    double idLat = vol.Latitude ?? 0;
+    //    double idLon = vol.Longitude ?? 0;
+    //    return new BO.OpenCallInList
+    //    {
+    //        Id = doCall.Id,
+    //        CallType = (BO.CallType)doCall.Type,
+    //        Description = doCall.Description,
+    //        FullAddress = doCall.FullAddress,
+    //        OpeningTime = doCall.TimeOpened,
+    //        MaxCompletionTime = doCall.MaxTimeToClose,
+    //        DistanceFromVolunteer = VolunteerManager.CalculateDistance(doCall.Latitude, doCall.Longitude, idLat, idLon),
+    //    };
+    //}
 
     public static bool IsInRisk(DO.Call call)
     {
@@ -897,6 +893,65 @@ internal static class CallManager
         CallManager.Observers.NotifyItemUpdated(assignmentId); // Notify item update (stage 5)
         CallManager.Observers.NotifyListUpdated(); // Notify list update (stage 5)
     }
+    public static IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteerInternal(int volunteerId, BO.CallType? type = null, BO.OpenCallInListField? sortField = null)
+    {
+        DO.Volunteer boVolunteer;
+        lock (AdminManager.BlMutex) // stage 7
+            boVolunteer = _dal.Volunteer.Read(volunteerId);
+        IEnumerable<DO.Call> previousCalls = _dal.Call.ReadAll(null);
+        IEnumerable<BO.OpenCallInList>? openCallInLists = new List<BO.OpenCallInList>();
+
+        openCallInLists = from item in previousCalls
+                          let DataCall = ReadInternal(item.Id)
+                          where DataCall.Status == BO.CallStatus.Open || DataCall.Status == BO.CallStatus.OpenRisk
+                          //let lastAssugnment = DataCall.CallAssignments.OrderBy(c => c.StartTime).Last()
+                          select /*CallManager.ConvertDOCallToBOOpenCallInList(item, volunteerId);*/
+                                  new BO.OpenCallInList
+                                  {
+                                      Id = DataCall.Id,
+                                      CallType = (BO.CallType)DataCall.Type,
+                                      Description = DataCall.Description,
+                                      FullAddress = DataCall.FullAddress,
+                                      OpeningTime = DataCall.OpenTime,
+                                      MaxCompletionTime = DataCall.MaxEndTime,
+                                      DistanceFromVolunteer = VolunteerManager.CalculateDistance((double)DataCall.Latitude, (double)DataCall.Longitude, (double)boVolunteer.Latitude, (double)boVolunteer.Longitude)
+                                  };
+        ;
+
+        //openCallInLists = openCallInLists.Where(call => call.Id == volunteerId);
+        if (type != null)
+        {
+            openCallInLists.Where(c => c.CallType == type).Select(c => c);
+        }
+        if (sortField == null)
+        {
+            sortField = BO.OpenCallInListField.Id;
+        }
+        switch (sortField)
+        {
+            case BO.OpenCallInListField.Id:
+                openCallInLists.OrderBy(item => item.Id);
+                break;
+            case BO.OpenCallInListField.CallType:
+                openCallInLists.OrderBy(item => item.CallType);
+                break;
+            case BO.OpenCallInListField.FullAddress:
+                openCallInLists.OrderBy(item => item.FullAddress);
+                break;
+            case BO.OpenCallInListField.OpeningTime:
+                openCallInLists.OrderBy(item => item.OpeningTime);
+                break;
+            case BO.OpenCallInListField.MaxCompletionTime:
+                openCallInLists.OrderBy(item => item.MaxCompletionTime);
+                break;
+            case BO.OpenCallInListField.DistanceFromVolunteer:
+                openCallInLists.OrderBy(item => item.DistanceFromVolunteer);
+                break;
+
+        }
+
+        return openCallInLists;
+    }
     public static void CancelTreatInternal(int idVol, int idAssig)
     {
         DO.Assignment assigmnetToCancel = _dal.Assignment.Read(idAssig)
@@ -1048,5 +1103,47 @@ internal static class CallManager
         }
     }
 
+    public static void ChooseCallForTreatInternal(int volunteerId, int callId)
+    {
+        DO.Volunteer vol;
+        lock (AdminManager.BlMutex) // stage 7
+            vol = _dal.Volunteer.Read(volunteerId)
+                           ?? throw new BO.BlNullPropertyException($"There is no volunteer with this ID {volunteerId}");
+
+        // Reads the call from the business logic or throws an exception if not found
+        BO.Call bocall = ReadInternal(callId)
+                         ?? throw new BO.BlNullPropertyException($"There is no call with this ID {callId}");
+
+        // Ensures the call is not open or expired before assigning a volunteer
+        if (bocall.Status != BO.CallStatus.Open || bocall.Status == BO.CallStatus.OpenRisk)
+            throw new BO.BlAlreadyExistsException($"The call is open or expired. Call ID is={callId}");
+
+        // Creates a new assignment record for the volunteer and call
+        DO.Assignment assignmentToCreate = new DO.Assignment
+        {
+            Id = 0,
+            CallId = callId,
+            VolunteerId = volunteerId,
+            TimeStart = AdminManager.Now, // Sets the start time for the assignment
+            TimeEnd = null,               // No end time initially
+            TypeEndTreat = null           // No completion type initially
+        };
+
+        try
+        {
+            lock (AdminManager.BlMutex)
+            {// stage 7
+                _dal.Assignment.Create(assignmentToCreate);
+            } // Adds the assignment to the DAL
+            CallManager.Observers.NotifyListUpdated(); //stage 5
+            CallManager.Observers.NotifyItemUpdated(volunteerId);
+            //VolunteerManager.Observers.NotifyListUpdated();
+            //VolunteerManager.Observers.NotifyItemUpdated(assignmentToCreate.CallId);
+        }
+        catch (DO.DalDeletionImpossible)
+        {
+            throw new BO.BlAlreadyExistsException("Impossible to create assignment"); // Handles creation failure
+        }
+    }
 }
 
