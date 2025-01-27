@@ -190,23 +190,8 @@ internal class VolunteerImplementation : IVolunteer
     //}
     public BO.Volunteer Read(int volunteerId)
     {
-        try
-        {
-            // Call the internal implementation
-            return VolunteerManager.ReadInternal(volunteerId);
-        }
-        catch (BO.BlWrongInputException ex)
-        {
-            // Handle specific exception when volunteer doesn't exist
-            Console.WriteLine($"Error: {ex.Message}");
-            throw; // Optionally re-throw the exception
-        }
-        catch (Exception ex)
-        {
-            // Handle unexpected exceptions
-            Console.WriteLine($"Unexpected error: {ex.Message}");
-            throw; // Optionally re-throw the exception
-        }
+        // Call the internal implementation
+        return VolunteerManager.ReadInternal(volunteerId);
     }
     // Updates volunteer details with validations
     //public void Update(int volunteerId, BO.Volunteer boVolunteer)

@@ -1,4 +1,5 @@
 ﻿using BlImplementation;
+using BO;
 using DalApi;
 using System;
 using System.Globalization;
@@ -258,56 +259,34 @@ internal class VolunteerManager
     private static readonly Random s_rand = new();
     private static int s_simulatorCounter = 0;
 
-    //internal static void SimulateCallRegistrationAndGrade() //stage 7
-    //{
-    //    Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
+    internal static void SimulateVolunteerRegistrationAndGrade() //stage 7
+    {
+        Task.Run(() =>
+        {
+            try
+            {
+                //רשימת מתנדבים פעילים
+                List<BO.VolunteerInList> activeVolunteers;
+                lock (AdminManager.BlMutex)
+                activeVolunteers = ReadAllInternal(true, null, null) .ToList();
+                
+                Random random = new Random(); // יצירת מופע Random מחוץ ללולאה
+                foreach (var volunteer in activeVolunteers)
+                {
+                    bool hasUpdated = false;
+                    // אם למתנדב אין קריאה בטיפולו
+                    if (volunteer.CurrentCallId == null)
+                    {
+                        // הסתברות לבחירה רנדומלית של קריאה
+                        if (random.Next(0, 100) < 20) // הסתברות של 20%
+                        {
+                            var ChooseOpenCallInList = CallManager.GetOpenCallHelp(volunteer.Id, null, null).ToList();
 
-    //    LinkedList<int> VolunteerToUpdate = new(); //stage 7
-    //    List<DO.Volunteer> doStudList;
 
-    //    lock (AdminManager.BlMutex) //stage 7
-    //        doStudList = s_dal.Volunteer.ReadAll(st => st.Active == true).ToList();
 
-    //    foreach (var doVolunteer in doStudList)
-    //    {
-    //        int VolunteerId = 0;
-    //        lock (AdminManager.BlMutex) //stage 7
-    //        {
-    //            BO.studentYear = GetVolunteerCurrentYear(doVolunteer.RegistrationDate);
 
-    //            //the above method, includes network requests to compute the distances
-    //            //between courses address and current student address
-    //            //these network requests are done synchronically
-    //            var coursesNotRegistered = CourseManager.GetUnRegisteredCoursesForStudent(doStudent.Id, studentYear);
-
-    //            int cntNotRegCourses = coursesNotRegistered.Count();
-    //            if (cntNotRegCourses != 0)
-    //            {
-    //                int courseId = coursesNotRegistered.Skip(s_rand.Next(0, cntNotRegCourses)).First()!.Id;
-    //                LinkManager.LinkStudentToCourse(doStudent.Id, courseId);
-    //                studentId = doStudent.Id;
-    //            }
-
-    //            //simulate setting grade of course for selected student
-    //            var coursesRegistered =
-    //                s_dal.Course.ReadAll(course => LinkManager.IsStudentLinkedToCourse(doStudent.Id, course.Id) && course.InYear == (DO.Year)studentYear);
-    //            int cntRegCourses = coursesRegistered.Count();
-    //            if (cntRegCourses != 0)
-    //            {
-    //                int courseId = coursesRegistered.Skip(s_rand.Next(0, cntRegCourses)).First()!.Id;
-    //                LinkManager.UpdateCourseGradeForStudent(doStudent.Id, courseId, Math.Round(s_rand.NextDouble() * 100, 2));
-    //                studentId = doStudent.Id;
-    //            }
-
-    //            if (studentId != 0)
-    //                studentsToUpdate.AddLast(doStudent.Id);
-    //        } //lock
-    //    }
-
-    //    foreach (int id in studentsToUpdate)
-    //        Observers.NotifyItemUpdated(id);
-    //}
-
+    }
+    
     // Internal method for the original logic
     public static BO.Role LoginInternal(int username, string password)
     {
@@ -369,9 +348,8 @@ internal class VolunteerManager
         lock (AdminManager.BlMutex) // stage 7
         {
             doVolunteer = s_dal.Volunteer.Read(volunteerId)
-                ?? throw new BO.BlWrongInputException($"Volunteer with ID={volunteerId} does not exist");
+               ?? throw new BO.BlWrongInputException($"Volunteer with ID={volunteerId} does not exist");
         }
-
         var calls = s_dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
 
         int totalCallsHandled = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.Treated);
