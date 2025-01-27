@@ -33,9 +33,10 @@ internal class VolunteerImplementation : IVolunteer
     }
     public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField = null, CallType? callType = null)
     {
+        IEnumerable<DO.Volunteer> volunteers;
         lock (AdminManager.BlMutex) // stage 7
-        {
-            IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll()
+        
+             volunteers = _dal.Volunteer.ReadAll()
                 ?? throw new BO.BlNullPropertyException("No volunteers in the database");
 
             // Convert DO.Volunteer to BO.VolunteerInList
@@ -52,7 +53,6 @@ internal class VolunteerImplementation : IVolunteer
             {
                 filteredVolunteers = filteredVolunteers.Where(v => v.CurrentCallType == callType);
             }
-
             // Apply sorting if specified
             var sortedVolunteers = sortField.HasValue
                 ? filteredVolunteers.OrderBy(v => sortField switch
@@ -70,9 +70,8 @@ internal class VolunteerImplementation : IVolunteer
                 : filteredVolunteers.OrderBy(v => v.Id); // Default sort by ID
 
             return sortedVolunteers;
-        }
-    }
 
+    }
 
     // Retrieves a filtered and sorted list of volunteers
     //public IEnumerable<BO.VolunteerInList> ReadAll(bool? isActive, BO.VolunteerInListField? sortField = null)
@@ -110,11 +109,12 @@ internal class VolunteerImplementation : IVolunteer
     // Retrieves detailed information about a specific volunteer
     public BO.Volunteer Read(int volunteerId)
     {
+        DO.Volunteer? doVolunteer;
         lock (AdminManager.BlMutex) // stage 7
         {
-            var doVolunteer = _dal.Volunteer.Read(volunteerId)
+             doVolunteer = _dal.Volunteer.Read(volunteerId)
                 ?? throw new BO.BlWrongInputException($"Volunteer with ID={volunteerId} does not exist");
-
+        }
             var calls = _dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
 
             int totalCallsHandled = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.Treated);
@@ -141,10 +141,8 @@ internal class VolunteerImplementation : IVolunteer
                 TotalHandledCalls = totalCallsHandled,
                 MaxReading = doVolunteer.MaxReading
             };
-        }
+        
     }
-
-
   // Updates volunteer details with validations
     public void Update(int volunteerId, BO.Volunteer boVolunteer)
     {
@@ -187,9 +185,8 @@ internal class VolunteerImplementation : IVolunteer
                 boVolunteer.MaxReading
             );
 
-
             try
-        {
+            {
                 lock (AdminManager.BlMutex)
                      _dal.Volunteer.Update(volunteerUpdate);
                 VolunteerManager.Observers.NotifyItemUpdated(volunteerUpdate.Id);  //stage 5
@@ -202,15 +199,11 @@ internal class VolunteerImplementation : IVolunteer
             }
         }
     
-
-
    // Deletes a volunteer if there are no active assignments
-
     public void DeleteVolunteer(int volunteerId)
     {
         DO.Volunteer? doVolunteer;
         IEnumerable<DO.Assignment> assignments;
-        
         
             AdminManager.ThrowOnSimulatorIsRunning();  //stage 7??
         lock (AdminManager.BlMutex) // stage 7
@@ -222,7 +215,7 @@ internal class VolunteerImplementation : IVolunteer
                 throw new BO.BlWrongInputException("Volunteer has active assignments");
 
             try
-        {
+            {
             lock (AdminManager.BlMutex) // stage 7
                 _dal.Volunteer.Delete(volunteerId);
                 VolunteerManager.Observers.NotifyListUpdated();  //stage 5
@@ -232,8 +225,7 @@ internal class VolunteerImplementation : IVolunteer
                 throw new BO.BlDeleteNotPossibleException("Deletion failed due to invalid ID", ex);
             }
         }
-    
-
+ 
     // Adds a new volunteer with validations
     public void AddVolunteer(BO.Volunteer boVolunteer)
     {
@@ -264,7 +256,8 @@ internal class VolunteerImplementation : IVolunteer
 
             try
             {
-                _dal.Volunteer.Create(doVolunteer);
+                lock (AdminManager.BlMutex) // stage 7
+                    _dal.Volunteer.Create(doVolunteer);
                 VolunteerManager.Observers.NotifyListUpdated(); //stage 5
             }
             catch (DO.DalAlreadyExistsException ex)

@@ -273,7 +273,7 @@ internal class VolunteerManager
     //        int VolunteerId = 0;
     //        lock (AdminManager.BlMutex) //stage 7
     //        {
-    //            BO. studentYear = GetVolunteerCurrentYear(doVolunteer.RegistrationDate);
+    //            BO.studentYear = GetVolunteerCurrentYear(doVolunteer.RegistrationDate);
 
     //            //the above method, includes network requests to compute the distances
     //            //between courses address and current student address

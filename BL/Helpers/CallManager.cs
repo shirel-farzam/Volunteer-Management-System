@@ -681,15 +681,11 @@ internal static class CallManager
 
                     // Now we update the assignment with the new updatedAssignment object
                     lock (AdminManager.BlMutex)
-
-                        _dal.Assignment.Update(updatedAssignment);  // Updates the assignment with the new values.
+                         _dal.Assignment.Update(updatedAssignment);  // Updates the assignment with the new values.
                 Observers.NotifyItemUpdated(updatedAssignment.Id); //stage 5
             }
 
         }
     }
-
-
-
 }
 
