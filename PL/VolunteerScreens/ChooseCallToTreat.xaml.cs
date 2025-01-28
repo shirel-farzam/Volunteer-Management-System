@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.VolunteerScreens
 {
@@ -23,6 +24,7 @@ namespace PL.VolunteerScreens
         // Static reference to the BL API
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         private Window _previousWindow; // Variable to store a reference to the previous window
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
 
         // Property to store the selected field to sort by
         public BO.OpenCallInListField? OpenCallInList { get; set; } = BO.OpenCallInListField.Id;
@@ -85,7 +87,15 @@ namespace PL.VolunteerScreens
         }
 
         // Method to observe changes in the call list and refresh the data
-        private void CallListObserver() => QueryCallList();
+        private void CallListObserver() /*=> QueryCallList();*/
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    QueryCallList();
+                });
+
+        }
 
         // Event handler for when the window is loaded, adding the call list observer
         private void Window_Loaded(object sender, RoutedEventArgs e)

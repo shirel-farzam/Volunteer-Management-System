@@ -259,59 +259,107 @@ internal class VolunteerManager
     private static readonly Random s_rand = new();
     private static int s_simulatorCounter = 0;
 
-    internal static void SimulateVolunteerRegistrationAndGrade() //stage 7
+    //internal static void SimulateVolunteerRegistrationAndGrade() //stage 7
+    //{
+    //    Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
+    //    // var volunteerlist = GetVolunteerListHelp(true, null).ToList();
+    //    //רשימת מתנדבים פעילים
+    //    List<BO.VolunteerInList> activeVolunteers;
+    //    lock (AdminManager.BlMutex)
+    //        activeVolunteers = ReadAllInternal(true, null, null).ToList();
+    //    Random random = new Random(); // יצירת מופע Random מחוץ ללולאה
+    //    foreach (var volunteer in activeVolunteers)
+    //    {
+    //        bool hasUpdated = false;
+    //        // אם למתנדב אין קריאה בטיפולו
+    //        if (volunteer.CurrentCallId == null)
+    //        {
+    //            // הסתברות לבחירה רנדומלית של קריאה
+    //            if (random.Next(0, 100) < 20) // הסתברות של 20%
+    //            {
+    //                var ChooseOpenCallInList = CallManager.GetOpenCallsForVolunteerInternal(volunteer.Id, null, null).ToList();
+
+    //                if (ChooseOpenCallInList != null && ChooseOpenCallInList.Count > 0)
+    //                {
+    //                    //choose random call for volunteer
+    //                    var randomIndex = s_rand.Next(ChooseOpenCallInList.Count);
+    //                    var chosenCall = ChooseOpenCallInList[randomIndex];
+
+    //                    CallManager.ChooseCallForTreatInternal(volunteer.Id, chosenCall.Id);
+    //                }
+    //            }
+
+    //            else if (volunteer.CurrentCallId != null)    //there is call in treat
+    //            {
+    //                var callin = ReadInternal(volunteer.Id).CurrentCall!;
+    //                if ((AdminManager.Now - callin.OpeningTime) >= TimeSpan.FromHours(3))
+    //                {
+    //                    CallManager.ChooseCallForTreatInternal(volunteer.Id, callin.CallId);
+    //                }
+    //                else
+    //                {
+    //                    int probability1 = s_rand.Next(1, 101); // מספר אקראי בין 1 ל-100
+
+    //                    if (probability1 <= 10) // הסתברות של 10%
+    //                    {
+    //                        // ביטול הטיפול
+    //                        CallManager.CancelTreatInternal(volunteer.Id, callin.Id);
+    //                    }
+    //                }
+    //            }
+
+    //        }
+    //    }
+    //}
+    internal static void SimulateVolunteerActivity() //stage 7
     {
-
+        // var volunteerImplementation = new VolunteerImplementation();
         Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
-        // var volunteerlist = GetVolunteerListHelp(true, null).ToList();
 
-        //רשימת מתנדבים פעילים
-        List<BO.VolunteerInList> activeVolunteers;
-        lock (AdminManager.BlMutex)
-            activeVolunteers = ReadAllInternal(true, null, null).ToList();
+        
+        double probability = 0.2;
 
-        Random random = new Random(); // יצירת מופע Random מחוץ ללולאה
-        foreach (var volunteer in activeVolunteers)
+        // יצירת מספר אקראי בטווח 0 עד 1
+        double randomValue = s_rand.NextDouble(); // מספר בין 0.0 ל-1.0
+        var volunteerList = ReadAllInternal(true, null,null).ToList();
+        int size = volunteerList.Count();
+        // בדיקה אם המספר האקראי קטן מההסתברות
+        for (int i = 0; i < size; i++)
         {
-            bool hasUpdated = false;
-            // אם למתנדב אין קריאה בטיפולו
-            if (volunteer.CurrentCallId == null)
+            var volunteer = ReadInternal(volunteerList[i].Id);
+            if (volunteer.CurrentCall == null && randomValue < probability)
             {
-                // הסתברות לבחירה רנדומלית של קריאה
-                if (random.Next(0, 100) < 20) // הסתברות של 20%
+                var openCallInListsToChose = CallManager.GetOpenCallsForVolunteerInternal(volunteer.Id, null, null).ToList();
+
+                if (openCallInListsToChose != null && openCallInListsToChose.Count > 0)
                 {
-                    var ChooseOpenCallInList = CallManager.GetOpenCallsForVolunteerInternal(volunteer.Id, null, null).ToList();
+                    //choose random call for volunteer
+                    var randomIndex = s_rand.Next(openCallInListsToChose.Count);
+                    var chosenCall = openCallInListsToChose[randomIndex];
 
-                    if (ChooseOpenCallInList != null && ChooseOpenCallInList.Count > 0)
-                    {
-                        //choose random call for volunteer
-                        var randomIndex = s_rand.Next(ChooseOpenCallInList.Count);
-                        var chosenCall = ChooseOpenCallInList[randomIndex];
-
-                        CallManager.ChooseCallForTreatInternal(volunteer.Id, chosenCall.Id);
-                    }
+                    CallManager.ChooseCallForTreatInternal(volunteer.Id, chosenCall.Id);
                 }
-
-                else if (volunteer.CurrentCallId != null)    //there is call in treat
-                {
-                    var callin = ReadInternal(volunteer.Id).CurrentCall!;
-                    if ((AdminManager.Now - callin.OpeningTime) >= TimeSpan.FromHours(3))
-                    {
-                        CallManager.ChooseCallForTreatInternal(volunteer.Id, callin.CallId);
-                    }
-                    else
-                    {
-                        int probability1 = s_rand.Next(1, 101); // מספר אקראי בין 1 ל-100
-
-                        if (probability1 <= 10) // הסתברות של 10%
-                        {
-                            // ביטול הטיפול
-                            CallManager.CancelTreatInternal(volunteer.Id, callin.Id);
-                        }
-                    }
-                }
-
             }
+
+            else if (volunteer.CurrentCall != null)    //there is call in treat
+            {
+                var callin = ReadInternal(volunteer.Id).CurrentCall!;
+                if ((AdminManager.Now - callin.OpeningTime) >= TimeSpan.FromHours(3))
+                {
+                    CallManager.CloseTreatInternal(volunteer.Id, callin.Id);
+                }
+                else
+                {
+                    int probability1 = s_rand.Next(1, 101); // מספר אקראי בין 1 ל-100
+
+                    if (probability1 <= 10) // הסתברות של 10%
+                    {
+                        // ביטול הטיפול
+                        CallManager.CancelTreatInternal(volunteer.Id, callin.Id);
+                    }
+                }
+            }
+
         }
     }
     // Internal method for the original logic

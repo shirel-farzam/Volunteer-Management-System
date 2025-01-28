@@ -3,58 +3,38 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PL"
              StartupUri="LoginSystem.xaml">
-    
+
     <Application.Resources>
         <ResourceDictionary>
 
+            <!-- קישור ל-Color.xaml -->
             <ResourceDictionary.MergedDictionaries>
-                <!-- Link to the Colors.xaml file -->
                 <ResourceDictionary Source="Themes/ColorLight.xaml" />
                 <ResourceDictionary Source="Themes/DarkColor.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <!--<Image x:Key="Logo" Source="Picture/Logo.png" />-->
-            <!-- Additional resources -->
+
+            <!-- אוספים -->
             <local:VolunteerInListFieldCollection x:Key="VolunteerInListFieldCollectionKey" />
             <local:ClosedCallInListFieldCollection x:Key="ClosedCallInListFieldCollectionKey" />
             <local:CallInListFieldCollection x:Key="CallInListFieldCollectionKey" />
             <local:OpenCallInListCollection x:Key="OpenCallInListCollectionKey" />
-            <!--<local:TypeOfCallsCollection x:Key="TypeOfCallsCollectionKey" />-->
             <local:CallTypeCollection x:Key="CallTypeCollectionKey" />
             <local:RoleCollection x:Key="RoleCollectionKey" />
             <local:DistanceCollection x:Key="DistanceCollectionKey" />
+            <local:CallStatusCollection x:Key="CallStatusCollectionKey" />
+
+            <!-- ממירים -->
             <local:ConvertRoleToColor x:Key="ConvertRoleToColorKey" />
             <local:ConvertTypeCAllToColor x:Key="ConvertTypeCAllToColorKey" />
             <local:ConvertDistanceToColor x:Key="ConvertDistanceToColorKey" />
             <local:ConvertCallTypeToColor x:Key="ConvertCallTypeToColorKey" />
-            <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
-            <local:InverseNullToVisibilityConverter x:Key="InverseNullToVisibilityConverter" />
+            <local:NullToVisibilityConverter x:Key="NullToVisibilityConverterKey" />
+            <local:InverseNullToVisibilityConverter x:Key="InverseNullToVisibilityConverterKey" />
             <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
-            <local:CallStatusCollection x:Key="CallStatusCollectionKey" />
+            <local:BoolToTextConverter x:Key="BoolToTextConverterKey" />
+            <local:InverseBooleanConverter x:Key="InverseBooleanConverterKey" />
 
-            
-            <!-- Style for rounded buttons -->
-            <Style TargetType="Button" x:Key="RoundedButtonStyle">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}" 
-                                    BorderBrush="{TemplateBinding BorderBrush}" 
-                                    BorderThickness="1" 
-                                    CornerRadius="15" 
-                                    Padding="{TemplateBinding Padding}">
-                                <ContentPresenter HorizontalAlignment="Center" 
-                                                  VerticalAlignment="Center" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="Foreground" Value="Black" />
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="Height" Value="40" />
-                <Setter Property="Width" Value="120" />
-            </Style>
-
-            <!-- Define the Back Button Style -->
+            <!-- עיצוב לכפתור חזרה -->
             <Style x:Key="BackButtonStyle" TargetType="Button">
                 <Setter Property="Width" Value="103"/>
                 <Setter Property="Height" Value="60"/>
@@ -67,27 +47,64 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
                             <Grid>
-                                <!-- Arrow Shape -->
                                 <Path Data="M10,20 L30,10 L30,15 L50,15 L50,25 L30,25 L30,30 Z"
-                                      Fill="Black" Stretch="Uniform" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-4,3,0,0"/>
-                                <!-- Text -->
-                                <TextBlock Text="Back" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                                           Foreground="{StaticResource ButtonBlue}" FontWeight="Bold" />
-                            </Grid>                        </ControlTemplate>
+                                      Fill="Black" Stretch="Uniform" 
+                                      VerticalAlignment="Top" 
+                                      HorizontalAlignment="Left" 
+                                      Margin="-4,3,0,0"/>
+                                <TextBlock Text="Back" VerticalAlignment="Center" 
+                                           HorizontalAlignment="Center" 
+                                           Foreground="{StaticResource ButtonBlue}" 
+                                           FontWeight="Bold" />
+                            </Grid>
+                        </ControlTemplate>
                     </Setter.Value>
                 </Setter>
             </Style>
-            <!--Trigger color of button-->
+
+            <!-- עיצוב לכפתורים עגולים -->
+            <Style TargetType="Button" x:Key="RoundedButtonStyle">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="15" 
+                        Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="40" />
+                <Setter Property="Width" Value="120" />
+            </Style>
+
+            <!-- עיצוב לכפתור במצב רחף -->
             <Style TargetType="Button" x:Key="ButtonHoverStyle" BasedOn="{StaticResource RoundedButtonStyle}">
+                <Setter Property="Background" Value="{StaticResource ButtonBlue}" />
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="Height" Value="82" />
+                <Setter Property="Width" Value="120" />
                 <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Background" Value="{StaticResource MediumGray}" />
+                        <Setter Property="BorderBrush" Value="DarkGray" />
+                    </Trigger>
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Background" Value="{StaticResource ButtonHover}" />
                         <Setter Property="BorderBrush" Value="{StaticResource ButtonPressed}" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
-             
-            <!-- Data Trigger: Change Text Color based on a specific condition -->
+
+
+            <!-- Data Trigger לשינוי צבע טקסט -->
             <Style TargetType="TextBlock" x:Key="DataTriggerStyle">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Path=SomeProperty}" Value="True">
@@ -96,27 +113,29 @@
                 </Style.Triggers>
             </Style>
 
-
-            <!-- Event Trigger: Button click animation -->
+            <!-- אנימציית לחיצה על כפתור -->
             <Style x:Key="ButtonClickAnimationStyle" TargetType="Button">
                 <Style.Triggers>
                     <EventTrigger RoutedEvent="Button.Click">
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0.5" Duration="0:0:0.3" AutoReverse="True" />
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                                                 From="1" To="0.5" 
+                                                 Duration="0:0:0.3" 
+                                                 AutoReverse="True" />
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger>
                 </Style.Triggers>
             </Style>
 
-            <!-- MultiTrigger: Change TextBlock properties when multiple conditions are met -->
+            <!-- MultiTrigger -->
             <Style TargetType="Label" x:Key="MultiTriggerStyle">
                 <Style.Triggers>
                     <MultiTrigger>
                         <MultiTrigger.Conditions>
                             <Condition Property="IsMouseOver" Value="True" />
-                            <Condition Property="IsEnabled" Value="True" />
+                            <!--<Condition Property="IsEnabled" Value="True" />-->
                         </MultiTrigger.Conditions>
                         <Setter Property="Foreground" Value="{StaticResource ButtonBackground}" />
                         <Setter Property="FontWeight" Value="Bold" />
