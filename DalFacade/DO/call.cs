@@ -17,8 +17,8 @@ public record Call
     CallType Type,
     string Description,
     string FullAddress,
-    double Latitude,
-    double Longitude,
+    double ?Latitude,
+    double ?Longitude,
     DateTime TimeOpened,
     DateTime? MaxTimeToClose = null
 )

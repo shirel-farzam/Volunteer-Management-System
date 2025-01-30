@@ -859,7 +859,7 @@ internal class CallImplementation : ICall
             return CallManager.GetClosedCallsByVolunteerInternal(id, type, sortBy);
        
     }
-    //  הגעתי לפההההההההההההההההההההה
+    //  
     //public void CloseTreat(int idVol, int idAssig)
     //{
     //    AdminManager.ThrowOnSimulatorIsRunning();  // stage 7
@@ -960,14 +960,9 @@ internal class CallImplementation : ICall
     {
         AdminManager.ThrowOnSimulatorIsRunning(); // stage 7
 
-        // Get coordinates (latitude and longitude) for the provided address using the VolunteerManager utility.
-        double[] coordinate = VolunteerManager.GetCoordinatesFromAddress(boCall.FullAddress);
-        double latitude = coordinate[0];
-        double longitude = coordinate[1];
+       
 
-        // Assign the calculated coordinates to the call object, handling nullable types.
-        boCall.Latitude = latitude;
-        boCall.Longitude = longitude;
+       
 
         // Perform logic validation on the call object to ensure it complies with business rules.
         CallManager.IsLogicCall(boCall);
