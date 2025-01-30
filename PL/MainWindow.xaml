@@ -97,16 +97,17 @@
         </StackPanel>
 
         <!-- Navigation and Volunteer Section -->
-        <Grid Grid.Row="2" Margin="10">
+        <Grid Grid.Row="2" Margin="15,2,10,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="515" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="175" />
+                <ColumnDefinition Width="Auto" MinWidth="0" />
+                <ColumnDefinition Width="165" />
+                <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="90"/>
             </Grid.ColumnDefinitions>
 
             <!-- Navigation Buttons -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="0" Margin="158,2,0,-2">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="0" Margin="158,2,0,-2" Width="312">
                 <Button Content="Initialize Database" Margin="10" Padding="10" Click="InitializeDatabase_Click" Width="136" 
                         Background="{StaticResource ButtonBlue}" Foreground="Black" Style="{StaticResource ButtonHoverStyle}" IsEnabled="{Binding IsRuning, Converter={StaticResource InverseBooleanConverterKey}}"/>
                 <Button Content="Reset Database" Margin="10" Padding="10" Click="ResetDatabase_Click" Width="136" 
@@ -117,25 +118,30 @@
             <Button Content="Handle Volunteers" Padding="10" 
         Click="btnVolunteer_Click" Height="80"  Width="150" 
         Background="{StaticResource DarkBlue}" Foreground="White" Grid.Column="2"  HorizontalAlignment="Left" 
- VerticalAlignment="Top" Margin="115,-138,0,0" Grid.ColumnSpan="2" />
+ VerticalAlignment="Top" Margin="115,-138,0,0" Grid.ColumnSpan="3" />
 
             <!-- List Calls Button -->
             <Button Content="Handle Calls" 
         Margin="115,-256,0,0" Padding="15" 
         Click="ListCall_Click" Height="80"  Width="150"
         Grid.Column="2"  HorizontalAlignment="Left" VerticalAlignment="Top" 
-        Background="{StaticResource DarkBlue}" Foreground="White" Grid.ColumnSpan="2" />
-
+        Background="{StaticResource DarkBlue}" Foreground="White" Grid.ColumnSpan="3" />
+            <Label Content="Simulator:"
+FontFamily="Arial"
+FontSize="14"
+Foreground="{StaticResource Simulator}"
+FontWeight="Bold"
+HorizontalAlignment="Left"
+Margin="129,3,0,82" Grid.Column="2" Width="78" Grid.ColumnSpan="3" />
             <TextBox  Text="{Binding Interval, Mode=TwoWay}"  Grid.Column="2"
-            Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="102,7,0,0"
+            Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="125,28,0,0"
             TextWrapping="Wrap" IsReadOnly="{Binding IsRuning}"
-            VerticalAlignment="Top" Width="142" Height="40" />
-            <Button Grid.Column="2" HorizontalAlignment="Left" Margin="127,57,0,0"
+            VerticalAlignment="Top" Width="110" Height="30" Background="{StaticResource BacSImulator}" />
+            <Button Grid.Column="2" HorizontalAlignment="Left" Margin="132,63,0,9"
                     Click="StartSimulator_Click"  
-                    Content="{Binding IsRuning, Converter={StaticResource BoolToTextConverterKey}}"
-                    VerticalAlignment="Top" Height="30" Width="95" Grid.ColumnSpan="2"
+                    Content="{Binding IsRuning, Converter={StaticResource BoolToTextConverterKey}}" Style="{StaticResource ButtonHoverStyle}" Height="NaN" Width="95"
                     
-                    Background="{DynamicResource SkyBlue}"/>
+                    Background="{DynamicResource SkyBlue}" Grid.ColumnSpan="3"/>
 
             <!--<Button Content="Simulator" 
         Margin="113,22,0,0" 

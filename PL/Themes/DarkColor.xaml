@@ -114,4 +114,5 @@
     <SolidColorBrush x:Key="RiskRange" Color="#A07F57" />
     <SolidColorBrush x:Key="Simulator" Color="#B3A38C" />
     <SolidColorBrush x:Key="Password" Color="#8C735E" />
+    <SolidColorBrush x:Key="BacSImulator" Color="#FDF7F4" />
 </ResourceDictionary>

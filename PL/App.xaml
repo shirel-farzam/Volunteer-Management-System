@@ -29,6 +29,7 @@
             <local:ConvertDistanceToColor x:Key="ConvertDistanceToColorKey" />
             <local:ConvertCallTypeToColor x:Key="ConvertCallTypeToColorKey" />
             <local:NullToVisibilityConverter x:Key="NullToVisibilityConverterKey" />
+            
             <local:InverseNullToVisibilityConverter x:Key="InverseNullToVisibilityConverterKey" />
             <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
             <local:BoolToTextConverter x:Key="BoolToTextConverterKey" />
