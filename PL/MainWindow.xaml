@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="900"
+        Title="MainWindow" Height="650" Width="900"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Closed="Window_Closed"
         Loaded="MainWindow_Loaded">
@@ -37,19 +37,18 @@
 
             <!-- Clock Display -->
             <Label Content="{Binding Path=CurrentTime, UpdateSourceTrigger=PropertyChanged}" 
-       ContentStringFormat="{}{0:dd MMMM yyyy HH:mm}" 
+       ContentStringFormat="{}{0:dddd, dd/MM/yyyy - HH:mm:ss}" 
        Language="he-IL" 
        HorizontalAlignment="Center" 
        VerticalAlignment="Center" 
        FontSize="20" 
        FontWeight="Bold" />
 
-
-
             <!-- Clock Advancement Buttons -->
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,19,0,1">
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,19,0,1" IsEnabled="{Binding IsRuning, Converter={StaticResource InverseBooleanConverterKey}}">
                 <Button Content="Add One Minute" Click="AddOneMinute_Click" Padding="8,5" Margin="5" Height="82" Width="120" Style="{StaticResource ButtonHoverStyle}"
-                        Background="{StaticResource ButtonBlue}" Foreground="Black"   />
+                        Background="{StaticResource ButtonBlue}" Foreground="Black"
+                        />
                 <Button Content="Add One Hour" Click="AddOneHour_Click" Padding="8,5" Margin="5" Height="82" Width="120" Style="{StaticResource ButtonHoverStyle}"
                         Background="{StaticResource ButtonBlue}" Foreground="Black" />
                 <Button Content="Add One Day" Click="AddOneDay_Click" Padding="8,5" Margin="5" Height="82" Width="120" Style="{StaticResource ButtonHoverStyle}"
@@ -81,7 +80,6 @@
             VerticalAlignment="Center">
                 <TextBox Text="{Binding MaxRange, Mode=TwoWay}"
                  FontSize="16"
-                
                  BorderBrush="Transparent"
                  Background="Transparent"
                  HorizontalContentAlignment="Center"
@@ -110,25 +108,36 @@
             <!-- Navigation Buttons -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="0" Margin="158,2,0,-2">
                 <Button Content="Initialize Database" Margin="10" Padding="10" Click="InitializeDatabase_Click" Width="136" 
-                        Background="{StaticResource LightBlue}" Foreground="Black" Style="{StaticResource ButtonHoverStyle}" />
+                        Background="{StaticResource ButtonBlue}" Foreground="Black" Style="{StaticResource ButtonHoverStyle}" IsEnabled="{Binding IsRuning, Converter={StaticResource InverseBooleanConverterKey}}"/>
                 <Button Content="Reset Database" Margin="10" Padding="10" Click="ResetDatabase_Click" Width="136" 
-                        Background="{StaticResource LightBlue}" Foreground="Black"  Style="{StaticResource ButtonHoverStyle}"/>
+                        Background="{StaticResource ButtonBlue}" Foreground="Black"  Style="{StaticResource ButtonHoverStyle}" IsEnabled="{Binding IsRuning, Converter={StaticResource InverseBooleanConverterKey}}"/>
             </StackPanel>
 
             <!-- List Volunteers Button -->
             <Button Content="Handle Volunteers" Padding="10" 
         Click="btnVolunteer_Click" Height="80"  Width="150" 
         Background="{StaticResource DarkBlue}" Foreground="White" Grid.Column="2"  HorizontalAlignment="Left" 
- VerticalAlignment="Top" Margin="115,-136,0,0" Grid.ColumnSpan="2" />
+ VerticalAlignment="Top" Margin="115,-138,0,0" Grid.ColumnSpan="2" />
 
             <!-- List Calls Button -->
             <Button Content="Handle Calls" 
-        Margin="115,-243,0,0" Padding="15" 
+        Margin="115,-256,0,0" Padding="15" 
         Click="ListCall_Click" Height="80"  Width="150"
         Grid.Column="2"  HorizontalAlignment="Left" VerticalAlignment="Top" 
         Background="{StaticResource DarkBlue}" Foreground="White" Grid.ColumnSpan="2" />
 
-            <Button Content="Simulator" 
+            <TextBox  Text="{Binding Interval, Mode=TwoWay}"  Grid.Column="2"
+            Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="102,7,0,0"
+            TextWrapping="Wrap" IsReadOnly="{Binding IsRuning}"
+            VerticalAlignment="Top" Width="142" Height="40" />
+            <Button Grid.Column="2" HorizontalAlignment="Left" Margin="127,57,0,0"
+                    Click="StartSimulator_Click"  
+                    Content="{Binding IsRuning, Converter={StaticResource BoolToTextConverterKey}}"
+                    VerticalAlignment="Top" Height="30" Width="95" Grid.ColumnSpan="2"
+                    
+                    Background="{DynamicResource SkyBlue}"/>
+
+            <!--<Button Content="Simulator" 
         Margin="113,22,0,0" 
         Padding="10" 
         Click="StartSimulator_Click" 
@@ -139,7 +148,7 @@
         Foreground="White" 
         Grid.Column="2" 
         HorizontalAlignment="Left" 
-        VerticalAlignment="Top" Grid.ColumnSpan="2" />
+        VerticalAlignment="Top" Grid.ColumnSpan="2" />-->
 
         </Grid>
 
@@ -239,6 +248,7 @@
                 </ItemsControl>
             </Grid>
         </Border>
-        <Button Style="{StaticResource BackButtonStyle}" Content="Back" Margin="24,35,0,0" Grid.Row="2" Click="Button_Click" />
+        <Button Style="{StaticResource BackButtonStyle}" 
+                Content="Back" Margin="24,35,0,0" Grid.Row="2" Click="Button_Click" />
     </Grid>
 </Window>

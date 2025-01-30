@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace PL.VolunteerScreens
 {
@@ -10,6 +11,8 @@ namespace PL.VolunteerScreens
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         private Window _previousWindow;
+       // private volatile DispatcherOperation? _observerOperation = null; //stage 7
+
         public IEnumerable<BO.ClosedCallInList> ClosedCallList
         {
             get { return (IEnumerable<BO.ClosedCallInList>)GetValue(ClosedCallListProperty); }
@@ -49,6 +52,14 @@ namespace PL.VolunteerScreens
             
             queryClosedCallList();
         }
+        //private void ClosedCallListObserver() //stage 7
+        //{
+        //    if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+        //        _observerOperation = Dispatcher.BeginInvoke(() =>
+        //        {
+        //            queryClosedCallList();
+        //        });
+        //}
 
         private void queryClosedCallList()
         {

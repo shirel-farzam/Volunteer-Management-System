@@ -8,6 +8,7 @@ using System.Windows;
 using System.ComponentModel;
 using DO;
 using PL.CallWindow;
+using System.Windows.Threading;
 
 namespace PL.Call
 {
@@ -15,6 +16,8 @@ namespace PL.Call
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         private Window _previousWindow; // Variable to store a reference to the previous window
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+
         public IEnumerable<BO.CallInList> CallInList
         {
             get { return (IEnumerable<BO.CallInList>)GetValue(CallListProperty); }
@@ -63,7 +66,15 @@ namespace PL.Call
                 ? s_bl?.Call.GetCallInLists(null, null, null)!
                 : s_bl?.Call.GetCallInLists(BO.CallInListField.Status, SelectedCallStatus, CallInListField)!;
         }
-        private void CallListObserver() => QueryCallList();
+        private void CallListObserver() /*=> QueryCallList();*/
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    QueryCallList();
+                });
+
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

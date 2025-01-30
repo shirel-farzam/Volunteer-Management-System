@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Call" Height="650" Width="826"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Background="{StaticResource ButtonBlue}">
+        Background="{StaticResource ButtonBlue}"
+        Closed="Window_Closed"
+        Loaded="Window_Loaded">
 
     <Window.Resources>
         <!-- Style for labels -->

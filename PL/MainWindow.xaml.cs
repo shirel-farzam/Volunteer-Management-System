@@ -25,6 +25,9 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         private Window _previousWindow; // Variable to store a reference to the previous window
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+        private volatile DispatcherOperation? _observerOperationCon = null; //stage 7
+
         public int Id { get; set; }
        // public static int OpenWindowCount { get; private set; } = 0;
 
@@ -63,6 +66,21 @@ namespace PL
         }
         public static readonly DependencyProperty CurrentTimeProperty =
             DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
+
+        public int Interval
+        {
+            get { return (int)GetValue(IntervalProperty); }
+            set { SetValue(IntervalProperty, value); }
+        }
+        public static readonly DependencyProperty IntervalProperty =
+            DependencyProperty.Register("Interval", typeof(int), typeof(MainWindow));
+        public bool IsRuning
+        {
+            get { return (bool)GetValue(IsRuningProperty); }
+            set { SetValue(IsRuningProperty, value); }
+        }
+        public static readonly DependencyProperty IsRuningProperty =
+            DependencyProperty.Register("IsRuning", typeof(bool), typeof(MainWindow));
 
         public int[] CountCall
         {
@@ -192,17 +210,34 @@ namespace PL
         }
         private void clockObserver()
         {
-            CurrentTime = s_bl.Admin.GetClock();
+            //CurrentTime = s_bl.Admin.GetClock();
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    CurrentTime = s_bl.Admin.GetClock();
+                });
+
         }
         private void configObserver()
         {
-            MaxRange = s_bl.Admin.GetMaxRange();
+            //MaxRange = s_bl.Admin.GetMaxRange();
+            if (_observerOperationCon is null || _observerOperationCon.Status == DispatcherOperationStatus.Completed)
+                _observerOperationCon = Dispatcher.BeginInvoke(() =>
+                {
+                    MaxRange = s_bl.Admin.GetMaxRange();
+                });
         }
         private void Window_Closed(object sender, EventArgs e)
         {
            // OpenWindowCount--; // הפחתת המונה כאשר החלון נסגר
             s_bl.Admin.RemoveClockObserver(clockObserver);
             s_bl.Admin.RemoveConfigObserver(configObserver);
+            if (IsRuning)
+            {
+                s_bl.Admin.StopSimulator(); // עצירת סימולטור
+                IsRuning = false; // עדכון מצב
+            }
+
 
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -226,6 +261,16 @@ namespace PL
         }
         private void StartSimulator_Click(object sender, RoutedEventArgs e)
         {
+            if (IsRuning)
+            {
+                s_bl.Admin.StopSimulator();
+                IsRuning = false;
+            }
+            else
+            {
+                s_bl.Admin.StartSimulator(Interval);
+                IsRuning = true;
+            }
 
         }
         //private void BackButton_Click(object sender, RoutedEventArgs e)

@@ -66,6 +66,7 @@
 
     <SolidColorBrush x:Key="ButtonBlue" Color="#C1A68E" />
     <SolidColorBrush x:Key="LightBlue" Color="#BBA793" />
+    
     <SolidColorBrush x:Key="SimulatorBlue" Color="#A88D7A" />
     <SolidColorBrush x:Key="Primary" Color="#8B6F59" />
     <SolidColorBrush x:Key="AccentLight" Color="#D3C2AF" />

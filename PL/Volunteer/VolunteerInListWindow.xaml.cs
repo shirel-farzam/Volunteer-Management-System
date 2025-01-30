@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Volunteer
 {
@@ -21,6 +22,7 @@ namespace PL.Volunteer
     public partial class VolunteerInListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
 
         public IEnumerable<BO.VolunteerInList> VolunteerInList
         {
@@ -46,10 +48,10 @@ namespace PL.Volunteer
             _previousWindow = previousWindow;
         }
 
-        private void OnFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            QueryVolunteerList();
-        }
+        //private void OnFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    QueryVolunteerList();
+        //}
 
         private void Volunteer_Sort(object sender, SelectionChangedEventArgs e) { QueryVolunteerList(); }
         //{
@@ -116,8 +118,15 @@ namespace PL.Volunteer
          => VolunteerInList = (VolunteerSort == BO.VolunteerInListField.Id) ?
          s_bl?.Volunteer.ReadAll(null, null)! : s_bl?.Volunteer.ReadAll(null, VolunteerSort,VolunteerFilter)!;
 
+        private void VolunteerListObserver() /*=> QueryVolunteerList();*/
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    QueryVolunteerList();
+                });
 
-        private void VolunteerListObserver() => QueryVolunteerList();
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

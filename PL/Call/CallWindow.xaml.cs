@@ -6,12 +6,15 @@ using System.Windows;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
+using System.Windows.Threading;
 
 namespace PL.CallWindow
 {
     public partial class CallWindow : Window, INotifyPropertyChanged
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+
         public string ButtonText { get; set; }
         public int Id { get; set; }
         public BO.Call Call
@@ -69,12 +72,17 @@ namespace PL.CallWindow
 
         private void CallObserver()
         {
-            {
-                int id = Call!.Id;
-                Call = null;
-                Call = s_bl.Call.Read(id);
 
-            }
+            //int id = Call!.Id;
+            //Call = null;
+            //Call = s_bl.Call.Read(id);
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    int id = Call!.Id;
+                    Call = null;
+                    Call = s_bl.Call.Read(id);
+                });
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

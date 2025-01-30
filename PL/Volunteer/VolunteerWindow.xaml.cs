@@ -6,13 +6,15 @@ using System.Windows;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
+using System.Windows.Threading;
 
 namespace PL.VolunteerWindow
 {
     public partial class VolunteerWindow : Window, INotifyPropertyChanged
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-        
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+
         public string ButtonText { get; set; }
         public int Id { get; set; }
 
@@ -76,18 +78,33 @@ namespace PL.VolunteerWindow
 
         private void VolunteerObserver()
         {
-            try
-            {
-                int id = Volunteer!.Id;
-                Volunteer = null;
-                Volunteer = s_bl.Volunteer.Read(id);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error reloading volunteer: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //try
+            //{
+            //    int id = Volunteer!.Id;
+            //    Volunteer = null;
+            //    Volunteer = s_bl.Volunteer.Read(id);
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show($"Error reloading volunteer: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                try
+                    {
+                        int id = Volunteer!.Id;
+                        Volunteer = null;
+                        Volunteer = s_bl.Volunteer.Read(id);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error reloading volunteer: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                });
+
         }
-       
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (Volunteer != null && Volunteer.Id != 0)
