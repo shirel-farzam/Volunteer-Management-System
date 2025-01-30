@@ -1,9 +1,6 @@
 ﻿using BlImplementation;
-using BO;
 using DalApi;
-using System;
 using System.Globalization;
-using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -38,46 +35,7 @@ internal class VolunteerManager
     }
 
 
-    internal static BO.CallInProgress GetCallIn(DO.Volunteer doVolunteer)
-    {
-        {
-            List<DO.Assignment>? calls;
-            lock (AdminManager.BlMutex) // stage 7
-                calls = s_dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
-            DO.Assignment? currentAssignment = calls.Find(ass => ass.TimeEnd == null);
-            if (currentAssignment == null) return null;
-            DO.Call? currentCall;
-            lock (AdminManager.BlMutex) // stage 7
-                currentCall = s_dal.Call.Read(currentAssignment.CallId);
-            if (currentCall == null) return null;
-
-            double[] coordinates = GetCoordinatesFromAddress(doVolunteer.FullAddress);
-            double latitude = coordinates[0];
-            double longitude = coordinates[1];
-
-            AdminImplementation admin = new AdminImplementation();
-            BO.CallStatus status;
-            if (currentCall.MaxTimeToClose - AdminManager.Now <= admin.GetMaxRange())
-                status = BO.CallStatus.OpenRisk;
-            else
-                status = BO.CallStatus.InProgress;
-
-            return new BO.CallInProgress
-            {
-                Id = currentAssignment.Id,
-                CallId = currentAssignment.CallId,
-                CallType = (BO.CallType)currentCall.Type,
-                Description = currentCall.Description,
-                FullAddress = currentCall.FullAddress,
-                OpeningTime = currentCall.TimeOpened,
-                MaxCompletionTime = currentCall.MaxTimeToClose,
-                EntryTime = currentAssignment.TimeStart,
-                DistanceFromVolunteer = CalculateDistance(currentCall.Latitude, currentCall.Longitude, latitude, longitude),
-                Status = status
-            };
-        }
-    }
-
+    
     internal static void CheckFormat(BO.Volunteer boVolunteer)
     {
         // Validate the ID of the volunteer.
@@ -193,7 +151,8 @@ internal class VolunteerManager
     private const string ApiKey = "pk.3d8d3ac902d00ffcd65fdf9a26ec253c";
     private const string LocationIqBaseUrl = "https://us1.locationiq.com/v1/search.php";
 
-    public static double[] GetCoordinatesFromAddress(string address)
+
+    internal static async Task<double[]> GetCoordinatesFromAddressAsync(string address)
     {
         if (string.IsNullOrWhiteSpace(address))
         {
@@ -202,14 +161,17 @@ internal class VolunteerManager
 
         using var client = new HttpClient();
         string requestUrl = $"{LocationIqBaseUrl}?key={ApiKey}&q={Uri.EscapeDataString(address)}&format=json";
-        HttpResponseMessage response = client.GetAsync(requestUrl).Result;
+
+        // קריאה אסינכרונית ל-API
+        HttpResponseMessage response = await client.GetAsync(requestUrl);
 
         if (!response.IsSuccessStatusCode)
         {
             throw new Exception($"Error making geocoding request: {response.StatusCode}");
         }
 
-        string jsonResponse = response.Content.ReadAsStringAsync().Result;
+        // קריאה אסינכרונית לתוכן התשובה
+        string jsonResponse = await response.Content.ReadAsStringAsync();
         JsonDocument document = JsonDocument.Parse(jsonResponse);
         JsonElement root = document.RootElement;
 
@@ -229,13 +191,49 @@ internal class VolunteerManager
 
         throw new Exception("Latitude or Longitude is missing in the response.");
     }
-
-    internal static void CheckAddress(BO.Volunteer volunteer)
+    internal static async Task updateCoordinatesForVolonteerAddressAsync(DO.Volunteer doVolunteer)
     {
-        double[] coordinates = GetCoordinatesFromAddress(volunteer.FullAddress);
-        if (coordinates[0] != volunteer.Latitude || coordinates[1] != volunteer.Longitude)
-            throw new BO.BlWrongItemException("Coordinates do not match.");
+        if (doVolunteer.FullAddress is not null)
+        {
+            double[] loc = await GetCoordinatesFromAddressAsync(doVolunteer.FullAddress);
+            if (loc is not null)
+            {
+                doVolunteer = doVolunteer with { Latitude = loc[0], Longitude = loc[1] };
+                lock (AdminManager.BlMutex)
+                    s_dal.Volunteer.Update(doVolunteer);
+                Observers.NotifyListUpdated();
+                Observers.NotifyItemUpdated(doVolunteer.Id);
+            }
+        }
     }
+    internal static async Task updateCoordinatesForCallAddressAsync(DO.Call doCall)
+    {
+        if (doCall.FullAddress is not null)
+        {
+            double[] loc = await GetCoordinatesFromAddressAsync(doCall.FullAddress);
+            if (loc is not null)
+            {
+                doCall = doCall with { Latitude = loc[0], Longitude = loc[1] };
+                lock (AdminManager.BlMutex)
+                    s_dal.Call.Update(doCall);
+                CallManager.Observers.NotifyListUpdated();
+                CallManager.Observers.NotifyItemUpdated(doCall.Id);
+            }
+        }
+    }
+
+    internal static void CheckAddress(BO.Volunteer volunteer) // לבדוק האם היא תקינה  
+    {
+        // מחשב את הקואורדינטות באופן אסינכרוני אך לא מחכה לתוצאה
+        _ = Task.Run(async () =>
+        {
+            double[] coordinates = await GetCoordinatesFromAddressAsync(volunteer.FullAddress);
+
+            if (coordinates[0] != volunteer.Latitude || coordinates[1] != volunteer.Longitude)
+                throw new BO.BlWrongItemException("Coordinates do not match.");
+        });
+    }
+
 
     internal static double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
     {
@@ -447,7 +445,7 @@ internal class VolunteerManager
             FullAddress = doVolunteer.FullAddress,
             Latitude = doVolunteer.Latitude,
             Longitude = doVolunteer.Longitude,
-            CurrentCall = VolunteerManager.GetCallIn(doVolunteer),
+            //CurrentCall = VolunteerManager.(doVolunteer),
             TotalCanceledCalls = totalCallsCanceled,
             TotalExpiredCalls = totalCallsExpired,
             TotalHandledCalls = totalCallsHandled,
@@ -471,12 +469,7 @@ internal class VolunteerManager
         if (manager.Job != DO.Role.Manager && volunteerId != boVolunteer.Id)
             throw new BO.BlWrongInputException("Only a manager can update details");
 
-        if (boVolunteer.FullAddress != doVolunteer.FullAddress)
-        {
-            var coordinates = VolunteerManager.GetCoordinatesFromAddress(boVolunteer.FullAddress);
-            boVolunteer.Latitude = coordinates[0];
-            boVolunteer.Longitude = coordinates[1];
-        }
+      
 
         VolunteerManager.CheckLogic(boVolunteer);
         VolunteerManager.CheckFormat(boVolunteer);
@@ -543,9 +536,7 @@ internal class VolunteerManager
         lock (AdminManager.BlMutex) // stage 7
         {
             AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
-            var coordinates = VolunteerManager.GetCoordinatesFromAddress(boVolunteer.FullAddress);
-            boVolunteer.Latitude = coordinates[0];
-            boVolunteer.Longitude = coordinates[1];
+
 
             VolunteerManager.CheckLogic(boVolunteer);
             VolunteerManager.CheckFormat(boVolunteer);
@@ -560,10 +551,11 @@ internal class VolunteerManager
                 boVolunteer.Active,
                 boVolunteer.Password,
                 boVolunteer.FullAddress,
-                boVolunteer.Latitude,
-                boVolunteer.Longitude,
+                null,
+                null,
                 boVolunteer.MaxReading
             );
+
 
             try
             {
@@ -575,6 +567,11 @@ internal class VolunteerManager
             {
                 throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
             }
+
         }
+       _=VolunteerManager.GetCoordinatesFromAddressAsync(boVolunteer.FullAddress);
+
     }
+
+
 }

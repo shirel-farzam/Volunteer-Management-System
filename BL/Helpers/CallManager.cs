@@ -684,24 +684,52 @@ internal static class CallManager
 
         }
     }
-    public static void AddCallInternal1(BO.Call boCall)
+    //public static void AddCallInternal1(BO.Call boCall)
+    //{
+    //    // יצירת משימה אסינכרונית
+    //    var task = Task.Run(async () =>
+    //    {
+    //        return await VolunteerManager.GetCoordinatesFromAddressAsync(boCall.FullAddress);
+    //    });
+
+    //    // מחכים להשלמת המשימה
+    //    double[] coordinate = task.Result;
+    //    double latitude = coordinate[0];
+    //    double longitude = coordinate[1];
+    //    boCall.Latitude = latitude;
+    //    boCall.Longitude = longitude;
+
+    //    CallManager.IsLogicCall(boCall);
+
+    //    DO.Call doCall = new
+    //    (
+    //        boCall.Id,
+    //        (DO.CallType)boCall.Type,
+    //        boCall.Description,
+    //        boCall.FullAddress,
+    //        latitude,
+    //        longitude,
+    //        boCall.OpenTime,
+    //        boCall.MaxEndTime
+    //    );
+
+    //    lock (AdminManager.BlMutex) // שלב 7
+    //    {
+    //        _dal.Call.Create(doCall);
+    //    }
+    //}
+    public static void AddCallInternal1(BO.Call boCall)      ///////// לבדוק אם זה טוב 
+
     {
-        double[] coordinate = VolunteerManager.GetCoordinatesFromAddress(boCall.FullAddress);
-        double latitude = coordinate[0];
-        double longitude = coordinate[1];
-        boCall.Latitude = latitude;
-        boCall.Longitude = longitude;
-
-        CallManager.IsLogicCall(boCall);
-
+        // יצירת אובייקט השיחה בלי לחשב קואורדינטות עדיין
         DO.Call doCall = new
         (
             boCall.Id,
             (DO.CallType)boCall.Type,
             boCall.Description,
             boCall.FullAddress,
-            latitude,
-            longitude,
+            0, // ערכים זמניים עד לעדכון הקואורדינטות
+            0,
             boCall.OpenTime,
             boCall.MaxEndTime
         );
@@ -710,7 +738,24 @@ internal static class CallManager
         {
             _dal.Call.Create(doCall);
         }
+
+        // הרצת חישוב הקואורדינטות ברקע ללא חסימה
+        _ = Task.Run(async () =>
+        {
+            double[]? coordinate = await VolunteerManager.GetCoordinatesFromAddressAsync(boCall.FullAddress);
+            if (coordinate is not null)
+            {
+                doCall = doCall with { Latitude = coordinate[0], Longitude = coordinate[1] };
+
+                lock (AdminManager.BlMutex)
+                    _dal.Call.Update(doCall);
+            }
+        });
+
+        // המשך הביצוע בלי לחכות לתוצאה
     }
+
+
     public static BO.Call ReadInternal(int callId)
     {
         // הגדרת פונקציה לסינון משימות שקשורות לשיחה המבוקשת
@@ -1081,8 +1126,8 @@ internal static class CallManager
                 (DO.CallType)boCall.Type, // Convert call type from BO to DO
                 boCall.Description, // Description of the call
                 boCall.FullAddress, // Full address of the call
-                boCall.Latitude ?? 0.0, // Default latitude if null
-                boCall.Longitude ?? 0.0, // Default longitude if null
+                boCall.Latitude ?? null, // Default latitude if null
+                boCall.Longitude ?? null, // Default longitude if null
                 boCall.OpenTime, // The time the call was opened
                 boCall.MaxEndTime // The maximum time allowed for the call to close
                 );
@@ -1091,6 +1136,7 @@ internal static class CallManager
             // Update the call in the data layer.
             lock (AdminManager.BlMutex) // stage 7
                 _dal.Call.Update(doCall);
+            VolunteerManager.updateCoordinatesForCallAddressAsync(doCall);
 
             // Notify observers outside of the lock.
             CallManager.Observers.NotifyItemUpdated(doCall.Id); // stage 5
@@ -1145,5 +1191,7 @@ internal static class CallManager
             throw new BO.BlAlreadyExistsException("Impossible to create assignment"); // Handles creation failure
         }
     }
+    
+
 }
 
