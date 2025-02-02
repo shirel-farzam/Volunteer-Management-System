@@ -280,75 +280,7 @@ internal static class CallManager
 
     }
 
-    //}
-    //public static BO.CallAssignmentInList GetCallAssignInList(int Id)
-    //{
-    //    // קריאה למתנדב לפי מזהה
-    //    DO.Volunteer? doVolunteer = _dal.Volunteer.Read(Id) ?? throw new BlDoesNotExistException("Volunteer with the specified ID does not exist.");
 
-    //    // חיפוש השמה מתאימה לפי מזהה מתנדב
-    //    var doAssignment = _dal.Assignment.ReadAll()
-    //        .Where(a => a.VolunteerId == Id && a.TimeEnd == null)
-    //        .FirstOrDefault();
-
-    //    if (doAssignment == null)
-    //    {
-    //        throw new BlDoesNotExistException("No active assignment found for the specified volunteer.");
-    //    }
-
-    //    // חיפוש שיחה מתאימה לפי מזהה השיחה מההשמה
-    //    var doCall = _dal.Call.ReadAll()
-    //        .Where(c => c.Id == doAssignment.CallId)
-    //        .FirstOrDefault();
-
-    //    if (doCall == null)
-    //    {
-    //        throw new BlDoesNotExistException("No call found for the specified assignment.");
-    //    }
-
-    //    // החזרת האובייקט עם הנתונים
-    //    return new BO.CallAssignmentInList
-    //    {
-    //        VolunteerId = doAssignment.VolunteerId, // מזהה המתנדב
-    //        VolunteerName = doVolunteer.FullName, // שם המתנדב
-    //        StartTime = doAssignment.TimeStart, // זמן התחלת הטיפול
-    //        EndTime = doAssignment.TimeEnd, // זמן סיום הטיפול
-    //        CompletionType = doAssignment.TypeEndTreat.HasValue
-    //            ? (BO.AssignmentCompletionType?)doAssignment.TypeEndTreat.Value
-    //            : null // סטטוס השלמת הטיפול (nullable)
-    //    };
-    //}
-
-
-    //public static List<BO.CallAssignmentInList> GetCallAssignInList(int volunteerId)
-    //{
-    //    // בדיקת קיום מתנדב
-    //    DO.Volunteer? doVolunteer = _dal.Volunteer.Read(volunteerId)
-    //        ?? throw new BlDoesNotExistException($"Volunteer with ID {volunteerId} does not exist");
-
-    //    // הבאת כל ההקצאות הפתוחות של המתנדב
-    //    var doAssignments = _dal.Assignment.ReadAll()
-    //        .Where(a => a.VolunteerId == volunteerId && a.TimeEnd == null)
-    //        .ToList();
-
-    //    // אם אין הקצאות פתוחות, מחזיר רשימה ריקה
-    //    if (!doAssignments.Any())
-    //    {
-    //        return new List<BO.CallAssignmentInList>();
-    //    }
-
-    //    // ממפה את ההקצאות לאובייקטי BO
-    //    return doAssignments.Select(a => new BO.CallAssignmentInList
-    //    {
-    //        VolunteerId = a.VolunteerId,
-    //        VolunteerName = doVolunteer.FullName, // שם המתנדב
-    //        StartTime = a.TimeStart,
-    //        EndTime = a.TimeEnd,
-    //        CompletionType = a.TypeEndTreat.HasValue
-    //            ? (BO.AssignmentCompletionType?)a.TypeEndTreat.Value
-    //            : null
-    //    }).ToList();
-    //}
     private static readonly object LockObject = new object();  // אובייקט נעילה לסנכרון הגישה
 
     public static List<BO.CallAssignmentInList> GetCallAssignmentsForCall(int callId)

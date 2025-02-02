@@ -12,7 +12,7 @@
     <FullAddress>Rothschild Boulevard 1, Tel Aviv, Israel</FullAddress>
     <Latitude>32.0631559</Latitude>
     <Longitude>34.7688262</Longitude>
-    <MaxReading>81</MaxReading>
+    <MaxReading>41</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214432767</Id>
@@ -26,7 +26,7 @@
     <FullAddress>King George 10, Haifa, Israel</FullAddress>
     <Latitude>32.792761</Latitude>
     <Longitude>34.995336</Longitude>
-    <MaxReading>72</MaxReading>
+    <MaxReading>55</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214485302</Id>
@@ -40,7 +40,7 @@
     <FullAddress>Herzl Street 5, Netanya, Israel</FullAddress>
     <Latitude>32.303342</Latitude>
     <Longitude>35.125519</Longitude>
-    <MaxReading>99</MaxReading>
+    <MaxReading>64</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214545303</Id>
@@ -54,7 +54,7 @@
     <FullAddress>Jabotinsky Street 20, Petah Tikva, Israel</FullAddress>
     <Latitude>32.089587</Latitude>
     <Longitude>34.770817</Longitude>
-    <MaxReading>81</MaxReading>
+    <MaxReading>73</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214554958</Id>
@@ -68,7 +68,7 @@
     <FullAddress>Ben Gurion Boulevard 50, Ashdod, Israel</FullAddress>
     <Latitude>31.791658</Latitude>
     <Longitude>34.651074</Longitude>
-    <MaxReading>18</MaxReading>
+    <MaxReading>35</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214616104</Id>
@@ -82,7 +82,7 @@
     <FullAddress>Yigal Alon Street 30, Tel Aviv, Israel</FullAddress>
     <Latitude>32.109166</Latitude>
     <Longitude>34.811118</Longitude>
-    <MaxReading>82</MaxReading>
+    <MaxReading>43</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214631426</Id>
@@ -96,7 +96,7 @@
     <FullAddress>Independence Square 8, Hadera, Israel</FullAddress>
     <Latitude>32.43645</Latitude>
     <Longitude>34.91956</Longitude>
-    <MaxReading>84</MaxReading>
+    <MaxReading>30</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214664260</Id>
@@ -110,7 +110,7 @@
     <FullAddress>David HaMelech Street 12, Eilat, Israel</FullAddress>
     <Latitude>29.55805</Latitude>
     <Longitude>34.94821</Longitude>
-    <MaxReading>58</MaxReading>
+    <MaxReading>51</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214675688</Id>
@@ -124,7 +124,7 @@
     <FullAddress>Hanegev Boulevard 3, Beersheba, Israel</FullAddress>
     <Latitude>31.257023</Latitude>
     <Longitude>34.785262</Longitude>
-    <MaxReading>90</MaxReading>
+    <MaxReading>64</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214736456</Id>
@@ -138,7 +138,7 @@
     <FullAddress>Emek Refaim 43, Jerusalem, Israel</FullAddress>
     <Latitude>31.7619324</Latitude>
     <Longitude>35.2179409</Longitude>
-    <MaxReading>94</MaxReading>
+    <MaxReading>34</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214736688</Id>
@@ -152,7 +152,7 @@
     <FullAddress>HaAtzmaut Boulevard 2, Bat Yam, Israel</FullAddress>
     <Latitude>32.096611</Latitude>
     <Longitude>34.779417</Longitude>
-    <MaxReading>31</MaxReading>
+    <MaxReading>85</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214763252</Id>
@@ -166,7 +166,7 @@
     <FullAddress>Allenby Street 35, Tel Aviv, Israel</FullAddress>
     <Latitude>32.062991</Latitude>
     <Longitude>34.772842</Longitude>
-    <MaxReading>38</MaxReading>
+    <MaxReading>20</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214773020</Id>
@@ -180,7 +180,7 @@
     <FullAddress>Namal Street 4, Ashkelon, Israel</FullAddress>
     <Latitude>31.437793</Latitude>
     <Longitude>34.4091</Longitude>
-    <MaxReading>65</MaxReading>
+    <MaxReading>39</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214776742</Id>
@@ -194,7 +194,7 @@
     <FullAddress>Sokolov Street 22, Rishon LeZion, Israel</FullAddress>
     <Latitude>32.062593</Latitude>
     <Longitude>34.776051</Longitude>
-    <MaxReading>62</MaxReading>
+    <MaxReading>50</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214786972</Id>
@@ -208,7 +208,7 @@
     <FullAddress>Hertzel Boulevard 9, Holon, Israel</FullAddress>
     <Latitude>32.008484</Latitude>
     <Longitude>34.780119</Longitude>
-    <MaxReading>87</MaxReading>
+    <MaxReading>21</MaxReading>
   </Volunteer>
   <Volunteer>
     <Id>214994642</Id>

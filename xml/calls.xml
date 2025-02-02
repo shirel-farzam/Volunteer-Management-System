@@ -3,501 +3,501 @@
   <Call>
     <Id>1000</Id>
     <Type>InventoryCheck</Type>
-    <Description>Family needs a hot meal in the city center.</Description>
+    <Description>Family requests a hot meal for the whole day due to intensive treatment.</Description>
     <FullAddress>King David St 12, Jerusalem, Israel</FullAddress>
     <Latitude>31.7769</Latitude>
     <Longitude>35.2134</Longitude>
-    <TimeOpened>2025-02-02T17:20:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T20:56:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T10:51:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T15:18:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1001</Id>
     <Type>FoodPreparation</Type>
-    <Description>Patient needs a hot meal after finishing medical treatment at the hospital.</Description>
+    <Description>Family requests help preparing an evening meal for an elderly patient.</Description>
     <FullAddress>Keren Hayesod St 15, Jerusalem, Israel</FullAddress>
     <Latitude>31.7747</Latitude>
     <Longitude>35.2153</Longitude>
-    <TimeOpened>2025-02-02T05:20:22</TimeOpened>
+    <TimeOpened>2025-02-02T20:15:23</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1002</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family needs help preparing meals due to difficulties in the kitchen.</Description>
+    <Description>Patient and family need assistance with meal preparation for an extended period.</Description>
     <FullAddress>HaRav Kook St 20, Jerusalem, Israel</FullAddress>
     <Latitude>31.783</Latitude>
     <Longitude>35.2135</Longitude>
-    <TimeOpened>2025-02-02T02:47:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T21:30:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T17:57:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T22:49:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1003</Id>
     <Type>InventoryCheck</Type>
-    <Description>Patient waiting for a meal arranged near the hospital.</Description>
+    <Description>Family needs a hot meal in the suburban area.</Description>
     <FullAddress>Strauss St 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7739</Latitude>
     <Longitude>35.211</Longitude>
-    <TimeOpened>2025-02-02T04:06:22</TimeOpened>
+    <TimeOpened>2025-02-02T12:02:23</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1004</Id>
     <Type>FoodTransport</Type>
-    <Description>Family locked out of the kitchen after patient left for the hospital.</Description>
+    <Description>Patient in serious condition, family urgently needs a hot meal.</Description>
     <FullAddress>Radak St 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7762</Latitude>
     <Longitude>35.2123</Longitude>
-    <TimeOpened>2025-02-02T02:04:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T21:33:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T01:13:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1005</Id>
     <Type>FoodPreparation</Type>
-    <Description>The patient requires food support after a long period of medical treatment.</Description>
+    <Description>Family requests support with preparing a hot meal for a patient with daily struggles.</Description>
     <FullAddress>Bezalel St 35, Jerusalem, Israel</FullAddress>
     <Latitude>31.7743</Latitude>
     <Longitude>35.2201</Longitude>
-    <TimeOpened>2025-02-02T20:16:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T23:18:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T13:19:23</TimeOpened>
+    <MaxTimeToClose>2025-02-03T04:32:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1006</Id>
     <Type>InventoryCheck</Type>
-    <Description>Family in a difficult situation, urgently needs a hot meal.</Description>
+    <Description>Family needs a meal for a patient in a therapy pool.</Description>
     <FullAddress>Shmuel HaNagid St 18, Jerusalem, Israel</FullAddress>
     <Latitude>31.7748</Latitude>
     <Longitude>35.212</Longitude>
-    <TimeOpened>2025-02-02T05:50:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T08:12:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T15:57:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T17:21:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1007</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family unable to prepare food after a difficult surgery.</Description>
+    <Description>Patient requires an immediate meal after a complex treatment at the clinic.</Description>
     <FullAddress>David HaMelech St 6, Jerusalem, Israel</FullAddress>
     <Latitude>31.7796</Latitude>
     <Longitude>35.2145</Longitude>
-    <TimeOpened>2025-02-02T19:58:22</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
+    <TimeOpened>2025-02-02T20:04:23</TimeOpened>
+    <MaxTimeToClose>2025-02-03T07:43:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1008</Id>
     <Type>FoodTransport</Type>
-    <Description>Patient alone at home, needs assistance with preparing a meal.</Description>
+    <Description>Family unable to prepare food after leaving the clinic.</Description>
     <FullAddress>Shivtei Israel St 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.774</Latitude>
     <Longitude>35.2159</Longitude>
-    <TimeOpened>2025-02-02T15:59:22</TimeOpened>
-    <MaxTimeToClose>2025-02-03T11:58:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T16:54:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1009</Id>
     <Type>InventoryCheck</Type>
-    <Description>Family requested an immediate meal to be delivered to a nearby location.</Description>
+    <Description>Family needs a hot meal in the evening for a patient after surgery.</Description>
     <FullAddress>HaMesila Park, Jerusalem, Israel</FullAddress>
     <Latitude>31.7711</Latitude>
     <Longitude>35.2206</Longitude>
-    <TimeOpened>2025-02-02T19:37:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T23:08:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T17:45:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1010</Id>
     <Type>FoodPreparation</Type>
-    <Description>Patient needs a hot meal after a prolonged clinic treatment.</Description>
+    <Description>Family needs food assistance for a patient waiting at home for medical tests.</Description>
     <FullAddress>Rabbi Akiva St 8, Jerusalem, Israel</FullAddress>
     <Latitude>31.7741</Latitude>
     <Longitude>35.2221</Longitude>
-    <TimeOpened>2025-02-02T19:56:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T20:04:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T19:05:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T21:42:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1011</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family requests a hot meal for someone who is hospitalized for several days.</Description>
+    <Description>Patient needs a hot meal after an extended hospitalization.</Description>
     <FullAddress>Haneviim St 50, Jerusalem, Israel</FullAddress>
     <Latitude>31.7764</Latitude>
     <Longitude>35.2113</Longitude>
-    <TimeOpened>2025-02-02T06:48:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T08:41:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T13:32:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T15:14:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1012</Id>
     <Type>InventoryCheck</Type>
-    <Description>Patient in late-stage illness, meal urgently needed near the clinic.</Description>
+    <Description>Hot meal requested for the parents of a patient waiting for medical tests.</Description>
     <FullAddress>Yemin Moshe St 8, Jerusalem, Israel</FullAddress>
     <Latitude>31.781</Latitude>
     <Longitude>35.2176</Longitude>
-    <TimeOpened>2025-02-02T06:30:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T23:51:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T18:06:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1013</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family unable to prepare meals after the patient was hospitalized in critical condition.</Description>
+    <Description>Family requests help preparing meals for a patient during home medical care.</Description>
     <FullAddress>Yoel Moshe Salomon St 22, Jerusalem, Israel</FullAddress>
     <Latitude>31.7768</Latitude>
     <Longitude>35.2138</Longitude>
-    <TimeOpened>2025-02-02T11:06:22</TimeOpened>
+    <TimeOpened>2025-02-02T05:00:23</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1014</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family needs assistance in preparing meals for a patient at home.</Description>
+    <Description>Patient needs a hot meal after finishing medical treatment at the hospital.</Description>
     <FullAddress>HaOren St 7, Jerusalem, Israel</FullAddress>
     <Latitude>31.7819</Latitude>
     <Longitude>35.2109</Longitude>
-    <TimeOpened>2025-02-02T20:48:22</TimeOpened>
+    <TimeOpened>2025-02-02T18:23:23</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1015</Id>
     <Type>InventoryCheck</Type>
-    <Description>Family requesting a hot meal for lunch in their residential area.</Description>
+    <Description>Family requests a meal immediately for the afternoon hours.</Description>
     <FullAddress>Beit Hakerem St 25, Jerusalem, Israel</FullAddress>
     <Latitude>31.7795</Latitude>
     <Longitude>35.2118</Longitude>
-    <TimeOpened>2025-02-02T00:52:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T02:00:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T19:49:23</TimeOpened>
+    <MaxTimeToClose>2025-02-03T13:51:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1016</Id>
     <Type>FoodTransport</Type>
-    <Description>Family needs a holiday meal but has no access to the kitchen.</Description>
+    <Description>Patient in serious condition, meal must be tailored to a specific diet.</Description>
     <FullAddress>Givat Shaul St 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.778</Latitude>
     <Longitude>35.2082</Longitude>
-    <TimeOpened>2025-02-02T20:27:22</TimeOpened>
-    <MaxTimeToClose>2025-02-03T02:59:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T10:43:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1017</Id>
     <Type>FoodPreparation</Type>
-    <Description>Patient in critical condition needs a hot meal immediately after medical treatment.</Description>
+    <Description>Family needs help preparing meals due to difficulties in the kitchen.</Description>
     <FullAddress>Shlomo Zalman Shragai St 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7825</Latitude>
     <Longitude>35.2047</Longitude>
-    <TimeOpened>2025-02-02T18:51:22</TimeOpened>
-    <MaxTimeToClose>2025-02-03T02:04:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T22:39:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1018</Id>
     <Type>InventoryCheck</Type>
-    <Description>Family needs a hot meal after medical treatment at the hospital.</Description>
+    <Description>Family needs a hot meal in the city center.</Description>
     <FullAddress>Emek Refaim St 12, Jerusalem, Israel</FullAddress>
     <Latitude>31.7814</Latitude>
     <Longitude>35.2165</Longitude>
-    <TimeOpened>2025-02-02T03:25:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T09:08:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T14:22:23</TimeOpened>
+    <MaxTimeToClose>2025-02-03T12:41:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1019</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family requests help with preparing food for a patient requiring daily support.</Description>
+    <Description>The patient requires food support after a long period of medical treatment.</Description>
     <FullAddress>Azza St 40, Jerusalem, Israel</FullAddress>
     <Latitude>31.7817</Latitude>
     <Longitude>35.2147</Longitude>
-    <TimeOpened>2025-02-02T20:40:22</TimeOpened>
-    <MaxTimeToClose>2025-02-03T19:32:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T22:37:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1020</Id>
     <Type>FoodTransport</Type>
-    <Description>Patient in serious condition, family urgently needs a hot meal.</Description>
+    <Description>Family unable to prepare food and needs immediate help.</Description>
     <FullAddress>Derech Har HaTsofim 20, Jerusalem, Israel</FullAddress>
     <Latitude>31.7822</Latitude>
     <Longitude>35.2202</Longitude>
-    <TimeOpened>2025-02-01T23:12:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T10:06:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T09:17:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T19:04:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1021</Id>
     <Type>InventoryCheck</Type>
-    <Description>Meal needed for a patient having difficulty moving, near a busy street.</Description>
+    <Description>Patient waiting for a meal arranged near the hospital.</Description>
     <FullAddress>Mount Scopus Campus, Jerusalem, Israel</FullAddress>
     <Latitude>31.7789</Latitude>
     <Longitude>35.2423</Longitude>
-    <TimeOpened>2025-02-02T15:20:22</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
+    <TimeOpened>2025-02-02T11:03:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T19:28:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1022</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family needs help with preparing a meal for a patient in long-term hospitalization.</Description>
+    <Description>Family unable to prepare food after a difficult surgery.</Description>
     <FullAddress>Nablus Rd 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7758</Latitude>
     <Longitude>35.2349</Longitude>
-    <TimeOpened>2025-02-02T00:46:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T16:04:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T02:37:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T14:52:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1023</Id>
     <Type>FoodPreparation</Type>
-    <Description>Patient unable to prepare food on their own, needs a hot meal at home.</Description>
+    <Description>Patient needs a hot meal after a prolonged clinic treatment.</Description>
     <FullAddress>Hebron Rd 50, Jerusalem, Israel</FullAddress>
     <Latitude>31.7726</Latitude>
     <Longitude>35.2128</Longitude>
-    <TimeOpened>2025-02-02T10:49:22</TimeOpened>
-    <MaxTimeToClose>2025-02-03T04:24:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T06:43:23</TimeOpened>
+    <MaxTimeToClose>2025-02-03T03:51:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1024</Id>
     <Type>InventoryCheck</Type>
-    <Description>Hot meal requested for a family in an area without cooking facilities.</Description>
+    <Description>Family in a difficult situation, urgently needs a hot meal.</Description>
     <FullAddress>HaPalmach St 20, Jerusalem, Israel</FullAddress>
     <Latitude>31.7703</Latitude>
     <Longitude>35.2131</Longitude>
-    <TimeOpened>2025-02-02T19:15:22</TimeOpened>
-    <MaxTimeToClose>2025-02-03T05:13:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T02:12:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1025</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family requests help preparing an evening meal for an elderly patient.</Description>
+    <Description>Family requests a hot meal for someone who is hospitalized for several days.</Description>
     <FullAddress>Lincoln St 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7831</Latitude>
     <Longitude>35.2169</Longitude>
-    <TimeOpened>2025-02-02T14:50:22</TimeOpened>
+    <TimeOpened>2025-02-02T10:37:23</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1026</Id>
     <Type>FoodPreparation</Type>
-    <Description>Patient and family need assistance with meal preparation for an extended period.</Description>
+    <Description>Family unable to prepare meals after the patient was hospitalized in critical condition.</Description>
     <FullAddress>Duvdevani St 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7813</Latitude>
     <Longitude>35.2074</Longitude>
-    <TimeOpened>2025-02-02T16:57:22</TimeOpened>
+    <TimeOpened>2025-02-02T11:11:23</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1027</Id>
     <Type>InventoryCheck</Type>
-    <Description>Family needs a hot meal with a special diet option.</Description>
+    <Description>Family requested an immediate meal to be delivered to a nearby location.</Description>
     <FullAddress>Diskin St 12, Jerusalem, Israel</FullAddress>
     <Latitude>31.7792</Latitude>
     <Longitude>35.2117</Longitude>
-    <TimeOpened>2025-02-02T06:39:22</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
+    <TimeOpened>2025-02-02T05:59:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T08:49:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1028</Id>
     <Type>FoodTransport</Type>
-    <Description>Family unable to prepare food after leaving the clinic.</Description>
+    <Description>Assistance needed in preparing food for a family member at the hospital.</Description>
     <FullAddress>Alkalai St 15, Jerusalem, Israel</FullAddress>
     <Latitude>31.7764</Latitude>
     <Longitude>35.2105</Longitude>
-    <TimeOpened>2025-02-02T10:28:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T21:20:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T18:39:23</TimeOpened>
+    <MaxTimeToClose>2025-02-03T01:16:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1029</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family requests support with preparing a hot meal for a patient with daily struggles.</Description>
+    <Description>Family needs assistance in preparing meals for a patient at home.</Description>
     <FullAddress>Ramban St 20, Jerusalem, Israel</FullAddress>
     <Latitude>31.7805</Latitude>
     <Longitude>35.2139</Longitude>
-    <TimeOpened>2025-02-01T22:55:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T03:47:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T18:44:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1030</Id>
     <Type>InventoryCheck</Type>
-    <Description>Patient living in an assisted living facility, requires meals in the evening.</Description>
+    <Description>Patient in late-stage illness, meal urgently needed near the clinic.</Description>
     <FullAddress>Mordechai Ben Hillel St 12, Jerusalem, Israel</FullAddress>
     <Latitude>31.7753</Latitude>
     <Longitude>35.2208</Longitude>
-    <TimeOpened>2025-02-02T00:43:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T01:28:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T00:38:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T05:35:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1031</Id>
     <Type>FoodPreparation</Type>
-    <Description>Patient requires an immediate meal after a complex treatment at the clinic.</Description>
+    <Description>Patient in critical condition needs a hot meal immediately after medical treatment.</Description>
     <FullAddress>HaRav Herzog St 60, Jerusalem, Israel</FullAddress>
     <Latitude>31.7755</Latitude>
     <Longitude>35.2126</Longitude>
-    <TimeOpened>2025-02-02T12:08:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T19:30:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T10:49:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1032</Id>
     <Type>FoodTransport</Type>
-    <Description>Patient in serious condition, meal must be tailored to a specific diet.</Description>
+    <Description>Patient at home in treatment, requires a hot meal urgently.</Description>
     <FullAddress>Gershon Agron St 12, Jerusalem, Israel</FullAddress>
     <Latitude>31.7793</Latitude>
     <Longitude>35.2204</Longitude>
-    <TimeOpened>2025-02-02T13:19:22</TimeOpened>
-    <MaxTimeToClose>2025-02-03T09:12:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T10:36:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1033</Id>
     <Type>InventoryCheck</Type>
-    <Description>Family expected a hot meal near the military base.</Description>
+    <Description>Family requesting a hot meal for lunch in their residential area.</Description>
     <FullAddress>Givon St 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7761</Latitude>
     <Longitude>35.2133</Longitude>
-    <TimeOpened>2025-02-01T23:24:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T07:29:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T03:38:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T19:42:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1034</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family needs food assistance for a patient waiting at home for medical tests.</Description>
+    <Description>Family requests help with preparing food for a patient requiring daily support.</Description>
     <FullAddress>Golda Meir Blvd 80, Jerusalem, Israel</FullAddress>
     <Latitude>31.7708</Latitude>
     <Longitude>35.2146</Longitude>
-    <TimeOpened>2025-02-02T14:15:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T14:58:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T00:41:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1035</Id>
     <Type>FoodPreparation</Type>
-    <Description>Patient needs a hot meal after an extended hospitalization.</Description>
+    <Description>Family needs help with preparing a meal for a patient in long-term hospitalization.</Description>
     <FullAddress>Lev Ram Blvd 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7716</Latitude>
     <Longitude>35.2041</Longitude>
-    <TimeOpened>2025-02-02T13:57:22</TimeOpened>
-    <MaxTimeToClose>2025-02-03T09:53:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T21:09:23</TimeOpened>
+    <MaxTimeToClose>2025-02-03T13:03:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1036</Id>
     <Type>InventoryCheck</Type>
-    <Description>Family requested support with meals for a week due to chronic illness.</Description>
+    <Description>Family needs a hot meal after medical treatment at the hospital.</Description>
     <FullAddress>Harav Shach St 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7777</Latitude>
     <Longitude>35.2039</Longitude>
-    <TimeOpened>2025-02-02T00:21:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T11:00:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T07:10:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T21:49:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1037</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family requests help preparing meals for a patient during home medical care.</Description>
+    <Description>Patient unable to prepare food on their own, needs a hot meal at home.</Description>
     <FullAddress>Kiryat HaLeom, Jerusalem, Israel</FullAddress>
     <Latitude>31.7722</Latitude>
     <Longitude>35.2034</Longitude>
-    <TimeOpened>2025-02-01T23:41:22</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
+    <TimeOpened>2025-02-02T04:27:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T19:13:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1038</Id>
     <Type>FoodPreparation</Type>
-    <Description>Patient needs a hot meal after finishing medical treatment at the hospital.</Description>
+    <Description>Family requests help preparing an evening meal for an elderly patient.</Description>
     <FullAddress>Shaarei Tsedek St 3, Jerusalem, Israel</FullAddress>
     <Latitude>31.7803</Latitude>
     <Longitude>35.2239</Longitude>
-    <TimeOpened>2025-02-02T04:03:22</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
+    <TimeOpened>2025-02-02T00:56:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T22:28:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1039</Id>
     <Type>InventoryCheck</Type>
-    <Description>Hot meal needed for a patient waiting to be discharged from the hospital.</Description>
+    <Description>Meal needed for a patient having difficulty moving, near a busy street.</Description>
     <FullAddress>Givat Mordechai St 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7801</Latitude>
     <Longitude>35.2144</Longitude>
-    <TimeOpened>2025-02-02T16:36:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T16:54:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T00:30:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1040</Id>
     <Type>FoodTransport</Type>
-    <Description>Family unable to prepare food and needs immediate help.</Description>
+    <Description>Family unable to cook and needs immediate help with a meal.</Description>
     <FullAddress>Bayit Vegan St 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7796</Latitude>
     <Longitude>35.2223</Longitude>
-    <TimeOpened>2025-02-02T10:46:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T19:34:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T04:40:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T21:50:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1041</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family needs help preparing meals due to difficulties in the kitchen.</Description>
+    <Description>Patient and family need assistance with meal preparation for an extended period.</Description>
     <FullAddress>Sanhedria St 12, Jerusalem, Israel</FullAddress>
     <Latitude>31.7748</Latitude>
     <Longitude>35.2174</Longitude>
-    <TimeOpened>2025-02-02T13:01:22</TimeOpened>
-    <MaxTimeToClose>2025-02-03T10:21:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T12:26:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T12:55:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1042</Id>
     <Type>InventoryCheck</Type>
-    <Description>Family requests a hot meal for the whole day due to intensive treatment.</Description>
+    <Description>Hot meal requested for a family in an area without cooking facilities.</Description>
     <FullAddress>Bar Ilan St 20, Jerusalem, Israel</FullAddress>
     <Latitude>31.7794</Latitude>
     <Longitude>35.23</Longitude>
-    <TimeOpened>2025-02-02T07:11:22</TimeOpened>
+    <TimeOpened>2025-02-02T22:07:23</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1043</Id>
     <Type>FoodPreparation</Type>
-    <Description>The patient requires food support after a long period of medical treatment.</Description>
+    <Description>Family requests support with preparing a hot meal for a patient with daily struggles.</Description>
     <FullAddress>Shmuel Hanavi St 45, Jerusalem, Israel</FullAddress>
     <Latitude>31.7759</Latitude>
     <Longitude>35.2332</Longitude>
-    <TimeOpened>2025-02-02T14:57:22</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
+    <TimeOpened>2025-02-02T17:20:23</TimeOpened>
+    <MaxTimeToClose>2025-02-03T14:15:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1044</Id>
     <Type>FoodTransport</Type>
-    <Description>Assistance needed in preparing food for a family member at the hospital.</Description>
+    <Description>Patient isolated at home, urgently needs a hot meal.</Description>
     <FullAddress>Malha Rd 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7816</Latitude>
     <Longitude>35.2122</Longitude>
-    <TimeOpened>2025-02-02T03:00:22</TimeOpened>
-    <MaxTimeToClose xsi:nil="true" />
+    <TimeOpened>2025-02-02T18:31:23</TimeOpened>
+    <MaxTimeToClose>2025-02-03T01:02:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1045</Id>
     <Type>InventoryCheck</Type>
-    <Description>Family needs a hot meal in the suburban area.</Description>
+    <Description>Family needs a hot meal with a special diet option.</Description>
     <FullAddress>Pisgat Ze'ev Blvd 10, Jerusalem, Israel</FullAddress>
     <Latitude>31.7809</Latitude>
     <Longitude>35.2305</Longitude>
-    <TimeOpened>2025-02-02T12:16:22</TimeOpened>
+    <TimeOpened>2025-02-02T15:28:23</TimeOpened>
     <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1046</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family unable to prepare food after a difficult surgery.</Description>
+    <Description>Patient requires an immediate meal after a complex treatment at the clinic.</Description>
     <FullAddress>Teddy Stadium, Jerusalem, Israel</FullAddress>
     <Latitude>31.773</Latitude>
     <Longitude>35.2249</Longitude>
-    <TimeOpened>2025-02-02T18:56:22</TimeOpened>
-    <MaxTimeToClose>2025-02-03T15:38:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T11:17:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
   <Call>
     <Id>1047</Id>
     <Type>FoodPreparation</Type>
-    <Description>Patient needs a hot meal after a prolonged clinic treatment.</Description>
+    <Description>Family needs food assistance for a patient waiting at home for medical tests.</Description>
     <FullAddress>Zahal St 7, Jerusalem, Israel</FullAddress>
     <Latitude>31.7792</Latitude>
     <Longitude>35.2251</Longitude>
-    <TimeOpened>2025-02-02T07:34:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T19:21:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T09:21:23</TimeOpened>
+    <MaxTimeToClose>2025-02-02T15:14:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1048</Id>
     <Type>InventoryCheck</Type>
-    <Description>Family needs a meal for a patient in a therapy pool.</Description>
+    <Description>Patient living in an assisted living facility, requires meals in the evening.</Description>
     <FullAddress>Ha'Arazim Blvd 5, Jerusalem, Israel</FullAddress>
     <Latitude>31.7749</Latitude>
     <Longitude>35.2168</Longitude>
-    <TimeOpened>2025-02-02T04:15:22</TimeOpened>
-    <MaxTimeToClose>2025-02-02T05:02:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T19:19:23</TimeOpened>
+    <MaxTimeToClose>2025-02-03T15:14:23</MaxTimeToClose>
   </Call>
   <Call>
     <Id>1049</Id>
     <Type>FoodPreparation</Type>
-    <Description>Family requests a hot meal for someone who is hospitalized for several days.</Description>
+    <Description>Patient needs a hot meal after an extended hospitalization.</Description>
     <FullAddress>Ramot Forest, Jerusalem, Israel</FullAddress>
     <Latitude>31.7731</Latitude>
     <Longitude>35.2214</Longitude>
-    <TimeOpened>2025-02-02T11:31:22</TimeOpened>
-    <MaxTimeToClose>2025-02-03T01:01:22</MaxTimeToClose>
+    <TimeOpened>2025-02-02T13:24:23</TimeOpened>
+    <MaxTimeToClose xsi:nil="true" />
   </Call>
 </ArrayOfCall>
