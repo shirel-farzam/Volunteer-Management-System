@@ -736,6 +736,8 @@ internal class CallImplementation : ICall
 
     public void UpdateTreatmentCancellation(int volunteerId, int assignmentId)
     {
+        AdminManager.ThrowOnSimulatorIsRunning(); // Ensure the simulator is not running (stage 7)
+
         try
         {
             // Call the internal function to perform the logic

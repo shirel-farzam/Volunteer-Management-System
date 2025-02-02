@@ -214,8 +214,9 @@ internal class VolunteerImplementation : IVolunteer
     //    }
     public void Update(int volunteerId, BO.Volunteer boVolunteer)
     {
-            // Call the internal implementation
-            VolunteerManager.UpdateInternal(volunteerId, boVolunteer);
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        // Call the internal implementation
+        VolunteerManager.UpdateInternal(volunteerId, boVolunteer);
     }
     // Deletes a volunteer if there are no active assignments
     //public void DeleteVolunteer(int volunteerId)
@@ -247,8 +248,10 @@ internal class VolunteerImplementation : IVolunteer
     // Adds a new volunteer with validations
     public void DeleteVolunteer(int volunteerId)
     {
-            // Call the internal implementation
-            VolunteerManager.DeleteVolunteerInternal(volunteerId);
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+
+        // Call the internal implementation
+        VolunteerManager.DeleteVolunteerInternal(volunteerId);
     }
     //public void AddVolunteer(BO.Volunteer boVolunteer)
     //{
@@ -291,8 +294,9 @@ internal class VolunteerImplementation : IVolunteer
     //}
     public void AddVolunteer(BO.Volunteer boVolunteer)
     {
-            // Call the internal implementation
-            VolunteerManager.AddVolunteerInternal(boVolunteer);
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        // Call the internal implementation
+        VolunteerManager.AddVolunteerInternal(boVolunteer);
     }
 
 }

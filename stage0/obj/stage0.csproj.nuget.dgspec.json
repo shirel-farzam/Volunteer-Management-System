@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ayele\\Source\\Repos\\dotNet5785_-4642_7701\\stage0\\stage0.csproj": {}
+    "C:\\Users\\shire\\source\\repos\\dotNet5785_-4642_7701\\stage0\\stage0.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ayele\\Source\\Repos\\dotNet5785_-4642_7701\\stage0\\stage0.csproj": {
+    "C:\\Users\\shire\\source\\repos\\dotNet5785_-4642_7701\\stage0\\stage0.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ayele\\Source\\Repos\\dotNet5785_-4642_7701\\stage0\\stage0.csproj",
+        "projectUniqueName": "C:\\Users\\shire\\source\\repos\\dotNet5785_-4642_7701\\stage0\\stage0.csproj",
         "projectName": "stage0",
-        "projectPath": "C:\\Users\\ayele\\Source\\Repos\\dotNet5785_-4642_7701\\stage0\\stage0.csproj",
-        "packagesPath": "C:\\Users\\ayele\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ayele\\Source\\Repos\\dotNet5785_-4642_7701\\stage0\\obj\\",
+        "projectPath": "C:\\Users\\shire\\source\\repos\\dotNet5785_-4642_7701\\stage0\\stage0.csproj",
+        "packagesPath": "C:\\Users\\shire\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\shire\\source\\repos\\dotNet5785_-4642_7701\\stage0\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ayele\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\shire\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -65,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
