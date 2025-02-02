@@ -33,10 +33,12 @@
     // Enum for Call Type  Combined for all Call Types
     public enum CallType
     {
+        
         FoodPreparation,  // Food preparation
         FoodTransport,    // Food transport
         InventoryCheck,
         None
+
     }
 
     // Enum for Assignment Completion Type 

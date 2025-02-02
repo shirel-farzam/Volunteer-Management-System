@@ -254,7 +254,7 @@ namespace PL
             CurrentTime = s_bl.Admin.GetClock();
             MaxRange = s_bl.Admin.GetMaxRange();
             CountCall = s_bl.Call.CountCall();
-            Interval = 50;
+            Interval = 30;
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
             s_bl.Call.AddObserver(callObserver);
@@ -304,7 +304,7 @@ namespace PL
             {
                 var hebrewCulture = new System.Globalization.CultureInfo("he-IL");
                 hebrewCulture.DateTimeFormat.Calendar = new System.Globalization.HebrewCalendar();
-                CurrentTime = DateTime.Now; // עדכון הזמן
+                CurrentTime = s_bl.Admin.GetClock(); // עדכון הזמן
             };
             _timer.Start();
         }

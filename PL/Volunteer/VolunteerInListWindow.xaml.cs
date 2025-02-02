@@ -54,50 +54,8 @@ namespace PL.Volunteer
         //}
 
         private void Volunteer_Sort(object sender, SelectionChangedEventArgs e) { QueryVolunteerList(); }
-        //{
-        //    VolunteerSort = (BO.VolunteerInListField)(((ComboBox)sender).SelectedItem);
-        //    VolunteerInList = s_bl?.Volunteer.ReadAll(null, VolunteerSort, VolunteerFilter)!;
-
-        //}
-        //private void Volunteer_Sort(object sender, SelectionChangedEventArgs e)
-        //{
-        //    // בדוק אם sender הוא ComboBox
-        //    if (sender is ComboBox comboBox)
-        //    {
-        //        // בדוק אם SelectedItem אינו null
-        //        if (comboBox.SelectedItem is BO.VolunteerInListField selectedSort)
-        //        {
-        //            VolunteerSort = selectedSort;
-
-        //            // בדוק אם הסביבה s_bl מאופסת כראוי
-        //            if (s_bl?.Volunteer != null)
-        //            {
-        //                VolunteerInList = s_bl.Volunteer.ReadAll(null, VolunteerSort, VolunteerFilter) ?? Enumerable.Empty<BO.VolunteerInList>();
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("The business logic object (s_bl) is not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("No valid sort field was selected.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("The sender is not a valid ComboBox.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //    }
-        //}
-
-        //private void Volunteer_Filter(object sender, SelectionChangedEventArgs e)
-        //{
-        //    //VolunteerFilter = (BO.CallType)(((ComboBox)sender).SelectedItem);
-        //    //VolunteerInList = s_bl?.Volunteer.ReadAll(null, VolunteerSort, VolunteerFilter)!;
-        //    VolunteerFilter = (BO.CallType)(((ComboBox)sender).SelectedItem);
-        //    VolunteerInList = s_bl?.Volunteer.ReadAll(null, VolunteerSort)!;
-
-        //}
+        
+       
         private void Volunteer_Filter(object sender, SelectionChangedEventArgs e)
         {
             if (((ComboBox)sender).SelectedItem is BO.CallType selectedFilter)

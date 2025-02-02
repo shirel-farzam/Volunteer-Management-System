@@ -20,9 +20,15 @@ internal class VolunteerManager
         int totalCallsHandled = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.Treated);
         int totalCallsCanceled = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.SelfCancel);
         int totalCallsExpired = calls.Count(ass => ass.TypeEndTreat == DO.TypeEnd.ExpiredCancel);
-        int? currentCallId = calls.FirstOrDefault(ass => ass.TimeEnd == null)?.Id;
+        int? currentCallId = calls.FirstOrDefault(ass => ass.TimeEnd == null)?.CallId;
+        BO.CallType callType = BO.CallType.None;
 
-        return new BO.VolunteerInList
+        if (currentCallId != null)
+        {
+            lock (AdminManager.BlMutex)
+                callType = (BO.CallType)s_dal.Call.Read(c => c.Id == currentCallId).Type;
+        }
+        return new ()
         {
             Id = doVolunteer.Id,
             FullName = doVolunteer.FullName,
@@ -30,7 +36,8 @@ internal class VolunteerManager
             TotalCallsHandled = totalCallsHandled,
             TotalCallsCanceled = totalCallsCanceled,
             TotalCallsExpired = totalCallsExpired,
-            CurrentCallId = currentCallId
+            CurrentCallId = currentCallId,
+            CurrentCallType=callType
         };
     }
 
@@ -383,8 +390,7 @@ internal class VolunteerManager
                 ?? throw new BO.BlNullPropertyException("No volunteers in the database");
 
             // Convert DO.Volunteer to BO.VolunteerInList
-            var boVolunteersInList = volunteers
-                .Select(VolunteerManager.ConvertDOToBOInList);
+            var boVolunteersInList = volunteers.Select(v=>ConvertDOToBOInList(v));
 
             // Apply filter for active status if specified
             var filteredVolunteers = isActive.HasValue

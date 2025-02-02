@@ -119,7 +119,8 @@ namespace PL.VolunteerScreens
                 {
                     s_bl.Call.ChooseCallForTreat(VolunteerId, call.Id);
                     MessageBox.Show($"Call {call.Id} was successfully chosen!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    //this.Close();
+                    QueryCallList();
+                    this.Close();
                 }
                 catch (Exception ex)
                 {
