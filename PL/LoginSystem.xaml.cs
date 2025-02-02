@@ -98,23 +98,16 @@ namespace PL
 
                 if (role == Role.Volunteer)
                 {
-                    MessageBox.Show("Welcome, Volunteer!");
-                    new VolunteerMainWindow(Id).Show();
+                     MessageBox.Show("Welcome, Volunteer!");
+                        new VolunteerMainWindow(Id).Show(); 
+                 
                 }
                 else
                 {
-                    //// בדיקה אם כבר יש מנהל מחובר
-                    //if (_isAdminLoggedIn)
-                    //{
-                    //    MessageBox.Show("An admin is already logged in. Only one admin can log in at a time.", "Login Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    //    return;
-                    //}
-
-                    // סימון מנהל כמחובר
-                    _isAdminLoggedIn = true;
-
-                    MessageBox.Show("Welcome, Admin!");
-                    new AdminTransition(Id, this).Show();
+                   
+                   MessageBox.Show("Welcome, Admin!");
+                        new AdminTransition(Id, this).Show(); 
+                   
                 }
         
             }

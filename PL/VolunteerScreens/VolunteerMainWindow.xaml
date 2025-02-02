@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.VolunteerScreens"
         mc:Ignorable="d"
-        Title="Volunteer Main Window" Height="650" Width="1100" Background="#F4F7FC">
+        Title="Volunteer Main Window" Height="650" Width="1100" Background="#F4F7FC"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    
 
     <Grid Margin="20">
         <!-- Main Layout -->
@@ -18,7 +20,9 @@
 
         <!-- Top Buttons -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,10">
-            <Button Content="Choose Call" Height="45" Width="150" Margin="0,0,10,0" Background="{StaticResource ButtonBlue}" Foreground="Black" FontWeight="Bold" Click="Button_Click" />
+            <Button Content="Choose Call" Height="45" Width="150" Margin="0,0,10,0" Background="{StaticResource ButtonBlue}" Foreground="Black" FontWeight="Bold" Click="Button_Click"
+                    IsEnabled="{Binding CurrentVolunteer, Converter={StaticResource BoolConvertIsCallInProssesKey}}" />
+            
             <Button Content="My Calls History" Height="45" Width="150" Background="{StaticResource ButtonBlue}" Foreground="Black" FontWeight="Bold" Click="BtHistory_Click" />
         </StackPanel>
         <Image Source="/picture/logo.png" Height="77" Width="93" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" 
@@ -110,8 +114,8 @@ Stretch="Uniform" Margin="5,-28,0,0"  />
 
             <!-- Call Details -->
             <Border CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource AccentLight}" Padding="15" Background="White" Grid.ColumnSpan="2" Margin="573,0,0,0"
-                      Visibility="{Binding CurrentVolunteer.CurrentCall, Converter={StaticResource NullToVisibilityConverterKey}}">
-                
+                Visibility="{Binding CurrentVolunteer.CurrentCall, Converter={StaticResource NullToVisibilityConverterKey}}">
+
                 <StackPanel>
                     <TextBlock Text="Current Call Details" FontSize="18" FontWeight="Bold" Foreground="#334155" Margin="0,0,0,15" />
 
@@ -152,7 +156,7 @@ Stretch="Uniform" Margin="5,-28,0,0"  />
 
                             <!-- Open Time -->
                             <TextBlock Text="Open Time:" FontWeight="Bold" Foreground="#334155" Grid.Row="4" Grid.Column="0" Margin="0,0,10,20"/>
-                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.OpenTime, StringFormat=G}" Grid.Row="4" Grid.Column="1" Margin="0,0,0,20"/>
+                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.OpeningTime, StringFormat=G}" Grid.Row="4" Grid.Column="1" Margin="0,0,0,20"/>
 
                             <!-- Max Completion Time -->
                             <TextBlock Text="Max Completion Time:" FontWeight="Bold" Foreground="#334155" Grid.Row="5" Grid.Column="0" Margin="0,0,10,20"/>
@@ -160,7 +164,7 @@ Stretch="Uniform" Margin="5,-28,0,0"  />
 
                             <!-- Enter Time -->
                             <TextBlock Text="Enter Time:" FontWeight="Bold" Foreground="#334155" Grid.Row="6" Grid.Column="0" Margin="0,0,10,20"/>
-                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.EnterTime, StringFormat=G}" Grid.Row="6" Grid.Column="1" Margin="0,0,0,20"/>
+                            <TextBlock Text="{Binding CurrentVolunteer.CurrentCall.EntryTime, StringFormat=G}" Grid.Row="6" Grid.Column="1" Margin="0,0,0,20"/>
 
                             <!-- Distance from Volunteer -->
                             <TextBlock Text="Distance from Volunteer:" FontWeight="Bold" Foreground="#334155" Grid.Row="7" Grid.Column="0" Margin="0,0,10,20"/>
@@ -176,17 +180,20 @@ Stretch="Uniform" Margin="5,-28,0,0"  />
             </Border>
             <!-- Action Buttons -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="7,434,0,5" Width="264" Grid.Column="1">
+                
                 <Button Content="End Current Call" Height="38" Width="126" Background="{StaticResource SoftBlue}" Foreground="White" FontWeight="Bold" Margin="0,0,10,0"
-                        Click="EndCurrentCall_Click"  Visibility="{Binding CurrentVolunteer.CurrentCall, Converter={StaticResource NullToVisibilityConverterKey}}"
-                        Style="{StaticResource ButtonClickAnimationStyle}"/>
+                        Click="EndCurrentCall_Click"  
+                        Style="{StaticResource ButtonClickAnimationStyle}"
+                           Visibility="{Binding CurrentVolunteer.CurrentCall, Converter={StaticResource NullToVisibilityConverterKey}}"/>
+                
                 <Button Content="Cancel Call" Height="38" Width="124" Background="{StaticResource SoftBlue}" Foreground="White" FontWeight="Bold" Click="CancelCall_Click"
-                         Style="{StaticResource ButtonClickAnimationStyle}"
-                        Visibility="{Binding CurrentVolunteer.CurrentCall, Converter={StaticResource NullToVisibilityConverterKey}}" />
-                <TextBlock Text="No Call Open" FontSize="18" FontWeight="Bold" Foreground="#334155" HorizontalAlignment="Center" VerticalAlignment="Center"
-               Visibility="{Binding CurrentVolunteer.CurrentCall, Converter={StaticResource InverseNullToVisibilityConverterKey}}" />
-            </StackPanel>
-            
+                         Style="{StaticResource ButtonClickAnimationStyle}" 
+                        Visibility="{Binding CurrentVolunteer.CurrentCall, Converter={StaticResource NullToVisibilityConverterKey}}"  />
 
+                <TextBlock Text="No Call Open" FontSize="18" FontWeight="Bold" Foreground="#334155" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Visibility="{Binding CurrentVolunteer.CurrentCall, Converter={StaticResource InverseNullToVisibilityConverterKey}}" />
+            </StackPanel>
+           
         </Grid>
     </Grid>
 </Window>

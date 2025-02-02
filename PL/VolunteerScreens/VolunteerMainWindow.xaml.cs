@@ -39,7 +39,6 @@ namespace PL.VolunteerScreens
             DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerMainWindow), new PropertyMetadata(null));
         public int ManagerId { get; set; }
 
-
         public BO.Call? Call
         {
             get { return (BO.Call?)GetValue(CallProperty); }
@@ -51,20 +50,17 @@ namespace PL.VolunteerScreens
         /// </summary>
         public static readonly DependencyProperty CallProperty =
             DependencyProperty.Register("Call", typeof(BO.Call), typeof(VolunteerMainWindow), new PropertyMetadata(null));
-
-        public VolunteerMainWindow(int id = 0, int manId = 0)
+        
+        public VolunteerMainWindow(int id = 0/*, int manId = 0*/)
         {
 
             InitializeComponent();
-            ManagerId = manId;
+            ManagerId = id;
             DataContext = this;
             try
             {
-                CurrentVolunteer = s_bl.Volunteer.Read(ManagerId); /*(id != 0) ? s_bl.Volunteer.Read(id)! : new BO.Volunteer() { Id = 0, FullName = "", PhoneNumber = "", Email = "", TypeDistance = BO.Distance.Aerial, Job = BO.Role.Volunteer, Active = false };*/
-                if (CurrentVolunteer.CurrentCall != null)
-                    Call = s_bl.Call.Read(CurrentVolunteer.CurrentCall.CallId);
-                else
-                    Call = null;
+                CurrentVolunteer = s_bl.Volunteer.Read(id); /*(id != 0) ? s_bl.Volunteer.Read(id)! : new BO.Volunteer() { Id = 0, FullName = "", PhoneNumber = "", Email = "", TypeDistance = BO.Distance.Aerial, Job = BO.Role.Volunteer, Active = false };*/
+                
             }
             catch (BO.BlDoesNotExistException ex)
             {
@@ -83,7 +79,7 @@ namespace PL.VolunteerScreens
 
         }
         private void CallObserver()
-        //=> QueryCall();
+
         {
             if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
                 _observerOperation = Dispatcher.BeginInvoke(() =>
@@ -95,17 +91,19 @@ namespace PL.VolunteerScreens
         private void QueryCall()
         {
             QueryVolunteer();
-            if (Call != null)
-            {
-                if (CurrentVolunteer.CurrentCall == null || CurrentVolunteer.CurrentCall.CallId != Call.Id)
-                    s_bl.Call.RemoveObserver(Call.Id, CallObserver);
-                if (CurrentVolunteer.CurrentCall != null && Call != null && CurrentVolunteer.CurrentCall.CallId != Call.Id)
-                    s_bl.Call.AddObserver(CurrentVolunteer.CurrentCall.CallId, CallObserver);
-            }
-            else
-                Call = null;
+          
+
             if (CurrentVolunteer.CurrentCall != null)
-                Call = s_bl.Call.Read(CurrentVolunteer.CurrentCall.CallId);
+            {
+                if(CurrentVolunteer.CurrentCall==null)
+                    s_bl.Call.RemoveObserver(CurrentVolunteer.CurrentCall.CallId, CallObserver);
+
+            }
+            if (CurrentVolunteer.CurrentCall != null)
+            {
+                s_bl.Call.AddObserver(CurrentVolunteer.CurrentCall.CallId, CallObserver);
+
+            }
 
         }
         private void QueryVolunteer()

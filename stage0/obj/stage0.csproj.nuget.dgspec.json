@@ -11,7 +11,7 @@
         "projectName": "stage0",
         "projectPath": "C:\\Users\\shire\\source\\repos\\dotNet5785_-4642_7701\\stage0\\stage0.csproj",
         "packagesPath": "C:\\Users\\shire\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\shire\\Source\\Repos\\dotNet5785_-4642_7701\\stage0\\obj\\",
+        "outputPath": "C:\\Users\\shire\\source\\repos\\dotNet5785_-4642_7701\\stage0\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

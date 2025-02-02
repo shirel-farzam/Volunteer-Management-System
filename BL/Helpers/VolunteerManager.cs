@@ -444,12 +444,12 @@ internal class VolunteerManager
             Password = doVolunteer.Password,
             FullAddress = doVolunteer.FullAddress,
             Latitude = doVolunteer.Latitude,
-            Longitude = doVolunteer.Longitude,
-            //CurrentCall = VolunteerManager.(doVolunteer),
+            Longitude = doVolunteer.Longitude ,
             TotalCanceledCalls = totalCallsCanceled,
             TotalExpiredCalls = totalCallsExpired,
             TotalHandledCalls = totalCallsHandled,
-            MaxReading = doVolunteer.MaxReading
+            MaxReading = doVolunteer.MaxReading,
+            CurrentCall = CallManager.GetCallIn(doVolunteer)
         };
     }
 
@@ -528,7 +528,7 @@ internal class VolunteerManager
         }
     }
 
-        // Internal implementation of the AddVolunteer logic
+    // Internal implementation of the AddVolunteer logic
     public static void AddVolunteerInternal(BO.Volunteer boVolunteer)
     {  
        
