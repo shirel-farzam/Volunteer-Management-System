@@ -889,7 +889,6 @@ internal static class CallManager
     }
     public static void UpdateTreatmentCancellationInternal(int volunteerId, int assignmentId)
     {
-        AdminManager.ThrowOnSimulatorIsRunning(); // Ensure the simulator is not running (stage 7)
 
         DO.Assignment assigmnetToCancel;
 
