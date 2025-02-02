@@ -111,30 +111,6 @@ namespace PL.VolunteerScreens
             // Display the description of the selected call
             MessageBox.Show(SelectedCall.Description, $"Description {SelectedCall.Id}", MessageBoxButton.OK);
         }
-
-        // Event handler for choosing a call for treatment
-        //private void BtnChoose_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        // Try to choose the selected call for treatment
-        //        s_bl.Call.ChooseCallForTreat(VolunteerId, SelectedCall.Id);
-        //        // Show a success message
-        //        MessageBox.Show($"Call {SelectedCall.Id} was successfully Chosen!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-        //        this.Close(); // Close the window
-        //    }
-        //    catch (BO.BlAlreadyExistsException ex)
-        //    {
-        //        // Show a failure message if the call is already chosen
-        //        MessageBox.Show(ex.Message, "Choose Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-        //        this.Close(); // Close the window
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Show a generic failure message
-        //        MessageBox.Show(ex.Message, "Choose Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-        //    }
-        //}
         private void BtnChoose_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.DataContext is BO.OpenCallInList call)
@@ -143,7 +119,7 @@ namespace PL.VolunteerScreens
                 {
                     s_bl.Call.ChooseCallForTreat(VolunteerId, call.Id);
                     MessageBox.Show($"Call {call.Id} was successfully chosen!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    this.Close();
+                    //this.Close();
                 }
                 catch (Exception ex)
                 {

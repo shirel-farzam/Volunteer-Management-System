@@ -27,25 +27,20 @@ namespace PL
         private Window _previousWindow; // Variable to store a reference to the previous window
         private volatile DispatcherOperation? _observerOperation = null; //stage 7
         private volatile DispatcherOperation? _observerOperationCon = null; //stage 7
+        private volatile DispatcherOperation? _observerOperationCall = null; //stage 7
 
         public int Id { get; set; }
-       // public static int OpenWindowCount { get; private set; } = 0;
-
+        // public static int OpenWindowCount { get; private set; } = 0;
+        public static Boolean IsOpen { get; set; }=false;
         public MainWindow(int Manegr,Window previousWindow)
         {
-         
-            InitializeComponent();
+            if (IsOpen)
+                throw new Exception("There already is one manager in the system");
+            else IsOpen = true;
+             InitializeComponent();
             _previousWindow = previousWindow;
             Id = Manegr;
             DataContext = this;
-            //OpenWindowCount++; // העלאת המונה כאשר החלון נפתח
-            //if (OpenWindowCount != 0)
-            //{
-            //    MessageBox.Show("A manager window is already open. Only one instance is allowed.",
-            //                    "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //    throw new InvalidOperationException("Cannot open another manager window.");
-            //}
-
 
         }
 
@@ -227,11 +222,22 @@ namespace PL
                     MaxRange = s_bl.Admin.GetMaxRange();
                 });
         }
+        private void callObserver()
+        {
+            //MaxRange = s_bl.Admin.GetMaxRange();
+            if (_observerOperationCall is null || _observerOperationCall.Status == DispatcherOperationStatus.Completed)
+                _observerOperationCall = Dispatcher.BeginInvoke(() =>
+                {
+                    CountCall = s_bl.Call.CountCall();
+                });
+        }
         private void Window_Closed(object sender, EventArgs e)
         {
            // OpenWindowCount--; // הפחתת המונה כאשר החלון נסגר
             s_bl.Admin.RemoveClockObserver(clockObserver);
             s_bl.Admin.RemoveConfigObserver(configObserver);
+            IsOpen = false; 
+
             if (IsRuning)
             {
                 s_bl.Admin.StopSimulator(); // עצירת סימולטור
@@ -248,9 +254,10 @@ namespace PL
             CurrentTime = s_bl.Admin.GetClock();
             MaxRange = s_bl.Admin.GetMaxRange();
             CountCall = s_bl.Call.CountCall();
-
+            Interval = 50;
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
+            s_bl.Call.AddObserver(callObserver);
 
             InitializeClock();
 

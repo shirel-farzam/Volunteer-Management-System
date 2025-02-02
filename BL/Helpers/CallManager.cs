@@ -78,47 +78,46 @@ internal static class CallManager
         
     }
 
-    // CreateCallInProgress and 3 helper methods
-    public static BO.CallInProgress GetCallInProgress(int VolunteerId)
+
+    internal static BO.CallInProgress GetCallIn(DO.Volunteer doVolunteer)
     {
+        // Reads all the assignments of the current volunteer
+        List<DO.Assignment> assignments;
+        lock (AdminManager.BlMutex)//stage 7
+            assignments = _dal.Assignment.ReadAll(ass => ass.VolunteerId == doVolunteer.Id).ToList();
 
+        // Finds the assignment he is currently handling
+        DO.Assignment? assignmentTreat = assignments.Find(ass => ass.TypeEndTreat == null);
 
-        DO.Volunteer? doVolunteer;
-        lock (AdminManager.BlMutex)
-            doVolunteer = _dal.Volunteer.Read(VolunteerId) ?? throw new BlDoesNotExistException("eroor id");
+        // If there is no assignment in his care at the moment, return Null
+        if (assignmentTreat == null) { return null; }
 
-        //Find the appropriate CALL  and  Assignment by volunteer ID
-        Assignment? doAssignment;
-        lock (AdminManager.BlMutex)
-            doAssignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == VolunteerId && a.TimeEnd == null).FirstOrDefault();
-        DO.Call? doCall;
-        lock (AdminManager.BlMutex)
-            doCall = _dal.Call.ReadAll().Where(c => c.Id == doAssignment!.CallId).FirstOrDefault();
+        // Finds the identification number of the call currently being processed
+        DO.Call? callTreat;
+        lock (AdminManager.BlMutex)//stage 7
+            callTreat = _dal.Call.Read(assignmentTreat.CallId);
+        if (callTreat == null)
+            throw new BO.BlWrongInputException($"there is no call with this DI {assignmentTreat.CallId}");
 
-        if (Tools.IsAddressValid(doVolunteer.FullAddress).Result == false) // לא כתובת אמיתית 
+        // Finds the status of the call currently being processed
+        BO.CallStatus status = CallManager.GetCallStatus(callTreat);
+
+        // Returns the volunteer plus a callin field 
+        return new()
         {
-            throw new BlWrongInputException("Invalid address of Volunteer");
-        }
-
-        double? LatitudeVolunteer = Tools.GetLatitude(doVolunteer.FullAddress);
-        double? LongitudeVolunteer = Tools.GetLongitude(doVolunteer.FullAddress);
-
-        return new BO.CallInProgress
-        {
-            Id = doAssignment.Id,
-            CallId = doAssignment.CallId,
-            CallType = (BO.CallType)doCall.Type,
-            Description = doCall.Description,
-            FullAddress = doCall.FullAddress,
-            OpeningTime = doCall.TimeOpened,
-            MaxCompletionTime = doCall.MaxTimeToClose,
-            EntryTime = doAssignment.TimeStart,
-            DistanceFromVolunteer = Air_distance_between_2_addresses(doCall.Latitude, doCall.Longitude, LatitudeVolunteer, LongitudeVolunteer), // Air distance between 2 addresses
-            Status = CallManager.CalculateCallStatus(doCall)
+            Id = assignmentTreat.Id,
+            CallId = assignmentTreat.CallId,
+            CallType = (BO.CallType)callTreat.Type,
+            Description = callTreat.Description,
+            FullAddress = callTreat.FullAddress,
+            OpeningTime = callTreat.TimeOpened,
+            MaxCompletionTime = callTreat.MaxTimeToClose,
+            EntryTime = assignmentTreat.TimeStart,
+            DistanceFromVolunteer = Air_distance_between_2_addresses(callTreat.Latitude, callTreat.Longitude, doVolunteer.Latitude, doVolunteer.Longitude),
+            Status = (callTreat.MaxTimeToClose - AdminManager.Now <= _dal.Config.RiskRange ? BO.CallStatus.InProgressRisk : BO.CallStatus.InProgressRisk),
         };
-
     }
-
+    
     private const double EarthRadiusKm = 6371.0; // Earth's radius in kilometers
 
     /// <summary>
@@ -242,37 +241,17 @@ internal static class CallManager
 
     }
 
-    public static void MaxEndTimeCheck(DateTime? MaxEndTime, DateTime OpeningTime)
-    {
-
-
-        if (MaxEndTime < OpeningTime || MaxEndTime < AdminManager.Now)
-        {
-            throw new BlWrongInputException("The time entered according to the current time or opening time");
-        }
-
-    }
-
-    //GetCallAssignInList
-    //public static BO.CallAssignmentInList GetCallAssignInList(int Id)
+    //public static void MaxEndTimeCheck(DateTime? MaxEndTime, DateTime OpeningTime)
     //{
-    //    DO.Volunteer? doVolunteer = _dal.Volunteer.Read(Id) ?? throw new BlDoesNotExistException("eroor id");// ז
 
-    //    //Find the appropriate CALL  and  Assignment by volunteer ID
-    //    var doAssignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == Id && a.TimeEnd == null).FirstOrDefault();
-    //    var doCall = _dal.Call.ReadAll().Where(c => c.Id == doAssignment!.CallId).FirstOrDefault();
 
-    //    return new BO.CallAssignmentInList
+    //    if (MaxEndTime < OpeningTime || MaxEndTime < AdminManager.Now)
     //    {
-    //        VolunteerId = doAssignment.VolunteerId, // The ID of the volunteer
-    //        VolunteerName = doVolunteer.FullName, // The name of the volunteer (helper method can be used)
-    //        StartTime = doAssignment.TimeStart, // The time the volunteer started handling the call
-    //        EndTime = doAssignment.TimeEnd, // The time the handling of the call was completed
-    //        CompletionType = doAssignment.TypeEndTreat.HasValue
-    //        ? (BO.AssignmentCompletionType?)doAssignment.TypeEndTreat.Value
-    //        : null // Completion status (nullable)
-    //    };
+    //        throw new BlWrongInputException("The time entered according to the current time or opening time");
+    //    }
+
     //}
+
     public static BO.CallAssignmentInList GetCallAssignInList(int Id)
     {
         DO.Volunteer? doVolunteer;
@@ -590,37 +569,6 @@ internal static class CallManager
 
     }
 
-    //internal static BO.ClosedCallInList ConvertDOCallToBOCloseCallInList(DO.Call doCall, CallAssignmentInList lastAssignment)
-    //{
-    //    return new BO.ClosedCallInList
-    //    {
-    //        Id = doCall.Id,
-    //        CallType = (BO.CallType)doCall.Type,
-    //        FullAddress = doCall.FullAddress,
-    //        OpeningTime = doCall.TimeOpened,
-    //        EntryTime = lastAssignment.StartTime,
-    //        CompletionTime = lastAssignment.EndTime,
-    //        CompletionType = lastAssignment.CompletionType
-    //    };
-    //}
-
-    //internal static BO.OpenCallInList ConvertDOCallToBOOpenCallInList(DO.Call doCall, int id)
-    //{
-    //    var vol = _dal.Volunteer.Read(id);
-    //    double idLat = vol.Latitude ?? 0;
-    //    double idLon = vol.Longitude ?? 0;
-    //    return new BO.OpenCallInList
-    //    {
-    //        Id = doCall.Id,
-    //        CallType = (BO.CallType)doCall.Type,
-    //        Description = doCall.Description,
-    //        FullAddress = doCall.FullAddress,
-    //        OpeningTime = doCall.TimeOpened,
-    //        MaxCompletionTime = doCall.MaxTimeToClose,
-    //        DistanceFromVolunteer = VolunteerManager.CalculateDistance(doCall.Latitude, doCall.Longitude, idLat, idLon),
-    //    };
-    //}
-
     public static bool IsInRisk(DO.Call call)
     {
         // Check if the time left to close the call is within the configured risk range
@@ -658,6 +606,7 @@ internal static class CallManager
                 );
                 lock (AdminManager.BlMutex)
                     _dal.Assignment.Create(newAssignment);  // Creates the new assignment.
+                Observers.NotifyItemUpdated(call.Id);
             }
         }
 
@@ -680,7 +629,8 @@ internal static class CallManager
                     lock (AdminManager.BlMutex)
                          _dal.Assignment.Update(updatedAssignment);  // Updates the assignment with the new values.
                 Observers.NotifyItemUpdated(updatedAssignment.Id); //stage 5
-            }
+                Observers.NotifyListUpdated(); //stage 5
+                }
 
         }
     }
@@ -718,7 +668,7 @@ internal static class CallManager
     //        _dal.Call.Create(doCall);
     //    }
     //}
-    public static void AddCallInternal1(BO.Call boCall)      ///////// לבדוק אם זה טוב 
+    public static void AddCallInternal1(BO.Call boCall)      
 
     {
         // יצירת אובייקט השיחה בלי לחשב קואורדינטות עדיין
@@ -739,6 +689,7 @@ internal static class CallManager
             _dal.Call.Create(doCall);
         }
 
+
         // הרצת חישוב הקואורדינטות ברקע ללא חסימה
         _ = Task.Run(async () =>
         {
@@ -750,12 +701,13 @@ internal static class CallManager
                 lock (AdminManager.BlMutex)
                     _dal.Call.Update(doCall);
             }
+            Observers.NotifyItemUpdated(doCall.Id); // Notify item update (stage 5)
+            Observers.NotifyListUpdated(); // Notify list update (stage 5)
+            
         });
 
-        // המשך הביצוע בלי לחכות לתוצאה
+       
     }
-
-
     public static BO.Call ReadInternal(int callId)
     {
         // הגדרת פונקציה לסינון משימות שקשורות לשיחה המבוקשת
@@ -935,8 +887,10 @@ internal static class CallManager
         }
 
         // Notify observers about the update (outside the lock)
-        CallManager.Observers.NotifyItemUpdated(assignmentId); // Notify item update (stage 5)
-        CallManager.Observers.NotifyListUpdated(); // Notify list update (stage 5)
+        Observers.NotifyItemUpdated(assigmnetToCancel.CallId); // Notify item update (stage 5)
+        Observers.NotifyListUpdated(); // Notify list update (stage 5)
+        VolunteerManager.Observers.NotifyListUpdated();
+        VolunteerManager.Observers.NotifyItemUpdated(volunteerId);
     }
     public static IEnumerable<BO.OpenCallInList> GetOpenCallsForVolunteerInternal(int volunteerId, BO.CallType? type = null, BO.OpenCallInListField? sortField = null)
     {
@@ -1028,7 +982,7 @@ internal static class CallManager
         _dal.Assignment.Update(assigmnetToUP);
 
         // Notifications outside the lock
-        CallManager.Observers.NotifyItemUpdated(idAssig); // stage 5
+        CallManager.Observers.NotifyItemUpdated(assigmnetToUP.CallId); // stage 5
         CallManager.Observers.NotifyListUpdated();       // stage 5
         VolunteerManager.Observers.NotifyListUpdated();
         VolunteerManager.Observers.NotifyItemUpdated(idVol);
@@ -1111,6 +1065,10 @@ internal static class CallManager
         try
         {
             _dal.Assignment.Update(assignmentToUP);
+           Observers.NotifyListUpdated();  //stage 5
+           Observers.NotifyItemUpdated(assignmentToUP.CallId);  //stage 5
+            VolunteerManager.Observers.NotifyItemUpdated(idVol);  //stage 5
+            VolunteerManager.Observers.NotifyListUpdated();  //stage 5
         }
         catch (DO.DalAlreadyExistsException)
         {
@@ -1126,7 +1084,7 @@ internal static class CallManager
                 (DO.CallType)boCall.Type, // Convert call type from BO to DO
                 boCall.Description, // Description of the call
                 boCall.FullAddress, // Full address of the call
-                boCall.Latitude ?? null, // Default latitude if null
+                boCall.Latitude ?? null,// Default latitude if null
                 boCall.Longitude ?? null, // Default longitude if null
                 boCall.OpenTime, // The time the call was opened
                 boCall.MaxEndTime // The maximum time allowed for the call to close
@@ -1139,8 +1097,10 @@ internal static class CallManager
             VolunteerManager.updateCoordinatesForCallAddressAsync(doCall);
 
             // Notify observers outside of the lock.
-            CallManager.Observers.NotifyItemUpdated(doCall.Id); // stage 5
-            CallManager.Observers.NotifyListUpdated(); // stage 5
+            Observers.NotifyItemUpdated(doCall.Id); // stage 5
+            Observers.NotifyListUpdated(); // stage 5
+            //VolunteerManager.Observers.NotifyItemUpdated(boCall.); // stage 5
+            //VolunteerManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalDeletionImpossible ex)
         {
@@ -1163,7 +1123,7 @@ internal static class CallManager
         // Ensures the call is not open or expired before assigning a volunteer
         if (bocall.Status != BO.CallStatus.Open || bocall.Status == BO.CallStatus.OpenRisk)
             throw new BO.BlAlreadyExistsException($"The call is open or expired. Call ID is={callId}");
-
+        
         // Creates a new assignment record for the volunteer and call
         DO.Assignment assignmentToCreate = new DO.Assignment
         {
@@ -1181,17 +1141,16 @@ internal static class CallManager
             {// stage 7
                 _dal.Assignment.Create(assignmentToCreate);
             } // Adds the assignment to the DAL
-            CallManager.Observers.NotifyListUpdated(); //stage 5
-            CallManager.Observers.NotifyItemUpdated(volunteerId);
-            //VolunteerManager.Observers.NotifyListUpdated();
-            //VolunteerManager.Observers.NotifyItemUpdated(assignmentToCreate.CallId);
+            Observers.NotifyListUpdated(); //stage 5
+           Observers.NotifyItemUpdated(callId);
+            VolunteerManager.Observers.NotifyListUpdated();
+            VolunteerManager.Observers.NotifyItemUpdated(assignmentToCreate.VolunteerId);
         }
         catch (DO.DalDeletionImpossible)
         {
             throw new BO.BlAlreadyExistsException("Impossible to create assignment"); // Handles creation failure
         }
     }
-    
-
+  
 }
 

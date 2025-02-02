@@ -25,13 +25,10 @@ namespace PL.Admin
         public int Id { get; set; }
         private void NavigateToVolunteerScreen_Click(object sender, RoutedEventArgs e)
         {
+           
+           new VolunteerMainWindow(Id).Show(); 
+          
 
-            new VolunteerMainWindow(Id,Id).Show();
-
-            // יצירת חלון חדש למסך המתנדבים ופתיחתו
-            //VolunteerScreenWindow volunteerWindow = new VolunteerScreenWindow(); // ודא שהחלון קיים
-            //volunteerWindow.Show();
-            //this.Close(); // סגירת חלון הנוכחי אם נדרש
         }
 
         /// <summary>
@@ -39,10 +36,15 @@ namespace PL.Admin
         /// </summary>
         private void NavigateToManagementScreen_Click(object sender, RoutedEventArgs e)
         {
+            try
+          { new MainWindow(Id,this).Show();
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK);
+            }
 
-           new MainWindow(Id,this).Show();
-            this.Hide();
-           
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {

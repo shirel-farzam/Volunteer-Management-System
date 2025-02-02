@@ -86,7 +86,7 @@ public static class Initialization
         string[] passwords =
 {
     "W1nter2024",
-    "M@rk3tX9",
+    "Omer1234",
     "Go!4ItNow",
     "H@ppyD@y1s",
     "S#1lverKey",
@@ -122,9 +122,10 @@ public static class Initialization
             s_dal!.Volunteer.Create(new Volunteer(Currid, name, phone, email, distanceType, role, active, password, Address, NLatitude, NLongitude, maxReading));
         }
 
-       
+
 
         // Create a new manager and add to the data source
+        s_dal!.Volunteer.Create(new Volunteer(214994642, "Shirel Frazam", "0532322340", "shirel@example.com", Distance.Aerial, Role.Manager, true, "Shirel123", "Ein Gedi 40,Beer sheva, Israel", 31.4523959,35.3848241, 50));
         s_dal!.Volunteer.Create(new Volunteer(326047701, "Ayelet Benisty", "0556882236", "admin@example.com", Distance.Aerial, Role.Manager, true, "Zaq12wsx","Ein Gedi 37,Beer sheva, Israel", 31.2509036, 34.7668511, 50));
     }
 
@@ -365,6 +366,8 @@ public static class Initialization
             Volunteer volunteerToAssign = s_dal.Volunteer.ReadAll().OrderBy(v => s_rand.Next()).First();
             //call number ID
             int randCAll = s_rand.Next(s_dal.Call!.ReadAll().Count() - 15);
+
+
             Call callToAssig = s_dal.Call.ReadAll().OrderBy(v => s_rand.Next()).First();
             while (callToAssig.TimeOpened > s_dal!.Config!.Clock)
             {
