@@ -44,14 +44,10 @@ namespace PL.Volunteer
             InitializeComponent();
             Id = bossdId;
             DataContext = this;
-            //UpdateVolunteerList();  // Load the volunteer list without any filter initially
+           
             _previousWindow = previousWindow;
         }
 
-        //private void OnFilterSelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    QueryVolunteerList();
-        //}
 
         private void Volunteer_Sort(object sender, SelectionChangedEventArgs e) { QueryVolunteerList(); }
         
@@ -65,13 +61,6 @@ namespace PL.Volunteer
             }
         }
 
-
-        //private void QueryVolunteerList()
-        //{
-        //VolunteerInList = (VolunteerSort == BO.VolunteerInListField.Id) ?
-        //    s_bl?.Volunteer.ReadAll(null, null)! :
-        //    s_bl?.Volunteer.ReadAll(null,VolunteerSort ,VolunteerFilter)!;
-        //}
         private void QueryVolunteerList()
          => VolunteerInList = (VolunteerSort == BO.VolunteerInListField.Id) ?
          s_bl?.Volunteer.ReadAll(null, null)! : s_bl?.Volunteer.ReadAll(null, VolunteerSort,VolunteerFilter)!;
@@ -174,48 +163,3 @@ namespace PL.Volunteer
         }
     }
 }
-//}
-//    /// <summary>
-//    /// Interaction logic for VolunteerListWindow.xaml
-//    /// </summary>
-//    public partial class VolunteerListWindow : Window
-//    {
-//        static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
-//        public IEnumerable<BO.VolunteerInList> VolunteerList
-//        {
-//            get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolunteerListProperty); }
-//            set { SetValue(VolunteerListProperty, value); }
-//        }
-
-//        public static readonly DependencyProperty VolunteerListProperty =
-//        DependencyProperty.Register("VolunteerList", typeof(IEnumerable<BO.VolunteerInList>), typeof(VolunteerListWindow), new PropertyMetadata(null));
-
-//        public BO.VolunteerInList? SelectedVolunteer { get; set; }
-
-//        public BO.EVolunteerInList VolunteerInList { get; set; } = BO.EVolunteerInList.Id;
-//        public int Id { get; set; }
-//        public VolunteerListWindow(int bossdId)
-//        {
-//            Id = bossdId;
-//            InitializeComponent();
-//        }
-
-//        private void VolunteerSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-//        { QueryVolunteerList(); }
-
-//        private void VolunteerFilter(object sender, SelectionChangedEventArgs e)
-//        {
-//            VolunteerInList = (BO.EVolunteerInList)(((ComboBox)sender).SelectedItem);
-//            VolunteerList = s_bl?.Volunteers.GetVolunteerList(null, VolunteerInList)!;
-//        }
-
-//        private void QueryVolunteerList()
-//        => VolunteerList = (VolunteerInList == BO.EVolunteerInList.Id) ?
-//        s_bl?.Volunteers.GetVolunteerList(null, null)! : s_bl?.Volunteers.GetVolunteerList(null, VolunteerInList)!;
-
- 
-   
-//    }
-//}
-

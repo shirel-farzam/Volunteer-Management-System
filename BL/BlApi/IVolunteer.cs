@@ -43,4 +43,7 @@ public interface IVolunteer : IObservable
     /// </summary>
     /// <param name="boVolunteer">The volunteer object containing details of the new volunteer.</param>
     public void AddVolunteer(BO.Volunteer boVolunteer);
+
+
+    bool CanDelete(int id);
 }

@@ -67,7 +67,7 @@
                   Margin="15,5,25,10" 
                   FontFamily="Times New Roman" 
                   ItemsSource="{Binding Path=CallInList}" 
-                  SelectedItem="{Binding SelectedCallforupdate}" 
+                  SelectedItem="{Binding SelectedCallforupdate }" 
                   MouseDoubleClick="CallsDataGrid_MouseDoubleClick">
             <ListView.View>
                 <GridView>
@@ -234,6 +234,7 @@
                                     <Button Content="Delete" 
                                             Click="DeleteCall_Click" 
                                             Tag="{Binding CallId}" 
+                                            Visibility="{Binding CallId,Converter={StaticResource CanDeleteCallConverterKey}}"
                                             Foreground="#009990" 
                                             Margin="5,0"/>
                                     <Button Content="Cancel Assignment" 

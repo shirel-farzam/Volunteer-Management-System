@@ -253,45 +253,11 @@ internal class VolunteerImplementation : IVolunteer
         // Call the internal implementation
         VolunteerManager.DeleteVolunteerInternal(volunteerId);
     }
-    //public void AddVolunteer(BO.Volunteer boVolunteer)
-    //{
-    //    lock (AdminManager.BlMutex) // stage 7
-    //    {
-    //        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
-    //        var coordinates = VolunteerManager.GetCoordinatesFromAddress(boVolunteer.FullAddress);
-    //        boVolunteer.Latitude = coordinates[0];
-    //        boVolunteer.Longitude = coordinates[1];
-
-    //        VolunteerManager.CheckLogic(boVolunteer);
-    //        VolunteerManager.CheckFormat(boVolunteer);
-
-    //        var doVolunteer = new DO.Volunteer(
-    //            boVolunteer.Id,
-    //            boVolunteer.FullName,
-    //            boVolunteer.PhoneNumber,
-    //            boVolunteer.Email,
-    //            (DO.Distance)boVolunteer.TypeDistance,
-    //            (DO.Role)boVolunteer.Job,
-    //            boVolunteer.Active,
-    //            boVolunteer.Password,
-    //            boVolunteer.FullAddress,
-    //            boVolunteer.Latitude,
-    //            boVolunteer.Longitude,
-    //            boVolunteer.MaxReading
-    //        );
-
-    //        try
-    //        {
-    //            lock (AdminManager.BlMutex) // stage 7
-    //                _dal.Volunteer.Create(doVolunteer);
-    //            VolunteerManager.Observers.NotifyListUpdated(); //stage 5
-    //        }
-    //        catch (DO.DalAlreadyExistsException ex)
-    //        {
-    //            throw new BO.BlAlreadyExistsException($"Volunteer with ID={boVolunteer.Id} already exists", ex);
-    //        }
-    //    }
-    //}
+    public bool CanDelete(int id)
+    {
+        var volunteer = VolunteerManager.ReadInternal(id);
+        return (volunteer.CurrentCall==null)&&(volunteer.TotalHandledCalls==0);
+    }
     public void AddVolunteer(BO.Volunteer boVolunteer)
     {
         AdminManager.ThrowOnSimulatorIsRunning();  //stage 7

@@ -34,7 +34,7 @@ internal static class CallManager
         {
             throw new ArgumentException("Invalid call status.");
         }
-        
+
     }
     internal static void IsValideCall(BO.Call boCall)
     {
@@ -75,7 +75,7 @@ internal static class CallManager
         {
             throw new ArgumentException("The address is invalid.");
         }
-        
+
     }
 
 
@@ -117,7 +117,7 @@ internal static class CallManager
             Status = (callTreat.MaxTimeToClose - AdminManager.Now <= _dal.Config.RiskRange ? BO.CallStatus.InProgressRisk : BO.CallStatus.InProgressRisk),
         };
     }
-    
+
     private const double EarthRadiusKm = 6371.0; // Earth's radius in kilometers
 
     /// <summary>
@@ -170,7 +170,7 @@ internal static class CallManager
     /// <returns>The angle in radians</returns>
 
     internal static BO.CallStatus CalculateCallStatus(DO.Call doCall)
-    { 
+    {
         if (doCall.MaxTimeToClose < _dal.Config.Clock)
             return BO.CallStatus.Expired;
         Assignment? lastAssignment;
@@ -208,7 +208,7 @@ internal static class CallManager
 
         Assignment? lastAssignment;
         lock (AdminManager.BlMutex)
-           lastAssignment = _dal.Assignment.ReadAll(ass => ass.CallId == doCall.Id).OrderByDescending(a => a.Id).FirstOrDefault();
+            lastAssignment = _dal.Assignment.ReadAll(ass => ass.CallId == doCall.Id).OrderByDescending(a => a.Id).FirstOrDefault();
 
         if (lastAssignment == null)
         {
@@ -256,13 +256,13 @@ internal static class CallManager
     {
         DO.Volunteer? doVolunteer;
         lock (AdminManager.BlMutex)
-           doVolunteer = _dal.Volunteer.Read(Id) ?? throw new BlDoesNotExistException("error id");
+            doVolunteer = _dal.Volunteer.Read(Id) ?? throw new BlDoesNotExistException("error id");
 
         // Find the appropriate CALL and Assignment by volunteer ID
         Assignment? doAssignment;
         lock (AdminManager.BlMutex)
 
-             doAssignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == Id).FirstOrDefault();
+            doAssignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == Id).FirstOrDefault();
 
         if (doAssignment == null)
         {
@@ -280,7 +280,75 @@ internal static class CallManager
 
     }
 
+    //}
+    //public static BO.CallAssignmentInList GetCallAssignInList(int Id)
+    //{
+    //    // קריאה למתנדב לפי מזהה
+    //    DO.Volunteer? doVolunteer = _dal.Volunteer.Read(Id) ?? throw new BlDoesNotExistException("Volunteer with the specified ID does not exist.");
 
+    //    // חיפוש השמה מתאימה לפי מזהה מתנדב
+    //    var doAssignment = _dal.Assignment.ReadAll()
+    //        .Where(a => a.VolunteerId == Id && a.TimeEnd == null)
+    //        .FirstOrDefault();
+
+    //    if (doAssignment == null)
+    //    {
+    //        throw new BlDoesNotExistException("No active assignment found for the specified volunteer.");
+    //    }
+
+    //    // חיפוש שיחה מתאימה לפי מזהה השיחה מההשמה
+    //    var doCall = _dal.Call.ReadAll()
+    //        .Where(c => c.Id == doAssignment.CallId)
+    //        .FirstOrDefault();
+
+    //    if (doCall == null)
+    //    {
+    //        throw new BlDoesNotExistException("No call found for the specified assignment.");
+    //    }
+
+    //    // החזרת האובייקט עם הנתונים
+    //    return new BO.CallAssignmentInList
+    //    {
+    //        VolunteerId = doAssignment.VolunteerId, // מזהה המתנדב
+    //        VolunteerName = doVolunteer.FullName, // שם המתנדב
+    //        StartTime = doAssignment.TimeStart, // זמן התחלת הטיפול
+    //        EndTime = doAssignment.TimeEnd, // זמן סיום הטיפול
+    //        CompletionType = doAssignment.TypeEndTreat.HasValue
+    //            ? (BO.AssignmentCompletionType?)doAssignment.TypeEndTreat.Value
+    //            : null // סטטוס השלמת הטיפול (nullable)
+    //    };
+    //}
+
+
+    //public static List<BO.CallAssignmentInList> GetCallAssignInList(int volunteerId)
+    //{
+    //    // בדיקת קיום מתנדב
+    //    DO.Volunteer? doVolunteer = _dal.Volunteer.Read(volunteerId)
+    //        ?? throw new BlDoesNotExistException($"Volunteer with ID {volunteerId} does not exist");
+
+    //    // הבאת כל ההקצאות הפתוחות של המתנדב
+    //    var doAssignments = _dal.Assignment.ReadAll()
+    //        .Where(a => a.VolunteerId == volunteerId && a.TimeEnd == null)
+    //        .ToList();
+
+    //    // אם אין הקצאות פתוחות, מחזיר רשימה ריקה
+    //    if (!doAssignments.Any())
+    //    {
+    //        return new List<BO.CallAssignmentInList>();
+    //    }
+
+    //    // ממפה את ההקצאות לאובייקטי BO
+    //    return doAssignments.Select(a => new BO.CallAssignmentInList
+    //    {
+    //        VolunteerId = a.VolunteerId,
+    //        VolunteerName = doVolunteer.FullName, // שם המתנדב
+    //        StartTime = a.TimeStart,
+    //        EndTime = a.TimeEnd,
+    //        CompletionType = a.TypeEndTreat.HasValue
+    //            ? (BO.AssignmentCompletionType?)a.TypeEndTreat.Value
+    //            : null
+    //    }).ToList();
+    //}
     private static readonly object LockObject = new object();  // אובייקט נעילה לסנכרון הגישה
 
     public static List<BO.CallAssignmentInList> GetCallAssignmentsForCall(int callId)
@@ -292,7 +360,7 @@ internal static class CallManager
         List<Assignment>? doAssignments;
         lock (AdminManager.BlMutex)
 
-             doAssignments = _dal.Assignment.ReadAll().Where(a => a.CallId == callId).ToList();
+            doAssignments = _dal.Assignment.ReadAll().Where(a => a.CallId == callId).ToList();
 
         // If no assignments are found, return null
         if (!doAssignments.Any() || doAssignments == null)
@@ -302,11 +370,11 @@ internal static class CallManager
         List<CallAssignmentInList> callAssignInList;
         lock (AdminManager.BlMutex)
             // Use LINQ to convert the assignments into BO.CallAssignInList using the GetCallAssignInList function
-             callAssignInList = (from doAssignment in doAssignments
+            callAssignInList = (from doAssignment in doAssignments
                                 let doVolunteer = _dal.Volunteer.Read(doAssignment.VolunteerId)
                                 where doVolunteer != null
                                 select GetCallAssignInList(doAssignment.VolunteerId)) // Calls the conversion function
-                                .ToList();
+                               .ToList();
 
         // Return the complete list
         return callAssignInList;
@@ -320,13 +388,13 @@ internal static class CallManager
         // Find the appropriate CALL  and  Assignment by volunteer ID
         Assignment? doAssignment;
         lock (AdminManager.BlMutex)
-             doAssignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == Id && a.TimeEnd == null).FirstOrDefault();
+            doAssignment = _dal.Assignment.ReadAll().Where(a => a.VolunteerId == Id && a.TimeEnd == null).FirstOrDefault();
         DO.Call doCall;
         lock (AdminManager.BlMutex)
-             doCall = _dal.Call.ReadAll().Where(c => c.Id == /*doAssignment*/Id).FirstOrDefault();
+            doCall = _dal.Call.ReadAll().Where(c => c.Id == /*doAssignment*/Id).FirstOrDefault();
         IEnumerable<Assignment> GetTotalAssignmentsForCall;
         lock (AdminManager.BlMutex)
-             GetTotalAssignmentsForCall = _dal.Assignment.ReadAll().Where(a => a.Id == Id);
+            GetTotalAssignmentsForCall = _dal.Assignment.ReadAll().Where(a => a.Id == Id);
 
         return new BO.CallInList
         {
@@ -349,10 +417,10 @@ internal static class CallManager
     {
         DO.Assignment doAssignment;
         lock (AdminManager.BlMutex)
-             doAssignment = _dal.Assignment.ReadAll(a => a.CallId == CallId).FirstOrDefault();
+            doAssignment = _dal.Assignment.ReadAll(a => a.CallId == CallId).FirstOrDefault();
         DO.Call? doCall;
         lock (AdminManager.BlMutex)
-             doCall = _dal.Call.ReadAll().Where(c => c.Id == CallId).FirstOrDefault();
+            doCall = _dal.Call.ReadAll().Where(c => c.Id == CallId).FirstOrDefault();
 
         // Create the object
         return new BO.Call
@@ -409,7 +477,7 @@ internal static class CallManager
         // Retrieve all assignments related to the call
         IEnumerable<Assignment>? assignments;
         lock (AdminManager.BlMutex)
-             assignments = _dal.Assignment.ReadAll().Where(a => a.CallId == callId);
+            assignments = _dal.Assignment.ReadAll().Where(a => a.CallId == callId);
 
         if (!assignments.Any())
             return null;
@@ -425,7 +493,7 @@ internal static class CallManager
         // Retrieve the volunteer associated with the assignment
         DO.Volunteer volunteer;
         lock (AdminManager.BlMutex)
-             volunteer = _dal.Volunteer.Read((int)latestAssignment.VolunteerId);
+            volunteer = _dal.Volunteer.Read((int)latestAssignment.VolunteerId);
         return volunteer?.FullName;
 
     }
@@ -436,7 +504,7 @@ internal static class CallManager
         // Retrieve all assignments related to the call
         IEnumerable<Assignment> assignments;
         lock (AdminManager.BlMutex)
-             assignments = _dal.Assignment.ReadAll().Where(a => a.CallId == callId);
+            assignments = _dal.Assignment.ReadAll().Where(a => a.CallId == callId);
 
         // Check if the call has been completed
         var completedAssignment = assignments
@@ -464,12 +532,12 @@ internal static class CallManager
         // קבל את כל ההקצותות עבור הקריאה
         IEnumerable<Assignment> assignmentsForCall;
         lock (AdminManager.BlMutex)
-             assignmentsForCall = _dal.Assignment.ReadAll(a => a.CallId == doCall.Id) ?? new List<DO.Assignment>();
+            assignmentsForCall = _dal.Assignment.ReadAll(a => a.CallId == doCall.Id) ?? new List<DO.Assignment>();
 
         // קבל את ההקצאה האחרונה על פי זמן ההתחלה
         Assignment? lastAssignmentsForCall;
         lock (AdminManager.BlMutex)
-             lastAssignmentsForCall = assignmentsForCall.OrderByDescending(item => item.TimeStart).FirstOrDefault();
+            lastAssignmentsForCall = assignmentsForCall.OrderByDescending(item => item.TimeStart).FirstOrDefault();
 
         // קבע את שם המתנדב האחרון אם יש
         var volunteerName = lastAssignmentsForCall != null
@@ -516,16 +584,16 @@ internal static class CallManager
         // Step 1: Retrieves all calls where the MaxTimeToEnd has passed.
         IEnumerable<DO.Call>? expiredCalls;
         lock (AdminManager.BlMutex)
-             expiredCalls = _dal.Call.ReadAll(c => c.MaxTimeToClose < AdminManager.Now);
+            expiredCalls = _dal.Call.ReadAll(c => c.MaxTimeToClose < AdminManager.Now);
 
         // Step 2: Checks for calls without assignments and creates a new assignment with the expired status.
         foreach (var call in expiredCalls)
         {
             bool hasAssignment;
             lock (AdminManager.BlMutex)
-                 hasAssignment = _dal.Assignment
-                .ReadAll(a => a.CallId == call.Id)
-                .Any();
+                hasAssignment = _dal.Assignment
+               .ReadAll(a => a.CallId == call.Id)
+               .Any();
 
             if (!hasAssignment)  // If there is no assignment for the call yet
             {
@@ -545,26 +613,26 @@ internal static class CallManager
         // Step 3: Updates assignments with null TimeEnd for calls that are expired.
         lock (AdminManager.BlMutex)
             foreach (var assignment in _dal.Assignment.ReadAll(a => a.TimeEnd == null))
-        {
-            var call = expiredCalls.FirstOrDefault(c => c.Id == assignment.CallId);
-            if (call != null)  // If the call is still marked as expired
             {
-                // Creating a new updated assignment
-                var updatedAssignment = assignment with
+                var call = expiredCalls.FirstOrDefault(c => c.Id == assignment.CallId);
+                if (call != null)  // If the call is still marked as expired
                 {
+                    // Creating a new updated assignment
+                    var updatedAssignment = assignment with
+                    {
 
-                    TimeEnd = AdminManager.Now,  // Sets the actual end time to the current time.
-                    TypeEndTreat = DO.TypeEnd.ExpiredCancel  // Marks the end type as expired.
-                };
+                        TimeEnd = AdminManager.Now,  // Sets the actual end time to the current time.
+                        TypeEndTreat = DO.TypeEnd.ExpiredCancel  // Marks the end type as expired.
+                    };
 
                     // Now we update the assignment with the new updatedAssignment object
                     lock (AdminManager.BlMutex)
-                         _dal.Assignment.Update(updatedAssignment);  // Updates the assignment with the new values.
-                Observers.NotifyItemUpdated(updatedAssignment.Id); //stage 5
-                Observers.NotifyListUpdated(); //stage 5
+                        _dal.Assignment.Update(updatedAssignment);  // Updates the assignment with the new values.
+                    Observers.NotifyItemUpdated(updatedAssignment.Id); //stage 5
+                    Observers.NotifyListUpdated(); //stage 5
                 }
 
-        }
+            }
     }
     //public static void AddCallInternal1(BO.Call boCall)
     //{
@@ -600,7 +668,7 @@ internal static class CallManager
     //        _dal.Call.Create(doCall);
     //    }
     //}
-    public static void AddCallInternal1(BO.Call boCall)      
+    public static void AddCallInternal1(BO.Call boCall)
 
     {
         // יצירת אובייקט השיחה בלי לחשב קואורדינטות עדיין
@@ -635,10 +703,10 @@ internal static class CallManager
             }
             Observers.NotifyItemUpdated(doCall.Id); // Notify item update (stage 5)
             Observers.NotifyListUpdated(); // Notify list update (stage 5)
-            
+
         });
 
-       
+
     }
     public static BO.Call ReadInternal(int callId)
     {
@@ -773,6 +841,7 @@ internal static class CallManager
     }
     public static void UpdateTreatmentCancellationInternal(int volunteerId, int assignmentId)
     {
+        AdminManager.ThrowOnSimulatorIsRunning(); // Ensure the simulator is not running (stage 7)
 
         DO.Assignment assigmnetToCancel;
 
@@ -996,8 +1065,8 @@ internal static class CallManager
         try
         {
             _dal.Assignment.Update(assignmentToUP);
-           Observers.NotifyListUpdated();  //stage 5
-           Observers.NotifyItemUpdated(assignmentToUP.CallId);  //stage 5
+            Observers.NotifyListUpdated();  //stage 5
+            Observers.NotifyItemUpdated(assignmentToUP.CallId);  //stage 5
             VolunteerManager.Observers.NotifyItemUpdated(idVol);  //stage 5
             VolunteerManager.Observers.NotifyListUpdated();  //stage 5
         }
@@ -1054,7 +1123,7 @@ internal static class CallManager
         // Ensures the call is not open or expired before assigning a volunteer
         if (bocall.Status != BO.CallStatus.Open || bocall.Status == BO.CallStatus.OpenRisk)
             throw new BO.BlAlreadyExistsException($"The call is open or expired. Call ID is={callId}");
-        
+
         // Creates a new assignment record for the volunteer and call
         DO.Assignment assignmentToCreate = new DO.Assignment
         {
@@ -1073,7 +1142,7 @@ internal static class CallManager
                 _dal.Assignment.Create(assignmentToCreate);
             } // Adds the assignment to the DAL
             Observers.NotifyListUpdated(); //stage 5
-           Observers.NotifyItemUpdated(callId);
+            Observers.NotifyItemUpdated(callId);
             VolunteerManager.Observers.NotifyListUpdated();
             VolunteerManager.Observers.NotifyItemUpdated(assignmentToCreate.VolunteerId);
         }
@@ -1082,6 +1151,5 @@ internal static class CallManager
             throw new BO.BlAlreadyExistsException("Impossible to create assignment"); // Handles creation failure
         }
     }
-  
-}
 
+}

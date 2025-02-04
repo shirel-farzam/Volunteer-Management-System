@@ -37,12 +37,13 @@
             <TextBox Text="{Binding Id, Mode=TwoWay}" 
                      Padding="10" 
                      FontSize="16" 
+                     KeyDown="enter_KeyDown"
                      Background="{StaticResource White}" 
                      BorderBrush="{StaticResource MediumGray}" 
                      BorderThickness="1"/>
             <!-- Password Label and PasswordBox -->
             <Label Content="Enter Password:" FontSize="16" Margin="0,20,0,5" Foreground="{StaticResource DarkGray}" />
-            <PasswordBox Padding="10" FontSize="16" Background="{StaticResource White}" BorderBrush="{StaticResource MediumGray}" BorderThickness="1" PasswordChanged="OnPasswordChanged" />
+            <PasswordBox Padding="10" FontSize="16" KeyDown="enter_KeyDown" Background="{StaticResource White}" BorderBrush="{StaticResource MediumGray}" BorderThickness="1" PasswordChanged="OnPasswordChanged" />
 
             <!-- Login Button -->
             <Button Content="Login" 
@@ -112,7 +113,7 @@
                Visibility="Collapsed" 
                Grid.ColumnSpan="2">
                <Run Text="5 Characters "/><LineBreak/>
-               <Run Text="1 Capittle Letter "/><LineBreak/>
+               <Run Text="1 Capital letter "/><LineBreak/>
                <Run Text="1 Number"/>
         </TextBlock>
     </Grid>

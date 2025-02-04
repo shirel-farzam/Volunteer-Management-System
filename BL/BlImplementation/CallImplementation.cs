@@ -17,39 +17,6 @@ internal class CallImplementation : ICall
     #endregion Stage 5
 
     private readonly DalApi.IDal _dal = DalApi.Factory.Get; // Dependency to access the data access layer (DAL)
-
-    //public void AddCall(BO.Call boCall)
-    //{
-    //    AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
-
-    //    double[] coordinate = VolunteerManager.GetCoordinatesFromAddress(boCall.FullAddress);
-    //    double latitude = coordinate[0];
-    //    double longitude = coordinate[1];
-    //    boCall.Latitude = latitude;
-    //    boCall.Longitude = longitude;
-    //    try
-    //    {
-    //        CallManager.IsLogicCall(boCall);
-    //        DO.Call doCall = new
-    //            (
-    //            boCall.Id,
-    //            (DO.CallType)boCall.Type,
-    //            boCall.Description,
-    //            boCall.FullAddress,
-    //            latitude,
-    //            longitude,
-    //            boCall.OpenTime,
-    //            boCall.MaxEndTime
-    //            );
-    //        lock (AdminManager.BlMutex) // stage 7
-    //            _dal.Call.Create(doCall);
-    //    }
-    //    catch (DO.DalXMLFileLoadCreateException ex)
-    //    {
-    //        throw new BO.BlAlreadyExistsException($"Call with ID={boCall.Id} already exists", ex);
-    //    }
-    //    CallManager.Observers.NotifyListUpdated();  //stage 5 
-    //}
     public void AddCall(BO.Call boCall)
     {
         try
@@ -67,92 +34,11 @@ internal class CallImplementation : ICall
             CallManager.Observers.NotifyListUpdated(); // שלב 5
         }
     }
-    // public void AddCall(BO.Call boCall)
-    // {
-    //     // we need add 
-    //     boCall.Latitude = Tools.GetLatitude(boCall.FullAddress);
-    //     boCall.Longitude = Tools.GetLongitude(boCall.FullAddress);
-
-    //     //boCall.Status = CallManager.CalculateCallStatus();
-    //     //boCall.CallAssignments = null; // for first time not have CallAssignments
-
-    //     CallManager.IsValideCall(boCall);
-    //     CallManager.IsLogicCall(boCall);
-
-    //     //var doCall = CallManager.BOConvertDO_Call(boCall.Id);
-    //     //DO.Call doCall = CallManager.BOConvertDO_Call(boCall); // Converts the business object to a data object
-    //     try
-    //     {
-    //         DO.Call doCall = new DO.Call(
-    //     boCall.Id,
-    //     (DO.CallType)boCall.Type,
-    //    boCall.Description,
-    //    boCall.FullAddress,
-    //   boCall.Latitude ?? 0.0,
-    // boCall.Longitude ?? 0.0,          // Longitude
-
-    //    boCall.OpenTime,            // OpeningTime
-    //    boCall.MaxEndTime
-
-    //);
-
-
-    //         _dal.Call.Create(doCall);
-    //         CallManager.Observers.NotifyListUpdated(); //stage 5   
-
-    //     }
-    //     catch (DO.DalAlreadyExistsException ex)
-    //     {
-    //         throw new BO.BlAlreadyExistsException($"Call with ID={boCall.Id} already exists", ex);
-    //     }
-
-    // }
-
-
-    // Assigns a volunteer to treat a specific call and creates an assignment record.
-
+   
     public void ChooseCallForTreat(int volunteerId, int callId)
     {
         CallManager.ChooseCallForTreatInternal(volunteerId, callId);
-        //DO.Volunteer vol;
-        //lock (AdminManager.BlMutex) // stage 7
-        //    vol = _dal.Volunteer.Read(volunteerId)
-        //                   ?? throw new BO.BlNullPropertyException($"There is no volunteer with this ID {volunteerId}");
-
-        //// Reads the call from the business logic or throws an exception if not found
-        //BO.Call bocall = Read(callId)
-        //                 ?? throw new BO.BlNullPropertyException($"There is no call with this ID {callId}");
-
-        //// Ensures the call is not open or expired before assigning a volunteer
-        //if (bocall.Status != BO.CallStatus.Open || bocall.Status == BO.CallStatus.OpenRisk)
-        //    throw new BO.BlAlreadyExistsException($"The call is open or expired. Call ID is={callId}");
-
-        //// Creates a new assignment record for the volunteer and call
-        //DO.Assignment assignmentToCreate = new DO.Assignment
-        //{
-        //    Id = 0,
-        //    CallId = callId,
-        //    VolunteerId = volunteerId,
-        //    TimeStart = AdminManager.Now, // Sets the start time for the assignment
-        //    TimeEnd = null,               // No end time initially
-        //    TypeEndTreat = null           // No completion type initially
-        //};
-
-        //try
-        //{
-        //    lock (AdminManager.BlMutex)
-        //    {// stage 7
-        //        _dal.Assignment.Create(assignmentToCreate);
-        //    } // Adds the assignment to the DAL
-        //    CallManager.Observers.NotifyListUpdated(); //stage 5
-        //    CallManager.Observers.NotifyItemUpdated(volunteerId);
-        //    //VolunteerManager.Observers.NotifyListUpdated();
-        //    //VolunteerManager.Observers.NotifyItemUpdated(assignmentToCreate.CallId);
-        //}
-        //catch (DO.DalDeletionImpossible)
-        //{
-        //    throw new BO.BlAlreadyExistsException("Impossible to create assignment"); // Handles creation failure
-        //}
+       
     }
     public void DeleteCall(int callId)
     {
@@ -188,28 +74,7 @@ internal class CallImplementation : ICall
 
     public int[] CountCall()
     {
-        //var calls = _dal.Call.ReadAll(); // Read all calls from the data layer
 
-        //    // Group assignments by their completion type (`TypeEndTreat`) across all calls
-        //    var groupedCalls = calls
-        //        .SelectMany(call => _dal.Assignment.ReadAll(ass => ass.CallId == call.Id)) // Get all assignments for each call
-        //        .GroupBy(ass => (int)ass.TypeEndTreat) // Group assignments by `TypeEndTreat`
-        //        .ToDictionary(group => group.Key, group => group.Count()); // Convert to dictionary: Key = TypeEndTreat, Value = Count
-
-        //    // Determine the highest `TypeEndTreat` value for array size
-        //    int maxTypeEnd = groupedCalls.Keys.Any() ? groupedCalls.Keys.Max() : 0;
-
-        //    // Initialize the result array with the appropriate size
-        //    int[] result = new int[maxTypeEnd + 1];
-
-        //    // Populate the result array with counts for each completion type
-        //    foreach (var kvp in groupedCalls)
-        //    {
-        //        result[kvp.Key] = kvp.Value;
-        //    }
-
-        //    return result; // Return the array with counts
-        //}
 
         try
         {
@@ -796,111 +661,17 @@ internal class CallImplementation : ICall
 
     }
 
-    //public IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int id, BO.CallType? type, BO.ClosedCallInListField? sortBy)
-    //{
-    //    AdminManager.ThrowOnSimulatorIsRunning();  // stage 7
 
-    //    IEnumerable<BO.ClosedCallInList> filteredCalls;
-    //    IEnumerable<DO.Call> allCalls;
-    //    lock (AdminManager.BlMutex) // stage 7
-
-    //        // Retrieve all calls from the DAL within the lock
-    //        allCalls = _dal.Call.ReadAll();
-    //   IEnumerable<DO.Assignment>? allAssignments;
-    //        // Retrieve all assignments from the DAL within the lock
-    //    allAssignments = _dal.Assignment.ReadAll();
-
-    //        // Filter by volunteer ID and closed status (calls that have an end treatment type)
-    //        filteredCalls = from call in allCalls
-    //                        join assignment in allAssignments
-    //                        on call.Id equals assignment.CallId
-    //                        where assignment.VolunteerId == id && assignment.TypeEndTreat != null
-    //                        select new BO.ClosedCallInList
-    //                        {
-    //                            Id = call.Id,
-    //                            CallType = (BO.CallType)call.Type,
-    //                            FullAddress = call.FullAddress,
-    //                            OpeningTime = call.TimeOpened,
-    //                            EntryTime = assignment.TimeStart,
-    //                            CompletionTime = assignment.TimeEnd,
-    //                            CompletionType = (BO.AssignmentCompletionType)assignment.TypeEndTreat
-    //                        };
-
-
-    //    // Filter by call type if provided
-    //    if (type.HasValue)
-    //    {
-    //        filteredCalls = filteredCalls.Where(c => c.CallType == type.Value);
-    //    }
-
-    //    // Sort by the requested field or by default (call ID)
-    //    if (sortBy.HasValue)
-    //    {
-    //        filteredCalls = sortBy.Value switch
-    //        {
-    //            BO.ClosedCallInListField.Id => filteredCalls.OrderBy(c => c.Id),
-    //            BO.ClosedCallInListField.CallType => filteredCalls.OrderBy(c => c.CallType),
-    //            BO.ClosedCallInListField.FullAddress => filteredCalls.OrderBy(c => c.FullAddress),
-    //            BO.ClosedCallInListField.OpeningTime => filteredCalls.OrderBy(c => c.OpeningTime),
-    //            BO.ClosedCallInListField.EntryTime => filteredCalls.OrderBy(c => c.EntryTime),
-    //            BO.ClosedCallInListField.CompletionTime => filteredCalls.OrderBy(c => c.CompletionTime),
-    //            BO.ClosedCallInListField.CompletionType => filteredCalls.OrderBy(c => c.CompletionType),
-    //            _ => filteredCalls.OrderBy(c => c.Id)
-    //        };
-    //    }
-    //    else
-    //    {
-    //        filteredCalls = filteredCalls.OrderBy(c => c.Id);
-    //    }
-
-    //    return filteredCalls;
-    //}
     public IEnumerable<BO.ClosedCallInList> GetClosedCallsByVolunteer(int id, BO.CallType? type, BO.ClosedCallInListField? sortBy)
     {
 
             return CallManager.GetClosedCallsByVolunteerInternal(id, type, sortBy);
        
     }
-    //  
-    //public void CloseTreat(int idVol, int idAssig)
-    //{
-    //    AdminManager.ThrowOnSimulatorIsRunning();  // stage 7
-    //    DO.Assignment assigmnetToClose;
-    //    lock (AdminManager.BlMutex) // stage 7
-
-    //        assigmnetToClose = _dal.Assignment.Read(idAssig) ?? throw new BO.BlDeleteNotPossibleException("there is no assignment with this ID");
-    //        if (assigmnetToClose.VolunteerId != idVol)
-    //        {
-    //            throw new BO.BlWrongInputException("the volunteer is not treat in this assignment");
-    //        }
-    //        if (assigmnetToClose.TypeEndTreat != null || assigmnetToClose.TimeEnd != null)
-    //            throw new BO.BlDeleteNotPossibleException("The assignment not open");
-
-    //        DO.Assignment assignmentToUP = new DO.Assignment
-    //        {
-    //            Id = assigmnetToClose.Id,
-    //            CallId = assigmnetToClose.CallId,
-    //            VolunteerId = assigmnetToClose.VolunteerId,
-    //            TimeStart = assigmnetToClose.TimeStart,
-    //            TimeEnd = AdminManager.Now,
-    //            TypeEndTreat = DO.TypeEnd.Treated,
-    //        };
-
-    //        try
-    //        {
-    //            _dal.Assignment.Update(assignmentToUP);
-    //        }
-    //        catch (DO.DalAlreadyExistsException ex)
-    //        {
-    //            throw new BO.BlDeleteNotPossibleException("cannot update in DO");
-    //        }
-
-    //    // Notifications outside the lock
-    //    CallManager.Observers.NotifyItemUpdated(idAssig);  // stage 5
-    //    CallManager.Observers.NotifyListUpdated();  // stage 5
-    //    VolunteerManager.Observers.NotifyListUpdated();
-    //    VolunteerManager.Observers.NotifyItemUpdated(idVol);
-    //}
+    public bool CanDelete(int id)
+    {    return (Read(id).Status==BO.CallStatus.Open)&&(Read(id).CallAssignments==null); }
+    
+   
     public void CloseTreat(int idVol, int idAssig)
     {
         AdminManager.ThrowOnSimulatorIsRunning(); // stage 7
@@ -916,55 +687,11 @@ internal class CallImplementation : ICall
         VolunteerManager.Observers.NotifyItemUpdated(idVol);
     }
 
-    //public void Update(BO.Call boCall)
-    //{
-    //    AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
-
-    //    // Get coordinates (latitude and longitude) for the provided address using the VolunteerManager utility.
-    //    double[] coordinate = VolunteerManager.GetCoordinatesFromAddress(boCall.FullAddress);
-    //    double latitude = coordinate[0];
-    //    double longitude = coordinate[1];
-
-    //    // Assign the calculated coordinates to the call object, handling nullable types.
-    //    boCall.Latitude = latitude;
-    //    boCall.Longitude = longitude;
-
-    //    // Perform logic validation on the call object to ensure it complies with business rules.
-    //    CallManager.IsLogicCall(boCall);
-
-    //    // Convert the BO.Call object to a DO.Call object for data layer processing.
-    //    DO.Call doCall = new
-    //                (
-    //                boCall.Id, // Call ID
-    //                (DO.CallType)boCall.Type, // Convert call type from BO to DO
-    //                boCall.Description, // Description of the call
-    //                boCall.FullAddress, // Full address of the call
-    //                boCall.Latitude ?? 0.0, // Default latitude if null
-    //                boCall.Longitude ?? 0.0, // Default longitude if null
-    //                boCall.OpenTime, // The time the call was opened
-    //                boCall.MaxEndTime // The maximum time allowed for the call to close
-    //                );
-    //    try
-    //    {
-    //        // Update the call in the data layer.
-    //        lock (AdminManager.BlMutex) // stage 7
-    //            _dal.Call.Update(doCall);
-    //        CallManager.Observers.NotifyItemUpdated(doCall.Id);  //stage 5
-    //        CallManager.Observers.NotifyListUpdated();  //stage 5
-    //    }
-    //    catch (DO.DalDeletionImpossible ex)
-    //    {
-    //        // Handle exception if the call does not exist, wrapping it in a business logic exception.
-    //        throw new BO.BlDoesNotExistException($"Call with ID={boCall.Id} does Not exist", ex);
-    //    }
-    //}
+    
     public void Update(BO.Call boCall)
     {
         AdminManager.ThrowOnSimulatorIsRunning(); // stage 7
 
-       
-
-       
 
         // Perform logic validation on the call object to ensure it complies with business rules.
         CallManager.IsLogicCall(boCall);

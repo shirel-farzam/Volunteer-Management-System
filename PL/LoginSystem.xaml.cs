@@ -4,6 +4,7 @@ using PL.VolunteerScreens;
 using PL.VolunteerWindow;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -24,7 +25,7 @@ namespace PL
         }
 
         public static readonly DependencyProperty IdProperty =
-            DependencyProperty.Register("Id", typeof(int), typeof(LoginSystem), new PropertyMetadata(null));
+            DependencyProperty.Register("Id", typeof(int), typeof(LoginSystem), new PropertyMetadata(0));
 
         public string Password
         {
@@ -175,7 +176,53 @@ namespace PL
         }
 
 
+        private void enter_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                BO.Volunteer currentVolunteer = null;
+                try
+                {
+                    currentVolunteer = s_bl.Volunteer.Read(Id);
+                }
+                catch (BO.BlDoesNotExistException ex)
+                {
 
+                    MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Operation Fail", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+
+                if (currentVolunteer != null)
+                {
+                    if (currentVolunteer!.Password != Password)
+                        MessageBox.Show("wrong password!", "Error", MessageBoxButton.OK);
+                    else
+                    {
+                        MessageBox.Show("WELLCOME TO SYSTEM", "WellCome");
+                        int numericId = Id;
+
+                        if (currentVolunteer.Job == BO.Role.Manager)
+                            try
+                            {
+                                new AdminTransition(numericId,this).Show();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message, "ERROR", MessageBoxButton.OK);
+                            }
+
+
+                        else
+                            new VolunteerMainWindow(numericId).Show();
+
+                    }
+                }
+            }
+        }
         private void SetDayMode()
         {
             Uri dayModeUri = new Uri("Themes/ColorLight.xaml", UriKind.Relative);

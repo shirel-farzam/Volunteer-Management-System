@@ -74,7 +74,7 @@ SelectionChanged="Volunteer_Filter" Height="25" Grid.ColumnSpan="3" Grid.Column=
 
         </Grid>
 
-        <ListView Grid.Row="1" Margin="20,10,20,10" FontFamily="Times New Roman" ItemsSource="{Binding Path=VolunteerInList}" SelectedItem="{Binding SelectedVolunteer}"
+        <ListView Grid.Row="1" Margin="20,10,20,10" FontFamily="Times New Roman" ItemsSource="{Binding Path=VolunteerInList}" SelectedItem="{Binding SelectedVolunteer }"
           MouseDoubleClick="lsvVolunteerList_MouseDoubleClick">
             <ListView.View>
                 <GridView>
@@ -190,7 +190,7 @@ SelectionChanged="Volunteer_Filter" Height="25" Grid.ColumnSpan="3" Grid.Column=
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <!-- Delete Button for each row -->
-                                <Button Content="Delete" Click="DeleteButton_Click" Tag="{Binding Id}" Foreground="#009990"  />
+                                <Button Content="Delete" Click="DeleteButton_Click"  Foreground="#009990"   Visibility="{Binding CallId,Converter={StaticResource CanDeleteVolunteerConverterKey}}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

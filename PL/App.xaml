@@ -30,7 +30,11 @@
             <local:ConvertCallTypeToColor x:Key="ConvertCallTypeToColorKey" />
             <local:NullToVisibilityConverter x:Key="NullToVisibilityConverterKey" />
             <local:BoolConvertIsCallInProsses x:Key="BoolConvertIsCallInProssesKey" />
-            
+            <local:CanDeleteCallConverter x:Key="CanDeleteCallConverterKey" />
+            <local:CanDeleteVolunteerConverter x:Key="CanDeleteVolunteerConverterKey" />
+
+
+
             <local:InverseNullToVisibilityConverter x:Key="InverseNullToVisibilityConverterKey" />
             <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
             <local:BoolToTextConverter x:Key="BoolToTextConverterKey" />
