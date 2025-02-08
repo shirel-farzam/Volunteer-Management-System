@@ -190,7 +190,7 @@ SelectionChanged="Volunteer_Filter" Height="25" Grid.ColumnSpan="3" Grid.Column=
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <!-- Delete Button for each row -->
-                                <Button Content="Delete" Click="DeleteButton_Click"  Foreground="#009990"   Visibility="{Binding CallId,Converter={StaticResource CanDeleteVolunteerConverterKey}}" />
+                                <Button Content="Delete" Click="DeleteButton_Click"  Foreground="#009990"   Visibility="{Binding Id,Converter={StaticResource CanDeleteVolunteerConverterKey}}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

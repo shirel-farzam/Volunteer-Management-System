@@ -202,12 +202,13 @@ namespace PL
                         MessageBox.Show("wrong password!", "Error", MessageBoxButton.OK);
                     else
                     {
-                        MessageBox.Show("WELLCOME TO SYSTEM", "WellCome");
+                       
                         int numericId = Id;
 
                         if (currentVolunteer.Job == BO.Role.Manager)
                             try
                             {
+                                MessageBox.Show("Welcome, Admin!");
                                 new AdminTransition(numericId,this).Show();
                             }
                             catch (Exception ex)
@@ -217,8 +218,9 @@ namespace PL
 
 
                         else
+                            {MessageBox.Show("Welcome, Volunteer!");
                             new VolunteerMainWindow(numericId).Show();
-
+}
                     }
                 }
             }

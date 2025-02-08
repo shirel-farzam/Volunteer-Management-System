@@ -37,7 +37,7 @@
             <TextBox Text="{Binding Id, Mode=TwoWay}" 
                      Padding="10" 
                      FontSize="16" 
-                     KeyDown="enter_KeyDown"
+                     
                      Background="{StaticResource White}" 
                      BorderBrush="{StaticResource MediumGray}" 
                      BorderThickness="1"/>
