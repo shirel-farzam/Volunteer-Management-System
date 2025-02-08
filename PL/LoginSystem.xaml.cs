@@ -146,11 +146,8 @@ namespace PL
             }
             isDayMode = !isDayMode;
         }
-        // שחרור מנהל בעת יציאה
-        //public static void ReleaseAdmin()
-        //{
-        //    _isAdminLoggedIn = false;
-        //}
+
+    
         private DispatcherTimer _timer;
 
         private void ShowInstructions_Click(object sender, RoutedEventArgs e)

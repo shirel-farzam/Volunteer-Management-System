@@ -439,30 +439,6 @@ internal static class CallManager
 
     }
 
-    // Convert 
-    //public static DO.Call BOConvertDO_Call(BO.Call BOCall)
-    //{
-    //    if (BOCall == null)
-    //    {
-    //        throw new ArgumentNullException(nameof(BOCall), "The provided BO.Call object cannot be null.");
-    //    }
-
-    //    // Convert BO.Call to DO.Call
-    //    var DOCall = new DO.Call
-    //    {
-    //        Id = BOCall.Id,
-    //        Type = (DO.CallType)Enum.Parse(typeof(DO.CallType), BOCall.Type.ToString()), // Use Enum.Parse if CallType is an Enum
-    //        Description = BOCall.Description,
-    //        FullAddress = BOCall.FullAddress,
-    //        Latitude = (BOCall.Latitude ?? 0), // Convert to 0 if Latitude is null
-    //        Longitude = (BOCall.Longitude ?? 0), // Convert to 0 if Longitude is null
-    //        TimeOpened = BOCall.OpenTime,
-    //        MaxTimeToClose = BOCall.MaxEndTime
-    //    };
-
-    //    return DOCall;
-    //}
-
     public static TimeSpan? CalculateTimeRemaining(DateTime? maxEndTime)
     {
         if (maxEndTime == null)
@@ -634,40 +610,7 @@ internal static class CallManager
 
             }
     }
-    //public static void AddCallInternal1(BO.Call boCall)
-    //{
-    //    // יצירת משימה אסינכרונית
-    //    var task = Task.Run(async () =>
-    //    {
-    //        return await VolunteerManager.GetCoordinatesFromAddressAsync(boCall.FullAddress);
-    //    });
-
-    //    // מחכים להשלמת המשימה
-    //    double[] coordinate = task.Result;
-    //    double latitude = coordinate[0];
-    //    double longitude = coordinate[1];
-    //    boCall.Latitude = latitude;
-    //    boCall.Longitude = longitude;
-
-    //    CallManager.IsLogicCall(boCall);
-
-    //    DO.Call doCall = new
-    //    (
-    //        boCall.Id,
-    //        (DO.CallType)boCall.Type,
-    //        boCall.Description,
-    //        boCall.FullAddress,
-    //        latitude,
-    //        longitude,
-    //        boCall.OpenTime,
-    //        boCall.MaxEndTime
-    //    );
-
-    //    lock (AdminManager.BlMutex) // שלב 7
-    //    {
-    //        _dal.Call.Create(doCall);
-    //    }
-    //}
+    
     public static void AddCallInternal1(BO.Call boCall)
 
     {
