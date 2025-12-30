@@ -1,69 +1,79 @@
 # 🚑 Volunteer Management System 🧑‍🤝‍🧑⏱️🧠
 
-A **Volunteer & Task Management System** developed as part of an academic **Software Engineering** project 🎓💻  
-The system simulates a **real-time volunteering environment**, combining **clean layered architecture**,  
-**time simulation**, and **multi-threaded execution** to accurately model real-world scenarios ⚙️🕰️
+A **Volunteer & Task Management System** developed as part of an academic  
+**Software Engineering** project 🎓💻  
+
+The system simulates a **real-time volunteering environment**, combining  
+**clean layered architecture**, **time simulation**, and **multi-threaded execution**  
+to accurately model real-world scenarios ⚙️🕰️
 
 ---
 
-## 🎯 System Capabilities
+## 🎯 System Overview
+
+This project focuses on managing volunteers and tasks while simulating  
+real-life time progression and asynchronous system behavior.
+
+Key goals:
+- Realistic time-based task handling  
+- Clear separation of responsibilities  
+- Flexible data persistence strategies  
+- Maintainable and testable architecture  
+
+---
+
+## ✅ System Capabilities
 
 - 🧑‍🤝‍🧑 Manage volunteers and task assignments  
 - 📋 Track tasks and their full lifecycle  
-- ⏱️ Simulate the passage of time using an internal logical clock  
+- ⏱️ Simulate time using an internal logical system clock  
 - 🔄 Automatically update task & volunteer states  
-- 🧵 Run time progression and business logic **in parallel** using multi-threading  
-- 🧪 Support multiple data sources (List / XML) for testing and persistence  
+- 🧵 Execute time progression and business logic **in parallel** (multi-threading)  
+- 🧪 Support multiple data sources (List / XML) for testing & persistence  
 
 ---
 
-## 🧠 Core Concepts & Design Highlights
+## 🧠 Core Concepts & Design
 
 ### ⏱️ Time Simulation Engine
 - The system does **not rely on real system time**
-- A logical clock advances in controlled **"ticks"**
+- A logical clock advances in controlled **ticks**
 - Enables fast-forward simulations and edge-case testing 🚀
 
----
-
-### 🧵 Multi-Threaded Design
+### 🧵 Multi-Threaded Execution
 - Time simulation runs on a **dedicated thread**
 - Business logic reacts to time changes **asynchronously**
 - Ensures responsiveness and realistic system behavior ⚙️⚙️
 
----
-
 ### 🏗️ Layered Architecture
-The project follows a **clean layered architecture**, enforcing a clear separation of concerns:
+The project follows a **clean layered architecture**, enforcing separation of concerns:
 
-- **Presentation Layer (PL)** – User interaction  
-- **Business Logic Layer (BL)** – Core rules & system logic  
-- **Data Access Layer (DAL)** – Data storage & persistence  
+- **Presentation Layer (PL)** – user interaction  
+- **Business Logic Layer (BL)** – rules, validations, time-based logic  
+- **Data Access Layer (DAL)** – data storage & persistence  
 
-This design improves maintainability, scalability, and testability ✨
+This approach improves maintainability, scalability, and testability ✨
 
 ---
 
 ## 📁 Project Structure
-
 Volunteer-Management-System/
 │
-├── BL/             # Business Logic – rules, validations, time-based logic
-├── PL/             # Presentation Layer – user-facing interface
+├── BL/ # Business Logic – rules, validations, time-based logic
+├── PL/ # Presentation Layer – user-facing interface
 │
-├── DalFacade/      # DAL interfaces & contracts
-├── DalList/        # In-memory data implementation (testing/debug)
-├── DalXml/         # XML-based persistent data implementation
+├── DalFacade/ # DAL interfaces & contracts
+├── DalList/ # In-memory data implementation (testing/debug)
+├── DalXml/ # XML-based persistent data implementation
 │
-├── BlTest/         # Business Logic unit tests
-├── DalTest/        # Data Access Layer tests
+├── BlTest/ # Business Logic unit tests
+├── DalTest/ # Data Access Layer unit tests
 │
-├── xml/            # XML data files
-├── stage0/         # Initial prototype / early development stage
+├── xml/ # XML data files
+├── stage0/ # Initial prototype / early development stage
 │
-├── dotNet5785_-4642_7701.sln   # Visual Studio solution file
+├── dotNet5785_-4642_7701.sln # Visual Studio solution file
 └── README.md
-
 ---
 
 ## ▶️ How to Run the Project
@@ -72,19 +82,17 @@ Volunteer-Management-System/
 - Visual Studio (recommended: 2022 or later)
 - .NET SDK installed
 
----
-
 ### 🚀 Running the System
 
 1. Open the solution file in Visual Studio:
    dotNet5785_-4642_7701.sln
 
-2. Set the **Presentation Layer (PL)** project as the startup project
+2. Set the **PL (Presentation Layer)** project as the startup project
 
 3. Build and run the solution ▶️
 
-💡 The system allows switching between different DAL implementations  
-(List / XML) via configuration or code setup.
+💡 You can switch between different DAL implementations  
+(List / XML) depending on testing or persistence needs.
 
 ---
 
@@ -105,14 +113,15 @@ Volunteer-Management-System/
 - **Shirel Farzam**  
   GitHub: [shirel-farzam](https://github.com/shirel-farzam)
 
-- **Ayelet Benisti**
+- **Ayelet Benisti**  
+  GitHub: [Ayelet929](https://github.com/Ayelet929)
 
 ---
 
-## 🎨 README Design Credit
+## ✨ Notes
 
-README style inspired by modern GitHub project presentations ✨  
-Designed with clarity, structure, and developer experience in mind 🧠💙
+This project emphasizes **architecture, correctness, and realism** over UI design  
+and serves as a strong example of structured system design in .NET environments.
 
 ---
 
