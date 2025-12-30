@@ -1,128 +1,120 @@
-🚑 Volunteer Management System 🧑‍🤝‍🧑⏱️🧠
+# 🚑 Volunteer Management System 🧑‍🤝‍🧑⏱️🧠
 
-A Volunteer & Task Management System developed as part of an academic software engineering project 🎓💻
-The system simulates a real-time volunteering environment, combining clean layered architecture,
-time simulation, and multi-threaded execution to model real-world scenarios accurately ⚙️🕰️
+A **Volunteer & Task Management System** developed as part of an academic **Software Engineering** project 🎓💻  
+The system simulates a **real-time volunteering environment**, combining **clean layered architecture**,  
+**time simulation**, and **multi-threaded execution** to accurately model real-world scenarios ⚙️🕰️
 
-🎯 What Can the System Do? 🎯
+---
 
-🧑‍🤝‍🧑 Manage volunteers and assignments
+## 🎯 System Capabilities
 
-📋 Track tasks and their lifecycle
+- 🧑‍🤝‍🧑 Manage volunteers and task assignments  
+- 📋 Track tasks and their full lifecycle  
+- ⏱️ Simulate the passage of time using an internal logical clock  
+- 🔄 Automatically update task & volunteer states  
+- 🧵 Run time progression and business logic **in parallel** using multi-threading  
+- 🧪 Support multiple data sources (List / XML) for testing and persistence  
 
-⏱️ Simulate the passage of time (system clock)
+---
 
-🔄 Automatically update task & volunteer states
+## 🧠 Core Concepts & Design Highlights
 
-🧵 Run time progression and logic in parallel using Multi-Threading
+### ⏱️ Time Simulation Engine
+- The system does **not rely on real system time**
+- A logical clock advances in controlled **"ticks"**
+- Enables fast-forward simulations and edge-case testing 🚀
 
-🧪 Support multiple data sources (List / XML) for testing & persistence
+---
 
-🧠 Core Concepts & Highlights 🧠
-⏱️ Time Simulation Engine
+### 🧵 Multi-Threaded Design
+- Time simulation runs on a **dedicated thread**
+- Business logic reacts to time changes **asynchronously**
+- Ensures responsiveness and realistic system behavior ⚙️⚙️
 
-The system does not rely on real system time
+---
 
-A logical clock advances in controlled “ticks”
+### 🏗️ Layered Architecture
+The project follows a **clean layered architecture**, enforcing a clear separation of concerns:
 
-Enables fast-forward simulations and edge-case testing 🚀
+- **Presentation Layer (PL)** – User interaction  
+- **Business Logic Layer (BL)** – Core rules & system logic  
+- **Data Access Layer (DAL)** – Data storage & persistence  
 
-🧵 Multi-Threaded Design
+This design improves maintainability, scalability, and testability ✨
 
-Time simulation runs on a dedicated thread
+---
 
-Business logic reacts to time changes asynchronously
+## 📁 Project Structure
 
-Ensures responsiveness and realistic system behavior ⚙️⚙️
+Volunteer-Management-System/
+│
+├── BL/             # Business Logic – rules, validations, time-based logic
+├── PL/             # Presentation Layer – user-facing interface
+│
+├── DalFacade/      # DAL interfaces & contracts
+├── DalList/        # In-memory data implementation (testing/debug)
+├── DalXml/         # XML-based persistent data implementation
+│
+├── BlTest/         # Business Logic unit tests
+├── DalTest/        # Data Access Layer tests
+│
+├── xml/            # XML data files
+├── stage0/         # Initial prototype / early development stage
+│
+├── dotNet5785_-4642_7701.sln   # Visual Studio solution file
+└── README.md
 
-🏗️ Layered Architecture
+---
 
-Clear separation between:
+## ▶️ How to Run the Project
 
-Presentation
+### 🛠️ Prerequisites
+- Visual Studio (recommended: 2022 or later)
+- .NET SDK installed
 
-Business Logic
+---
 
-Data Access
+### 🚀 Running the System
 
-Promotes maintainability, scalability, and clean code ✨
+1. Open the solution file in Visual Studio:
+   dotNet5785_-4642_7701.sln
 
-📁 Project Structure 📁
-🧠 Business Logic (BL/)
+2. Set the **Presentation Layer (PL)** project as the startup project
 
-Core system rules and validations
+3. Build and run the solution ▶️
 
-Task & volunteer state management
+💡 The system allows switching between different DAL implementations  
+(List / XML) via configuration or code setup.
 
-Time-based decision making
+---
 
-🧱 Data Access Layer
-DalFacade/
+## 🛠️ Technologies Used
 
-Interfaces & contracts for data access
+- 💻 C#  
+- 🧩 .NET (Multi-Project Solution)  
+- 🏗️ Layered Architecture (PL / BL / DAL)  
+- 🧵 Multi-Threading  
+- ⏱️ Time Simulation  
+- 📄 XML Serialization  
+- 🧪 Unit Testing  
 
-Enables easy switching between data sources
+---
 
-DalList/
+## 👩‍💻 Project Contributors
 
-In-memory data storage
+- **Shirel Farzam**  
+  GitHub: [shirel-farzam](https://github.com/shirel-farzam)
 
-Ideal for testing and debugging 🧪
+- **Ayelet Benisti**
 
-DalXml/
+---
 
-Persistent XML-based storage
+## 🎨 README Design Credit
 
-Uses serialized files located in the xml/ directory 📄
+README style inspired by modern GitHub project presentations ✨  
+Designed with clarity, structure, and developer experience in mind 🧠💙
 
-🖥️ Presentation Layer (PL/)
+---
 
-User-facing interface (Console / UI)
-
-Communicates only with BL, never directly with DAL
-
-🧪 Testing
-
-BlTest/ – Business Logic tests
-
-DalTest/ – Data Access tests
-
-🛠️ Technologies Used 🛠️
-
-💻 C#
-
-🧩 .NET (Multi-Project Solution)
-
-🏗️ Layered Architecture (PL / BL / DAL)
-
-🧵 Multi-Threading
-
-⏱️ Time Simulation
-
-📄 XML Serialization
-
-🧪 Unit Testing
-
-▶️ How to Run ▶️
-# Open the solution file in Visual Studio
-dotNet5785_-4642_7701.sln
-
-# Build & Run the Presentation Layer project
-
-
-💡 You can switch between DAL implementations (List / XML) easily via configuration.
-
-🧑‍💻 Project Contributors 🧑‍💻
-
-Elyasaf Cohen
-
-Team Members (as listed in project submission)
-
-🎨 README Style Credit 🎨
-
-README design inspired by:
-Shirel Farzam 💖
-GitHub: https://github.com/shirel-farzam
-
-⭐ If this project impressed you – a GitHub star is always appreciated! ⭐
-Built with passion, architecture, and a lot of brainpower 🧠🔥
+⭐ If you find this project interesting, feel free to give it a star! ⭐  
+Built with clean architecture, careful design, and real-world thinking 🚀
