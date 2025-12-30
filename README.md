@@ -11,88 +11,115 @@ to accurately model real-world scenarios ⚙️🕰️
 
 ## 🎯 System Overview
 
-This project focuses on managing volunteers and tasks while simulating  
-real-life time progression and asynchronous system behavior.
+This project manages volunteers and tasks while simulating realistic  
+time progression and asynchronous system behavior.
 
-Key goals:
-- Realistic time-based task handling  
-- Clear separation of responsibilities  
-- Flexible data persistence strategies  
-- Maintainable and testable architecture  
+The main focus is on:
+- Correct architectural separation  
+- Time-based logic and simulation  
+- Parallel execution  
+- Testability and maintainability  
 
 ---
 
 ## ✅ System Capabilities
 
 - 🧑‍🤝‍🧑 Manage volunteers and task assignments  
-- 📋 Track tasks and their full lifecycle  
-- ⏱️ Simulate time using an internal logical system clock  
+- 📋 Track tasks throughout their lifecycle  
+- ⏱️ Simulate time using an internal logical clock  
 - 🔄 Automatically update task & volunteer states  
-- 🧵 Execute time progression and business logic **in parallel** (multi-threading)  
-- 🧪 Support multiple data sources (List / XML) for testing & persistence  
+- 🧵 Execute logic concurrently using multi-threading  
+- 🧪 Support multiple persistence strategies (List / XML)  
 
 ---
 
-## 🧠 Core Concepts & Design
+## 🧠 Core Concepts
 
 ### ⏱️ Time Simulation Engine
-- The system does **not rely on real system time**
-- A logical clock advances in controlled **ticks**
-- Enables fast-forward simulations and edge-case testing 🚀
+- Does **not** rely on real system time  
+- Uses a logical clock that advances in controlled ticks  
+- Allows fast-forward simulations and edge-case testing  
 
 ### 🧵 Multi-Threaded Execution
-- Time simulation runs on a **dedicated thread**
-- Business logic reacts to time changes **asynchronously**
-- Ensures responsiveness and realistic system behavior ⚙️⚙️
+- Time simulation runs on a dedicated thread  
+- Business logic reacts asynchronously to time changes  
+- Ensures realistic and responsive system behavior  
 
 ### 🏗️ Layered Architecture
-The project follows a **clean layered architecture**, enforcing separation of concerns:
+The system follows a strict layered architecture:
+- Presentation Layer (PL)  
+- Business Logic Layer (BL)  
+- Data Access Layer (DAL)  
 
-- **Presentation Layer (PL)** – user interaction  
-- **Business Logic Layer (BL)** – rules, validations, time-based logic  
-- **Data Access Layer (DAL)** – data storage & persistence  
-
-This approach improves maintainability, scalability, and testability ✨
+This separation improves clarity, scalability, and testability.
 
 ---
 
 ## 📁 Project Structure
-Volunteer-Management-System/
-│
-├── BL/ # Business Logic – rules, validations, time-based logic
-├── PL/ # Presentation Layer – user-facing interface
-│
-├── DalFacade/ # DAL interfaces & contracts
-├── DalList/ # In-memory data implementation (testing/debug)
-├── DalXml/ # XML-based persistent data implementation
-│
-├── BlTest/ # Business Logic unit tests
-├── DalTest/ # Data Access Layer unit tests
-│
-├── xml/ # XML data files
-├── stage0/ # Initial prototype / early development stage
-│
-├── dotNet5785_-4642_7701.sln # Visual Studio solution file
-└── README.md
+
+### 🧠 Business Logic (BL/)
+- Core system rules  
+- Validations and constraints  
+- Time-based decision logic  
+- Volunteer & task state management  
+
+---
+
+### 🖥️ Presentation Layer (PL/)
+- User-facing interface  
+- System interaction and input handling  
+- Communicates **only** with the Business Logic layer  
+
+---
+
+### 🗄️ Data Access Layer (DAL)
+
+#### DalFacade/
+- Interfaces and contracts for data access  
+- Decouples business logic from storage implementation  
+
+#### DalList/
+- In-memory data implementation  
+- Used mainly for testing and debugging  
+
+#### DalXml/
+- XML-based persistent data storage  
+- Uses serialized files for long-term persistence  
+
+---
+
+### 🧪 Testing
+- BlTest/ – Business Logic unit tests  
+- DalTest/ – Data Access Layer unit tests  
+
+---
+
+### 📂 Additional Folders
+- xml/ – XML data files  
+- stage0/ – Initial prototype / early development stage  
+
+---
+
+### 📄 Solution Files
+- dotNet5785_-4642_7701.sln – Visual Studio solution file  
+- README.md – Project documentation  
+
 ---
 
 ## ▶️ How to Run the Project
 
 ### 🛠️ Prerequisites
-- Visual Studio (recommended: 2022 or later)
-- .NET SDK installed
+- Visual Studio (recommended: 2022 or later)  
+- .NET SDK installed  
 
 ### 🚀 Running the System
+1. Open the solution file:
+   dotNet5785_-4642_7701.sln  
+2. Set the **PL (Presentation Layer)** project as the startup project  
+3. Build and run the solution ▶️  
 
-1. Open the solution file in Visual Studio:
-   dotNet5785_-4642_7701.sln
-
-2. Set the **PL (Presentation Layer)** project as the startup project
-
-3. Build and run the solution ▶️
-
-💡 You can switch between different DAL implementations  
-(List / XML) depending on testing or persistence needs.
+You can switch between DAL implementations (List / XML) depending on  
+testing or persistence needs.
 
 ---
 
@@ -100,7 +127,7 @@ Volunteer-Management-System/
 
 - 💻 C#  
 - 🧩 .NET (Multi-Project Solution)  
-- 🏗️ Layered Architecture (PL / BL / DAL)  
+- 🏗️ Layered Architecture  
 - 🧵 Multi-Threading  
 - ⏱️ Time Simulation  
 - 📄 XML Serialization  
@@ -115,13 +142,6 @@ Volunteer-Management-System/
 
 - **Ayelet Benisti**  
   GitHub: [Ayelet929](https://github.com/Ayelet929)
-
----
-
-## ✨ Notes
-
-This project emphasizes **architecture, correctness, and realism** over UI design  
-and serves as a strong example of structured system design in .NET environments.
 
 ---
 
